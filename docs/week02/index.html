@@ -29,7 +29,7 @@
   <body onload="fetchSource()">
     <header class="hero-image">
       <section class="hero-text">
-        <h1>CSE 121b: Week 02</h1>
+        <h1>CSE 222a: Week 02</h1>
         <p>The Fundamentals</p>
       </section>
     </header>
@@ -38,8 +38,8 @@
       <h3>Shared Operators</h3>
       <p>
         Remember, both Python and JavaScript have C as one of their ancestors.
-        Because of this, it is not shocking to find out that they share many of
-        the same operators as C. These include +, -, /, *, ==, !=, &lt, &gt,
+        Because of this, it is not shocking to find out that they share some of
+        the same C-type operators. These include +, -, /, *, ==, !=, &lt, &gt,
         etc. By going to these two sites, you can compare the operators for the
         two languages.
         <a
@@ -49,11 +49,10 @@
         >
         to
         <a
-          href="https://www.w3schools.com/jsref/jsref_operators.asp"
+          href="https://www.tutorialspoint.com/swift/swift_operators.htm"
           target="_blank"
-          >JavaScript's list of operators</a
-        >. When you do so, you will find that Python has a few that JavaScript
-        does not. You will also see that the conditional operators, also known
+          >Swift's list of operators</a> or, for a more detailed description, <a href="https://docs.swift.org/swift-book/LanguageGuide/BasicOperators.html">this list</a>. When you do so, you will find that Python has a few that Swift
+        does not and that Swift has a few that Python does not. You will also see that the conditional operators, also known
         as logical operators, exist in both languages but use different
         characters.
       </p>
@@ -80,7 +79,7 @@
 
       <table class="blueTable">
         <caption>
-          Table 1: C Equivalents of Python Operators
+          Table 1: Swift Equivalents of Python Operators
         </caption>
         <thead>
           <tr>
@@ -91,7 +90,7 @@
         <tbody>
           <tr>
             <td>a//b</td>
-            <td>Math.floor(a/b)</td>
+            <td>a/b (for integers a and b)</td>
           </tr>
           <tr>
             <td>a &lt&gt b</td>
@@ -99,7 +98,7 @@
           </tr>
           <tr>
             <td>a**=b</td>
-            <td>a = Math.pow(a,b)</td>
+            <td>a = pow(a,b) (for floating point type numbers a and b)</td>
           </tr>
           <tr>
             <td>a and b</td>
@@ -117,9 +116,9 @@
       </table>
 
       <p>
-        JavaScript has
+        Remember, Swift has
         <a
-          href="https://www.w3schools.com/jsref/jsref_operators.asp"
+          href="https://docs.swift.org/swift-book/LanguageGuide/BasicOperators.html"
           target="_blank"
           >other operators</a
         >
@@ -137,16 +136,33 @@ age = 4.2
 age = 'old'</code>
 	</pre>
       <p>
-        JavaScript variables behave in much the same way. Just like in Python,
-        they can hold any type and the type can change. However, JavaScript does
-        require you to use the let keyword to declare a variable. Like this:
+        Swift has both variables and constants. Unlike in Python,
+        they can hold only one type and that type can not change. In Swift you use the 
+        var keyword to declare a variable. Like this:
       </p>
+      <p>
       <pre>
-<code class="JavaScript">let age = 3
+<code class="Swift">var age = 3
 age = 5
-age = 4.2
-age = 'old'</code>
+age = 4.2//compilation failure, type change
+age = 'old'//compilation failure, type change</code>
 	</pre>
+  </p>
+    <p>
+      Swift uses what is called <a href="https://www.merriam-webster.com/dictionary/interpolate" target="_blank">'interpolation'</a> 
+      to figure out the type of the variable. In the code above, the compiler 
+      discovered that the variable age is of type Integer because 3 is an Integer and inserted the keyword Integer into the compiled code. 
+      In the code snippet below, the compiler 
+      discovers that the height variable is of type Double because 3.25 is a Double.
+    </p>
+    <p>
+      <pre>
+<code class="Swift">var height = 3.25
+height = 4.2
+height = 4//compilation failure, type change
+age = 'tall'//compilation failure, type change</code>
+  </pre>
+  </p>
       <h3>Constants</h3>
       <p>In Python, Constants are declared using an all upper case name</p>
 
@@ -154,35 +170,77 @@ age = 'old'</code>
 <code class="Python">PI=3.14</code>
 	</pre>
       <p>
-        In JavaScript this is done differently, instead of using all upper case
-        names, JavaScript requires the use of the const keyword. Like this:
+        In Swift this is done differently. Instead of using all upper case
+        names, Swift requires the use of the let keyword. Like this:
       </p>
       <pre>
-<code>const PI = 3.14</code>
+<code>let pi = 3.14</code>
 	</pre>
       <p>
-        While it is not required that the names of your constants be all upper
-        case, it is considered good form.
+        For more information about declaring and using variables and constants in Swift
+        please go now and watch
+        <a
+          href="https://www.youtube.com/watch?v=uhmZ5_uEEVQ"
+          target="_blank"
+          rel="noreferrer"
+          >Swift Variables - var vs. let explained</a>.
       </p>
       <p>
-        For more information about declaring and using variables in Javascript
-        please go now and read
-        <a
-          href="https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/get-started/ch2.md"
-          target="_blank"
-          rel="noreferrer"
-          >You Don't Know JS Yet, Ch2</a
-        >
-        <strong>through</strong> the section Declaring and Using Variables. And
-        then read
-        <a
-          href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#Declarations"
-          target="_blank"
-          rel="noreferrer"
-          >MDN: Javascript Basics</a
-        >
-        <strong>through</strong> the section
-        <strong>Data structures and types</strong>.
+        It is also possible, and sometimes desireable, to tell the Swift compiler the type of a variable 
+        instead of allowing it to interpolate it. You can do this with any <a href="https://www.tutorialspoint.com/swift/swift_variables.htm">basic Swift type</a>. 
+        For example, 
+              <pre>
+<code>let pi:Float = 3.14</code>
+  </pre>
+      creates a constant called pi of type Float, a floating point number that uses fewer bytes of RAM than a variable of type Double. Also, 
+       <pre>
+<code>var name:String = "Sue"</code>
+  </pre>
+      creates a variable called 'name' of type String and sets the value to be Sue.
+      </p>
+      <p>
+        Swift has something analogous the Python's None. In Swift it is nil. Declaring the type of a variable is required if the variable is initialized to nil. 
+        Think about this for a minute and take a look at this code snippet. 
+        <pre>
+<code>var city = nil</code>
+  </pre>
+        Here, the compiler can't interpolate a type for the city variable because nil has no type! That code won't compile.
+      </p>
+      <p>
+        Instead, Swift will require you to add in the type. You might think, based on previous programming experience, that this code snippet would compile 
+        <pre>
+<code>var city:String = nil</code>
+  </pre>
+        but that would also be incorrect. This code will also fail to compile and you will get an error message that includes a '?' character. This is 
+        because Swift is designed to be safer than other languages you may have used. Instead, you would need a varable that is an 'optional' type.
+      </p>
+      <h3>Optionals</h3>
+      <p>
+        In Swift, variables of type optional are either nil, or are wrappers around regular variable types. For example, this code snippet
+        <pre>
+<code>var city:String? = nil</code>
+  </pre>
+       reads, in English, like this. "Create a variable called city of type String optional and set it to nil." If you later figure out what the city 
+       variable should be set to, you can have the city variable wrap a value by doing something simillar to this.
+        <pre>
+<code>city = "Kinshasa"</code>
+  </pre>
+      The compiler takes care of all the wrapping up of the string Kinshasa in the String optional for you. You don't need to add any extra code. After 
+      assigning "Kinshasa" to the String optional city, the city String optional now is wrapped around the String "Kinshasa".
+      </p>
+      <p>
+        When you have a String optional and want to get the string back out, you use the '!' operator. Be careful! If you try this
+  <pre>        
+<code>print(city!)</code>
+  </pre>
+       and city is nil, you will get a runtime failure with a message saying that an unexpected nil was found. These optionals come in VERY handy and it is EASY 
+       to check to see if something is nil using optionals. Take a look at the following snippet.
+
+  <pre>        
+<code>print(city ?? "Unknown")</code>
+  </pre>
+      This code prints "Unknown" if the String optional city is nil, or the value wrapped by the String optional if city is not nil. this is due to the 
+      nil-coalescing operator, ??. That's its job. In this case, Kinshasa is printed out since city is not nil.
       </p>
       <h3>Wrap Up</h3>
 
