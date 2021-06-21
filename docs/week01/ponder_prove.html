@@ -38,17 +38,18 @@
     </header>
 
     <main>
-      <h1>Your Task</h1>
+      <h1>Your Tasks</h1>
+      <h2>Task 1</h2>
       <h2>Setup Your Environment and Explore It</h2>
       <p>
         You will be setting up your machines to write command-line applications. This is a language course, not a platform course. There is a mobile development course that you can take after this one where you get the opportunity to apply what you learn in this course when writing mobile apps. We look forward to seeing you in that course with the understanding of Swift you get in this course. The tasks in this course are designed to prepare you for the mobile course.
       </p>
       <h3>Windows Users</h3>
       <p>
-       There are many text editors you can use to write Swift code. The one being supported for Windows users in this class is <a href="https://code.visualstudio.com/Download">VSCode</a>. This text editor was selected since you have experience using it in some of your previous classes. You can choose some other editor if you choose but you will be on your own to figure out how to manage it. Also, you can add plugins to VSCode to support your development in swift by choosing one from the VSCode plugin <a href="https://marketplace.visualstudio.com">marketplace</a> if you would like. Any plugins you choose are not supported in this class.
+       There are many text editors you can use to write Swift code. The one being supported for Windows users in this class is <a href="https://code.visualstudio.com/Download" target="_blank">VSCode</a>. This text editor was selected since you have experience using it in some of your previous classes. You can choose some other editor if you choose but you will be on your own to figure out how to manage it. Also, you can add plugins to VSCode to support your development in swift by choosing one from the VSCode plugin <a href="https://marketplace.visualstudio.com target="_blank"">marketplace</a> if you would like. Any plugins you choose are not supported in this class.
       </p>
       <p>
-        To get all of the Windows libraries and tools you will need, you will also have to install <a href="https://visualstudio.microsoft.com/vs/community/">Visual Studio Community</a> edition.
+        To get all of the Windows libraries and tools you will need, you will also have to install <a href="https://visualstudio.microsoft.com/vs/community/" target="_blank">Visual Studio Community</a> edition.
       </p>
       <p>
         You will need to go to swift.org's <a href="https://swift.org/download/#releases">download site</a> and install the latest version of the compiler for Windows. Below is a video to help you with the Visual Studio Community installation and use.
@@ -56,17 +57,88 @@
 
       <iframe width="560" height="315" src="https://www.youtube.com/embed/rKN60MoqGn8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       <p>
-        If you want to use Visual Studio Community instead of Visual Studio Code, feel free to do so.
+        If you want to use Visual Studio Community to edit your files instead of VS Code, feel free to do so.
+      </p>
       </p>
       <h4>Creating a Swift Project</h4>
       <p>
-        
+        Create a directory on your computer to hold all of the directories for each of the seven week's tasks. Inside this directory create another directory to hold the tasks for week01. Each task for this week will need a separate directory that represents a VSCode project.
       </p>
-      <h3>MacOS Users</h3>
       <p>
-        The industry standard for developing Swift applications on MacOS. If you don't already have it installed on your machine, select the app store icon in the dock at the bottom of your window. Search for XCode and go through the installation process. XCode has everything in it you will need.
+        Run VSCode and select <kbd>File->Open Workspace</kbd>. Create a file called <kbd>main.swift</kbd> and add the following code to the file.
+      </p>
+      <p>
+      <pre>
+<code class="swift">import Foundation
+
+print("Installation test passed!")</code></pre>
+      <p>
+        Run the code as described in the video above.
       </p>
       
+      <h3>MacOS Users</h3>
+      <p>
+        The industry standard for developing Swift applications on MacOS. If you don't already have it installed on your machine, select the app store icon in the dock at the bottom of your window. Search for Xcode and go through the installation process. Xcode has everything in it you will need.
+      </p>
+      <h4>Creating a Swift Project</h4>
+      <p>
+        For this class we are creating apps to help you learn the language before you start to learn the libraries specific to the iOS platform. That's why you will be creating command line apps using Swift. This also helps you understand that Swift is a platform independent language, not something specific to Apple products. So let's create an app.
+      </p>
+      Following these steps will guarantee your setup is ready to go.
+  <ol>
+    <li>Press command-Shift-N</li>
+    <li>Select "macOS" in the window's top menu bar.</li>
+    <li>Select "Command Line Tool."</li>
+    <li>Enter a product name. I use "Junk" when I know that's what it is and I can throw it away at any time without causing me pain.</li>
+    <li>Select "Swift" from the "Language" pull down menu at the bottom of the window.</li>
+    <li>Save the project anywhere you want.</li>
+    <li>In the left hand pane, select the "main.swift" file.</li>
+    <li>Change "Hello, World!" to "Hello, me!"</li>
+    <li>Select command-r to compile and run the application. You will see "Hello, me!" in the console on the lower right of the window.</li>
+    <li>Click on the 11 indicating the eleventh line of the code file. This sets a break point for the stepwise debugger and is indicated by a colored rectangle 
+    with a triangle on the end.</li>
+    <li>Select command-r again.</li>
+    <li>Execution stops before line 11 is executed.</li>
+    <li>Move your mouse over and click this button on the bar between the code and the console.<img src="stepover.png" alt="the stepover button is a bent arrow over a bar"></li>
+    <li>After you click the step over button, you will again see "Hello, me!" in the console.</li>
+    <li>Find the "Continue" button to the left of the step over button to run the application to the end.</li>
+    <li>&#129395;</li>
+  </ol>
+
+
+<h3>Linux Users</h3>
+      <p>
+        <a href="https://youtu.be/Sdg0ef2PpBw" target="_blank">For Linux users, this video</a> will help you install and get started. Since you will 
+  be working in Swift, 
+  <a href="https://swift.org/getting-started/" target="_blank">this tutorial</a> is helpful. Focus only on the Linux portions. It is 
+  very 'Linuxy', so be ready for it.&#129299; There will be a lot of command-line stuff you will need to do along with the use of the package manager for 
+which ever Linux OS you have selected. Carefully follow the instructions and you should be good to go.
+      </p>
+      <h4>Creating a Swift Project</h4>
+      
+
+
+      <p>
+        Create a directory on your computer to hold all of the directories for each of the seven week's tasks. Inside this directory create another directory to hold the tasks for week01. Each task for this week will need a separate directory that represents a VSCode project.
+      </p>
+      <p>
+        Run VSCode and select <kbd>File->Open Workspace</kbd>. Create a file called <kbd>main.swift</kbd> and add the following code to the file.
+      </p>
+      <p>
+      <pre>
+<code class="swift">import Foundation
+
+print("Installation test passed!")</code></pre>
+      <p>
+        Run the code as described in the <a href="https://swift.org/getting-started/" target="_blank">tutorial above</a>.
+      </p>
+  
+
+      <h2>Task 2</h2>
+      <h3>Explore Some Code</h3>
+      <p>
+        A <a href="main.swift" target="_blank">Swift file</a> with some code doing something similar to code you've written before has been provided. Copy the code from <a href="main.swift" target="_blank">this file</a> into your file then compile and run it. It will help you begin to explore the Swift language's syntax. Don't worry if you don't understand all of the code. These things will be covered in more detail later in the class.
+      </p>
     </main>
     <footer>
       <a
