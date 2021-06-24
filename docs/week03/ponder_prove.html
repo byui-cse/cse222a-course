@@ -29,89 +29,45 @@
 				<li>
 					Make sure you have read and understood the <a href="../week03/" target="_blank">reading for the week</a>.
 				</li>
-				<li>
-					Download the following Zip file and extract it into a local folder of your choice:
-					<a href="week03.zip">week03.zip</a>
-				</li>
-				<li>
-					Open the folder created by unzipping week03.zip in VS Code
-				</li>
 			</ul>
 		</section>
 		<section>
-			<h3>Getting values in HTML form control elements from JavaScript</h3>
-			<p>
-				In last week's task, you accessed HTML elements and set their content and attributes using JavaScript.
-				In this task, you are to retrieve data entered by the user from the HTML form elements they used.
-			</p>
-			<p>
-				Use the same methods to access the HTML form elements that you used last week,
+		<h3>Task 1</h3>
+		<h4>Situation</h4>
+		<p>
+			You are working for a company that needs a technology solution to determine how many of what types of programmers they need to hire. They have data in a database that contains all pertinent information regarding all employees for the company. The company also has a series of rules that apply to programmers and their development leads. They are;
+			<ol>
+				<li>No programmer can have more than two teammates.</li>
+				<li>The type the managers being tracked in the data set is a Development Lead.</li>
+				<li>Development leads can manage no more than 15 programmers and no less than 3.</li>
+				<li>All programmer teammates must be managed by the same development lead.</li>
+				<li>Each programmer must have at least one teammate that has worked for the company for more than 1 year and has at least 5 years experience.</li>
+				<li>No programmer can be a member of more than one team.</li>
+			</ol>
+		</p>
+		<p>
+			Using classes, design and create a code set that indicates what types of programmers are needed to meet the criteria above. Use classes and apply only IS_A inheritance.
 
-						<p>
-<code class="JavaScript" style="border: none;margin: 0px;padding: 0px; padding-left: 20px;">document.getElementById('formElementId')</code>
-						</p>
-						<p>or</p>
-					
-						<p>
-<code class="JavaScript" style="border: none;margin: 0px;padding: 0px; padding-left: 20px;">document.querySelector('#formElementId'),</code>
-						</pre>
-			</p>
-			<p>
-				to retrieve the value of a form control element, we use the <span class="file_name">value</span> property.
-			</p>
-			<p>
-				For example, to get a value from the following HTML form control with an ID of <em>city</em>:
-			</p>
-			<p>
-				<code class="HTML" style="border: none;margin: 0px;padding: 0px; padding-left: 20px;">&lt;input type="text" id="city" name="city"&gt;</code>
-			</p>
-			<p>
-				We would use the following syntax:
-			</p>
-			<p>
-				<code class="JavaScript" style="border: none;margin: 0px;padding: 0px; padding-left: 20px;">let city = document.querySelector('#city').value</code>
-			</p>
+			You will not have access to the employee database, so to test your application the Quality Assurance group has asked that you generate a testing data set to run your code against. this data set is to consist of 52 development leads and between 120 and 125 programmers. You are instructed to create the data set in such a way that the experience constraint is violated. 
+		</p>
+		<p>
+			As part of the code set required by your employers, 
+			<ul>
+				<li>create a function that assigns programmers to development leads based on the criteria stated, and </li>
+				<li>create a function using the result of the assignment function. Name this function <kbd>generateNeededHires</kbd>. It must return data describing the types of programmers that need to be hired.</li>
+		</p>
 		</section>
 		<section>
-			<h3>Functions</h3>
-			<h4>Complete the following steps</h4>
-			<p>In the <span class="file_name">task3.js</span> file:</p>
-			<ol>
-				<li>Using function declaration, define a function named <em>add</em> that takes two arguments, <em>number1</em> and <em>number2</em></li>
-				<li>In the function, return the sum of the parameters <em>number1</em> and <em>number2</em></li>
-				<li>Using function declaration, define another function named <em>addNumbers</em> that gets the values of two HTML form controls with IDs of <em>addend1</em> and <em>addend2</em>. Pass them to the <em>sum</em> function</li>
-				<li>Assign the return value to an HTML form element with an ID of <em>sum</em></li>
-				<li>Add a "click" event listener to the HTML button with an ID of <em>addNumbers</em> that calls the <em>addNumbers</em> function</li>
-				<li>Using function expressions, repeat Steps 1-5 with new functions named <em>subtract</em> and <em>subtractNumbers</em> and HTML form controls with IDs of <em>minuend</em>, <em>subtrahend</em>, <em>difference</em> and <em>subtractNumbers</em></li>
-				<li>Using arrow functions, repeat Steps 1-5 with new functions named <em>multiply</em> and <em>mulitplyNumbers</em> and HTML form controls with IDs of <em>factor1</em>, <em>factor2</em>, <em>product</em> and <em>multiplyNumbers</em></li>
-				<li>Using any of the three function declaration types, repeat Steps 1-5 with new functions named <em>divide</em> and <em>divideNumbers</em> and HTML form controls with IDs of <em>dividend</em>, <em>divisor</em>, <em>quotient</em> and <em>divideNumbers</em></li>
-				<li>Test all of the mathematical functionality of the <span class="file_name">task3.html</span> page.</li>
-			</ol>
+			<h3>Task 2</h3>
+			<p>
+				Recreate your solution for Task 1 using classes but this time use only HAS_A type inheritance.
+			</p>
 		</section>
-		<section>
-			<h3>Built-In Methods</h3>
-			<h4>Complete the following steps</h4>
-			<p>In the <span class="file_name">task3.js</span> file:</p>
-			<ol>
-				<li>Declare and instantiate a variable of type Date to hold the current date</li>
-				<li>Declare a variable to hold the current year</li>
-				<li>Using the variable declared in Step 1, call the built-in <em>getFullYear()</em> method/function and assign it to the variable declared in Step 2</li>
-				<li>Assign the current year variable to an HTML form element with an ID of <em>year</em></li>
-			</ol>
-		</section>
-		<section>
-			<h3>Array Methods</h3>
-			<h4>Complete the following steps</h4>
-			<p>In the <span class="file_name">task3.js</span> file:</p>
-			<ol>
-				<li>Declare and instantiate an array variable to hold the numbers 1 through 25</li>
-				<li>Assign the value of the array variable to the HTML element with an ID of <em>array</em></li>
-				<li>Use the <em>filter()</em> array method to find all of the odd numbers of the array variable and assign the reult to the HTML element with an ID of <em>odds</em> ( hint: % (modulus operartor) )</li>
-				<li>Use the <em>filter()</em> array method to find all of the even numbers of the array variable and assign the result to the HTML element with an ID of <em>evens</em></li>
-				<li>Use the <em>reduce()</em> array method to sum the array variable elements and assign the result to the HTML element with an ID of <em>sumOfArray</em></li>
-				<li>Use the <em>map()</em> array method to multiple each element in the array variable by 2 and assign the result to the HTML element with an ID of <em>multiplied</em></li>
-				<li>Use the <em>map()</em> and <em>reduce()</em> array methods to sum the array elements after multiplying each element by two.  Assign the result to the HTML element with an ID of <em>sumOfMultiplied</em></li>
-			</ol>
+
+			<h3>Task 3</h3>
+			<p>
+				Recreate your solution for Task 1 using structures. This time choose between using either or both IS_A and HAS_A inheritance. Use your best judgment to make these decisions.
+			</p>
 		</section>
 		<section>
 			<h3>Review</h3>
