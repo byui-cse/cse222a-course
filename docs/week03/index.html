@@ -257,7 +257,7 @@ extension TabletMedication {
 </p>
 <h3>Structures</h3>
 <p>
-  Structures are a value-type. In other words, when they are passed to a function a copy is made and passed in. This differs from instances of classes where a reference to the instance is passed. It can be very nice to have a copy made for you when you need one. For example when you are passing data to be used in during a parallel computation. Also, structures use less RAM than instances of classes do. There are many <a href="https://docs.swift.org/swift-book/LanguageGuide/ClassesAndStructures.html">features that classes and structures have in common</a>. In many ways they can be used interchangeably. 
+  Structures are a value-type. In other words, when they are passed to a function a copy is made and passed in. This differs from instances of classes where a reference to the instance is passed. It can be very nice to have a copy made for you when you need one. For example when you are passing data to be used in <a href="https://en.wikipedia.org/wiki/Concurrent_computing">concurrent computing</a>. Also, structures use less RAM than instances of classes do. There are many <a href="https://docs.swift.org/swift-book/LanguageGuide/ClassesAndStructures.html">features that classes and structures have in common</a>. In many ways they can be used interchangeably. 
 </p>
 <p>
   Let's refactor the <kbd>Medication</kbd> class to be a structure.
@@ -277,7 +277,7 @@ extension TabletMedication {
   Notice that there is no <kbd>init</kbd> function in the snippet above. Just like the compiler generates getters and setters, it also generates an init function for you with a parameter for each property. You can write one if you need to do some extra data validation, but you don't have to. This is another difference between classes and structures.
 </p>
 <p>
-  In other ways, structures and classes are very similar. Both Is_a and Has_a types of inheritance are supported for structures. You can also extend structures. So if structures most closely fit your need use them. If classes do, use them. You should also feel free to mix and match classes and structures. You don't have to use just one of these types in an application.
+  In other ways, structures and classes are very similar. Both Is_a and Has_a types of inheritance are supported for structures. You can also extend structures. The Has_a inheritance type is accomplished by implementing <a href="https://docs.swift.org/swift-book/LanguageGuide/Protocols.html">protocols</a>. These are rules or blue prints that require the inheriting structure to have and/or do specific things. So if structures most closely fit your need use them. If classes do, use them. You should also feel free to mix and match classes and structures. You don't have to use just one of these types in an application.
 </p>
 
 <h3>Tuples</h3>

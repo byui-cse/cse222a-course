@@ -32,29 +32,45 @@
 			</ul>
 		</section>
 		<section>
-		<h3>Task 1</h3>
-		<h4>Situation</h4>
+			<h2>Situation</h2>
 		<p>
-			You are working for a company that needs a technology solution to determine how many of what types of programmers they need to hire. They have data in a database that contains all pertinent information regarding all employees for the company. The company also has a series of rules that apply to programmers and their development leads. They are;
+			You are working for a company that needs a technology solution to determine how many of what types of programmers they need to hire. They plan on dramatically increasing the technology staff and want to have 52 development leads when the expansion is complete. They have data in a database that contains all pertinent information regarding all current employees for the company. The company also has a series of rules that apply to programmers and their development leads. They are;
 			<ol>
-				<li>No programmer can have more than two teammates.</li>
-				<li>The type the managers being tracked in the data set is a Development Lead.</li>
-				<li>Development leads can manage no more than 15 programmers and no less than 3.</li>
+				<li>The type of managers being tracked in the data set for this problem is Development Lead.</li>
+				<li>All managers must manage at least 3 employees.</li>
+				<li>Managers can manage no more than 15 employees.</li>
 				<li>All programmer teammates must be managed by the same development lead.</li>
-				<li>Each programmer must have at least one teammate that has worked for the company for more than 1 year and has at least 5 years experience.</li>
+				<li>Each programmer with less than 5 years experience must have at least one teammate that has worked for the company for more than 1 year and has at least 5 years experience.</li>
 				<li>No programmer can be a member of more than one team.</li>
 			</ol>
 		</p>
 		<p>
-			Using classes, design and create a code set that indicates what types of programmers are needed to meet the criteria above. Use classes and apply only IS_A inheritance.
-
-			You will not have access to the employee database, so to test your application the Quality Assurance group has asked that you generate a testing data set to run your code against. this data set is to consist of 52 development leads and between 120 and 125 programmers. You are instructed to create the data set in such a way that the experience constraint is violated. 
+			The company needs to know how quickly they can get to the point where they have 123 total programmers assuming all current programmers are retained. To this end, they need to know how many programmers they need to groom to become experienced so the expansion can happen. The data your code produces will be used to develop a hiring schedule.
 		</p>
+		</section>
+		<section>
+		<h3>Task 1</h3>
+		
+		<p>
+			Using classes, create a code set that indicates what types of programmers need to be hired to meet the criteria above. Use classes and apply only IS_A inheritance between the classes you create.
+
+			You will not have access to the employee database, so to test your application the Quality Assurance group has asked that you generate a testing data set to run your code against. This data set is to consist of 52 development leads and between 120 and 125 programmers. You are instructed to create the data set in such a way that the experience constraint is violated. This <a href="">class_generate_data.swift<kbd>class_generate_data</kbd></a> file has been provided for you to meet this requirement. Use it as if you had written it as per the requirement. The <kbd>generateData</kbd> function is all you will need to call.
+		</p>
+
+		<p>
+			This UML diagram has been provided by the engineers at your company. Write code to match this UML diagram. The <kbd>generateData</kbd> function will use your implementation of these classes.
+			<figure>
+		    <img src="images/cse222a_week03_prove_uml.png" alt="An image showing the Emplyee and Manager classes, their properties, and the relationships between them. It also shows the EmplyeeType and AssignmentError enumerations.">
+		    <figcaption>Fig.1 - A UML Class Diagram for the Employee class, the Manager class, and the EmployeeType and AssignmentError enumerations.</figcaption>
+			</figure>
+		</p>
+
+
 		<p>
 			As part of the code set required by your employers, 
 			<ul>
 				<li>create a function that assigns programmers to development leads based on the criteria stated, and </li>
-				<li>create a function using the result of the assignment function. Name this function <kbd>generateNeededHires</kbd>. It must return data describing the types of programmers that need to be hired.</li>
+				<li>create a function using the result of the assignment function. Name this function <kbd>generateNeededHires</kbd>. It has a list of <kbd>Managers</kbd> as one of it's parameters and must return data describing the types of programmers that need to be hired.</li>
 		</p>
 		</section>
 		<section>
@@ -66,14 +82,14 @@
 
 			<h3>Task 3</h3>
 			<p>
-				Recreate your solution for Task 1 using structures. This time choose between using either or both IS_A and HAS_A inheritance. Use your best judgment to make these decisions.
+				Recreate your solution for Task 1 using structures and protocols. This time choose between using either or both IS_A and HAS_A inheritance. Use your best judgment to make these decisions. You will need to judiciously modify the generate_data.swift file to make this work.
 			</p>
 		</section>
 		<section>
 			<h3>Review</h3>
 			<h4>After completing the previous steps:</h4>
 			<ol>
-	          <li>Review one of the many <a href="provided_solution.zip">possible solutions</a> for this task,</li>
+	          <li>For each of the tasks, review one of the many <a href="provided_solution.zip">possible solutions</a>,</li>
 	          <li>Compare and contrast your code with the possible solution's code, and</li>
 	          <li>Make note of any improvements you could make for future tasks.</li>
 			</ol>
