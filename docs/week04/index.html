@@ -89,6 +89,9 @@ names.remove("Jane")//no change. Jane isn't in there.
 		As an extra benefit for selecting Set as your collection type you get to use set operations like union, 
 		difference, intersection, and symmetric difference. There are BIFs for these!
 	</p>
+	<p>
+		One very important thing you must understand is that anything that you put into a <kbd>Set</kbd> must be <a href="https://developer.apple.com/documentation/swift/hashable"><kbd>Hashable</kbd></a>. This is due to the Set using the hashed value of the elements as a key when the value is stored. Ints, Doubles, Strings, and many other built-in Swift types are already <kbd>Hashable</kbd>. If you are putting a custom element type in a set such as a class, you must make the class <kbd>Hashable</kbd>.
+	</p>
 	<h2>Dictionaries</h2>
 	<p>
 		Swift also has a Dictionary BIC and it works as you might expect based on your use of such things previously. 

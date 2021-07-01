@@ -277,7 +277,9 @@ extension TabletMedication {
   Notice that there is no <kbd>init</kbd> function in the snippet above. Just like the compiler generates getters and setters, it also generates an init function for you with a parameter for each property. You can write one if you need to do some extra data validation, but you don't have to. This is another difference between classes and structures.
 </p>
 <p>
-  In other ways, structures and classes are very similar. Both Is_a and Has_a types of inheritance are supported for structures. You can also extend structures. The Has_a inheritance type is accomplished by implementing <a href="https://docs.swift.org/swift-book/LanguageGuide/Protocols.html">protocols</a>. These are rules or blue prints that require the inheriting structure to have and/or do specific things. So if structures most closely fit your need use them. If classes do, use them. You should also feel free to mix and match classes and structures. You don't have to use just one of these types in an application.
+  In other ways, structures and classes are very similar. Has_a types of inheritance are supported for structures but you can not use Is_a inheritance. You can, however, conform to <a href="https://docs.swift.org/swift-book/LanguageGuide/Protocols.html">protocols</a>. Protocols are rules or blue prints that require the conforming structure to have and/or do specific things.
+</p>
+<p>You can also extend structures. So if structures most closely fit your need use them. If classes do, use them. You should also feel free to mix and match classes and structures. You don't have to use just one of these types in an application.
 </p>
 
 <h3>Tuples</h3>
@@ -312,6 +314,40 @@ let (name,age,height) = person
 let (_,age,_) = person
 </code>
 </pre>
+</p>
+<h2>Modules</h2>
+<p>
+  There are times when each of these is the wrong solution. To ease this situation Swift also has the concept of modules. Swift modules, like those in most other modern programming languages, consist of a single file. In this file you can have variables, functions, classes and their instances, or any other Swift language type. Anything you don't want to allow access to from other swift code files you mark as private. This make them 'file private', i.e. they can only be used within the file.
+</p>
+<p>
+  Modules are very handy when you want to expose only certain functions, classes, etc. for use in other source files. For example, the <kbd>MedicalStockTracker</kbd> class could be replaced with a module.
+</p>
+<p>
+  <pre><code>private var inStockMedications = [Medication]()
+func addLiquidMedicationToStock(medicationToAdd:LiquidMedication){
+  .
+  .
+  .
+}
+//other public functions here
+  .
+  .
+  .
+
+  
+private func validateExpirationDate(aDate:Date)->Bool{
+  .
+  .
+  .
+}
+</code>
+</pre>
+</p>
+<p>
+  Anything that is not to be accessed outside of the module must have the keyword <kbd>private</kbd> in front of the rest of the declaration. In the example above you will see two <kbd>private</kbd> items. The first is the list of medications used to store the current medication stock. The second is a helper function that isn't for use outside of the module.
+</p>
+<p>
+  Modules are a handy way to create API's for others and yourself to use latter in other code.
 </p>
 <h2>Wrap Up</h2>
 <p>
