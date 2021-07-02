@@ -177,8 +177,10 @@ typealias CommandDictionary = Dictionary&lt;String,(DataDictionary)->DataDiction
 	<p><pre><code class="Swift">///
 ///A facade function that executes any and all functions for any given command
 ///and passes each function the data associated with the command.
+///
 ///If validation fails, no interaction or response generation function is called. If the interaction function 
 ///fails, no response generation function is called. This enforces 'validation first' as a design principle.
+///
 ///Parameters:  aCommand - a String that is the command read from the web request
 ///             theData - a DataDictionary that is any data sent as part of the web request
 ///             theValidationFunctions - a CommandDictionary that holds all validation functions for all commands
