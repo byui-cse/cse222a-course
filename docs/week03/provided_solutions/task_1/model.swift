@@ -23,7 +23,7 @@ class Employee {
     var name:String
     let hireDate:Date
     var yearsExperience:UInt8
-    let id:UUID = UUID()
+    let id = UUID().uuidString
     let type:EmployeeType
     
     /// Used to instantiate an instance of the Employee clas

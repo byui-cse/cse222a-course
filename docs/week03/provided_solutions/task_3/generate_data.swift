@@ -1,8 +1,7 @@
 //
 //  generate_data.swift
-//  week03_task_1
+//  week03_task_3
 //
-//  Created by Lee Barney on 6/25/21.
 //
 
 import Foundation

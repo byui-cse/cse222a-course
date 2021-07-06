@@ -1,6 +1,6 @@
 //
-//  data_lib.swift
-//  week03_task_1
+//  model.swift
+//  week03_task_3
 //
 //
 import Foundation
@@ -25,7 +25,7 @@ struct Employee {
     var name:String = ""
     var hireDate:Date = Date.distantPast
     var yearsExperience:UInt8 = UInt8.max
-    let id:UUID = UUID()
+    let id = UUID().uuidString
     var type:EmployeeType = EmployeeType.unassigned
     
     /// Used to instantiate an instance of the Employee class

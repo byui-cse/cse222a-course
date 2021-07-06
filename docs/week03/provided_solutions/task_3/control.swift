@@ -1,6 +1,6 @@
 //
-//  func_lib.swift
-//  week03_task_1
+//  control.swift
+//  week03_task_3
 //
 //
 
