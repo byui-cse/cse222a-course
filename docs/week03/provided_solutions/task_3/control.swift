@@ -20,7 +20,7 @@ let oneYear:Double = 365*24*60*60
 /// - Complexity: O(n)
 func add(managee:Employee, to aManager:Manager) -> (AssignmentError, Manager) {
     var mutableManager = aManager
-    if !mutableManager.canAddManagee(aManager.managees) {
+    if aManager.managees.count > 15 {
         return (.violatedAddManageCriteria, aManager)
     }
     //No need to worry about leap years and such. This is close enough to meet the business' criteria.

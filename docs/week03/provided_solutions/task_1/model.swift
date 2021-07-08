@@ -47,8 +47,6 @@ class Manager: Employee {
      * These are examples of Swift stored properties.
      */
     var managees:[Employee] = []
-    //this is an example of a function being stored in a property
-    var canAddManagee:(([Employee])->Bool)
     
     /*
      * This is an example of an init function that initializes instances of both this class and the super class.
@@ -59,13 +57,8 @@ class Manager: Employee {
     ///   - hireDate: the date they began working for our company
     ///   - type: a selection from the EmployeeType enumeration
     ///   - yearsExperience: the number of years the employee has been functioning in this role in the industry
-    ///   - canAddManageeCriteriaFunc: a criteria function used to determine if this instance of a manager
-    ///     can add additional managees based on the rules from HR.
     /// - Complexity: O(1)
-    init(name:String, hireDate:Date,type:EmployeeType, yearsExperience:UInt8, canAddManageeCriteriaFunc:@escaping ([Employee])->Bool) {
-        
-        self.canAddManagee = canAddManageeCriteriaFunc
-        
+    init(name:String, hireDate:Date,type:EmployeeType, yearsExperience:UInt8) {
         super.init(name: name, hireDate: hireDate, yearsExperience: yearsExperience, type: type)
     }
 }
