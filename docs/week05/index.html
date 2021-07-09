@@ -54,7 +54,7 @@
 </header>
 	<h1>\(\lambda\) Functions and Closures</h1>
 	<p>
-		\(\lambda\) functions are a mathematical construct that computer science and computation in general 
+		\(\lambda\) functions are a <a href="https://en.wikipedia.org/wiki/Lambda_calculus" target="_blank">mathematical construct</a> that <a href="https://stackoverflow.com/questions/16501/what-is-a-lambda-function" target="_blank">computer science</a> and computation in general 
 		has borrowed. You've used them before in your Python courses. You've also used them in Swift as closures 
 		when you did the <kbd>map</kbd>, <kbd>filter</kbd>, and <kbd>reduce</kbd> tasks. Now let's learn some more 
 		about them.
@@ -63,7 +63,7 @@
 	<p>
 		Due to its functional programming ancestor Haskell, Swift's functions can be stored in variables and can also 
 		be passed around as parameters to other functions and methods. (From this point on, we'll use the word function 
-		to mean both stand-alone functions and methods.) Generalization is a common pattern that you've 
+		to mean both stand-alone functions and methods.) <a href="https://people.cs.vt.edu/~kafura/cs2704/generalization.html" target="_blank">Generalization</a> is a common pattern that you've 
 		followed before whenever you created a function. You had a series of computations that could be applied to 
 		various data values. Using stored closures allows your functions to be generalized even further. It also allows 
 		more of your code to be reused so defects are found and fixed more readily.
@@ -100,7 +100,7 @@
 	}
 }</code></pre></p>
 	<p>
-		What kinds of problems might this cause? Well, first there is the duplication of code all over the place. You 
+		What kinds of problems might this cause? Well, first there is the <a href="https://www.springboottutorial.com/code-quality-what-is-code-duplication" target="_blank">duplication of code</a> all over the place. You 
 		might not yet realize it, but there are some web services with hundreds of different commands. Do you really 
 		want to type <kbd>else if aCommand ==</kbd> that many times? How long can you read through a list of those 
 		without your brain getting numb? Stepwise debugging such a mess can also be a problem. 
@@ -118,7 +118,7 @@
 	</p>
 	<p>
 		You also have to validate the data. Once they figure out a valid command, these same hackers will send invalid 
-		data to try to crash your service so they can take over your system by performing a code injection  or 
+		data to try to crash your service so they can take over your system by performing a <a href="https://owasp.org/www-community/attacks/Code_Injection" target="_blank">code injection</a> or 
 		some other type of attack.
 	</p>
 	<p>
@@ -135,8 +135,8 @@
 	</p>
 	<p>
 		 Consider this. Imagine you had a Dictionary where the key was the command and the value for that key was a 
-		 closure. Let's call this type <kbd>CommandDictionary</kbd>. Here are a couple of type aliases to make it 
-		 easier to read code later on. After all, you don't want to keep typing stuff you don't have too, right? :)
+		 closure. Let's call this type <kbd>CommandDictionary</kbd>. Here are a couple of <a href="https://www.programiz.com/swift-programming/typealias" target="_blank">type aliases</a> to make it 
+		 easier to read code later on. After all, you don't want to keep typing stuff you don't have too, right? &#128521; 
 	</p>
 	<p><pre><code class="Swift">//some aliases to make the code easier to read
 typealias DataDictionary = Dictionary&lt;String,Any&gt;
@@ -153,7 +153,7 @@ typealias CommandDictionary = Dictionary&lt;String,(DataDictionary)->DataDiction
 </p>
 <p>
 	So let's see what can be done with command and data dictionaries. If you created three command dictionaries, one 
-	to hold validation functions, a second to hold interaction functions, and a third to hold response generation 
+	to hold <a href="https://www.safe.com/what-is/data-validation/" target="_blank">validation</a> functions, a second to hold interaction functions, and a third to hold response generation 
 	functions, you could completely get rid of the <kbd>if-else if-else</kbd> clause from the <kbd>handlRequest</kbd> 
 	function above and create a variation of the 
 	<a href="https://www.javaguides.net/2018/08/application-controller-design-pattern-in-java.html">Application 
@@ -218,11 +218,11 @@ func handleRequest(aCommand:String, theData:DataDictionary, theValidationFunctio
 	</pre></p>
 	<p>
 	This function enforces security for your web service. Nothing can be executed until it passes validation. Also, when 
-	your boss come to you and says, "Can you get it to do this too?" Your answer can be yes! All you need to do is add 
+	your boss come to you and says, "Can you get the service to do this other thing too?" Your answer can be yes! All you need to do is add 
 	three functions to the dictionaries! No more wasted time trying to find the appropriate place in the 
 	<kbd>if-else if-else</kbd> clause and no more duplicating code. Storing functions and closures in variables and 
 	data collections is a very powerful technique. As you get more and more comfortable with it you'll see more and 
-	more ways to make your code more abstract, and therefore more powerful. :)
+	more ways to make your code more <a href="https://stackoverflow.com/questions/21220155/what-does-abstraction-mean-in-programming" target="_blank">abstract</a>, and therefore more powerful. &#128513;
 	</p>
 	<h3>Passing Functions or Closures as Parameters</h3>
 	<p>
@@ -243,7 +243,7 @@ func handleRequest(aCommand:String, theData:DataDictionary, theValidationFunctio
 	<p>
 		Imagine how horrible it would be to have to write a loop to filter each of the 10,000 different data sets that 
 		would be the result of doing 10,000 different database requests. Ouch! No fun at all. Thankfully someone 
-		wrote the filter BIF for us to use instead. Be that person. Write abstract, flexible code.  
+		wrote the <a href="https://stackoverflow.com/questions/31603536/swift-filter-function" target="_blank">filter</a> BIF for us to use instead. Be that person. Write abstract, flexible code.  
 	</p>
 	<p>
 		What, then, does the method signature of a function that accepts a function or closure look like? I'm going to 

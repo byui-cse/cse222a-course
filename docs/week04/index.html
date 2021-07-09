@@ -55,13 +55,13 @@
 	<h1>Beyond Arrays</h1>
 	<p>Arrays are wonderful things. If you need to keep several things of the same type together in a specific order, 
 		an array is the way to go. But for other situations Arrays are slow. For example, searching in unsorted Arrays is uses a \(\mathcal{O}(n)\) algorithm in the best of situations. That's way to slow. Let's look at the two other 
-		Built In Collections (BICs) Swift has.
+		<a href="https://swift.org/blog/swift-collections/" target="_blank">Built In Collections (BICs)</a> Swift has.
 	</p>
 	<h2>Sets</h2>
 	<p>
 		Consider a situation where there can only be one copy of any piece of data in a collection. Rather than use an 
 		Array and do a search-check each time you do an insert, way too slow, how about using the collection that is 
-		designed to handle this for you, and do it much faster. The Set.
+		designed to handle this for you, and do it much faster. <a href="https://developer.apple.com/documentation/swift/set" target="_blank">The Set</a>.
 	</p>
 	<p>
 		There are a couple of ways you can create a Set, you can, as in the snippet below, create an empty set of 
@@ -90,11 +90,11 @@ names.remove("Jane")//no change. Jane isn't in there.
 		difference, intersection, and symmetric difference. There are BIFs for these!
 	</p>
 	<p>
-		One very important thing you must understand is that anything that you put into a <kbd>Set</kbd> must be <a href="https://developer.apple.com/documentation/swift/hashable"><kbd>Hashable</kbd></a>. This is due to the Set using the hashed value of the elements as a key when the value is stored. Ints, Doubles, Strings, and many other built-in Swift types are already <kbd>Hashable</kbd>. If you are putting a custom element type in a set such as a class, you must make the class <kbd>Hashable</kbd>.
+		One very important thing you must understand is that anything that you put into a <kbd>Set</kbd> must be <a href="https://developer.apple.com/documentation/swift/hashable"><kbd>Hashable</kbd></a>. This is due to the Set using the hashed value of the elements as a key when the value is stored. Ints, Doubles, Strings, and many other built-in Swift types are already <kbd>Hashable</kbd>. If you are putting a custom element type in a set such as a class, you must <a href="https://embeddeduse.com/2015/12/30/swift-class-hashable/" target="_blank">make the class <kbd>Hashable</kbd></a>.
 	</p>
 	<h2>Dictionaries</h2>
 	<p>
-		Swift also has a Dictionary BIC and it works as you might expect based on your use of such things previously. 
+		Swift also has a <a href="https://www.educba.com/swift-dictionary/" target="_blank">Dictionary BIC</a> and it works as you might expect based on your use of such things previously. 
 		It is a key-value store. Just like with Sets, Dictionaries do not guarantee ordering. You can also create 
 		empty dictionaries and then add, remove, and find elements. When you do this you have to indicate the type 
 		of the key and the type of the value.
