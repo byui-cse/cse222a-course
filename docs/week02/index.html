@@ -50,8 +50,8 @@
         to
         <a
           href="https://www.tutorialspoint.com/swift/swift_operators.htm"
-          target="_blank"
-          >Swift's list of operators</a>. Or, for a more detailed description of Swift's operators, check out <a href="https://docs.swift.org/swift-book/LanguageGuide/BasicOperators.html">the official documentation</a>. When you operators for the two languages, you will find that Python has a few that Swift
+          target="blank"
+          >Swift's list of operators</a>. Or, for a more detailed description of Swift's operators, check out <a href="https://docs.swift.org/swift-book/LanguageGuide/BasicOperators.html" target="blank">the official documentation</a>. When you operators for the two languages, you will find that Python has a few that Swift
         does not and that Swift has a few that Python does not. You will also see that the conditional operators, also known
         as logical operators, exist in both languages but use different
         characters.
@@ -226,11 +226,11 @@ name = 3.1456778889547637653//compilation failure, type change</code>
 <code>var city:String = nil</code>
   </pre>
         but that would also be incorrect. This code will also fail to compile and you will get an error message that includes a '?' character. This is 
-        because Swift is designed to be safer than other languages you may have used. Instead, you would need a varable that is an 'optional' type.
+        because Swift is designed to be safer than other languages you may have used. Instead, you would need a varable that is an 'Optional' type.
       </p>
       <h3>Optionals</h3>
       <p>
-        In Swift, variables of type optional are either nil, or are wrappers around regular variable types. For example, this code snippet
+        In Swift, variables of type <a href="https://www.programiz.com/swift-programming/optionals" target="_blank">Optional</a> are either nil, or are wrappers around regular variable types. For example, this code snippet
         <pre>
 <code>var city:String? = nil</code>
   </pre>
@@ -278,7 +278,7 @@ name = 3.1456778889547637653//compilation failure, type change</code>
       </p>
 
       <h1>Arrays</h1>
-      <p>In Swift, arrays can be declared like this if you want an array that can be modified. 
+      <p>In Swift, <a href="https://developer.apple.com/documentation/swift/array" target="_blank">Arrays</a> can be declared like this if you want an array that can be modified. 
       <pre><code>var names = ['Bob','Sue','Jorge','Svetlana']
 	</code></pre>
       If you want an array that can't be modified, use the let keyword like this.
@@ -309,18 +309,18 @@ name = 3.1456778889547637653//compilation failure, type change</code>
       </p>
       <p>
         Let's say you are loading a bunch of names from a text file, from a database, or across a network. The 
-        preferred way, there are several <a href="https://stackoverflow.com/questions/30430550/how-to-create-an-empty-array-in-swift"></a> others, to declare a modifiable, empty array of Strings looks like this.
+        preferred way, there are several <a href="https://stackoverflow.com/questions/30430550/how-to-create-an-empty-array-in-swift"target="_blank"></a> others, to declare a modifiable, empty array of Strings looks like this.
         <pre><code>var names = [String]()
   </code></pre>
         The translation of this line of code into English reads like this. "Create a variable called 
         <kbd>names</kbd>. Create an empty array of Strings and assign it to the the <kbd>names</kbd> variable." 
         Since there is no way for the compiler to interpolate the type of values in an empty array, you have to 
         tell it the type. Also, you have to use the 
-        <a href="https://stackoverflow.com/questions/24002733/add-an-element-to-an-array-in-swift">append or insert 
+        <a href="https://stackoverflow.com/questions/24002733/add-an-element-to-an-array-in-swift" target = "_blank"> append or insert 
         Built in Functions(BIF's)</a> to add to the array, not the accessor operator <kbd>[]</kbd>.
       </p>
       <p>
-        Swift has a lot of <a href="https://swiftdoc.org/v3.0/type/array/#func-poplast">BIF's</a> that work with 
+        Swift has a lot of <a href="https://swiftdoc.org/v3.0/type/array/#func-poplast" target="_blank">BIF's</a> that work with 
         arrays. We'll cover some of these BIFs in detail during week 04 of this class.
       </p>
     <h1>Organization and Access</h1>
@@ -356,7 +356,7 @@ name = 3.1456778889547637653//compilation failure, type change</code>
 
       <p>
         In Python and Swift there are similarities and differences between
-        the languages regarding how you declare functions. In Swift, the
+        the languages regarding how you declare functions. In <a href="https://www.tutlane.com/tutorial/swift/swift-functions" target="_blank">Swift function declarations</a>, the
         <kbd>func</kbd> keyword is used instead of <kbd>def</kbd>. Also, in Swift the
         convention used for names of functions, parameters, and variables is called
         'camel case'. To create a name, the first word of the name starts with a
@@ -371,7 +371,7 @@ name = 3.1456778889547637653//compilation failure, type change</code>
 
         with the <kbd>-></kbd> operator indicating the type of the data being returned. 
       <p>
-        Notice the '{' and '}' operators. These are the Swift scope
+        Notice the '{' and '}' operators. These are the Swift <a href="https://en.wikipedia.org/wiki/Scope_(computer_science)" target="_blank">scope</a> 
         operators. These are used instead of the white-space scope operator used
         in Python. In Swift, white space means nothing but when writing
         your code, it is important to use white space to help make your code
@@ -379,7 +379,7 @@ name = 3.1456778889547637653//compilation failure, type change</code>
       </p>
       <p>
         Additionally, the name and type of the parameters must be declared with the type following 
-        the parameter name and seperated by a colon as if you were declaring variables.
+        the parameter name and separated by a colon as if you were declaring variables.
       </p>
       <p>
         Also notice that there is no return keyword used in the averageTwoNumbers function. If 
@@ -443,7 +443,7 @@ print(averageTwoNumbers(firstNum:5.0,secondNum:3.0))
      Notice that when the average function is used, the names of each parameter is required. You can turn this 
      requirement off, but such a choice can effect code readability. To do this, add what is called an argument 
      label to the function declaration. Any label you type will be required instead of the parameter name when the 
-     function is used. If you choose Swift's ignore operator, _, as the argument label for any or all of the 
+     function is used. If you choose <a href="https://stackoverflow.com/questions/41642605/swift-function-without-argument-labels" target="_blank">Swift's ignore operator</a>, _, as the argument label for any or all of the 
      parameters, the programmer using your function will not be required to label the parameters passed to your 
      function. In the example below, both parameters have the ignore operator as their label so calling the 
      function requires no labels.
@@ -475,7 +475,7 @@ print(averageTwoNumbers(5.0,3.0))
       <h3>Conditional Branching - ifs and other amazing things</h3>
       <p>
         If statements are fine. In fact sometimes they are exactly what you want...but often there are better options. One of those options is 
-        called a guard. In Swift, guards are used to keep the rest of the code in your function safe. Hence the use of the word guard.
+        called a <a href="https://codewithchris.com/swift-guard/" target="_blank">guard</a>. In Swift, guards are used to keep the rest of the code in your function safe. Hence the use of the word guard.
       </p>
       <p>
         Consider a situation where you need a function to check the viability of a password. It can be done with if-else statements, but why not use 
@@ -496,7 +496,7 @@ print(averageTwoNumbers(5.0,3.0))
   </pre>
       </p>
       <p>
-        Could this be done with an if statement? Absolutely. But using the guard keyword indicates to whoever is reading your code that 
+        Could this be done with an if statement? Absolutely. But using the <a href="https://ericcerney.com/swift-guard-statement/" target="_blank">guard</a> keyword indicates to whoever is reading your code that 
         this conditional statement is there so the function won't fail. Can you have multiple guards in a function? 
         You bet. Do they all have to go at the beginning of the function? Nope. You can put them anywhere that 
         makes the best sense.
@@ -526,7 +526,7 @@ else{
       </p>
       <p>
         This is such a common pattern in programming that Swift includes special nil checking syntax. It combines 
-        the if and let keywords. 
+        the <a href="https://agrawalsuneet.github.io/blogs/if-vs-if-let-vs-guard-let-in-swift/">if and let keywords</a>. 
       </p>
       <p>
       <pre>
@@ -561,7 +561,7 @@ let name:String? = nil
       </p>
       <h3>Map, Filter, and Reduce</h3>
       <p>
-        As with other languages that have map, filter, and reduce BIF's, you should use those when working with lists. The 
+        As with other languages that have <a href="https://useyourloaf.com/blog/swift-guide-to-map-filter-reduce/">map, filter, and reduce BIF's</a>, you should use those when working with arrays. The 
         access operator, <kbd>[]</kbd>, is great, but when over-applied it can lead to a lot of bugs. So let's take a look 
         at how Swift does map, filter and reduce. Like the implementations you've used before, these BIF's have a 
         lambda function as a parameter.
@@ -580,7 +580,7 @@ let name:String? = nil
   </pre>
       </p>
       <p>
-        The lambda function, called a closure in Swift, is the only parameter to the map function. The <kbd>{</kbd> and 
+        The lambda function, called <a href="https://www.tutorialspoint.com/swift/swift_closures.htm" target="_blank">a closure in Swift</a>, is the only parameter to the map function. The <kbd>{</kbd> and 
         <kbd>}</kbd> scope operators show you where the closure begins and ends. Right after the <kbd>{</kbd> operator 
         you'll find the closure's signature. It has one parameter called <kbd>value</kbd> of type <kbd>Double</kbd> and 
         returns a Double. There is a new keyword, <kbd>in</kbd>. This separates the signature from the lines of code that 
@@ -632,7 +632,7 @@ let name:String? = nil
       </p>
       <p>
         There you go. This is a most succinct use of the map function. You can choose to use any of these versions, 
-        but remember that the fewer things you have to type, the fewer bugs you're going to write. Less code is good code. 
+        but remember that the fewer things you have to type, the fewer bugs you're going to write. <a href="https://www.infoq.com/news/2011/05/less-code-is-better/" target="_blank">Less code is good code.</a> 
         As always, do what will make the code most readable for those who will be reading your code after you've gone. 
         The last version is the one that is the most idiomatically Swift. That's probably the one you should use for 
         simpler lambdas and reserve the others for when you may be using a parameter multiple times or in multiple 
@@ -703,7 +703,7 @@ let name:String? = nil
       <h4>Other Options</h4>
       <p>
         If there is just no way to combine <kbd>map</kbd>, <kbd>filter</kbd>, and <kbd>reduce</kbd> to accomplish 
-        what you need to do, you can always fall back to using a <kbd>for</kbd> loop. Please remember that using 
+        what you need to do, you can always fall back to using a <a href="https://learnappmaking.com/loops-swift-how-to/" target="_blank"><kbd>for</kbd> loop</a>. Please remember that using 
         this loop is a last choice, not a first choice. Using a <kbd>for</kbd> loop dramatically increases 
         the probability of you creating buggy code. Always use  <kbd>map</kbd>, <kbd>filter</kbd>, and <kbd>reduce</kbd> 
         if you can.
@@ -758,7 +758,7 @@ let name:String? = nil
         you'll find out about in week 04.
       </p>
       <p>
-        Swift also has a logical loop called <kbd>while</kbd>. Consider a situation where you are asking the user of 
+        Swift also has <a href="https://www.tutorialspoint.com/swift/swift_while_loop.htm" target="_blank">a logical loop called <kbd>while</kbd></a>. Consider a situation where you are asking the user of 
         your application for a value in <kbd>1</kbd> through <kbd>10</kbd>. If they enter anything outside that 
         range you give them additional instructions and then ask again. The code snippet below is one way this 
         can be done.
