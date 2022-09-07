@@ -2,158 +2,220 @@
 -->
 
 <html>
-
-<head>
-          <link rel="shortcut icon" href="https://byui-cse.github.io/Language-Courses/site/images/fav.ico" type="image/x-i        con">
-        <script type="text/javascript">
-                 var codeType = "JavaScript"
-        </script>
-        <script src="https://byui-cse.github.io/Language-Courses/site/highlight.pack.js"></script>
-        <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/highlight_styles/xcode.css">
-        <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/weekly.css">
-        <script type="text/javascript" src="https://byui-cse.github.io/Language-Courses/site/weekly.js"></script>
-        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML">
+  <head>
+    <link
+      rel="shortcut icon"
+      href="https://byui-cse.github.io/Language-Courses/site/images/fav.ico"
+      type="image/x-i        con"
+    />
+    <script type="text/javascript">
+      var codeType = "JavaScript";
     </script>
+    <script src="https://byui-cse.github.io/Language-Courses/site/highlight.pack.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://byui-cse.github.io/Language-Courses/site/highlight_styles/xcode.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://byui-cse.github.io/Language-Courses/site/weekly.css"
+    />
+    <script
+      type="text/javascript"
+      src="https://byui-cse.github.io/Language-Courses/site/weekly.js"
+    ></script>
+    <script
+      type="text/javascript"
+      async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML"
+    ></script>
+    <link rel="stylesheet" href="../main.css" />
 
     <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [['\\(', '\\)']]
-        }
-    });
-    MathJax.Hub.Config({
-        TeX: {
-            equationNumbers: {
-                autoNumber: "AMS"
-            }
-        }
-    });
-    MathJax.Hub.Config({
-        "HTML-CSS": {
-            availableFonts: [],
-            preferredFont: null,
-            // force Web fonts
-            webFont: "Latin-Modern"
-        }
-    });
-    MathJax.Hub.Config({
-        TeX: {
-            extensions: ["color.js"]
-        }
-    });
+      MathJax.Hub.Config({
+          tex2jax: {
+              inlineMath: [['\\(', '\\)']]
+          }
+      });
+      MathJax.Hub.Config({
+          TeX: {
+              equationNumbers: {
+                  autoNumber: "AMS"
+              }
+          }
+      });
+      MathJax.Hub.Config({
+          "HTML-CSS": {
+              availableFonts: [],
+              preferredFont: null,
+              // force Web fonts
+              webFont: "Latin-Modern"
+          }
+      });
+      MathJax.Hub.Config({
+          TeX: {
+              extensions: ["color.js"]
+          }
+      });
     </script>
+  </head>
 
-</head>
-
-<body onload="fetchSource()">
-<header class="hero-image">
-  <section class="hero-text">
-    <h1>CSE 222a: Week 04</h1>
-    <p>Data Collections</p>
-  </section>
-</header>
-	<h1>Beyond Arrays</h1>
-	<p>Arrays are wonderful things. If you need to keep several things of the same type together in a specific order, 
-		an array is the way to go. But for other situations Arrays are slow. For example, searching in unsorted Arrays is uses a \(\mathcal{O}(n)\) algorithm in the best of situations. That's way to slow. Let's look at the two other 
-		<a href="https://swift.org/blog/swift-collections/" target="_blank">Built In Collections (BICs)</a> Swift has.
-	</p>
-	<h2>Sets</h2>
-	<p>
-		Consider a situation where there can only be one copy of any piece of data in a collection. Rather than use an 
-		Array and do a search-check each time you do an insert, way too slow, how about using the collection that is 
-		designed to handle this for you, and do it much faster. <a href="https://developer.apple.com/documentation/swift/set" target="_blank">The Set</a>.
-	</p>
-	<p>
-		There are a couple of ways you can create a Set, you can, as in the snippet below, create an empty set of 
-		some specific type and then add elements to it and remove elements when you need to.
-	</p>
-	<p><pre><code class="JavaScript">var names = Set<String>()
+  <body onload="fetchSource()">
+    <header class="hero-image">
+      <section class="hero-text">
+        <h1>CSE 222a: Week 04</h1>
+        <p>Data Collections</p>
+      </section>
+    </header>
+    <h1>Beyond Arrays</h1>
+    <p>
+      Arrays are wonderful things. If you need to keep several things of the
+      same type together in a specific order, an array is the way to go. But for
+      other situations Arrays are slow. For example, searching in unsorted
+      Arrays is uses a \(\mathcal{O}(n)\) algorithm in the best of situations.
+      That's way to slow. Let's look at the two other
+      <a href="https://swift.org/blog/swift-collections/" target="_blank"
+        >Built In Collections (BICs)</a
+      >
+      Swift has.
+    </p>
+    <h2>Sets</h2>
+    <p>
+      Consider a situation where there can only be one copy of any piece of data
+      in a collection. Rather than use an Array and do a search-check each time
+      you do an insert, way too slow, how about using the collection that is
+      designed to handle this for you, and do it much faster.
+      <a
+        href="https://developer.apple.com/documentation/swift/set"
+        target="_blank"
+        >The Set</a
+      >.
+    </p>
+    <p>
+      There are a couple of ways you can create a Set, you can, as in the
+      snippet below, create an empty set of some specific type and then add
+      elements to it and remove elements when you need to.
+    </p>
+    <pre>
+		<code class="JavaScript">var names = Set<String>()
 names.insert("Sally")
 names.insert("Jose")
 names.insert("Sally")//no change. Sally is already there.
 names.remove("Jane")//no change. Jane isn't in there.
+</code>
+</pre>
+    <p>
+      You can also create a Set while setting its values. The snippet below
+      shows you how to do this with three names.
+    </p>
+    <pre><code class="JavaScript">var names:Set = ["Jane","Sally","Jose"]
 </code></pre>
-	</p>
-	<p>
-		You can also create a Set while setting its values. The snippet below shows you how to do this with three names.
-	</p>
-	<p><pre><code class="JavaScript">var names:Set = ["Jane","Sally","Jose"]
-</code></pre>
-	</p>
-	<p>
-		Notice that you have to tell the compiler that the type of collection you want is a set. Otherwise it will make 
-		it be a list. Also, Sets don't guarantee ordering. That's why they can do searching, inserting, and removing 
-		much faster than an Array. If you need things to stay in order, remember an Array is what you want.
-	</p>
-	<p>
-		As an extra benefit for selecting Set as your collection type you get to use set operations like union, 
-		difference, intersection, and symmetric difference. There are BIFs for these!
-	</p>
-	<p>
-		One very important thing you must understand is that anything that you put into a <kbd>Set</kbd> must be <a href="https://developer.apple.com/documentation/swift/hashable"><kbd>Hashable</kbd></a>. This is due to the Set using the hashed value of the elements as a key when the value is stored. Ints, Doubles, Strings, and many other built-in Swift types are already <kbd>Hashable</kbd>. If you are putting a custom element type in a set such as a class, you must <a href="https://embeddeduse.com/2015/12/30/swift-class-hashable/" target="_blank">make the class <kbd>Hashable</kbd></a>.
-	</p>
-	<h2>Dictionaries</h2>
-	<p>
-		Swift also has a <a href="https://www.educba.com/swift-dictionary/" target="_blank">Dictionary BIC</a> and it works as you might expect based on your use of such things previously. 
-		It is a key-value store. Just like with Sets, Dictionaries do not guarantee ordering. You can also create 
-		empty dictionaries and then add, remove, and find elements. When you do this you have to indicate the type 
-		of the key and the type of the value.
-	</p>
-	<p><pre><code class="JavaScript">var agesByName = [String:Int]()
+
+    <p>
+      Notice that you have to tell the compiler that the type of collection you
+      want is a set. Otherwise it will make it be a list. Also, Sets don't
+      guarantee ordering. That's why they can do searching, inserting, and
+      removing much faster than an Array. If you need things to stay in order,
+      remember an Array is what you want.
+    </p>
+    <p>
+      As an extra benefit for selecting Set as your collection type you get to
+      use set operations like union, difference, intersection, and symmetric
+      difference. There are BIFs for these!
+    </p>
+    <p>
+      One very important thing you must understand is that anything that you put
+      into a <kbd>Set</kbd> must be
+      <a href="https://developer.apple.com/documentation/swift/hashable"
+        ><kbd>Hashable</kbd></a
+      >. This is due to the Set using the hashed value of the elements as a key
+      when the value is stored. Ints, Doubles, Strings, and many other built-in
+      Swift types are already <kbd>Hashable</kbd>. If you are putting a custom
+      element type in a set such as a class, you must
+      <a
+        href="https://embeddeduse.com/2015/12/30/swift-class-hashable/"
+        target="_blank"
+        >make the class <kbd>Hashable</kbd></a
+      >.
+    </p>
+    <h2>Dictionaries</h2>
+    <p>
+      Swift also has a
+      <a href="https://www.educba.com/swift-dictionary/" target="_blank"
+        >Dictionary BIC</a
+      >
+      and it works as you might expect based on your use of such things
+      previously. It is a key-value store. Just like with Sets, Dictionaries do
+      not guarantee ordering. You can also create empty dictionaries and then
+      add, remove, and find elements. When you do this you have to indicate the
+      type of the key and the type of the value.
+    </p>
+    <pre><code class="JavaScript">var agesByName = [String:Int]()
 agesByName["Sally"] = 21
 agesByName["Jose"] = 23
 agesByName["Jane"] = 20
 </code></pre>
-	</p>
-	<p>
-		You don't have to declare <kbd>agesByName</kbd> to be a Dictionary in the snippet above, the compiler can figure 
-		it out. If you want to, you can also create and fill or partially fill a dictionary all at once.
-	</p>
-	<p><pre><code class="JavaScript">var agesByName = ["Sally": 21,"Jose": 23,"Jane":20]
-</code></pre>
-	</p>
-	<p>
-		When you are declaring and filling a Dictionary, you don't even have to tell the compiler the key and value 
-		types. It can figure that out to.
-	</p>
-	<p>
-		There are many more methods that these and Arrays have that you can use. You should take some time and review 
-		them. The <a href="https://docs.swift.org/swift-book/LanguageGuide/CollectionTypes.html">Swift documentation</a> 
-		has good descriptions of the methods and how to use them. Go check it out. 
-	</p>
-	<h2>Applications of Collections</h2>
-	<p>
-		Let's revisit the pharmacy tracker from week 03. The model class <kbd>PharmaceuticalStockTracker</kbd> had an 
-		Array of <kbd>Medications</kbd> that it used to keep track of how many bottles, bags, etc. of medications 
-		were in stock. It did this by having each instance of <kbd>Medication</kbd> represent a bottle, bag, of medicine stored.
-	</p>
-	<p>
-		But there is a problem with that design. It's the amount of time it takes to find medication in the system. Ah... 
-		It sounds like Array was the wrong choice. If we used a Dictionary of Arrays of Medications, that would solve 
-		the finding problem and still let us keep multiple bottles or bags of medication of a single type in the tracking 
-		system.
-	</p>
 
-	<p>
-		But what would the code for that look like? Since the system would need to start without any medication being 
-		stored, we'd need to create an empty Dictionary. The example is in the snippet below.
-	</p>
-	<p><pre><code class="JavaScript">var inStockMedications = [String:[Medication]]()
+    <p>
+      You don't have to declare <kbd>agesByName</kbd> to be a Dictionary in the
+      snippet above, the compiler can figure it out. If you want to, you can
+      also create and fill or partially fill a dictionary all at once.
+    </p>
+    <pre><code class="JavaScript">var agesByName = ["Sally": 21,"Jose": 23,"Jane":20]
 </code></pre>
-	</p>
-	<p>
-		There we go. That's it. The key is a String and the value is an Array of Medications. But what would the code 
-		look like when medication was purchased and needed to be added to the model? Great question. That's part of your 
-		task this week.
-	</p>
-<footer>
+
+    <p>
+      When you are declaring and filling a Dictionary, you don't even have to
+      tell the compiler the key and value types. It can figure that out to.
+    </p>
+    <p>
+      There are many more methods that these and Arrays have that you can use.
+      You should take some time and review them. The
+      <a
+        href="https://docs.swift.org/swift-book/LanguageGuide/CollectionTypes.html"
+        >Swift documentation</a
+      >
+      has good descriptions of the methods and how to use them. Go check it out.
+    </p>
+    <h2>Applications of Collections</h2>
+    <p>
+      Let's revisit the pharmacy tracker from week 03. The model class
+      <kbd>PharmaceuticalStockTracker</kbd> had an Array of
+      <kbd>Medications</kbd> that it used to keep track of how many bottles,
+      bags, etc. of medications were in stock. It did this by having each
+      instance of <kbd>Medication</kbd> represent a bottle, bag, of medicine
+      stored.
+    </p>
+    <p>
+      But there is a problem with that design. It's the amount of time it takes
+      to find medication in the system. Ah... It sounds like Array was the wrong
+      choice. If we used a Dictionary of Arrays of Medications, that would solve
+      the finding problem and still let us keep multiple bottles or bags of
+      medication of a single type in the tracking system.
+    </p>
+
+    <p>
+      But what would the code for that look like? Since the system would need to
+      start without any medication being stored, we'd need to create an empty
+      Dictionary. The example is in the snippet below.
+    </p>
+    <pre><code class="JavaScript">var inStockMedications = [String:[Medication]]()
+</code></pre>
+
+    <p>
+      There we go. That's it. The key is a String and the value is an Array of
+      Medications. But what would the code look like when medication was
+      purchased and needed to be added to the model? Great question. That's part
+      of your task this week.
+    </p>
+    <footer>
       <a
         rel="license"
         href="http://creativecommons.org/licenses/by/4.0/"
         target="_blank"
         ><img
           alt="This work is licensed under a Creative Commons Attribution 4.0 International License"
-          style="border-width: 0;"
+          style="border-width: 0"
           src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a
       ><br />This work is licensed under a
       <a
@@ -163,5 +225,5 @@ agesByName["Jane"] = 20
         >Creative Commons Attribution 4.0 International License</a
       >.
     </footer>
-</body>
+  </body>
 </html>

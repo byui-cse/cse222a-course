@@ -1,73 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>CSE 222a: Week 02 | Ponder and Prove</title>    
-	<script type="text/javascript">
-    	var codeType = "JavaScript"
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSE 222a: Week 02 | Ponder and Prove</title>
+    <script type="text/javascript">
+      var codeType = "JavaScript";
     </script>
     <script src="https://byui-cse.github.io/Language-Courses/site/highlight.pack.js"></script>
-    <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/highlight_styles/xcode.css">
-    <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/weekly.css">
-	<script type="text/javascript" src="https://byui-cse.github.io/Language-Courses/site/weekly.js"></script>
-	<link rel="stylesheet" href="../main.css">
-</head>
+    <link
+      rel="stylesheet"
+      href="https://byui-cse.github.io/Language-Courses/site/highlight_styles/xcode.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://byui-cse.github.io/Language-Courses/site/weekly.css"
+    />
+    <script
+      type="text/javascript"
+      src="https://byui-cse.github.io/Language-Courses/site/weekly.js"
+    ></script>
+    <link rel="stylesheet" href="../main.css" />
+  </head>
 
-<body  onload="fetchSource()">
-	<header class="hero-image">
-		<section class="hero-text">
-			<h1>CSE 121b: Week 02</h1>
-			<p>Ponder and Prove</p>
-		</section>
-	</header>
-	<main>
-		<h1>Week 2 Task Instructions</h1>
-		<h2>The Fundamentals</h2>
-		<section>
-			<h3>Before beginning this Task:</h3>
-			<ol>
-					<li>Be part of a team consisting of 2-3 members.</li>
-					<li>Make sure you have reviewed the <a href="../week01/" target="_blank">Installation and Purpose</a> and <a href="../week02/" target="_blank">The Fundamentals</a> course content.</li>
-			</ol>
-		</section>
-		<section>
-			<h3>Task 1</h3>
-			<p>
-				Create a variable named <kbd>diastolicBloodPressures</kbd> and initialize it to be an <a href="https://stackoverflow.com/questions/25127700/two-dimensional-array-in-swift">Array of Arrays of Integers</a>. There are to be 100 sub-Arrays in the <kbd>diastolicBloodPressurs</kbd> Array, each representing diastolic blood pressures taken and recorded over some period of time. Each of these sub-Arrays is to contain 40 random Integers between 60 and 130. Put this code in <kbd>main.swift</kbd>.
-			</p>
-			<p>
-				The <kbd>diastolicBloodPressures</kbd> Array is the parameter for a function called <kbd>generateArrayStats</kbd> that is to be put in a file named <kbd>stats_lib.swift</kbd>. This function will return an Array of Arrays of Doubles. Each sub-Array (row) of the result being returned is to have, in this order, the mean, maximum, and minimum of the corresponding sub-Array in the data. 
-			</p>
-			<p>
-				Create another function called <kbd>repeatedlyPrintRequestedStats</kbd> that has as a parameter an Array of Arrays of Doubles. Put it in a file called <kbd>patient_ui_lib.swift</kbd>. It should safely and repeatedly print out each requested patient's information. The user will enter a 'patient number' in the terminal that you are to interpret as being the index of the sub-array to print. You are also to warn the user if they enter an invalid patient number. Feel free to use part of the sample code from last week as a template, beginning point, for this function.
-			</p>
-		</section>
-		<section>
-			<h3>Stretch Challenge</h3>
-			<p>
-				Add median and mode to the statistics for each row.
-			</p>
-		</section>
-		<section>
-			<h3>Review</h3>
-			<h4>After completing the previous steps:</h4>
-			<ol>
-	          <li>Review one of the many <a href="task_1_provided_solution.zip">possible solutions</a> for this task,</li>
-	          <li>Compare and contrast your code with the possible solution's code, and</li>
-	          <li>Make note of any improvements you could make for future tasks.</li>
-			</ol>
-		</section>
-	</main>
-	<footer>
+  <body onload="fetchSource()">
+    <header class="hero-image">
+      <section class="hero-text">
+        <h1>CSE 121b: Week 02</h1>
+        <p>Ponder and Prove</p>
+      </section>
+    </header>
+    <main>
+      <h1>Week 2 Task Instructions</h1>
+      <h2>The Fundamentals</h2>
+      <section>
+        <h3>Before beginning this Task:</h3>
+        <ol>
+          <li>Be part of a team consisting of 2-3 members.</li>
+          <li>
+            Make sure you have reviewed the
+            <a href="../week01/" target="_blank">Installation and Purpose</a>
+            and <a href="../week02/" target="_blank">The Fundamentals</a> course
+            content.
+          </li>
+        </ol>
+      </section>
+      <section>
+        <h3>Task 1</h3>
+        <p>
+          Create a variable named <kbd>diastolicBloodPressures</kbd> and
+          initialize it to be an
+          <a
+            href="https://stackoverflow.com/questions/25127700/two-dimensional-array-in-swift"
+            >Array of Arrays of Integers</a
+          >. There are to be 100 sub-Arrays in the
+          <kbd>diastolicBloodPressurs</kbd> Array, each representing diastolic
+          blood pressures taken and recorded over some period of time. Each of
+          these sub-Arrays is to contain 40 random Integers between 60 and 130.
+          Put this code in <kbd>main.swift</kbd>.
+        </p>
+        <p>
+          The <kbd>diastolicBloodPressures</kbd> Array is the parameter for a
+          function called <kbd>generateArrayStats</kbd> that is to be put in a
+          file named <kbd>stats_lib.swift</kbd>. This function will return an
+          Array of Arrays of Doubles. Each sub-Array (row) of the result being
+          returned is to have, in this order, the mean, maximum, and minimum of
+          the corresponding sub-Array in the data.
+        </p>
+        <p>
+          Create another function called
+          <kbd>repeatedlyPrintRequestedStats</kbd> that has as a parameter an
+          Array of Arrays of Doubles. Put it in a file called
+          <kbd>patient_ui_lib.swift</kbd>. It should safely and repeatedly print
+          out each requested patient's information. The user will enter a
+          'patient number' in the terminal that you are to interpret as being
+          the index of the sub-array to print. You are also to warn the user if
+          they enter an invalid patient number. Feel free to use part of the
+          sample code from last week as a template, beginning point, for this
+          function.
+        </p>
+      </section>
+      <section>
+        <h3>Stretch Challenge</h3>
+        <p>Add median and mode to the statistics for each row.</p>
+      </section>
+      <section>
+        <h3>Review</h3>
+        <h4>After completing the previous steps:</h4>
+        <ol>
+          <li>
+            Review one of the many
+            <a href="task_1_provided_solution.zip">possible solutions</a> for
+            this task,
+          </li>
+          <li>
+            Compare and contrast your code with the possible solution's code,
+            and
+          </li>
+          <li>
+            Make note of any improvements you could make for future tasks.
+          </li>
+        </ol>
+      </section>
+    </main>
+    <footer>
       <a
         rel="license"
         href="http://creativecommons.org/licenses/by/4.0/"
         target="_blank"
         ><img
           alt="This work is licensed under a Creative Commons Attribution 4.0 International License"
-          style="border-width: 0;"
+          style="border-width: 0"
           src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a
       ><br />This work is licensed under a
       <a
@@ -77,6 +120,5 @@
         >Creative Commons Attribution 4.0 International License</a
       >.
     </footer>
-</body>
-
+  </body>
 </html>

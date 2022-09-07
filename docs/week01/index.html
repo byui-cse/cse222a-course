@@ -2,103 +2,171 @@
 -->
 
 <html>
+  <head>
+    <link
+      rel="shortcut icon"
+      href="https://byui-cse.github.io/Language-Courses/site/images/fav.ico"
+      type="image/x-icon"
+    />
+    <script type="text/javascript">
+      var codeType = "JavaScript";
+    </script>
+    <script
+      type="text/javascript"
+      src="https://byui-cse.github.io/Language-Courses/site/highlight.pack.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://byui-cse.github.io/Language-Courses/site/highlight_styles/xcode.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://byui-cse.github.io/Language-Courses/site/weekly.css"
+    />
+    <script
+      type="text/javascript"
+      src="https://byui-cse.github.io/Language-Courses/site/weekly.js"
+    ></script>
+    <link rel="stylesheet" href="../main.css" />
+  </head>
 
-<head>
-	  <link rel="shortcut icon" href="https://byui-cse.github.io/Language-Courses/site/images/fav.ico" type="image/x-icon">
-        <script type="text/javascript">
-                 var codeType = "JavaScript"
-        </script>
-        <script type="text/javascript" src="https://byui-cse.github.io/Language-Courses/site/highlight.pack.js"></script>
-        <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/highlight_styles/xcode.css">
-        <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/weekly.css">
-        <script type="text/javascript" src="https://byui-cse.github.io/Language-Courses/site/weekly.js"></script>
-		
-</head>
+  <body onload="fetchSource()">
+    <header class="hero-image">
+      <section class="hero-text">
+        <h1>CSE 222a: Week 01</h1>
+        <p>Installation and Purpose</p>
+      </section>
+    </header>
+    <main>
+      <h1>The Why of Swift</h1>
+      <h2>Some Background</h2>
+      <p>
+        All languages have a few needs in common. They should to be safe to
+        write (reducing crashes and hacking), fast, and expressive. Not all
+        languages achieve all these needs. Sometimes this is due to the age of
+        the language. C and C++ are examples of this. Neither of these languages
+        are particularly designed to be safe. Safty wasn't an issue when they
+        were initially created. For C, networks of distinct, connected computers
+        did not exist outside of labs where networking was being studied. For
+        C++, networks were brand new and not well understood. This meant that,
+        when these languages were created, there was no thought about someone
+        'hacking into' your computer remotely. Therefore, no care was taken to
+        reduce this possibility.
+      </p>
+      <p>
+        Some might think that Swift was created only for Apple devices, but that
+        wasn't and isn't
+        <a href="https://swift.org/about/" target="_blank">the stated goal</a>
+        of the creators and developers of Swift. What they wanted to create was
+        a general purpose language that could span everything from watches to
+        huge servers. They also wanted to make the language safe to use, fast,
+        and have an expressive syntax.
+      </p>
+      <p>
+        To meet these requirements, they pulled concepts from many different
+        languages. It may be supprising to some, but Objective-C, a language
+        Apple supported previously, provided none to little of the syntax for
+        Swift. Instead, languages such as haskell and python have had much more
+        of an impact on Swift's syntax. So much so, that Apple's new library for
+        creating user interfaces is
+        <a
+          href="https://en.wikipedia.org/wiki/Declarative_programming"
+          target="_blank"
+          >declarative</a
+        >, not object oriented. this class doesn't cover anything Apple
+        specific. If you want to know that library, you can study it on your own
+        or take the mobile development course after completing this and the
+        Kotlin language course.
+      </p>
+      <h3>Python 3 and Swift are Cousins</h3>
+      <p>
+        Take a look at Figure 1. It shows the ancestery of both Swift and
+        Python. Since an earlier version of Python is an ancestor of Swift you
+        can expect to see some things in Swift that remind you of what you
+        learned regarding coding when you used Python. Python is not Swift's
+        only ancester. A very strong contributor to Swift is the
+        <a
+          href="https://en.wikipedia.org/wiki/Haskell_(programming_language)"
+          target="_blank"
+          >Haskell language</a
+        >. Because of this ancestry, Swift has a much stronger
+        <a
+          href="https://en.wikipedia.org/wiki/Functional_programming"
+          target="_blank"
+          >functional programming</a
+        >
+        foundation than Python and many other languages do. Other examples of
+        the influence of ancestral languages include, Haskell's data passing
+        approach is an important part of Swift and it's efficiency, Rust's
+        safety approach feeds Swift's, and Ruby's objects informed the creation
+        of Swift's.
+      </p>
+      <p>
+        As you learn Swift and become familiar with its ancestral languages, you
+        will be able to pick out of the syntax and behavior influences of its
+        ancestors.
+      </p>
+      <figure>
+        <img src="images/python_swift_lang_history.png" alt="place holder" />
+        <figcaption>
+          Figure 1. - The anticedent languages for Python and Swift (Grady Booch
+          with additions based on published interview with Swift author Chris
+          Lattner).
+        </figcaption>
+      </figure>
 
-<body onload="fetchSource()">
-<header class="hero-image">
-  <section class="hero-text">
-    <h1>CSE 222a: Week 01</h1>
-    <p>Installation and Purpose</p>
-  </section>
-</header>
-<main>
+      <p></p>
+      <h1>Installations</h1>
+      <h2>The IDE</h2>
+      <p>
+        If you are developing on Linux or Windows, the Integrated Development
+        Environment (IDE) selected for this course is
+        <a href="https://code.visualstudio.com" target="_blank"
+          >Visual Studio Code</a
+        >. Go to the
+        <a href="https://code.visualstudio.com" target="_blank"
+          >site for Visual Studio Code</a
+        >
+        to download the installer for your operating system. When you start the
+        download you will be taken to a page that will help you get started.
+      </p>
+      <p>
+        If you are developing on MacOS, the IDE selected for this course is
+        Xcode. No surprises there. 😎 Make sure you have the latest version of
+        MacOS and then use the App Store application on you Mac. Enter 'Xcode'
+        in the search field and download Xcode. This will take a while. While
+        you wait, you could always check out what the Linux and Windows users
+        have to do. 🥳
+      </p>
+      <p>
+        When you launch Xcode for the first time, a dialog will ask you to
+        install some supporting software. Do so. Say yes.
+      </p>
 
-	<h2>The Why of Swift</h2>
-	<h3>Some Background</h3>
-	<p>
-		All languages have a few needs in common. They should to be safe to write (reducing crashes and hacking), fast, and expressive.
-		Not all languages achieve all these needs. Sometimes this is due to the age of the language. C and C++ are examples of this. 
-		Neither of these languages are particularly designed to be safe. Safty wasn't an issue when they were initially created. For C, 
-		networks of distinct, connected computers did not exist outside of labs where networking was being studied. For C++, networks were 
-		brand new and not well understood. This meant that, when these languages were created, there was no thought about someone 'hacking into' 
-		your computer remotely. Therefore, no care was taken to reduce this possibility.
-	</p>
-	<p>
-		Some might think that Swift was created only for Apple devices, but that wasn't and isn't 
-		<a href="https://swift.org/about/"  target="_blank">the stated goal</a> 
-		of the creators and developers of Swift. What they wanted to create was a general purpose language that could span everything from watches to 
-		huge servers. They also wanted to make the language safe to use, fast, and have an expressive syntax.
-	</p>
-	<p>
-		To meet these requirements, they pulled concepts from many different languages. It may be supprising to some, but Objective-C, a language Apple 
-		supported previously, provided none to little 
-		of the syntax for Swift. Instead, languages such as haskell and python have had much more of an impact on Swift's syntax. So much so, that 
-		Apple's new library for creating user interfaces is <a href="https://en.wikipedia.org/wiki/Declarative_programming"  target="_blank">declarative</a>, not object oriented. this class doesn't cover 
-		anything Apple specific. If you want to know that library, you can study it on your own or take the mobile 
-		development course after completing this and the Kotlin language course.
-	</p>
-	<h3>Python 3 and Swift are Cousins</h3>
-	<p>Take a look at Figure 1. It shows the ancestery of both Swift and Python. Since an earlier version of Python is an ancestor of Swift
-       	you can expect to see some
-	things in Swift that remind you of what you learned regarding coding when you used Python. Python is not Swift's only ancester. 
-	A very strong contributor to Swift is the <a href="https://en.wikipedia.org/wiki/Haskell_(programming_language)"  target="_blank">Haskell language</a>. 
-	Because of this ancestry, Swift has a much stronger <a href="https://en.wikipedia.org/wiki/Functional_programming"  target="_blank">functional programming</a> foundation than Python and many other languages do.
-	Other examples of the influence of ancestral languages include, Haskell's data passing approach is an important part of Swift and it's efficiency, Rust's safety approach feeds Swift's, and Ruby's objects informed 
-	the creation of Swift's.
-	</p>
-	<p>As you learn Swift and become familiar with its ancestral languages, you will be able to pick out of the syntax and behavior influences of its ancestors.</p>
-<figure>
-  <img src="images/python_swift_lang_history.png" alt="place holder">
-  <figcaption>Figure 1. - The anticedent languages for Python and Swift (Grady Booch with additions based on published interview with Swift author Chris Lattner).</figcaption>
-</figure>
+      <h2>Test Your Tools</h2>
+      <p>The tasks for this week include testing your tools.</p>
 
-<h2>Installations</h2>
-	<h3>The IDE</h3>
-	<p>If you are developing on Linux or Windows, the Integrated Development Environment (IDE) selected for this course is 
-	<a href="https://code.visualstudio.com" target="_blank">Visual Studio Code</a>. Go to the 
-	<a href="https://code.visualstudio.com" target="_blank">site for Visual Studio Code</a> to download the installer for your
-	operating system. When you start the download you will be taken to a page that will help you get started. 
-</p>
-<p>
-	If you are developing on MacOS, the IDE selected for this course is Xcode. No surprises there.&#128526 Make sure 
-	you have the latest version of MacOS and then use the App Store application on you Mac. Enter 'Xcode' in the 
-	search field and download Xcode. This will take a while. While you wait, you could always check out what the 
-	Linux and Windows users have to do. &#129395;
-</p>
-<p>
-	When you launch Xcode for the first time, a dialog will ask you to install some supporting software. Do so. Say yes.
-</p>
+      <h2>Workflow</h2>
+      <p>
+        The work you do using these two tools will flow like this. Each time you
+        are asked to do a task, you will create a project named for the task.
+        For example, if you were asked for your task to write code that
+        calculated loan payments, you could create a project called
+        loan_pay_calc. If you follow this pattern for each assignment, you will
+        reduce your workload. Do not create a single project to hold all of your
+        tasks. If you do, you will regret that choice by the end of the
+        semester.
+      </p>
+    </main>
 
-
-<h2>Test Your Tools</h2>
-	<p>
-		The tasks for this week include testing your tools.
-	</p>
-
-<h2>Workflow</h2>
-	<p>The work you do using these two tools will flow like this. Each time you are asked to do a task, you will create a project named for the task. For example, if you were asked for your task to write code that calculated loan payments, you could create a project called loan_pay_calc. If you follow this pattern for each assignment, you will reduce your workload. Do not create a single project to hold all of your tasks. If you do, you will regret that choice by 
-	the end of the semester.</p>
-	</main>
-
-	<footer>
+    <footer>
       <a
         rel="license"
         href="http://creativecommons.org/licenses/by/4.0/"
         target="_blank"
         ><img
           alt="This work is licensed under a Creative Commons Attribution 4.0 International License"
-          style="border-width: 0;"
+          style="border-width: 0"
           src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a
       ><br />This work is licensed under a
       <a
@@ -108,5 +176,5 @@
         >Creative Commons Attribution 4.0 International License</a
       >.
     </footer>
-</body>
+  </body>
 </html>

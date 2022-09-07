@@ -24,6 +24,7 @@
       type="text/javascript"
       src="https://byui-cse.github.io/Language-Courses/site/weekly.js"
     ></script>
+    <link rel="stylesheet" href="../main.css" />
   </head>
 
   <body onload="fetchSource()">
@@ -35,54 +36,96 @@
     </header>
     <main>
       <h1>Language Organization and Access</h1>
-  <p>All computer languages are ways to organize your communication and thinking. In this, they are very
-  similar to spoken languages. Each spoken language, or family of spoken languages, does this organization
-  differently. English sentences often have a structure of Subject-Helper Verb-Verb-Predicate structure, such as "The boy will bite the dog," for example.
-  German, a language closely related to English, organizes things differently. Sometimes German sentences have a
-        Subject-Helper Verb-Predicate-Verb structure...
-  "Ich werde das Buch bald lesen," which if translated word-by-word is "I will the book soon read." Spanish has adjectives 
-  after the nouns they modify.</p>
-  <p>While each language has its own organizational rules, they all do the same thing. They allow us to organize and express
-  our thinking.</p>
-  <h3>Instances of Classes - another organizational concept of Swift</h3>
-  <p>Since Swift has the language Haskell as an ancestor, Swift, like Haskell, has the concept of functions. But Haskell 
-  isn't Swift's only ancestor. Ruby and C# are both OO languages and ancestors of Swift. That's why classes and their 
-  instances are a way to organize your data and code in Swift.</p>
-  <p>
-    Don't get carried away. Some languages don't have stand-alone functions (Java) or strongly discourage their use (C++). 
-    This is not so in Swift. When you begin thinking in Swift you will mix and mingle functions, classes and instances of 
-    classes, and a few other ways of organizing your data we'll cover below. The rule for Swift is simple. Write your code 
-    in the way that best and most clearly describes what you are trying to do. If that's a function, use a function. If 
-    that's a class and instances of the class, do that.
-  </p>
+      <p>
+        All computer languages are ways to organize your communication and
+        thinking. In this, they are very similar to spoken languages. Each
+        spoken language, or family of spoken languages, does this organization
+        differently. English sentences often have a structure of Subject-Helper
+        Verb-Verb-Predicate structure, such as "The boy will bite the dog," for
+        example. German, a language closely related to English, organizes things
+        differently. Sometimes German sentences have a Subject-Helper
+        Verb-Predicate-Verb structure... "Ich werde das Buch bald lesen," which
+        if translated word-by-word is "I will the book soon read." Spanish has
+        adjectives after the nouns they modify.
+      </p>
+      <p>
+        While each language has its own organizational rules, they all do the
+        same thing. They allow us to organize and express our thinking.
+      </p>
+      <h3>Instances of Classes - another organizational concept of Swift</h3>
+      <p>
+        Since Swift has the language Haskell as an ancestor, Swift, like
+        Haskell, has the concept of functions. But Haskell isn't Swift's only
+        ancestor. Ruby and C# are both OO languages and ancestors of Swift.
+        That's why classes and their instances are a way to organize your data
+        and code in Swift.
+      </p>
+      <p>
+        Don't get carried away. Some languages don't have stand-alone functions
+        (Java) or strongly discourage their use (C++). This is not so in Swift.
+        When you begin thinking in Swift you will mix and mingle functions,
+        classes and instances of classes, and a few other ways of organizing
+        your data we'll cover below. The rule for Swift is simple. Write your
+        code in the way that best and most clearly describes what you are trying
+        to do. If that's a function, use a function. If that's a class and
+        instances of the class, do that.
+      </p>
 
-<h1>The Situation</h1>
-<p>To help learn about the <a href="https://www.tutlane.com/tutorial/swift/swift-classes" target="_blank">Swift syntax for classes and instances</a>, a set of class descriptions is needed. The set selected 
-  for your perusal describes a very simplified stock-tracker for an imagined pharmaceutical company. Several classes are included in this set. These include a <kbd>Date</kbd> class storing 
-  individual numbers for a day, month, and year; a <kbd>medication</kbd> class that is the parent class for two medication types-- <kbd>TabletMedications</kbd>
-  and <kbd>LiquidMedications</kbd>. And last, but not least, a model class (<a href="https://www.youtube.com/watch?v=FCkDEHWDATI">MVC</a>) called <kbd>PharmaceuticalStockTracker</kbd> that stores and manipulates data regarding the stock available for 
-  sale. 
-  <figure>
-    <img src="images/pharm_uml.png" alt="An image showing each of the classes, Date, Medication, Liquid Medication, Tablet Medication, Pharmaceutical Stock Tracker, their properties, and the relationships between them">
-    <figcaption>Fig.1 - A UML Class Diagram for the Date, Medication, Liquid Medication, Tablet Medication, and Pharmaceutical 
-    Stock Tracker classes.</figcaption>
-</figure>
+      <h1>The Situation</h1>
+      <p>
+        To help learn about the
+        <a
+          href="https://www.tutlane.com/tutorial/swift/swift-classes"
+          target="_blank"
+          >Swift syntax for classes and instances</a
+        >, a set of class descriptions is needed. The set selected for your
+        perusal describes a very simplified stock-tracker for an imagined
+        pharmaceutical company. Several classes are included in this set. These
+        include a <kbd>Date</kbd> class storing individual numbers for a day,
+        month, and year; a <kbd>medication</kbd> class that is the parent class
+        for two medication types-- <kbd>TabletMedications</kbd> and
+        <kbd>LiquidMedications</kbd>. And last, but not least, a model class (<a
+          href="https://www.youtube.com/watch?v=FCkDEHWDATI"
+          >MVC</a
+        >) called <kbd>PharmaceuticalStockTracker</kbd> that stores and
+        manipulates data regarding the stock available for sale.
+        <figure>
+          <img
+            src="images/pharm_uml.png"
+            alt="An image showing each of the classes, Date, Medication, Liquid Medication, Tablet Medication, Pharmaceutical Stock Tracker, their properties, and the relationships between them"
+          />
+          <figcaption>
+            Fig.1 - A UML Class Diagram for the Date, Medication, Liquid
+            Medication, Tablet Medication, and Pharmaceutical Stock Tracker
+            classes.
+          </figcaption>
+        </figure>
+      </p>
 
-</p>
+      <h2>The Date Class</h2>
+      <p>
+        The purpose of the <kbd>Date</kbd> class is to store the day, month, and
+        year for any specific date. In a real app, you'd never create this
+        class. Instead you'd use the
+        <a href="https://developer.apple.com/documentation/foundation/date">
+          standard Swift date structure</a
+        >. Be flexible. The purpose of this custom <kbd>Date</kbd> class is to
+        help you learn how to write a simplistic Swift class.
+      </p>
+      <p>
+        The design of the <kbd>Date</kbd> class allows other code to compare
+        dates by comparing any or all of these three values. If you look at the
+        <a
+          href="https://www.visual-paradigm.com/guide/uml-unified-modeling-language/uml-class-diagram-tutorial/"
+          target="_blank"
+          >UML class diagram</a
+        >, it shows the <kbd>Date</kbd> class is composed of three integers--one
+        for the day, one for the month, and one for the year. In the code
+        snippet below the class declaration for <kbd>Date</kbd> starts with the
+        keyword <kbd>class</kbd>.
+      </p>
 
-<h2>The Date Class</h2>
-<p>
-  The purpose of the <kbd>Date</kbd> class is to store the day, month, and year for any specific date. In a real app, you'd never create this class. Instead you'd use the <a href="https://developer.apple.com/documentation/foundation/date"> 
-  standard Swift date structure</a>. Be flexible. The purpose of this custom <kbd>Date</kbd> class is to 
-  help you learn how to write a simplistic Swift class.
-</p>
-<p> 
-  The design of the <kbd>Date</kbd> class allows other code to compare dates by comparing any 
-  or all of these three values. If you look at the <a href="https://www.visual-paradigm.com/guide/uml-unified-modeling-language/uml-class-diagram-tutorial/" target="_blank">UML class diagram</a>, it shows the <kbd>Date</kbd> class is composed of three integers--one for the day, one for the month, 
-  and one for the year. In the code snippet below the class declaration for <kbd>Date</kbd> starts with the keyword <kbd>class</kbd>. 
-</p>
-<p>
-  <pre><code>class Date{
+      <pre><code>class Date{
     //don't write getters and setters.
     let day:Int
     let month:Int
@@ -96,75 +139,110 @@
 }
 </code>
 </pre>
-  </p>
-  <p>
-    Notice that there are the three properties, <kbd>day</kbd>, <kbd>month</kbd>, and <kbd>year</kbd>, followed by an 
-    initialization function. When you create an instance of the <kbd>Date</kbd> class, the initialization function 
-    is called. Since <a href="https://docs.swift.org/swift-book/LanguageGuide/Initialization.html" target="_blank">init is a special type of function</a>, you don't have to put <kbd>func</kbd> in front of it. The 
-    compiler will figure it out for you.
-  </p> 
-  <p>
-    Don't make the mistake of thinking you can have only one init method. You can have as many variations of an init 
-    function as you want. You could have an init function for date 
-    that has no parameters, a default intit function, where you set the values to be some known value like January first 
-    1970, the beginning of what is called the unix epoch. Or maybe you only want to pass some of the parameters and set 
-    the rest. You can add as many as make sense and that help keep the code that uses your class clean.
-  </p>
-  <p>
-    How do you instantiate a class? Excellent question. Here is a code snippet that creates an instance of Data and a 
-    variable for the instance given the way the init function is declared.
-  </p>
-<p>
-  <pre><code>let birth = Date(aDay: 16, aMonth: 11, aYear: 1990)
+
+      <p>
+        Notice that there are the three properties, <kbd>day</kbd>,
+        <kbd>month</kbd>, and <kbd>year</kbd>, followed by an initialization
+        function. When you create an instance of the <kbd>Date</kbd> class, the
+        initialization function is called. Since
+        <a
+          href="https://docs.swift.org/swift-book/LanguageGuide/Initialization.html"
+          target="_blank"
+          >init is a special type of function</a
+        >, you don't have to put <kbd>func</kbd> in front of it. The compiler
+        will figure it out for you.
+      </p>
+      <p>
+        Don't make the mistake of thinking you can have only one init method.
+        You can have as many variations of an init function as you want. You
+        could have an init function for date that has no parameters, a default
+        intit function, where you set the values to be some known value like
+        January first 1970, the beginning of what is called the unix epoch. Or
+        maybe you only want to pass some of the parameters and set the rest. You
+        can add as many as make sense and that help keep the code that uses your
+        class clean.
+      </p>
+      <p>
+        How do you instantiate a class? Excellent question. Here is a code
+        snippet that creates an instance of Data and a variable for the instance
+        given the way the init function is declared.
+      </p>
+
+      <pre><code>let birth = Date(aDay: 16, aMonth: 11, aYear: 1990)
 </code>
 </pre>
-  </p>
-<p>
-  Since init functions are functions, you could use the ignore operator for each of the parameters. Should you? Only if 
-  doing so makes the code clearer. In this case, I don't think it does.
-</p>
-<p>
-  How do you access the properties? Another great question. Like this.
-</p>
-<p>
-  <pre><code>print(birth.day)
+
+      <p>
+        Since init functions are functions, you could use the ignore operator
+        for each of the parameters. Should you? Only if doing so makes the code
+        clearer. In this case, I don't think it does.
+      </p>
+      <p>
+        How do you access the properties? Another great question. Like this.
+      </p>
+      <pre><code>print(birth.day)
 </code>
 </pre>
-  </p>
-<p>
-  Or if you want to print out something fancy,
-</p>
-<p>
-  <pre><code>print("They were born on \(birth.day)\\\(birth.month)\\\(birth.year)")
+      <p>Or if you want to print out something fancy,</p>
+      <pre><code>print("They were born on \(birth.day)\\\(birth.month)\\\(birth.year)")
 </code>
 </pre>
-  </p>
-  <p>
-    When <a href="https://stackoverflow.com/questions/30671000/how-can-i-add-variables-into-a-stringswift" target="_blank">embedding a value in a string</a> the <kbd>\()</kbd> operator is used. Notice that  the second and third embedded 
-    values are proceeded by <kbd>\\</kbd>. That's there for one reason only. I wanted a <kbd>\</kbd> character between 
-    the parts of the date. Therefore, since the <kbd>\</kbd> character has a specific meaning in the context of a string, I had to <a href="https://en.wikipedia.org/wiki/Escape_character" target="_blank">'escape'</a> the <kbd>\</kbd> character so it would be 
-    interpreted as a regular-old character.
-  </p>
-  <p>
-    But what if you want to modify one of these properties? To do this, imagine that, instead of <kbd>let</kbd>, <kbd>var</kbd> 
-    was used for each of the properties. Then you could modify the birth <kbd>Date</kbd> like this.
-  </p>
-  <p>
-  <pre><code>birth.year = 2005
+
+      <p>
+        When
+        <a
+          href="https://stackoverflow.com/questions/30671000/how-can-i-add-variables-into-a-stringswift"
+          target="_blank"
+          >embedding a value in a string</a
+        >
+        the <kbd>\()</kbd> operator is used. Notice that the second and third
+        embedded values are proceeded by <kbd>\\</kbd>. That's there for one
+        reason only. I wanted a <kbd>\</kbd> character between the parts of the
+        date. Therefore, since the <kbd>\</kbd> character has a specific meaning
+        in the context of a string, I had to
+        <a href="https://en.wikipedia.org/wiki/Escape_character" target="_blank"
+          >'escape'</a
+        >
+        the <kbd>\</kbd> character so it would be interpreted as a regular-old
+        character.
+      </p>
+      <p>
+        But what if you want to modify one of these properties? To do this,
+        imagine that, instead of <kbd>let</kbd>, <kbd>var</kbd> was used for
+        each of the properties. Then you could modify the birth
+        <kbd>Date</kbd> like this.
+      </p>
+
+      <pre><code>birth.year = 2005
 </code>
 </pre>
-  </p>
-  <p>
-    Now, for those who are in the know, it may seem like the properties of this class are public. They are not. Instead, the 
-    compiler will create the accessors and mutators for you! You can create your own if you want or need greater control, but 
-    unlike some other languages, yes I'm looking at you C++ and Java, you don't have to if you don't need to.
-  </p>
-  <h2>Has_A Inheritance</h2>
-  <p>
-    Like all languages that allow Object Oriented application design, Swift supports <a href="https://stackoverflow.com/questions/2218937/has-a-is-a-terminology-in-object-oriented-language">Has_A type inheritance</a>. As an example, look at the Medication class below (see the UML class diagram above for an overview). The medication class represents a bottle of medication in the pharmacy. It Has_A instance of <span class="file_name">Date</span> that represents the expiration date of this bottle of medication. You can see in the code snippet below that there is an instance property called expirationDate. Its type is Date. That's it. That's all you have to do to use the Has_A type of inheritance. Also, if needed, you can have instance variables that are arrays of custom types like Dates.
-  </p>
-  <p>
-  <pre><code>class Medication{
+
+      <p>
+        Now, for those who are in the know, it may seem like the properties of
+        this class are public. They are not. Instead, the compiler will create
+        the accessors and mutators for you! You can create your own if you want
+        or need greater control, but unlike some other languages, yes I'm
+        looking at you C++ and Java, you don't have to if you don't need to.
+      </p>
+      <h2>Has_A Inheritance</h2>
+      <p>
+        Like all languages that allow Object Oriented application design, Swift
+        supports
+        <a
+          href="https://stackoverflow.com/questions/2218937/has-a-is-a-terminology-in-object-oriented-language"
+          >Has_A type inheritance</a
+        >. As an example, look at the Medication class below (see the UML class
+        diagram above for an overview). The medication class represents a bottle
+        of medication in the pharmacy. It Has_A instance of
+        <span class="file_name">Date</span> that represents the expiration date
+        of this bottle of medication. You can see in the code snippet below that
+        there is an instance property called expirationDate. Its type is Date.
+        That's it. That's all you have to do to use the Has_A type of
+        inheritance. Also, if needed, you can have instance variables that are
+        arrays of custom types like Dates.
+      </p>
+
+      <pre><code>class Medication{
     let name:String
     let count:Int
     let unitsDescription:String
@@ -179,14 +257,15 @@
 }
 </code>
 </pre>
-</p>
-  <p>
-    It is also common for there to be some sort of container that holds multiple instances of a class in a Has_A relationship. The <kbd>PharmaceuticalStockModel</kbd>  class has such a relationship as seen in the earlier UML diagram and this code snippet.
-  </p>
 
+      <p>
+        It is also common for there to be some sort of container that holds
+        multiple instances of a class in a Has_A relationship. The
+        <kbd>PharmaceuticalStockModel</kbd> class has such a relationship as
+        seen in the earlier UML diagram and this code snippet.
+      </p>
 
-<p>
-  <pre><code>class PharmaceuticalStockModel{
+      <pre><code>class PharmaceuticalStockModel{
     var inStockMedications:[Medication] = []
     //other properties here
     
@@ -194,14 +273,24 @@
 }
 </code>
 </pre>
-</p>
-<h2>Is_A Inheritance</h2>
-  <p>
-    <a href="https://learnappmaking.com/swift-inheritance-subclassing-how-to/">Is_A inheritance is done differently</a>. The snippet below contains the code for both the <kbd>LiquidMedication</kbd> and the <kbd>TabletMedication</kbd>  classes. They both have Is_A relationships with the <kbd>Medication</kbd> class and are subclasses of it. Also, they are child classes of the parent class <kbd>Medication</kbd>. They are derived classes of the <kbd>Medication</kbd> base class. These statements all mean the same thing. Because they are  a derived classes without very much added to the base class, you see very little in the source code for the <kbd>LiquidMedication</kbd> and <kbd>TabletMedication</kbd> source code.
-  </p>
 
-  <p>
-  <pre><code>class LiquidMedication: Medication {
+      <h2>Is_A Inheritance</h2>
+      <p>
+        <a
+          href="https://learnappmaking.com/swift-inheritance-subclassing-how-to/"
+          >Is_A inheritance is done differently</a
+        >. The snippet below contains the code for both the
+        <kbd>LiquidMedication</kbd> and the <kbd>TabletMedication</kbd> classes.
+        They both have Is_A relationships with the <kbd>Medication</kbd> class
+        and are subclasses of it. Also, they are child classes of the parent
+        class <kbd>Medication</kbd>. They are derived classes of the
+        <kbd>Medication</kbd> base class. These statements all mean the same
+        thing. Because they are a derived classes without very much added to the
+        base class, you see very little in the source code for the
+        <kbd>LiquidMedication</kbd> and <kbd>TabletMedication</kbd> source code.
+      </p>
+
+      <pre><code>class LiquidMedication: Medication {
     let volume:Bool
     let concentration:Int
     let concentrationUnits:String
@@ -224,22 +313,47 @@ class TabletMedication: Medication {
 }
 </code>
 </pre>
-</p>
-<p>
-  The most interesting parts of the snippet are the use of the <kbd>:</kbd> character to indicate inheritance, and the use of the <kbd>super</kbd> keyword to call the init method of the <kbd>Medication</kbd> class.
-</p>
-<h2>Is_A Inheritance By Extension</h2>
-<p>
-  There is another very cool way to do what is usually done in other languages by inheritance. In Swift you can add to an existing class without inheriting from it. This is very handy when you are using a library someone else has written and need to augment that class. Inheritance doesn't really fit this situation because it's not feasible for you to go into the library source code, inherit from the base class, and then replace all of the base class's uses. Nor is it feasible to update the source code for the base class itself. While it may be you are prohibited from doing this because the library is closed source, there is a more important reason not to make changes to the library. You will insert new bugs.
-</p>
-<p>
-  To support the pattern of augmentation, Swift has the concept of <a href="https://blog.logrocket.com/swift-extensions-an-overview-with-examples/" target="_blank">extensions</a>. You can extend any class written by anyone. You could extend Swift's standard String class with a JSON parsing function if you wanted to. You could extend the Array class with a function to send the Array across the Internet if you wanted to. What you do is left up to you and your wisdom. The only restriction is you can't add stored properties to a class.
-</p>
-<p>
-  Let's say someone wanted to extend your <kbd> TabletMedications</kbd> class to allow it generate a string that was its description. The snippet below is how they could do this.
-</p>
-  <p>
-  <pre><code>//an extension of the TabletMedication class
+
+      <p>
+        The most interesting parts of the snippet are the use of the
+        <kbd>:</kbd> character to indicate inheritance, and the use of the
+        <kbd>super</kbd> keyword to call the init method of the
+        <kbd>Medication</kbd> class.
+      </p>
+      <h2>Is_A Inheritance By Extension</h2>
+      <p>
+        There is another very cool way to do what is usually done in other
+        languages by inheritance. In Swift you can add to an existing class
+        without inheriting from it. This is very handy when you are using a
+        library someone else has written and need to augment that class.
+        Inheritance doesn't really fit this situation because it's not feasible
+        for you to go into the library source code, inherit from the base class,
+        and then replace all of the base class's uses. Nor is it feasible to
+        update the source code for the base class itself. While it may be you
+        are prohibited from doing this because the library is closed source,
+        there is a more important reason not to make changes to the library. You
+        will insert new bugs.
+      </p>
+      <p>
+        To support the pattern of augmentation, Swift has the concept of
+        <a
+          href="https://blog.logrocket.com/swift-extensions-an-overview-with-examples/"
+          target="_blank"
+          >extensions</a
+        >. You can extend any class written by anyone. You could extend Swift's
+        standard String class with a JSON parsing function if you wanted to. You
+        could extend the Array class with a function to send the Array across
+        the Internet if you wanted to. What you do is left up to you and your
+        wisdom. The only restriction is you can't add stored properties to a
+        class.
+      </p>
+      <p>
+        Let's say someone wanted to extend your
+        <kbd> TabletMedications</kbd> class to allow it generate a string that
+        was its description. The snippet below is how they could do this.
+      </p>
+
+      <pre><code>//an extension of the TabletMedication class
 extension TabletMedication {
     func getDescription() -> String {
         "['name':'\(name)','count':'\(count)','potency':'\(potency)','units':'\(potencyUnits)'"
@@ -247,24 +361,48 @@ extension TabletMedication {
 }
 </code>
 </pre>
-</p>
-<p>
-  As you can see, it doesn't take much code to create an extension. It's much less than inheritance requires. It is so easy that many programmers may start to overuse it. Once again, be wise. Use it when it makes your code easier to read and when it lets you write less code.
-</p>
-<h2>Class Alternatives</h2>
-<p>
-  While classes can sometimes be exactly what you need to solve a problem, it is always good to have alternatives. Swift has two major alternatives you can pick when you don't need all of the abilities, overhead, and baggage that go with classes in any computer language.
-</p>
-<h3>Structures</h3>
-<p>
-  <a href="https://www.tutorialspoint.com/swift/swift_structures.htm" target="">Structures</a> are a <a href="https://en.wikipedia.org/wiki/Value_type_and_reference_type" target="_blank">value-type</a>. In other words, when they are passed to a function a copy is made and passed in. This differs from instances of classes where a reference to the instance is passed. It can be very nice to have a copy made for you when you need one. For example when you are passing data to be used in <a href="https://en.wikipedia.org/wiki/Concurrent_computing">concurrent computing</a>. Also, structures use less RAM than instances of classes do. There are many <a href="https://docs.swift.org/swift-book/LanguageGuide/ClassesAndStructures.html">features that classes and structures have in common</a>. In many ways they can be used interchangeably. 
-</p>
-<p>
-  Let's refactor the <kbd>Medication</kbd> class to be a structure.
-</p>
 
-<p>
-  <pre><code>struct Medication{
+      <p>
+        As you can see, it doesn't take much code to create an extension. It's
+        much less than inheritance requires. It is so easy that many programmers
+        may start to overuse it. Once again, be wise. Use it when it makes your
+        code easier to read and when it lets you write less code.
+      </p>
+      <h2>Class Alternatives</h2>
+      <p>
+        While classes can sometimes be exactly what you need to solve a problem,
+        it is always good to have alternatives. Swift has two major alternatives
+        you can pick when you don't need all of the abilities, overhead, and
+        baggage that go with classes in any computer language.
+      </p>
+      <h3>Structures</h3>
+      <p>
+        <a
+          href="https://www.tutorialspoint.com/swift/swift_structures.htm"
+          target=""
+          >Structures</a
+        >
+        are a
+        <a
+          href="https://en.wikipedia.org/wiki/Value_type_and_reference_type"
+          target="_blank"
+          >value-type</a
+        >. In other words, when they are passed to a function a copy is made and
+        passed in. This differs from instances of classes where a reference to
+        the instance is passed. It can be very nice to have a copy made for you
+        when you need one. For example when you are passing data to be used in
+        <a href="https://en.wikipedia.org/wiki/Concurrent_computing"
+          >concurrent computing</a
+        >. Also, structures use less RAM than instances of classes do. There are
+        many
+        <a
+          href="https://docs.swift.org/swift-book/LanguageGuide/ClassesAndStructures.html"
+          >features that classes and structures have in common</a
+        >. In many ways they can be used interchangeably.
+      </p>
+      <p>Let's refactor the <kbd>Medication</kbd> class to be a structure.</p>
+
+      <pre><code>struct Medication{
     let name:String
     var count:Int
     let unitsDescription:String
@@ -272,58 +410,88 @@ extension TabletMedication {
 }
 </code>
 </pre>
-</p>
-<p>
-  Notice that there is no <kbd>init</kbd> function in the snippet above. Just like the compiler generates getters and setters, it also generates an init function for you with a parameter for each property. You can write one if you need to do some extra data validation, but you don't have to. This is another difference between classes and structures.
-</p>
-<p>
-  In other ways, structures and classes are very similar. Has_a types of inheritance are supported for structures but you can not use Is_a inheritance. You can, however, conform to <a href="https://docs.swift.org/swift-book/LanguageGuide/Protocols.html">protocols</a>. Protocols are rules or blue prints that require the conforming structure to have and/or do specific things.
-</p>
-<p>You can also extend structures. So if structures most closely fit your need use them. If classes do, use them. You should also feel free to mix and match classes and structures. You don't have to use just one of these types in an application.
-</p>
 
-<h3>Tuples</h3>
-<p>
-  Like some other languages Swift supports the use of <a href="https://www.geeksforgeeks.org/swift-tuples/" target="_blank">tuples</a>. As in those other languages, tuples are a restricted type. In other words Is_a inheritance and extensions are not applicable to tuples. Also, tuples don't have property names. All they really do is keep associated yet independent pieces of data together.
-</p>
-<p>
-  You create a tuple by the process of composition.
-</p>
-<p>
-  <pre><code>//composing a tuple and assigning it to a variable
+      <p>
+        Notice that there is no <kbd>init</kbd> function in the snippet above.
+        Just like the compiler generates getters and setters, it also generates
+        an init function for you with a parameter for each property. You can
+        write one if you need to do some extra data validation, but you don't
+        have to. This is another difference between classes and structures.
+      </p>
+      <p>
+        In other ways, structures and classes are very similar. Has_a types of
+        inheritance are supported for structures but you can not use Is_a
+        inheritance. You can, however, conform to
+        <a href="https://docs.swift.org/swift-book/LanguageGuide/Protocols.html"
+          >protocols</a
+        >. Protocols are rules or blue prints that require the conforming
+        structure to have and/or do specific things.
+      </p>
+      <p>
+        You can also extend structures. So if structures most closely fit your
+        need use them. If classes do, use them. You should also feel free to mix
+        and match classes and structures. You don't have to use just one of
+        these types in an application.
+      </p>
+
+      <h3>Tuples</h3>
+      <p>
+        Like some other languages Swift supports the use of
+        <a href="https://www.geeksforgeeks.org/swift-tuples/" target="_blank"
+          >tuples</a
+        >. As in those other languages, tuples are a restricted type. In other
+        words Is_a inheritance and extensions are not applicable to tuples.
+        Also, tuples don't have property names. All they really do is keep
+        associated yet independent pieces of data together.
+      </p>
+      <p>You create a tuple by the process of composition.</p>
+
+      <pre><code>//composing a tuple and assigning it to a variable
 let person = ("Jenny",23, 5.5)
 </code>
 </pre>
-</p>
-<p>
-  Using decomposition you can retrieve the individual values.
-</p>
-<p>
-  
-  <pre><code>//decomposing a tuple to get each stored value
+
+      <p>Using decomposition you can retrieve the individual values.</p>
+
+      <pre><code>//decomposing a tuple to get each stored value
 let (name,age,height) = person
 </code>
 </pre>
-</p>
-<p>
-  If you don't need all the values, you don't have to create variables for them via decomposition.
-</p>
-<p>
-  For example, if all you needed was the age of a person tuple, you could decompose the person tuple like this. 
-  <pre><code>//decomposing a tuple using the ignore operator
+
+      <p>
+        If you don't need all the values, you don't have to create variables for
+        them via decomposition.
+      </p>
+      <p>
+        For example, if all you needed was the age of a person tuple, you could
+        decompose the person tuple like this.
+      </p>
+      <pre><code>//decomposing a tuple using the ignore operator
 let (_,age,_) = person
 </code>
 </pre>
-</p>
-<h2>Access Control</h2>
-<p>
-  There are times when you need more control over when and who can access parts of your code. To ease this situation Swift also has the concept of <a href="https://docs.swift.org/swift-book/LanguageGuide/AccessControl.html" target="_blank">Access Control</a>. This is similar to what is found in most other modern programming languages. Using the file private access control, you can have variables, functions, classes and their instances, or any other Swift language type in a regular swift file and anything you don't want to allow access to from other swift code files, you mark as private. Thus they become 'file private', i.e. they can only be used within the file.
-</p>
-<p>
-  File privacy is very handy when you want to expose only certain functions, classes, etc. for use in other source files. For example, the <kbd>MedicalStockTracker</kbd> class could be replaced with a file.
-</p>
-<p>
-  <pre><code>private var inStockMedications = [Medication]()
+
+      <h2>Access Control</h2>
+      <p>
+        There are times when you need more control over when and who can access
+        parts of your code. To ease this situation Swift also has the concept of
+        <a
+          href="https://docs.swift.org/swift-book/LanguageGuide/AccessControl.html"
+          target="_blank"
+          >Access Control</a
+        >. This is similar to what is found in most other modern programming
+        languages. Using the file private access control, you can have
+        variables, functions, classes and their instances, or any other Swift
+        language type in a regular swift file and anything you don't want to
+        allow access to from other swift code files, you mark as private. Thus
+        they become 'file private', i.e. they can only be used within the file.
+      </p>
+      <p>
+        File privacy is very handy when you want to expose only certain
+        functions, classes, etc. for use in other source files. For example, the
+        <kbd>MedicalStockTracker</kbd> class could be replaced with a file.
+      </p>
+      <pre><code>private var inStockMedications = [Medication]()
 func addLiquidMedicationToStock(medicationToAdd:LiquidMedication){
   .
   .
@@ -342,20 +510,32 @@ private func validateExpirationDate(aDate:Date)->Bool{
 }
 </code>
 </pre>
-</p>
-<p>
-  Anything that is not to be accessed outside of the file must have the keyword <kbd>private</kbd> in front of the rest of the declaration. In the example above you will see two <kbd>private</kbd> items. The first is the list of medications used to store the current medication stock. The second is a helper function that isn't for use outside of the module.
-</p>
-<p>
-  File privacy is a handy way to create API's for others and yourself to use latter, in other code.
-</p>
-<h2>Wrap Up</h2>
-<p>
-  You have many options when it comes to representing the data your application works on and with. Make your choices wisely. Each of the types described in this reading were created for a purpose. Use the one that fits. You should also use the 'least' one that fits. For example, if you could use a tuple, a structure, or a class to represent some data you should use a tuple. If only structure or class would fit the need, use a structure. If only a class fits, use a class.
-</p>
-<p>
-  If you follow this 'least required' decision pattern, your code will be leaner and have fewer bugs.
-</p>
+      <p>
+        Anything that is not to be accessed outside of the file must have the
+        keyword <kbd>private</kbd> in front of the rest of the declaration. In
+        the example above you will see two <kbd>private</kbd> items. The first
+        is the list of medications used to store the current medication stock.
+        The second is a helper function that isn't for use outside of the
+        module.
+      </p>
+      <p>
+        File privacy is a handy way to create API's for others and yourself to
+        use latter, in other code.
+      </p>
+      <h2>Wrap Up</h2>
+      <p>
+        You have many options when it comes to representing the data your
+        application works on and with. Make your choices wisely. Each of the
+        types described in this reading were created for a purpose. Use the one
+        that fits. You should also use the 'least' one that fits. For example,
+        if you could use a tuple, a structure, or a class to represent some data
+        you should use a tuple. If only structure or class would fit the need,
+        use a structure. If only a class fits, use a class.
+      </p>
+      <p>
+        If you follow this 'least required' decision pattern, your code will be
+        leaner and have fewer bugs.
+      </p>
     </main>
     <footer>
       <a
@@ -364,7 +544,7 @@ private func validateExpirationDate(aDate:Date)->Bool{
         target="_blank"
         ><img
           alt="This work is licensed under a Creative Commons Attribution 4.0 International License"
-          style="border-width: 0;"
+          style="border-width: 0"
           src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a
       ><br />This work is licensed under a
       <a

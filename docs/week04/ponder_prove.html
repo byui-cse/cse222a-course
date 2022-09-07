@@ -1,77 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>CSE 222a: Week 04 | Ponder and Prove</title>
-	<script type="text/javascript">
-    	var codeType = "JavaScript"
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSE 222a: Week 04 | Ponder and Prove</title>
+    <script type="text/javascript">
+      var codeType = "JavaScript";
     </script>
-    <script type="text/javascript" src="https://byui-cse.github.io/Language-Courses/site/highlight.pack.js"></script>
-    <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/highlight_styles/xcode.css">
-    <link rel="stylesheet" href="https://byui-cse.github.io/Language-Courses/site/weekly.css">
-    <script type="text/javascript" src="https://byui-cse.github.io/Language-Courses/site/weekly.js"></script>
-</head>
+    <script
+      type="text/javascript"
+      src="https://byui-cse.github.io/Language-Courses/site/highlight.pack.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://byui-cse.github.io/Language-Courses/site/highlight_styles/xcode.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://byui-cse.github.io/Language-Courses/site/weekly.css"
+    />
+    <script
+      type="text/javascript"
+      src="https://byui-cse.github.io/Language-Courses/site/weekly.js"
+    ></script>
+    <link rel="stylesheet" href="../main.css" />
+  </head>
 
-<body onload="fetchSource()">
-	<header class="hero-image">
-		<section class="hero-text">
-			<h1>CSE 222a: Week 04</h1>
-			<p>Ponder and Prove</p>
-		</section>
-	</header>
-	<main>
-		<h1>Your Task</h1>
-		<section>
-			<h3>Before beginning this Task:</h3>
-			<ul>
-				<li>
-					Make sure you have read and understood the <a href="../week04/" target="_blank">reading for the week</a>.
-				</li>
-			</ul>
-		</section>
-		<section>
-			<h2>Situation</h2>
-		<p>
-			You are working for a company that needs a technology solution to track the containers of pharmaceuticals they have in stock available for sale to pharmacies that are their customers. A UML diagram has been provided, see Figure 1 below. 
-		</p>
-		</section>
-		<section>
-		<h3>Task 1</h3>
-		
-		<p>
-			Using classes and or structs, create a code set that appropriately uses lists, sets, and dictionaries to solve the problem. Also write driver code to execute the code you write. Attempt to add and remove many packages of many types of medication. Ensure, using stepwise debugging and debugging statements to validate that your code is behaving as the company intends.
-		</p>
-		<p>
-			The unique identifiers for the dictionary in the design are to follow the <a href="https://www.accessdata.fda.gov/scripts/cder/ndc/dsp_searchresult.cfm">NDC</a> database's package code pattern, [5 digits]-[3 digits]-[2 digits]. You may use real codes from the database along with real information, or you may make them up.
-		</p>
-		<p>
-			To follow good stock roll-over procedures, ensure that the containers sold are always the ones that have the nearest expiration data. The result of calling the <kbd>currentStockOf</kbd> function must also be sorted in the same order.
-		</p>
-			<figure>
-		    <img src="images/cse222a_week04_prove_uml.png" alt="An image showing the Pharmaceutical Stock Tracker, Dictionary, Medication Container, Liquid Medication Container, and Tablet Medication Container classes, their properties, and the relationships between them. It also states that NDC package codes are of the form 5 digits dash 3 digits dash 2 digits.">
-		    <figcaption>Fig.1 - A UML Class Diagram describing the pharmaceutical stock tracker model.</figcaption>
-			</figure>
-		</section>
-		<section>
-		<h3>Review</h3>
-		<h4>After completing the previous steps:</h4>
-		<ol>
-          <li>For each of the tasks, review one of the many <a href="provided_solution.zip">possible solutions</a>,</li>
-          <li>Compare and contrast your code with the possible solution's code, and</li>
-          <li>Make note of any improvements you could make for future tasks.</li>
-		</ol>
-	</section>
-	</main>
-	<footer>
+  <body onload="fetchSource()">
+    <header class="hero-image">
+      <section class="hero-text">
+        <h1>CSE 222a: Week 04</h1>
+        <p>Ponder and Prove</p>
+      </section>
+    </header>
+    <main>
+      <h1>Your Task</h1>
+      <section>
+        <h3>Before beginning this Task:</h3>
+        <ul>
+          <li>
+            Make sure you have read and understood the
+            <a href="../week04/" target="_blank">reading for the week</a>.
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Situation</h2>
+        <p>
+          You are working for a company that needs a technology solution to
+          track the containers of pharmaceuticals they have in stock available
+          for sale to pharmacies that are their customers. A UML diagram has
+          been provided, see Figure 1 below.
+        </p>
+      </section>
+      <section>
+        <h3>Task 1</h3>
+
+        <p>
+          Using classes and or structs, create a code set that appropriately
+          uses lists, sets, and dictionaries to solve the problem. Also write
+          driver code to execute the code you write. Attempt to add and remove
+          many packages of many types of medication. Ensure, using stepwise
+          debugging and debugging statements to validate that your code is
+          behaving as the company intends.
+        </p>
+        <p>
+          The unique identifiers for the dictionary in the design are to follow
+          the
+          <a
+            href="https://www.accessdata.fda.gov/scripts/cder/ndc/dsp_searchresult.cfm"
+            >NDC</a
+          >
+          database's package code pattern, [5 digits]-[3 digits]-[2 digits]. You
+          may use real codes from the database along with real information, or
+          you may make them up.
+        </p>
+        <p>
+          To follow good stock roll-over procedures, ensure that the containers
+          sold are always the ones that have the nearest expiration data. The
+          result of calling the <kbd>currentStockOf</kbd> function must also be
+          sorted in the same order.
+        </p>
+        <figure>
+          <img
+            src="images/cse222a_week04_prove_uml.png"
+            alt="An image showing the Pharmaceutical Stock Tracker, Dictionary, Medication Container, Liquid Medication Container, and Tablet Medication Container classes, their properties, and the relationships between them. It also states that NDC package codes are of the form 5 digits dash 3 digits dash 2 digits."
+          />
+          <figcaption>
+            Fig.1 - A UML Class Diagram describing the pharmaceutical stock
+            tracker model.
+          </figcaption>
+        </figure>
+      </section>
+      <section>
+        <h3>Review</h3>
+        <h4>After completing the previous steps:</h4>
+        <ol>
+          <li>
+            For each of the tasks, review one of the many
+            <a href="provided_solution.zip">possible solutions</a>,
+          </li>
+          <li>
+            Compare and contrast your code with the possible solution's code,
+            and
+          </li>
+          <li>
+            Make note of any improvements you could make for future tasks.
+          </li>
+        </ol>
+      </section>
+    </main>
+    <footer>
       <a
         rel="license"
         href="http://creativecommons.org/licenses/by/4.0/"
         target="_blank"
         ><img
           alt="This work is licensed under a Creative Commons Attribution 4.0 International License"
-          style="border-width: 0;"
+          style="border-width: 0"
           src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a
       ><br />This work is licensed under a
       <a
@@ -81,6 +127,5 @@
         >Creative Commons Attribution 4.0 International License</a
       >.
     </footer>
-</body>
-
+  </body>
 </html>
