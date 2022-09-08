@@ -12,3 +12,7 @@ main {
 code {
   margin-left: 0;
 }
+
+body {
+  padding: 40px;
+}
