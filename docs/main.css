@@ -16,3 +16,7 @@ code {
 body {
   padding: 40px;
 }
+
+li {
+  line-height: 1.5;
+}
