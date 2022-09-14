@@ -1,12 +1,9 @@
-<!-- uses https://highlightjs.org/
--->
-
 <html>
   <head>
     <link
       rel="shortcut icon"
       href="https://byui-cse.github.io/Language-Courses/site/images/fav.ico"
-      type="image/x-i        con"
+      type="image/x-icon"
     />
     <script type="text/javascript">
       var codeType = "JavaScript";
@@ -280,27 +277,22 @@ name = 3.1456778889547637653//compilation failure, type change</code>
 
       <h1>Arrays</h1>
       <p>In Swift, <a href="https://developer.apple.com/documentation/swift/array" target="_blank">Arrays</a> can be declared like this if you want an array that can be modified. 
-      <pre><code>var names = ['Bob','Sue','Jorge','Svetlana']
-	</code></pre>
+      <pre><code>var names = ['Bob','Sue','Jorge','Svetlana']</code></pre>
       If you want an array that can't be modified, use the let keyword like this.
-          <pre><code>let names = ['Bob','Sue','Jorge','Svetlana']
-  </code></pre>
+          <pre><code>let names = ['Bob','Sue','Jorge','Svetlana']</code></pre>
       These array declarations and assignments probably look very familiar to you.</p>
       <p>To access elements of an array, use the access operator []
-      <pre><code>let aName = names[0]
-	</code></pre>
+      <pre><code>let aName = names[0]</code></pre>
         with zero being the index of the first element in the array. Not only can 
         you access the elements of the array, but you can modify them also.
-      <pre><code>names[2]='George'
-	</code></pre>
+      <pre><code>names[2]='George'</code></pre>
       After the previous line of code executes, the third element of the names array is George instead of Jorge.</p>
       <p>One of the goals of the developers of the Swift language is code safety. Because of this, if you attempt to 
       modify an array by using an index that is too large, your code will produce a runtime error instead of 
       writing to memory the application hasn't claimed like some other languages do. Yes C, I'm looking at you.</p>
       <p>
         That's why this code
-        <pre><code>names[4]='George'
-  </code></pre>
+        <pre><code>names[4]='George'</code></pre>
         fails at runtime.
       </p>
       <p>
@@ -311,8 +303,7 @@ name = 3.1456778889547637653//compilation failure, type change</code>
       <p>
         Let's say you are loading a bunch of names from a text file, from a database, or across a network. The 
         preferred way, there are several <a href="https://stackoverflow.com/questions/30430550/how-to-create-an-empty-array-in-swift"target="_blank"></a> others, to declare a modifiable, empty array of Strings looks like this.
-        <pre><code>var names = [String]()
-  </code></pre>
+        <pre><code>var names = [String]()</code></pre>
         The translation of this line of code into English reads like this. "Create a variable called 
         <kbd>names</kbd>. Create an empty array of Strings and assign it to the the <kbd>names</kbd> variable." 
         Since there is no way for the compiler to interpolate the type of values in an empty array, you have to 
@@ -404,16 +395,15 @@ name = 3.1456778889547637653//compilation failure, type change</code>
   Here is an example of a swift function that has parameters but no return value. 
   <pre>
 <code class="Swift">func printSum(firstNum:Double, secondNum:Double){
-    print(firstNum+secondNum)
-}</code>
-  </pre>
+  print(firstNum+secondNum)
+}</code></pre>
   Notice that there is no return type operator at the end of the declaration. This, again, reduces useless code.
 </p>
 <p>
   What if there are no parameters and no return value? Here is an example.
   <pre>
 <code class="Swift">func printSillyMessage(){
-    print("Don't be silly.")
+  print("Don't be silly.")
 }</code>
   </pre>
 </p>
@@ -428,17 +418,13 @@ name = 3.1456778889547637653//compilation failure, type change</code>
       <p>
       <pre>
 <code class="Swift">//in file named stuff.swift
-
 func averageTwoNumbers(firstNum:Double, secondNum:Double)->Double{
   (firstNum+secondNum)/2
 }</code>
   </pre>
   <pre>
   <code class="Swift">//in main.swift
-
-print(averageTwoNumbers(firstNum:5.0,secondNum:3.0))
-}</code>
-  </pre>
+print(averageTwoNumbers(firstNum:5.0,secondNum:3.0))</code></pre>
 </p>
     <p>
      Notice that when the average function is used, the names of each parameter is required. You can turn this 
@@ -459,11 +445,8 @@ func averageTwoNumbers(_ firstNum:Double, _ secondNum:Double)->Double{
   </pre>
   <pre>
   <code class="Swift">//in main.swift
-
 //no labels needed for the two parameters of averageTwoNumbers
-print(averageTwoNumbers(5.0,3.0))
-}</code>
-  </pre>
+print(averageTwoNumbers(5.0,3.0))</code></pre>
    </p>
    <p>
      Be VERY careful making this choice. While it may reduce the amount of code someone has to write, it may not 
@@ -485,16 +468,14 @@ print(averageTwoNumbers(5.0,3.0))
       </p>
       <p>
       <pre>
-  <code class="Swift">func evaluatePassword(aPotentialPassword:String)->Bool{
+  <code class="Swift">func evaluatePassword(aPotentialPassword:String)->Bool {
     guard aPotentialPassword.count > 12 else {
         //this is what happens if the string doesn't pass the guard
         return false
     }
     //this is what happens if the string does pass the guard
     return true
-}
-}</code>
-  </pre>
+}</code></pre>
       </p>
       <p>
         Could this be done with an if statement? Absolutely. But using the <a href="https://ericcerney.com/swift-guard-statement/" target="_blank">guard</a> keyword indicates to whoever is reading your code that 
@@ -532,7 +513,7 @@ else{
       <p>
       <pre>
   <code class="Swift">func silly(){
-let name:String? = nil
+  let name:String? = nil
   if let name = name{
       //code to use the name
       print(name.uppercased())
@@ -767,7 +748,7 @@ let name:String? = nil
 
       <p>
       <pre>
-  <code class="Swift">while input <= 1 || input > 10{
+  <code class="Swift">while input <= 1 || input > 10 {
   //code here to get user information and assign it to
   //the input variable
 }
