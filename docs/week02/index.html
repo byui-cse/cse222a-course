@@ -580,10 +580,11 @@ else{
   </pre>
       </p>
       <p>
-        The lambda function, called <a href="https://www.tutorialspoint.com/swift/swift_closures.htm" target="_blank">a closure in Swift</a>, is the only parameter to the map function. The <kbd>{</kbd> and 
-        <kbd>}</kbd> scope operators show you where the closure begins and ends. Right after the <kbd>{</kbd> operator 
+        Swift has first class support for <a href="https://docs.swift.org/swift-book/LanguageGuide/Closures.html" target="_blank">closures</a>,
+        which is like a lambda in Python or an anonymous function in JavaScript. In the previous example, a closure is the only parameter to the map function.
+        The <kbd>{</kbd> and <kbd>}</kbd> scope operators show you where the closure begins and ends. Right after the <kbd>{</kbd> operator 
         you'll find the closure's signature. It has one parameter called <kbd>value</kbd> of type <kbd>Double</kbd> and 
-        returns a Double. There is a new keyword, <kbd>in</kbd>. This separates the signature from the lines of code that 
+        returns a <kbd>Double</kbd>. There is a new keyword, <kbd>in</kbd>. This separates the signature from the lines of code that 
         make up the computation the closure will perform.
       </p>
       <p>
@@ -606,8 +607,8 @@ else{
       <p>
         Since the compiler knows the type of the elements of the Array it knows the type of the parameter and the 
         return type already, so that means you don't have to type in the signature of the lambda if you don't want.
-        Also, if your computation is only one line long, you don't need to use the <kbd>return</kbd> keyword so let's 
-        get rid of it too.
+        Also, if your computation is only one line long, you don't need to use the <kbd>return</kbd> keyword. This is
+        called an implicit return.
       </p>
       <p>
         Getting rid of the signature means you don't have a name for the incoming variable. The <kbd>$0</kbd> is Swift's way  
