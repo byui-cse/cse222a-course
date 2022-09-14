@@ -6,7 +6,7 @@
       type="image/x-icon"
     />
     <script type="text/javascript">
-      var codeType = "JavaScript";
+      var codeType = "Swift";
     </script>
     <script src="https://byui-cse.github.io/Language-Courses/site/highlight.pack.js"></script>
     <link
@@ -139,14 +139,11 @@ age = 'old'</code>
         var keyword to declare a variable. Like this:
       </p>
       <p>
-      <pre>
-<code class="Swift">var age = 3
+      <pre><code class="Swift">var age = 3
 age = 5
 age = "4"//compilation failure, type change
 age = 4.2//compilation failure, type change
-age = "old"//compilation failure, type change</code>
-	</pre>
-  </p>
+age = "old"//compilation failure, type change</code></pre>
     <p>
       Swift uses what is called <a href="https://www.merriam-webster.com/dictionary/interpolate" target="_blank">'interpolation'</a> 
       to figure out the type of the variable. In the code above, the compiler 
@@ -160,20 +157,15 @@ age = "old"//compilation failure, type change</code>
 height = 4.2
 height = 4//no compilation failure, 4 is converted to a Double
 height = age//compiliation failure, age's type in the previous example doesn't match
-height = "tall"//compilation failure, type change</code>
-  </pre>
-  </p>
+height = "tall"//compilation failure, type change</code></pre>
   <p>Here is an example where the compiler interpolates a variable to be of type String.</p>
   <p>
-      <pre>
-<code class="Swift">var name = "Sue"
+      <pre><code class="Swift">var name = "Sue"
 name = "Gunhilda"
 name = "7"
 name = 4//compilation failure, type change
 name = age//compiliation failure, age's type in the previous example doesn't match
-name = 3.1456778889547637653//compilation failure, type change</code>
-  </pre>
-  </p>
+name = 3.1456778889547637653//compilation failure, type change</code></pre>
       <h3>Constants</h3>
       <p>In Python, constants are declared using an all upper case name, a hold-over from its C ancestor.</p>
 
@@ -209,15 +201,14 @@ name = 3.1456778889547637653//compilation failure, type change</code>
 <code>var name:String = "Sue"</code>
   </pre>
       creates a variable called 'name' of type String and sets the value to be Sue.
-      </p>
       <p>
         Swift has something analogous the Python's None. In Swift it is nil. Declaring the type of a variable is required if the variable is initialized to nil. 
         Think about this for a minute and take a look at this code snippet. 
+      </p>
         <pre>
 <code>var city = nil</code>
   </pre>
         Here, the compiler can't interpolate a type for the city variable because nil has no type! That code won't compile.
-      </p>
       <p>
         Instead, Swift will require you to add in the type. You might think, based on previous programming experience, that this code snippet would compile 
         <pre>
@@ -232,7 +223,7 @@ name = 3.1456778889547637653//compilation failure, type change</code>
         <pre>
 <code>var city:String? = nil</code>
   </pre>
-       reads, in English, like this. "Create a variable called city of type String Optional and set it to nil." If you later figure out what the city 
+       reads, in English, like this: "Create a variable called city of type String Optional and set it to nil." If you later figure out what the city 
        variable should be set to, you can have the city variable wrap a value by doing something similar to this.
         <pre>
 <code>city = "Kinshasa"</code>
@@ -278,8 +269,8 @@ name = 3.1456778889547637653//compilation failure, type change</code>
       <h1>Arrays</h1>
       <p>In Swift, <a href="https://developer.apple.com/documentation/swift/array" target="_blank">Arrays</a> can be declared like this if you want an array that can be modified. 
       <pre><code>var names = ['Bob','Sue','Jorge','Svetlana']</code></pre>
-      If you want an array that can't be modified, use the let keyword like this.
-          <pre><code>let names = ['Bob','Sue','Jorge','Svetlana']</code></pre>
+      If you want an array that can't be modified, use the let keyword like this:
+          <pre><code class="Swift">let names = ['Bob','Sue','Jorge','Svetlana']</code></pre>
       These array declarations and assignments probably look very familiar to you.</p>
       <p>To access elements of an array, use the access operator []
       <pre><code>let aName = names[0]</code></pre>
@@ -301,20 +292,47 @@ name = 3.1456778889547637653//compilation failure, type change</code>
         for the array. What you do then is to declare an empty array.
       </p>
       <p>
-        Let's say you are loading a bunch of names from a text file, from a database, or across a network. The 
-        preferred way, there are several <a href="https://stackoverflow.com/questions/30430550/how-to-create-an-empty-array-in-swift"target="_blank"></a> others, to declare a modifiable, empty array of Strings looks like this.
+        Let's say you are loading a bunch of names from a text file, from a database, or across a network. 
+        In order to create a mutable array of strings, you can use this syntax:
         <pre><code>var names = [String]()</code></pre>
-        The translation of this line of code into English reads like this. "Create a variable called 
+        or
+        <pre><code>var names: [String] = []</code></pre>
+        <p>
+        The translation of this line of code into English reads like this: "Create a variable called 
         <kbd>names</kbd>. Create an empty array of Strings and assign it to the the <kbd>names</kbd> variable." 
         Since there is no way for the compiler to interpolate the type of values in an empty array, you have to 
-        tell it the type. Also, you have to use the 
+        tell it the type. 
+        </p>
+        <p>
+        Also, you have to use the 
         <a href="https://stackoverflow.com/questions/24002733/add-an-element-to-an-array-in-swift" target = "_blank"> append or insert 
-        Built in Functions(BIF's)</a> to add to the array, not the accessor operator <kbd>[]</kbd>.
+        Built in Functions(BIF's)</a> to add to the array, not the accessor operator <kbd>[]</kbd>, like you could in Python of JavaScript.
+        </p>
       </p>
       <p>
         Swift has a lot of <a href="https://swiftdoc.org/v3.0/type/array/#func-poplast" target="_blank">BIF's</a> that work with 
         arrays. We'll cover some of these BIFs in detail during week 04 of this class.
       </p>
+
+      <h1>Enumerations</h1>
+
+        <p>In Swift, <a href="https://docs.swift.org/swift-book/LanguageGuide/Enumerations.html" target="_blank">Enumerations</a> can be declared like this:</p>
+
+        <pre><code class="Swift">enum CompassPoint { 
+  case north
+  case south
+  case east
+  case west
+})</code></pre>
+
+        <p>The values defined in an enumeration (such as north, south, east, and west) are its enumeration cases. You can also list multiple cases on the same line like this:</p>
+        <pre><code class="Swift">enum CompassPoint { 
+  case north, south, east, west
+})</code></pre>
+        <p>Enums are first class types and their cases are values of the type. They can be used like this:</p>
+        <pre><code class="Swift">var directionToHead = CompassPoint.west</code></pre>
+        <p>Once the type of the variable is defined, you can change it using a shorter syntax (since the enum type can be inferred):</p>
+        <pre><code class="Swift">directionToHead = .east</code></pre>
     <h1>Organization and Access</h1>
       <p>
         All computer languages are ways to organize your communication and
