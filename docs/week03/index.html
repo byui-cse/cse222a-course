@@ -9,7 +9,7 @@
       type="image/x-i        con"
     />
     <script type="text/javascript">
-      var codeType = "JavaScript";
+      var codeType = "Swift";
     </script>
     <script src="https://byui-cse.github.io/Language-Courses/site/highlight.pack.js"></script>
     <link
@@ -358,9 +358,7 @@ extension TabletMedication {
     func getDescription() -> String {
         "['name':'\(name)','count':'\(count)','potency':'\(potency)','units':'\(potencyUnits)'"
     }
-}
-</code>
-</pre>
+}</code></pre>
 
       <p>
         As you can see, it doesn't take much code to create an extension. It's
@@ -368,6 +366,53 @@ extension TabletMedication {
         may start to overuse it. Once again, be wise. Use it when it makes your
         code easier to read and when it lets you write less code.
       </p>
+
+      <h2>Protocols</h2>
+      <p>
+        In many languages, if you want to allow a developer to create a new
+        class or other object that will be used by library functions or other
+        existing classes, you make sure it has all needed characteristics by
+        require it to be a child of an existing class that meets those
+        characteristics. Swift adds a concept called
+        <a
+          href="https://docs.swift.org/swift-book/LanguageGuide/Protocols.html"
+        >
+          protocols</a
+        >
+        that specify the requirements that a class and certain other language
+        elements must have for a particular situation. When specifying a new
+        class that you want to be able to be used in certain ways, you include
+        the template name in the class definition and then the complier makes
+        sure that you actually implement the needed functionality.
+      </p>
+      <p>
+        To indicate that SomeClass is child of SomeSuperclass and also confirms
+        to two protocols you would write it like the following. You do not need
+        to have a super class, but if you do, it comes before the protocols in
+        the class definition.
+      </p>
+
+      <pre><code>
+class SomeClass: SomeSuperclass, FirstProtocol, AnotherProtocol {
+  // class definition goes here
+}</code></pre>
+
+      <p>
+        For example, if you want object from your new class to be able to be
+        elements in any Collection, your class must conform to the
+        <a href="https://developer.apple.com/documentation/swift/sequence">
+          Sequence protocol.</a
+        >
+        If you want objects from a new class to be able to be used as the keys
+        for a dictionary, it must also confirm to the
+        <a href="https://developer.apple.com/documentation/swift/hashable">
+          Hashable protocol.</a
+        >
+        You can specify your own protocols, but initially you will want to be
+        able to specify protocols attached to classes you create if you want
+        them to work with built in functions.
+      </p>
+
       <h2>Class Alternatives</h2>
       <p>
         While classes can sometimes be exactly what you need to solve a problem,
@@ -424,14 +469,20 @@ extension TabletMedication {
         inheritance. You can, however, conform to
         <a href="https://docs.swift.org/swift-book/LanguageGuide/Protocols.html"
           >protocols</a
-        >. Protocols are rules or blue prints that require the conforming
-        structure to have and/or do specific things.
+        >
+        as described above which lets structs and the functions they contain be
+        used in places that would usually require classes and inheritance.
       </p>
       <p>
-        You can also extend structures. So if structures most closely fit your
-        need use them. If classes do, use them. You should also feel free to mix
-        and match classes and structures. You don't have to use just one of
-        these types in an application.
+        Swift structs can also contain methods, unlike structs from other
+        languages.
+      </p>
+      <p>
+        You can also extend structures. If structures most closely fit your use
+        case, you should use them. Generally you should always start with a
+        struct until it no longer works for your use case. You should also feel
+        free to mix and match classes and structures. You don't have to use just
+        one of these types in an application.
       </p>
 
       <h3>Tuples</h3>
@@ -507,9 +558,7 @@ private func validateExpirationDate(aDate:Date)->Bool{
   .
   .
   .
-}
-</code>
-</pre>
+}</code></pre>
       <p>
         Anything that is not to be accessed outside of the file must have the
         keyword <kbd>private</kbd> in front of the rest of the declaration. In
