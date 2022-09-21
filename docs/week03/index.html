@@ -398,19 +398,15 @@ class SomeClass: SomeSuperclass, FirstProtocol, AnotherProtocol {
 }</code></pre>
 
       <p>
-        For example, if you want object from your new class to be able to be
-        elements in any Collection, your class must conform to the
-        <a href="https://developer.apple.com/documentation/swift/sequence">
-          Sequence protocol.</a
-        >
-        If you want objects from a new class to be able to be used as the keys
-        for a dictionary, it must also confirm to the
-        <a href="https://developer.apple.com/documentation/swift/hashable">
-          Hashable protocol.</a
-        >
-        You can specify your own protocols, but initially you will want to be
-        able to specify protocols attached to classes you create if you want
-        them to work with built in functions.
+        For example, if you create a new struct or class that confirms to the
+        <a href="https://developer.apple.com/documentation/swift/sequence"
+          >Sequence protocol</a
+        >, you are able to take advantage of built-in functionality that uses
+        that protocol without needing to make that a child class of some parent
+        to get the functionality. An object that conforms to the Sequence
+        protocol can automatically be used as the source in a for…in loop. There
+        is an example of that in the file provided for you to use in this week's
+        task.
       </p>
 
       <h2>Class Alternatives</h2>
