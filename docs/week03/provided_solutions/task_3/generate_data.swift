@@ -3,26 +3,58 @@
 //  week03_task_3
 //
 //
+// To use this you just need to call generateData(). However, to make it work, you need to define some things in your own files:
+// In a model.swift file you need to define
+//      enum EmployeeType {
+//          case programmer
+//          case devLead
+//      }
+//      class Employee that has data elements used below
+//      class Manager that is a child of Employee
+// You also need to create this function:
+//      func add(managee:Employee, to aManager:Manager) -> (Bool,AssignmentError)
+//      It returns a tuple with a Bool to indicate if it was possible to add the employee to that manager under the rules
+//      and an enum of class AssignmentError (that you define) indicating the reason for failure if any
+// This will only compile if you provide those classes and this function
 
 import Foundation
 
+// These two constants are public so you can use them in your code.
+// The only other public item is the generateData() function
 
-/// This structure represents a stream of random numbers for a given [triangular distribution](https://www.statology.org/triangular-distribution/ ).
-/// The least value is a, the greatest value is b, and the peak value is c. All are required at instantiation. This stream implements the [Stein, Keblis (2009)](https://www.sciencedirect.com/science/article/pii/S0895717708002665) algorithm.
+// Constants used to make computation in the functions below more readable.
+let oneYear: Double = 365 * 24 * 60 * 60
+// No need to worry about leap years and such. This is close enough to meet the business' criteria.
+let fiveYears: Double = 5 * oneYear
+
+/// This structure represents a sequence of random numbers for a given [triangular distribution](https://www.statology.org/triangular-distribution/ ).
+/// The least value, greatest value and the peak value are all required at instantiation. This stream implements the [Stein, Keblis (2009)](https://www.sciencedirect.com/science/article/pii/S0895717708002665) algorithm.
 ///
 /// This struct is module private.
-private struct TriangularDistributionStream{
-    let a:Double
-    let b:Double
+/// By adding the protocols Sequence and IteratorProtocol, we can then use built in functionality including the example below where we use
+/// an element of this type in a for .. in ... loop and Swift takes care of everyting else for us
+private struct TriangularDistributionSequence: Sequence, IteratorProtocol {
+    let leastValue: Double
+    let greatestValue: Double
     /// The peak value (x value of the greatest y value) of the distribution.
-    let c:Double
-    
+    let peakValue: Double
+    /// This optional value will limit the sequence to a specific number of results, then return Nil after that.
+    /// If this is set to Nil, then a for...in loop using this sequence will never automaticlaly terminate.
+    var resultCount: Int?
+
     /// This function gets the next value in the distribution stream. All values are in \[a,b\].
+    /// THe function needs the mutating keyword because it is a struct function that modifies a value in the struct (resultCount)
     /// - Returns: a Double that is in the distribution.
-    func next() -> Double {
-        let u = Double.random(in: a...b)
-        let v = Double.random(in: a...b)
-        return(1-c)*min(u,v) + c*max(u, v)
+    mutating func next() -> Double? {
+        // if resultCount is defined, make sure it is still >0 and decrement it
+        guard let c = resultCount, c > 0 else {
+            return nil
+        }
+        resultCount = c - 1 // decrement resultCount
+
+        let u = Double.random(in: leastValue ... greatestValue)
+        let v = Double.random(in: leastValue ... greatestValue)
+        return (1 - peakValue) * Swift.min(u, v) + peakValue * Swift.max(u, v)
     }
 }
 
@@ -30,31 +62,28 @@ private struct TriangularDistributionStream{
 /// - Returns: a tuple consisting of a list of Manager instances and a list of Employees of type programmer.
 ///
 /// - Complexity: O(n)
-func generateData(numManagersNeeded:Int, numProgrammersNeeded:Int) -> ([Manager],[Employee]) {
-    //These numbers are indicated in the problem requirements.
-    
-    
-    //Generate an Array of managers. Data generation of a specific number of items
-    //is one of the few places where the use of for loops is defensible.
-    var existingManagers = buildManagers(numManagersNeeded: numManagersNeeded)
-    
+func generateData(numManagersNeeded: Int, numProgrammersNeeded: Int) -> ([Manager], [Employee]) {
+    // These numbers are indicated in the problem requirements.
 
-    //This value of c guarentees the number of experienced programmers is less than the number of managers
-    //as per the problem requirements. This line creates a stream of numbers in a triangular distribution.
-    let experienceStream = TriangularDistributionStream(a:0, b:1, c:0.22)
-    
-    //Generate an Array of programmers.
-    var programmers = buildProgrammers(numNoviceProgrammersNeeded: numProgrammersNeeded, experienceStream: experienceStream)
-    
-    
-    //Divide the programmer list into novice and experienced programmers.
-    let experiencedProgrammers = programmers.filter{
+    // Generate an Array of managers. Data generation of a specific number of items
+    // is one of the few places where the use of for loops is defensible rather than using built-in
+    // functions like map, filter and reduce.
+    var existingManagers = buildManagers(numManagersNeeded: numManagersNeeded)
+
+    // This value of c guarentees the number of experienced programmers is less than the number of managers
+    // as per the problem requirements. This line creates a stream of numbers in a triangular distribution.
+    let experienceSequence = TriangularDistributionSequence(leastValue: 0, greatestValue: 1, peakValue: 0.22, resultCount: numProgrammersNeeded)
+    // Generate an Array of programmers.
+    var programmers = buildProgrammers(experienceSequence)
+
+    // Divide the programmer list into novice and experienced programmers.
+    let experiencedProgrammers = programmers.filter {
         Date().timeIntervalSince($0.hireDate) >= oneYear && $0.yearsExperience > 5
     }
-    //Remove from programmers rather than filter as an example of using another method available
-    //from the Array API.
-    programmers.removeAll{
-        return Date().timeIntervalSince($0.hireDate) >= oneYear && $0.yearsExperience > 5
+    // Remove from programmers rather than filter as an example of using another method available
+    // from the Array API.
+    programmers.removeAll {
+        Date().timeIntervalSince($0.hireDate) >= oneYear && $0.yearsExperience > 5
     }
     print("Generated Testing Data")
     print("\tThis is provided as a service to aid you in debugging your code.\n\tDo NOT use it for calculations.")
@@ -62,24 +91,33 @@ func generateData(numManagersNeeded:Int, numProgrammersNeeded:Int) -> ([Manager]
     print("\tNovice Programmers: \(programmers.count)")
     print("\tExperienced Programmers: \(experiencedProgrammers.count)")
 
-    //distribute experienced programmers to managers
+    // distribute experienced programmers to managers
     existingManagers = assignExperiencedEmployee(employees: experiencedProgrammers, managers: existingManagers)
-   
+
     var unassignedProgrammers = [Employee]()
-    //distrubute novice programmers to managers
-    for var index in 0..<programmers.count{
-        let programmerIndex = index
-        var (message,updatedManager) = add(managee: programmers[index], to: existingManagers[index % numManagersNeeded])
-        while message != .none && index < existingManagers.count{
-            index += 1
-            (message, updatedManager) = add(managee: programmers[index], to: existingManagers[index % numManagersNeeded])
+    // distrubute novice programmers to managers
+
+    for programmerIndex in 0 ..< programmers.count {
+        var (message, updatedManager) = (AssignmentError.noManagers, existingManagers[0])
+        var managerIndex = 0
+        while message != .none, managerIndex < existingManagers.count {
+            // We use manager index to check each manager to see if we can add this programmer
+            // By adding it to the programmerIndex and using % we change the order we try the managers
+            // and so we spread them across all managers
+            (message, updatedManager) = add(managee: programmers[programmerIndex], to: existingManagers[Int(programmerIndex + managerIndex) % numManagersNeeded])
+            if message == .none {
+                // Since structs are passed by reference rather than value, we need to return a copy of the modified manager record and then put it into the array
+                existingManagers[Int(programmerIndex + managerIndex) % numManagersNeeded] = updatedManager
+            }
+            managerIndex += 1
         }
-        if message != .none{
-            unassignedProgrammers.append(programmers[index])
+        if message != .none {
+            unassignedProgrammers.append(programmers[programmerIndex])
             print("Couldn't add a novice Programmer \(programmerIndex) to a Manager. Reason: \(message)")
         }
     }
-    return (existingManagers,unassignedProgrammers)
+
+    return (existingManagers, unassignedProgrammers)
 }
 
 /// A module private function that generates the required number of programmers as per the problem statement.
@@ -91,16 +129,20 @@ func generateData(numManagersNeeded:Int, numProgrammersNeeded:Int) -> ([Manager]
 /// - Complexity: O(n)
 ///
 /// This function is module private.
-private func buildProgrammers(numNoviceProgrammersNeeded:Int, experienceStream:TriangularDistributionStream)->[Employee]{
-    if numNoviceProgrammersNeeded == 0 {
-        return [Employee]()
+private func buildProgrammers(_ experienceSequence: TriangularDistributionSequence) -> [Employee] {
+    var returnValue = [Employee]()
+    // If the array were very large, we could pass in the number of employees required as a
+    // parameter and pre-create the full array using something like this:
+    // let blankEmployee = Employee(name: "", hireDate: Date(), yearsExperience: 0, type: .programmer)
+    // var returnValue = Array(repeating: blankEmployee, count: numNeeded)
+    // Then we would just update array elements instead of appending
+
+    for experience in experienceSequence {
+        let aYearsExperience = UInt8(experience * 10)
+        let aHireDate = randomHireDate(experience: aYearsExperience)
+        returnValue.append(Employee(name: randomName(), hireDate: aHireDate, yearsExperience: aYearsExperience, type: .programmer))
     }
-    let aHireDate = randomHireDate()
-    var aYearsExperience = UInt8(experienceStream.next()*10)
-    if aYearsExperience > UInt8(aHireDate.distance(to: Date())/oneYear){
-        aYearsExperience = UInt8(aHireDate.distance(to: Date())/oneYear)
-    }
-    return [Employee(name: randomName(), hireDate: aHireDate, yearsExperience: aYearsExperience, type: .programmer)] + buildProgrammers(numNoviceProgrammersNeeded: numNoviceProgrammersNeeded-1, experienceStream: experienceStream)
+    return returnValue
 }
 
 /// This function instantiates a series of Manager instances according to the problem requirement. Each
@@ -110,11 +152,11 @@ private func buildProgrammers(numNoviceProgrammersNeeded:Int, experienceStream:T
 /// - Complexity: O(n)
 ///
 /// This function is module private.
-private func buildManagers(numManagersNeeded:Int)->[Manager]{
-    if numManagersNeeded == 0{
+private func buildManagers(numManagersNeeded: Int) -> [Manager] {
+    if numManagersNeeded == 0 {
         return [Manager]()
     }
-    let aManager = Manager(name: randomName(), hireDate: Date(), type: .devLead, yearsExperience: UInt8.random(in: 0..<22))
+    let aManager = Manager(name: randomName(), hireDate: Date(), type: .devLead, yearsExperience: UInt8.random(in: 0 ..< 22))
     return [aManager] + buildManagers(numManagersNeeded: numManagersNeeded - 1)
 }
 
@@ -129,32 +171,34 @@ private func buildManagers(numManagersNeeded:Int)->[Manager]{
 ///   - managers: remaining managers that don't have an experieced employee assigned to them
 /// - Returns: a list of managers with zero or one experienced employee assigned to them
 /// - Complexity: O(n)
-private func assignExperiencedEmployee(employees:[Employee],managers:[Manager]) -> [Manager] {
+private func assignExperiencedEmployee(employees: [Employee], managers: [Manager]) -> [Manager] {
     if employees.count == 0 {
         return managers
     }
     var mutableEmployees = employees
     var mutableManagers = managers
     let employeeHead = mutableEmployees.remove(at: 0)
-    let managerHead = mutableManagers.remove(at: 0)
-    let _ = add(managee: employeeHead, to: managerHead)
+    // Since the add(managee:to) function cannot modify the struct passed to it
+    // we need to explictly update managerHead with the returned modified manager
+    var managerHead = mutableManagers.remove(at: 0)
+    (_, managerHead) = add(managee: employeeHead, to: managerHead)
     return [managerHead] + assignExperiencedEmployee(employees: mutableEmployees, managers: mutableManagers)
 }
-
 
 /// Generates a random string of six characters used as a name.
 /// This function is module private.
 /// - Returns: a simulated name. The name need not make sense in any language.
 private func randomName() -> String {
-  let letters = "abcdefghijklmnopqrstuvwxyz"
-  return String((0..<7).map{ _ in letters.randomElement()! })
+    let letters = "abcdefghijklmnopqrstuvwxyz"
+    return String((0 ..< 7).map { _ in letters.randomElement()! })
 }
-
 
 /// Generates a Date used as a determinator for if an employee is a novice or experienced.
 /// This function is module private.
 /// - Returns: a simulated hire date in the range 0 to 10 years
 /// - Complexity: O(1)
-private func randomHireDate() -> Date{
-    return Date().advanced(by: -oneYear*Double(Int.random(in: 0..<10)))
+private func randomHireDate(experience: UInt8) -> Date {
+    // Make sure years at the company is not greater than  years of experience.
+    let maxYears = Swift.min(Int(experience), 10)
+    return Date().advanced(by: -oneYear * Double(Int.random(in: 0 ... maxYears)))
 }

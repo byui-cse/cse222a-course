@@ -16,18 +16,18 @@ enum AssignmentError {
     case violatedAddManageCriteria
     case tooFewManagees
     case noExperiecedManagee
+    case noManagers
 }
-
 
 /// A base-class that models all employees at our company.
 class Employee {
-    //set the default values of the properties
-    var name:String = ""
-    var hireDate:Date = Date.distantPast
-    var yearsExperience:UInt8 = UInt8.max
+    // set the default values of the properties
+    var name: String = ""
+    var hireDate: Date = .distantPast
+    var yearsExperience: UInt8 = .max
     let id = UUID().uuidString
-    var type:EmployeeType = EmployeeType.unassigned
-    
+    var type: EmployeeType = .unassigned
+
     /// Used to instantiate an instance of the Employee class
     /// - Parameters:
     ///   - name: the employee's name
@@ -35,26 +35,26 @@ class Employee {
     ///   - type: a selection from the EmployeeType enumeration
     ///   - yearsExperience: the number of years the employee has been functioning in this role in the industry
     /// - Complexity: O(1)
-    init(name:String, hireDate:Date, yearsExperience:UInt8, type:EmployeeType) {
+    init(name: String, hireDate: Date, yearsExperience: UInt8, type: EmployeeType) {
         self.name = name
         self.hireDate = hireDate
         self.yearsExperience = yearsExperience
         self.type = type
     }
-    
+
     /// Used to instantiate an instance of the Employee class with
     /// default paramters.
-    init(){}
+    init() {}
 }
 
 /// A class used to represent a manager and their managees.
-class Manager{
+class Manager {
     /*
      * These are examples of Swift stored properties.
      */
-    var employeeData:Employee = Employee()
-    var managees:[Employee] = []
-    
+    var employeeData: Employee = .init()
+    var managees: [Employee] = []
+
     /*
      * This is an example of an init function that initializes instances of both this class and the super class.
      */
@@ -64,11 +64,8 @@ class Manager{
     ///   - hireDate: the date they began working for our company
     ///   - type: a selection from the EmployeeType enumeration
     ///   - yearsExperience: the number of years the employee has been functioning in this role in the industry
-    ///   - canAddManageeCriteriaFunc: a criteria function used to determine if this instance of a manager
-    ///     can add additional managees based on the rules from HR.
     /// - Complexity: O(1)
-    init(name:String, hireDate:Date,type:EmployeeType, yearsExperience:UInt8) {
-        
+    init(name: String, hireDate: Date, type: EmployeeType, yearsExperience: UInt8) {
         employeeData.name = name
         employeeData.hireDate = hireDate
         employeeData.yearsExperience = yearsExperience

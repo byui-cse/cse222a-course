@@ -10,9 +10,9 @@ import Foundation
 /*
  * A predefined Array of ages
  */
-var someAges = [3.4,54.6,21.7,18.4]
+var someAges = [3.4, 54.6, 21.7, 18.4]
 
-printResults(result: calculateAverage(ages:someAges))
+printResults(result: calculateAverage(ages: someAges))
 
 /*
  * clear the someAges Array and let the user enter some
@@ -22,11 +22,11 @@ someAges = []
 while true {
     print("Enter an age:")
     let numberAsString = readLine()
-    //check if the user is done entering ages
+    // check if the user is done entering ages
     guard numberAsString != "done" else {
         break
     }
-    //make sure they entered a number
+    // make sure they entered a number
     guard let number = Double(numberAsString!) else {
         print("\(numberAsString!) is not a number")
         continue
@@ -34,24 +34,23 @@ while true {
     someAges.append(number)
 }
 
-printResults(result: calculateAverage(ages:someAges))
+printResults(result: calculateAverage(ages: someAges))
 
-func calculateAverage(ages:[Double]) -> (Bool,Double) {
+func calculateAverage(ages: [Double]) -> (Bool, Double) {
     guard !ages.isEmpty else {
-        return (false,-Double.infinity)
+        return (false, -Double.infinity)
     }
-    let sum = ages.reduce(0.0){
-        $0+$1
+    let sum = ages.reduce(0.0) {
+        $0 + $1
     }
-    return (true,sum/Double(ages.count))
+    return (true, sum / Double(ages.count))
 }
 
-func printResults(result:(Bool,Double)){
-    let (succeded,averageAge) = result
+func printResults(result: (Bool, Double)) {
+    let (succeded, averageAge) = result
     guard succeded else {
         print("calculation failed")
         return
     }
     print("The average age is \(averageAge)")
 }
-
