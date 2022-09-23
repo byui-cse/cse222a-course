@@ -156,7 +156,7 @@ private func buildManagers(numManagersNeeded: Int) -> [Manager] {
     if numManagersNeeded == 0 {
         return [Manager]()
     }
-    let aManager = Manager(name: randomName(), hireDate: Date(), type: .devLead, yearsExperience: UInt8.random(in: 0 ..< 22))
+    let aManager = Manager(name: randomName(), hireDate: Date(), yearsExperience: UInt8.random(in: 0 ..< 22), type: .devLead)
     return [aManager] + buildManagers(numManagersNeeded: numManagersNeeded - 1)
 }
 

@@ -47,7 +47,7 @@ private struct TriangularDistributionSequence: Sequence, IteratorProtocol {
     /// - Returns: a Double that is in the distribution.
     mutating func next() -> Double? {
         // if resultCount is defined, make sure it is still >0 and decrement it
-        guard let c = resultCount, c > 0 {
+        guard let c = resultCount, c > 0 else {
             return nil
         }
         resultCount = c - 1 // decrement resultCount
