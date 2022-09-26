@@ -20,3 +20,13 @@ body {
 li {
   line-height: 1.5;
 }
+
+table.blueTable {
+  width: 50%;
+  margin: 0 auto;
+  font-size: 0.8em;
+}
+
+table.blueTable tbody td {
+  font-size: 18px;
+}
