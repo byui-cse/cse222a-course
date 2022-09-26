@@ -224,20 +224,20 @@
         or need greater control, but unlike some other languages, yes I'm
         looking at you C++ and Java, you don't have to if you don't need to.
       </p>
-      <h2>Has_A Inheritance</h2>
+      <h2>HAS-A Inheritance</h2>
       <p>
         Like all languages that allow Object Oriented application design, Swift
         supports
         <a
           href="https://stackoverflow.com/questions/2218937/has-a-is-a-terminology-in-object-oriented-language"
-          >Has_A type inheritance</a
+          >HAS-A type inheritance</a
         >. As an example, look at the Medication class below (see the UML class
         diagram above for an overview). The medication class represents a bottle
-        of medication in the pharmacy. It Has_A instance of
+        of medication in the pharmacy. It HAS-A instance of
         <span class="file_name">Date</span> that represents the expiration date
         of this bottle of medication. You can see in the code snippet below that
         there is an instance property called expirationDate. Its type is Date.
-        That's it. That's all you have to do to use the Has_A type of
+        That's it. That's all you have to do to use the HAS-A type of
         inheritance. Also, if needed, you can have instance variables that are
         arrays of custom types like Dates.
       </p>
@@ -260,7 +260,7 @@
 
       <p>
         It is also common for there to be some sort of container that holds
-        multiple instances of a class in a Has_A relationship. The
+        multiple instances of a class in a HAS-A relationship. The
         <kbd>PharmaceuticalStockModel</kbd> class has such a relationship as
         seen in the earlier UML diagram and this code snippet.
       </p>
@@ -274,14 +274,14 @@
 </code>
 </pre>
 
-      <h2>Is_A Inheritance</h2>
+      <h2>IS-A Inheritance</h2>
       <p>
         <a
           href="https://learnappmaking.com/swift-inheritance-subclassing-how-to/"
-          >Is_A inheritance is done differently</a
+          >IS-A inheritance is done differently</a
         >. The snippet below contains the code for both the
         <kbd>LiquidMedication</kbd> and the <kbd>TabletMedication</kbd> classes.
-        They both have Is_A relationships with the <kbd>Medication</kbd> class
+        They both have IS-A relationships with the <kbd>Medication</kbd> class
         and are subclasses of it. Also, they are child classes of the parent
         class <kbd>Medication</kbd>. They are derived classes of the
         <kbd>Medication</kbd> base class. These statements all mean the same
@@ -320,7 +320,7 @@ class TabletMedication: Medication {
         <kbd>super</kbd> keyword to call the init method of the
         <kbd>Medication</kbd> class.
       </p>
-      <h2>Is_A Inheritance By Extension</h2>
+      <h2>IS-A Inheritance By Extension</h2>
       <p>
         There is another very cool way to do what is usually done in other
         languages by inheritance. In Swift you can add to an existing class
@@ -460,8 +460,8 @@ class SomeClass: SomeSuperclass, FirstProtocol, AnotherProtocol {
         have to. This is another difference between classes and structures.
       </p>
       <p>
-        In other ways, structures and classes are very similar. Has_a types of
-        inheritance are supported for structures but you can not use Is_a
+        In other ways, structures and classes are very similar. HAS-A types of
+        inheritance are supported for structures but you can not use IS-A
         inheritance. You can, however, conform to
         <a href="https://docs.swift.org/swift-book/LanguageGuide/Protocols.html"
           >protocols</a
@@ -487,7 +487,7 @@ class SomeClass: SomeSuperclass, FirstProtocol, AnotherProtocol {
         <a href="https://www.geeksforgeeks.org/swift-tuples/" target="_blank"
           >tuples</a
         >. As in those other languages, tuples are a restricted type. In other
-        words Is_a inheritance and extensions are not applicable to tuples.
+        words IS-A inheritance and extensions are not applicable to tuples.
         Also, tuples don't have property names. All they really do is keep
         associated yet independent pieces of data together.
       </p>
