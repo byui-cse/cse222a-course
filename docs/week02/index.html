@@ -38,8 +38,8 @@
         Remember, both Python and Swift have C as one of their ancestors.
         Because of this, it is not shocking to find out that they share some of
         the same C-type operators. These include +, -, /, *, ==, !=, &lt, &gt,
-        etc. Go to these two sites, and can compare the operators for the
-        two languages.
+        etc. Go to these two sites, and can compare the operators for the two
+        languages.
         <a
           href="https://www.tutorialspoint.com/python/python_basic_operators.htm"
           target="_blank"
@@ -49,17 +49,22 @@
         <a
           href="https://www.tutorialspoint.com/swift/swift_operators.htm"
           target="blank"
-          >Swift's list of operators</a>. Or, for a more detailed description of Swift's operators, check out <a href="https://docs.swift.org/swift-book/LanguageGuide/BasicOperators.html" target="blank">the official documentation</a>. When you operators for the two languages, you will find that Python has a few that Swift
-        does not and that Swift has a few that Python does not. You will also see that the conditional operators, also known
-        as logical operators, exist in both languages but use different
-        characters.
+          >Swift's list of operators</a
+        >. Or, for a more detailed description of Swift's operators, check out
+        <a
+          href="https://docs.swift.org/swift-book/LanguageGuide/BasicOperators.html"
+          target="blank"
+          >the official documentation</a
+        >. When you operators for the two languages, you will find that Python
+        has a few that Swift does not and that Swift has a few that Python does
+        not. You will also see that the conditional operators, also known as
+        logical operators, exist in both languages but use different characters.
       </p>
       <h3>Swift's missing operators</h3>
       <p>
-        Because Python and Swift are different languages and the creators
-        of Swift had different opinions than those who created Python,
-        there are some Python operators you should not expect to find in
-        Swift. They are:
+        Because Python and Swift are different languages and the creators of
+        Swift had different opinions than those who created Python, there are
+        some Python operators you should not expect to find in Swift. They are:
       </p>
       <ul>
         <li>// - the floor division operator</li>
@@ -70,9 +75,9 @@
         <li>not - the logical not operator</li>
       </ul>
       <p>
-        Don't get the wrong idea. Each of these behaviors can be done in
-        Swift, they will just be done a little differently. Take a look at
-        Table 1 to see how.
+        Don't get the wrong idea. Each of these behaviors can be done in Swift,
+        they will just be done a little differently. Take a look at Table 1 to
+        see how.
       </p>
 
       <table class="blueTable">
@@ -133,32 +138,43 @@ age = 5
 age = 4.2
 age = 'old'</code></pre>
       <p>
-        Swift has both variables and constants. Unlike in Python,
-        each variable or constant in Swift can hold only one type and that type can not change. In Swift you use the 
-        var keyword to declare a variable. Like this:
+        Swift has both variables and constants. Unlike in Python, each variable
+        or constant in Swift can hold only one type and that type can not
+        change. In Swift you use the var keyword to declare a variable. Like
+        this:
       </p>
-      <p>
+      <p></p>
       <pre><code class="Swift">var age = 3
 age = 5
 age = "4"//compilation failure, type change
 age = 4.2//compilation failure, type change
 age = "old"//compilation failure, type change</code></pre>
-    <p>
-      Swift uses what is called <a href="https://www.merriam-webster.com/dictionary/interpolate" target="_blank">'interpolation'</a> 
-      to figure out the type of the variable. In the code above, the compiler 
-      discovered that the variable age is of type Integer because 3 is an Integer and inserted the Int keyword into the compiled code. 
-      In the code snippet below, the compiler 
-      discovers that the height variable is of type Double because 3.25 is a Double. Double being one of Swift's basic types of floating point numbers.
-    </p>
-    <p>
+      <p>
+        Swift uses what is called
+        <a
+          href="https://www.merriam-webster.com/dictionary/interpolate"
+          target="_blank"
+          >'interpolation'</a
+        >
+        to figure out the type of the variable. In the code above, the compiler
+        discovered that the variable age is of type Integer because 3 is an
+        Integer and inserted the Int keyword into the compiled code. In the code
+        snippet below, the compiler discovers that the height variable is of
+        type Double because 3.25 is a Double. Double being one of Swift's basic
+        types of floating point numbers.
+      </p>
+      <p></p>
       <pre>
 <code class="Swift">var height = 3.25
 height = 4.2
 height = 4//no compilation failure, 4 is converted to a Double
 height = age//compiliation failure, age's type in the previous example doesn't match
 height = "tall"//compilation failure, type change</code></pre>
-  <p>Here is an example where the compiler interpolates a variable to be of type String.</p>
-  <p>
+      <p>
+        Here is an example where the compiler interpolates a variable to be of
+        type String.
+      </p>
+      <p></p>
       <pre><code class="Swift">var name = "Sue"
 name = "Gunhilda"
 name = "7"
@@ -166,160 +182,265 @@ name = 4//compilation failure, type change
 name = age//compiliation failure, age's type in the previous example doesn't match
 name = 3.1456778889547637653//compilation failure, type change</code></pre>
       <h3>Constants</h3>
-      <p>In Python, constants are declared using an all upper case name, a hold-over from its C ancestor.</p>
+      <p>
+        In Python, constants are declared using an all upper case name, a
+        hold-over from its C ancestor.
+      </p>
 
       <pre>
 <code class="Python">PI=3.14</code></pre>
       <p>
         In Swift this is done differently. Instead of using all upper case
-        names, Swift requires the use of the let keyword. Like this:
+        names, Swift requires the use of the <kbd>let</kbd> keyword. Like this:
       </p>
       <pre>
 <code>let pi = 3.14</code></pre>
       <p>
-        For more information about declaring and using variables and constants in Swift
-        please go and watch
+        The <kbd>let</kbd> keyword creates an immutable variable. For more
+        information about declaring and using variables and constants in Swift,
+        please see
         <a
-          href="https://www.youtube.com/watch?v=uhmZ5_uEEVQ"
-          target="_blank"
-          rel="noreferrer"
-          >Swift Variables - var vs. let explained</a> now.
+          href="https://www.hackingwithswift.com/example-code/language/whats-the-difference-between-let-and-var"
+          >this page.</a
+        >
       </p>
       <h3>But I Want More Control!</h3>
       <p>
-        Well...sometimes you do and sometimes you don't. You can tell the Swift compiler the type of a variable 
-        instead of allowing it to interpolate it with any <a href="https://www.tutorialspoint.com/swift/swift_variables.htm" target="_blank">basic Swift type</a>. 
-        For example, 
-              <pre>
-<code>let pi:Float = 3.14</code></pre>
-      creates a constant called pi of type Float, a floating point number type that uses fewer bytes of RAM than a variable of type Double. Also, 
-       <pre>
-<code>var name:String = "Sue"</code></pre>
-      creates a variable called 'name' of type String and sets the value to be Sue.
-      <p>
-        Swift has something analogous the Python's None. In Swift it is nil. Declaring the type of a variable is required if the variable is initialized to nil. 
-        Think about this for a minute and take a look at this code snippet. 
+        Well...sometimes you do and sometimes you don't. You can tell the Swift
+        compiler the type of a variable instead of allowing it to interpolate it
+        with any
+        <a
+          href="https://www.tutorialspoint.com/swift/swift_variables.htm"
+          target="_blank"
+          >basic Swift type</a
+        >. For example,
       </p>
-        <pre>
-<code>var city = nil</code></pre>
-        Here, the compiler can't interpolate a type for the city variable because nil has no type! That code won't compile.
+
+      <pre>
+<code>let pi:Float = 3.14</code></pre>
+      creates a constant called <kbd>pi</kbd> of type <kbd>Float</kbd>, a
+      floating point number type that uses fewer bytes of RAM than a variable of
+      type <kbd>Double</kbd>. Also,
+      <pre>
+<code>var name:String = "Sue"</code></pre>
+      creates a variable called 'name' of type String and sets the value to be
+      Sue. Notice the use of the <kbd>var</kbd> keyword. This declares a
+      <kbd>mutable</kbd> variable.
       <p>
-        Instead, Swift will require you to add in the type. You might think, based on previous programming experience, that this code snippet would compile 
-        </p>
-        <pre><code>var city:String = nil</code></pre>
-        <p>
-        but that would also be incorrect. This code will also fail to compile and you will get an error message that includes a '?' character. This is 
-        because Swift is designed to be safer than other languages you may have used. Instead, you would need a varable that is an 'Optional' type.
+        Swift has something analogous the Python's None. In Swift it is nil.
+        Declaring the type of a variable is required if the variable is
+        initialized to nil. Think about this for a minute and take a look at
+        this code snippet.
+      </p>
+      <pre>
+<code>var city = nil</code></pre>
+      Here, the compiler can't interpolate a type for the city variable because
+      nil has no type! That code won't compile.
+      <p>
+        Instead, Swift will require you to add in the type. You might think,
+        based on previous programming experience, that this code snippet would
+        compile
+      </p>
+      <pre><code>var city:String = nil</code></pre>
+      <p>
+        but that would also be incorrect. This code will also fail to compile
+        and you will get an error message that includes a '?' character. This is
+        because Swift is designed to be safer than other languages you may have
+        used. Instead, you would need a varable that is an 'Optional' type.
       </p>
       <h3>Optionals</h3>
       <p>
-        In Swift, variables of type <a href="https://www.programiz.com/swift-programming/optionals" target="_blank">Optional</a> are either nil, or are wrappers around regular variable types. For example, this code snippet
-        <pre><code>var city:String? = nil</code></pre>
-       reads, in English, like this: "Create a variable called city of type String Optional and set it to nil." If you later figure out what the city 
-       variable should be set to, you can have the city variable wrap a value by doing something similar to this.
-        <pre><code>city = "Kinshasa"</code></pre>
-      The compiler takes care of all the wrapping up of the string Kinshasa in the String Optional for you. You don't need to add any extra code. After 
-      assigning "Kinshasa" to the String Optional city, the city String Optional now is wrapped around the String "Kinshasa".
+        In Swift, variables of type
+        <a
+          href="https://www.programiz.com/swift-programming/optionals"
+          target="_blank"
+          >Optional</a
+        >
+        are either nil, or are wrappers around regular variable types. For
+        example, this code snippet
+      </p>
+      <pre><code>var city:String? = nil</code></pre>
+      <p>
+        reads, in English, like this: "Create a variable called city of type
+        String Optional and set it to nil." If you later figure out what the
+        city variable should be set to, you can have the city variable wrap a
+        value by doing something similar to this.
+      </p>
+      <pre><code>city = "Kinshasa"</code></pre>
+      <p>
+        The compiler takes care of all the wrapping up of the string Kinshasa in
+        the String Optional for you. You don't need to add any extra code. After
+        assigning "Kinshasa" to the String Optional city, the city String
+        Optional now is wrapped around the String "Kinshasa".
       </p>
       <p>
-        When you have a String Optional and want to get the string back out, you use the '!' operator. Be careful! If you try this
-  <pre><code>print(city!)</code></pre>
-       and city is nil, you will get a runtime failure with a message saying that an unexpected nil was found. These optionals come in VERY handy and it is EASY 
-       to check to see if something is nil using optionals. Take a look at the following snippet.
-
-  <pre><code>print(city ?? "Unknown")</code></pre>
-      This code prints "Unknown" if the String Optional city is nil, or the value wrapped by the String Optional if city is not nil. this is due to the 
-      nil-coalescing operator, ??. That's its job. In this case, Kinshasa is printed out since city is not nil.
+        When you have a String Optional and want to get the string back out, you
+        use the '!' operator. Be careful! If you try this
+      </p>
+      <pre><code>print(city!)</code></pre>
+      <p>
+        and city is nil, you will get a runtime failure with a message saying
+        that an unexpected nil was found. These optionals come in VERY handy and
+        it is EASY to check to see if something is nil using optionals. Take a
+        look at the following snippet.
+      </p>
+      <pre><code>print(city ?? "Unknown")</code></pre>
+      <p>
+        This code prints "Unknown" if the String Optional city is nil, or the
+        value wrapped by the String Optional if city is not nil. this is due to
+        the nil-coalescing operator, ??. That's its job. In this case, Kinshasa
+        is printed out since city is not nil.
       </p>
       <h3>Wrap Up</h3>
 
       <p>
         As with all things, there are pluses and minuses of requiring keywords
-        like <kbd>var</kbd> and <kbd>let</kbd> and having or not having some operators. One
-        disadvantage of requiring <kbd>var</kbd> and <kbd>let</kbd> is the extra cluttering of the
-        code with 'unnecessary' words. An advantage is explicitness. Everyone
-        that later reads your code will know exactly what you meant to have
-        happen. Also, because of this explicitness, a variable can't be
-        accidentally declared twice in Swift, a situation which can produce
-        strange, difficult to debug, bad behavior in large Python code sets.
+        like <kbd>var</kbd> and <kbd>let</kbd> and having or not having some
+        operators. One disadvantage of requiring <kbd>var</kbd> and
+        <kbd>let</kbd> is the extra cluttering of the code with 'unnecessary'
+        words. An advantage is explicitness. Everyone that later reads your code
+        will know exactly what you meant to have happen. Also, because of this
+        explicitness, a variable can't be accidentally declared twice in Swift,
+        a situation which can produce strange, difficult to debug, bad behavior
+        in large Python code sets.
       </p>
       <p>
-        Which set of operators to include in a language often depends on the languages
-        the language creator likes and dislikes. Perhaps the creators of Python
-        thought the syntax of Structured Query Language (SQL) was easier to
-        understand and so they adopted the <kbd>and</kbd>, <kbd>or</kbd>, and <kbd>not</kbd> operators from SQL. The choices the creators make is based on opinion. Any other set of operators is just as valid. Don't get 
-        caught up in the pseudo-religious fervor that some programmers adopt. Every language is good at some things 
-        and bad at others. This includes both Python and Swift.
+        Which set of operators to include in a language often depends on the
+        languages the language creator likes and dislikes. Perhaps the creators
+        of Python thought the syntax of Structured Query Language (SQL) was
+        easier to understand and so they adopted the <kbd>and</kbd>,
+        <kbd>or</kbd>, and <kbd>not</kbd> operators from SQL. The choices the
+        creators make is based on opinion. Any other set of operators is just as
+        valid. Don't get caught up in the pseudo-religious fervor that some
+        programmers adopt. Every language is good at some things and bad at
+        others. This includes both Python and Swift.
       </p>
 
       <h1>Arrays</h1>
-      <p>In Swift, <a href="https://developer.apple.com/documentation/swift/array" target="_blank">Arrays</a> can be declared like this if you want an array that can be modified. 
-      <pre><code>var names = ['Bob','Sue','Jorge','Svetlana']</code></pre>
-      If you want an array that can't be modified, use the let keyword like this:
-          <pre><code class="Swift">let names = ['Bob','Sue','Jorge','Svetlana']</code></pre>
-      These array declarations and assignments probably look very familiar to you.</p>
-      <p>To access elements of an array, use the access operator []
-      <pre><code>let aName = names[0]</code></pre>
-        with zero being the index of the first element in the array. Not only can 
-        you access the elements of the array, but you can modify them also.
-      <pre><code>names[2]='George'</code></pre>
-      After the previous line of code executes, the third element of the names array is George instead of Jorge.</p>
-      <p>One of the goals of the developers of the Swift language is code safety. Because of this, if you attempt to 
-      modify an array by using an index that is too large, your code will produce a runtime error instead of 
-      writing to memory the application hasn't claimed like some other languages do. Yes C, I'm looking at you.</p>
       <p>
-        That's why this code
-        <pre><code>names[4]='George'</code></pre>
-        fails at runtime.
+        In Swift,
+        <a
+          href="https://developer.apple.com/documentation/swift/array"
+          target="_blank"
+          >Arrays</a
+        >
+        can be declared like this if you want an array that can be modified.
+      </p>
+      <pre><code>var names = ['Bob','Sue','Jorge','Svetlana']</code></pre>
+      <p>
+        If you want an array that can't be modified, use the let keyword like
+        this:
+      </p>
+      <pre><code class="Swift">let names = ['Bob','Sue','Jorge','Svetlana']</code></pre>
+
+      <p>
+        These array declarations and assignments probably look very familiar to
+        you.
+      </p>
+      <p>To access elements of an array, use the access operator []</p>
+      <pre><code>let aName = names[0]</code></pre>
+      <p>
+        with zero being the index of the first element in the array. Not only
+        can you access the elements of the array, but you can modify them also.
+      </p>
+      <pre><code>names[2]='George'</code></pre>
+      <p>
+        After the previous line of code executes, the third element of the names
+        array is George instead of Jorge.
       </p>
       <p>
-        While this way of creating arrays is great when you know all or most of the values that are to be stored in 
-        the array, what if you don't know any of them? For example, you are loading a file that has all the values 
+        One of the goals of the developers of the Swift language is code safety.
+        Because of this, if you attempt to modify an array by using an index
+        that is too large, your code will produce a runtime error instead of
+        writing to memory the application hasn't claimed like some other
+        languages do. Yes C, I'm looking at you.
+      </p>
+      <p>That's why this code</p>
+      <pre><code>names[4]='George'</code></pre>
+      <p>fails at runtime.</p>
+      <p>
+        While this way of creating arrays is great when you know all or most of
+        the values that are to be stored in the array, what if you don't know
+        any of them? For example, you are loading a file that has all the values
         for the array. What you do then is to declare an empty array.
       </p>
       <p>
-        Let's say you are loading a bunch of names from a text file, from a database, or across a network. 
-        In order to create a mutable array of strings, you can use this syntax:
-        <pre><code>var names = [String]()</code></pre>
-        or
-        <pre><code>var names: [String] = []</code></pre>
-        <p>
-        The translation of this line of code into English reads like this: "Create a variable called 
-        <kbd>names</kbd>. Create an empty array of Strings and assign it to the the <kbd>names</kbd> variable." 
-        Since there is no way for the compiler to interpolate the type of values in an empty array, you have to 
-        tell it the type. 
-        </p>
-        <p>
-        Also, you have to use the 
-        <a href="https://stackoverflow.com/questions/24002733/add-an-element-to-an-array-in-swift" target = "_blank"> append or insert 
-        Built in Functions(BIF's)</a> to add to the array, not the accessor operator <kbd>[]</kbd>, like you could in Python of JavaScript.
-        </p>
+        Let's say you are loading a bunch of names from a text file, from a
+        database, or across a network. In order to create a mutable array of
+        strings, you can use this syntax:
+      </p>
+      <pre><code>var names = [String]()</code></pre>
+      <p>or</p>
+      <pre><code>var names: [String] = []</code></pre>
+      <p>
+        The translation of this line of code into English reads like this:
+        "Create a variable called
+        <kbd>names</kbd>. Create an empty array of Strings and assign it to the
+        the <kbd>names</kbd> variable." Since there is no way for the compiler
+        to interpolate the type of values in an empty array, you have to tell it
+        the type.
       </p>
       <p>
-        Swift has a lot of <a href="https://swiftdoc.org/v3.0/type/array/#func-poplast" target="_blank">BIF's</a> that work with 
-        arrays. We'll cover some of these BIFs in detail during week 04 of this class.
+        Also, you have to use the
+        <a
+          href="https://stackoverflow.com/questions/24002733/add-an-element-to-an-array-in-swift"
+          target="_blank"
+        >
+          append or insert Built in Functions(BIF's)</a
+        >
+        to add to the array, not the accessor operator <kbd>[]</kbd>, like you
+        could in Python of JavaScript.
+      </p>
+
+      <p>
+        Swift has a lot of
+        <a
+          href="https://swiftdoc.org/v3.0/type/array/#func-poplast"
+          target="_blank"
+          >BIF's</a
+        >
+        that work with arrays. We'll cover some of these BIFs in detail during
+        week 04 of this class.
       </p>
 
       <h1>Enumerations</h1>
 
-        <p>In Swift, <a href="https://docs.swift.org/swift-book/LanguageGuide/Enumerations.html" target="_blank">Enumerations</a> can be declared like this:</p>
+      <p>
+        In Swift,
+        <a
+          href="https://docs.swift.org/swift-book/LanguageGuide/Enumerations.html"
+          target="_blank"
+          >Enumerations</a
+        >
+        can be declared like this:
+      </p>
 
-        <pre><code class="Swift">enum CompassPoint { 
+      <pre><code class="Swift">enum CompassPoint { 
   case north
   case south
   case east
   case west
 })</code></pre>
 
-        <p>The values defined in an enumeration (such as north, south, east, and west) are its enumeration cases. You can also list multiple cases on the same line like this:</p>
-        <pre><code class="Swift">enum CompassPoint { 
+      <p>
+        The values defined in an enumeration (such as north, south, east, and
+        west) are its enumeration cases. You can also list multiple cases on the
+        same line like this:
+      </p>
+      <pre><code class="Swift">enum CompassPoint { 
   case north, south, east, west
 })</code></pre>
-        <p>Enums are first class types and their cases are values of the type. They can be used like this:</p>
-        <pre><code class="Swift">var directionToHead = CompassPoint.west</code></pre>
-        <p>Once the type of the variable is defined, you can change it using a shorter syntax (since the enum type can be inferred):</p>
-        <pre><code class="Swift">directionToHead = .east</code></pre>
-    <h1>Organization and Access</h1>
+      <p>
+        Enums are first class types and their cases are values of the type. They
+        can be used like this:
+      </p>
+      <pre><code class="Swift">var directionToHead = CompassPoint.west</code></pre>
+      <p>
+        Once the type of the variable is defined, you can change it using a
+        shorter syntax (since the enum type can be inferred):
+      </p>
+      <pre><code class="Swift">directionToHead = .east</code></pre>
+      <h1>Organization and Access</h1>
       <p>
         All computer languages are ways to organize your communication and
         thinking. In this, they are very similar to spoken languages. Each
@@ -339,8 +460,8 @@ name = 3.1456778889547637653//compilation failure, type change</code></pre>
       <h3>Functions - a fundamental organization concept of Swift</h3>
       <p>
         Python and Swift, being related languages, both have functions as a
-        fundamental organizational structure. In all computer languages, functions 
-        are just realized algorithms. When you truly begin thinking in
+        fundamental organizational structure. In all computer languages,
+        functions are just realized algorithms. When you truly begin thinking in
         Swift, you will be thinking in algorithms. You will think of how
         algorithms are related to each other. You will have thoughts along these
         lines, "If this algorithm uses that one..." You will be able to do this
@@ -351,128 +472,156 @@ name = 3.1456778889547637653//compilation failure, type change</code></pre>
       </p>
 
       <p>
-        In Python and Swift there are similarities and differences between
-        the languages regarding how you declare functions. In <a href="https://www.tutlane.com/tutorial/swift/swift-functions" target="_blank">Swift function declarations</a>, the
-        <kbd>func</kbd> keyword is used instead of <kbd>def</kbd>. Also, in Swift the
-        convention used for names of functions, parameters, and variables is called
-        'camel case'. To create a name, the first word of the name starts with a
-        lower-case letter, and the first letter of all the rest of the words
-        making up the name begin with an upper-case letter. For example, a
-        function that averages two Doubles and returns a Double could be defined like this
+        In Python and Swift there are similarities and differences between the
+        languages regarding how you declare functions. In
+        <a
+          href="https://www.tutlane.com/tutorial/swift/swift-functions"
+          target="_blank"
+          >Swift function declarations</a
+        >, the <kbd>func</kbd> keyword is used instead of <kbd>def</kbd>. Also,
+        in Swift the convention used for names of functions, parameters, and
+        variables is called 'camel case'. To create a name, the first word of
+        the name starts with a lower-case letter, and the first letter of all
+        the rest of the words making up the name begin with an upper-case
+        letter. For example, a function that averages two Doubles and returns a
+        Double could be defined like this
+      </p>
+
       <pre>
 <code class="Swift">func averageTwoNumbers(firstNum:Double, secondNum:Double)->Double{
   (firstNum+secondNum)/2
 }</code>
   </pre>
 
-        with the <kbd>-></kbd> operator indicating the type of the data being returned. 
+      with the <kbd>-></kbd> operator indicating the type of the data being
+      returned.
       <p>
-        Notice the '{' and '}' operators. These are the Swift <a href="https://en.wikipedia.org/wiki/Scope_(computer_science)" target="_blank">scope</a> 
+        Notice the '{' and '}' operators. These are the Swift
+        <a
+          href="https://en.wikipedia.org/wiki/Scope_(computer_science)"
+          target="_blank"
+          >scope</a
+        >
         operators. These are used instead of the white-space scope operator used
-        in Python. In Swift, white space means nothing but when writing
-        your code, it is important to use white space to help make your code
-        easier to read. Never left justify your code.
+        in Python. In Swift, white space means nothing but when writing your
+        code, it is important to use white space to help make your code easier
+        to read. Never left justify your code.
       </p>
       <p>
-        Additionally, the name and type of the parameters must be declared with the type following 
-        the parameter name and separated by a colon as if you were declaring variables.
+        Additionally, the name and type of the parameters must be declared with
+        the type following the parameter name and separated by a colon as if you
+        were declaring variables.
       </p>
       <p>
-        Also notice that there is no return keyword used in the averageTwoNumbers function. If 
-        your function consists of just one line of code, the compiler will interpret the result of 
-        that line as what is to be returned. This reduces the amount of useless code 
-        you have to write.
-      <p>
-        Swift functions with more than one line of code, like the one below, require the use of the 
-        return keyword unless there is no return value.
+        Also notice that there is no return keyword used in the
+        averageTwoNumbers function. If your function consists of just one line
+        of code, the compiler will interpret the result of that line as what is
+        to be returned. This reduces the amount of useless code you have to
+        write.
       </p>
+
       <p>
+        Swift functions with more than one line of code, like the one below,
+        require the use of the return keyword unless there is no return value.
+      </p>
+
       <pre>
 <code class="Swift">func averageTwoNumbers(firstNum:Double, secondNum:Double)->Double{
   let sum = firstNum+secondNum
   let avg = sum/2
   return avg
-}</code>
-  </pre>
-</p>
-<p>
-  Here is an example of a swift function that has parameters but no return value. 
-  <pre>
-<code class="Swift">func printSum(firstNum:Double, secondNum:Double){
+}</code></pre>
+
+      <p>
+        Here is an example of a Swift function that has parameters but no return
+        value.
+      </p>
+      <pre><code class="Swift">func printSum(firstNum:Double, secondNum:Double){
   print(firstNum+secondNum)
 }</code></pre>
-  Notice that there is no return type operator at the end of the declaration. This, again, reduces useless code.
-</p>
-<p>
-  What if there are no parameters and no return value? Here is an example.
-  <pre>
-<code class="Swift">func printSillyMessage(){
-  print("Don't be silly.")
-}</code>
-  </pre>
-</p>
       <p>
-        The Swift language has a concept called 'module scope'. When you
-        declare a function, your function is
-        created and lives in this module scope. An advantage of this is that you
-        can write code using the function in in one file when the declaration of the function is in a second file.
-        As long as the two files are in the same module (app or library), no import declaration is needed. Here is 
-        an example.
+        Notice that there is no return type operator at the end of the
+        declaration. This, again, reduces useless code.
       </p>
       <p>
+        What if there are no parameters and no return value? Here is an example.
+      </p>
+      <pre>
+<code class="Swift">func printSillyMessage(){
+  print("Don't be silly.")
+}</code></pre>
+      <p>
+        The Swift language has a concept called 'module scope'. When you declare
+        a function, your function is created and lives in this module scope. An
+        advantage of this is that you can write code using the function in in
+        one file when the declaration of the function is in a second file. As
+        long as the two files are in the same module (app or library), no import
+        declaration is needed. Here is an example.
+      </p>
+      <p></p>
       <pre>
 <code class="Swift">//in file named stuff.swift
 func averageTwoNumbers(firstNum:Double, secondNum:Double)->Double{
   (firstNum+secondNum)/2
-}</code>
-  </pre>
-  <pre>
-  <code class="Swift">//in main.swift
+}</code></pre>
+      <pre><code class="Swift">//in main.swift
 print(averageTwoNumbers(firstNum:5.0,secondNum:3.0))</code></pre>
-</p>
-    <p>
-     Notice that when the average function is used, the names of each parameter is required. You can turn this 
-     requirement off, but such a choice can effect code readability. To do this, add what is called an argument 
-     label to the function declaration. Any label you type will be required instead of the parameter name when the 
-     function is used. If you choose <a href="https://stackoverflow.com/questions/41642605/swift-function-without-argument-labels" target="_blank">Swift's ignore operator</a>, _, as the argument label for any or all of the 
-     parameters, the programmer using your function will not be required to label the parameters passed to your 
-     function. In the example below, both parameters have the ignore operator as their label so calling the 
-     function requires no labels.
+      <p>
+        Notice that when the average function is used, the names of each
+        parameter is required. You can turn this requirement off, but such a
+        choice can effect code readability. To do this, add what is called an
+        argument label to the function declaration. Any label you type will be
+        required instead of the parameter name when the function is used. If you
+        choose
+        <a
+          href="https://stackoverflow.com/questions/41642605/swift-function-without-argument-labels"
+          target="_blank"
+          >Swift's ignore operator</a
+        >, _, as the argument label for any or all of the parameters, the
+        programmer using your function will not be required to label the
+        parameters passed to your function. In the example below, both
+        parameters have the ignore operator as their label so calling the
+        function requires no labels.
+      </p>
 
-     <pre>
-<code class="Swift">//in file named stuff.swift
+      <pre><code class="Swift">//in file named stuff.swift
 
 //the _ignore label being used
 func averageTwoNumbers(_ firstNum:Double, _ secondNum:Double)->Double{
   (firstNum+secondNum)/2
-}</code>
-  </pre>
-  <pre>
-  <code class="Swift">//in main.swift
+}</code></pre>
+      <pre><code class="Swift">//in main.swift
 //no labels needed for the two parameters of averageTwoNumbers
 print(averageTwoNumbers(5.0,3.0))</code></pre>
-   </p>
-   <p>
-     Be VERY careful making this choice. While it may reduce the amount of code someone has to write, it may not 
-     reduce the amount of typing required by the programmer using your function. Remember, they will be working 
-     inside of an IDE. IDE's have code completion. When code completion is done well, the IDE will fill in the parameter labels without requiring any typing by the programmer. You should only use the _ operator for 
-     argument labels when doing anything else would make the code less readable.
-   </p>
-     
+      <p>
+        Be VERY careful making this choice. While it may reduce the amount of
+        code someone has to write, it may not reduce the amount of typing
+        required by the programmer using your function. Remember, they will be
+        working inside of an IDE. IDE's have code completion. When code
+        completion is done well, the IDE will fill in the parameter labels
+        without requiring any typing by the programmer. You should only use the
+        _ operator for argument labels when doing anything else would make the
+        code less readable.
+      </p>
 
       <h3>Conditional Branching - ifs and other amazing things</h3>
       <p>
-        If statements are fine. In fact sometimes they are exactly what you want...but often there are better options. One of those options is 
-        called a <a href="https://codewithchris.com/swift-guard/" target="_blank">guard</a>. In Swift, guards are used to keep the rest of the code in your function safe. Hence the use of the word guard.
+        If statements are fine. In fact sometimes they are exactly what you
+        want...but often there are better options. One of those options is
+        called a
+        <a href="https://codewithchris.com/swift-guard/" target="_blank"
+          >guard</a
+        >. In Swift, guards are used to keep the rest of the code in your
+        function safe. Hence the use of the word guard.
       </p>
       <p>
-        Consider a situation where you need a function to check the viability of a password. It can be done with if-else statements, but why not use 
-        something that explicitly states the purpose of the code? Here is a silly example where the only requirement is that the password has to be 12 characters 
-        long.
+        Consider a situation where you need a function to check the viability of
+        a password. It can be done with if-else statements, but why not use
+        something that explicitly states the purpose of the code? Here is a
+        silly example where the only requirement is that the password has to be
+        12 characters long.
       </p>
-      <p>
-      <pre>
-  <code class="Swift">func evaluatePassword(aPotentialPassword:String)->Bool {
+      <pre><code class="Swift">func evaluatePassword(aPotentialPassword:String)->Bool {
     guard aPotentialPassword.count > 12 else {
         //this is what happens if the string doesn't pass the guard
         return false
@@ -480,18 +629,22 @@ print(averageTwoNumbers(5.0,3.0))</code></pre>
     //this is what happens if the string does pass the guard
     return true
 }</code></pre>
+      <p>
+        Could this be done with an if statement? Absolutely. But using the
+        <a href="https://ericcerney.com/swift-guard-statement/" target="_blank"
+          >guard</a
+        >
+        keyword indicates to whoever is reading your code that this conditional
+        statement is there so the function won't fail. Can you have multiple
+        guards in a function? You bet. Do they all have to go at the beginning
+        of the function? Nope. You can put them anywhere that makes the best
+        sense.
       </p>
       <p>
-        Could this be done with an if statement? Absolutely. But using the <a href="https://ericcerney.com/swift-guard-statement/" target="_blank">guard</a> keyword indicates to whoever is reading your code that 
-        this conditional statement is there so the function won't fail. Can you have multiple guards in a function? 
-        You bet. Do they all have to go at the beginning of the function? Nope. You can put them anywhere that 
-        makes the best sense.
+        If statements are to be used when choosing between different
+        computational flows, not guarding. Here is a silly example.
       </p>
-      <p>
-        If statements are to be used when choosing between different computational flows, not guarding. Here is a 
-        silly example.
-      </p>
-      <p>
+
       <pre>
   <code class="Swift">if aNumber < 0.0 {
     print("\(aNumber) is negative")
@@ -503,18 +656,23 @@ else{
   print("\(aNumber) is zero")
 }</code>
   </pre>
+
+      <p>
+        Consider this common situation that has to be handled in code. You have
+        retrieved some sort of data from a database, a file, the user, or a a
+        web service. It's possible that the data doesn't exist. Therefore it
+        could be <kbd>nil</kbd>. That means you have to check to see if the
+        variable holding the data is nil.
       </p>
       <p>
-        Consider this common situation that has to be handled in code. You have retrieved some sort of data 
-        from a database, a file, the user, or a a web service. It's possible that the data doesn't exist. 
-        Therefore it could be <kbd>nil</kbd>. That means you have to check to see if the variable holding 
-        the data is nil.
+        This is such a common pattern in programming that Swift includes special
+        nil checking syntax. It combines the
+        <a
+          href="https://agrawalsuneet.github.io/blogs/if-vs-if-let-vs-guard-let-in-swift/"
+          >if and let keywords</a
+        >.
       </p>
-      <p>
-        This is such a common pattern in programming that Swift includes special nil checking syntax. It combines 
-        the <a href="https://agrawalsuneet.github.io/blogs/if-vs-if-let-vs-guard-let-in-swift/">if and let keywords</a>. 
-      </p>
-      <p>
+
       <pre>
   <code class="Swift">func silly(){
   let name:String? = nil
@@ -528,253 +686,273 @@ else{
   }
 }</code>
   </pre>
+
+      <p>
+        Notice that the name variable is declared with the
+        <kbd>let</kbd> keyword. It may seem that this code snippet breaks the
+        'let variables can not be changed' rule. But this is not so. There are
+        two different variables called <kbd>name</kbd> in the snippet each with
+        a different scope. The first is declared to be a String Optional and is
+        in the scope of the <kbd>silly</kbd> function. The second, in the
+        <kbd>if let</kbd>, has the scope of the <kbd>if let</kbd> and is of type
+        String because of interpolation. You can tell it is of type String
+        because the <kbd>uppercased</kbd> method of String can be used with
+        <kbd>name</kbd>. If <kbd>name</kbd> in this scope was a String Optional
+        the line <kbd>print(name.uppercased())</kbd> would fail to compile.
       </p>
       <p>
-        Notice that the name variable is declared with the <kbd>let</kbd> keyword. It may seem that this code 
-        snippet breaks the 'let variables can not be changed' rule. But this is not so. There are two different 
-        variables called <kbd>name</kbd> in the snippet each with a different scope. The first is declared to be a 
-        String Optional and is in the scope of the <kbd>silly</kbd> function. The second, in the <kbd>if let</kbd>, 
-        has the scope of the <kbd>if let</kbd> and is of type String because of interpolation. You can tell it is 
-        of type String because the <kbd>uppercased</kbd> method of String can be used with <kbd>name</kbd>. If 
-        <kbd>name</kbd> in this scope was a String Optional the line <kbd>print(name.uppercased())</kbd> would 
-        fail to compile.
-      </p>
-      <p>
-        Notice how <kbd>if let</kbd> is similar to and different from <kbd>guards</kbd>, a regular 
-        <kbd>if else</kbd>, or the <kbd>nil</kbd> coalescing code structure from before. Each has its use. Each 
-        works best when used for what it was designed for. Can you use them in place of each other? Of course. 
-        Should you use them in place of each other? No.
+        Notice how <kbd>if let</kbd> is similar to and different from
+        <kbd>guards</kbd>, a regular <kbd>if else</kbd>, or the
+        <kbd>nil</kbd> coalescing code structure from before. Each has its use.
+        Each works best when used for what it was designed for. Can you use them
+        in place of each other? Of course. Should you use them in place of each
+        other? No.
       </p>
       <h3>Map, Filter, and Reduce</h3>
       <p>
-        As with other languages that have <a href="https://useyourloaf.com/blog/swift-guide-to-map-filter-reduce/">map, filter, and reduce BIF's</a>, you should use those when working with arrays. The 
-        access operator, <kbd>[]</kbd>, is great, but when over-applied it can lead to a lot of bugs. So let's take a look 
-        at how Swift does map, filter and reduce. Like the implementations you've used before, these BIF's have a 
-        lambda function as a parameter.
+        As with other languages that have
+        <a href="https://useyourloaf.com/blog/swift-guide-to-map-filter-reduce/"
+          >map, filter, and reduce BIF's</a
+        >, you should use those when working with arrays. The access operator,
+        <kbd>[]</kbd>, is great, but when over-applied it can lead to a lot of
+        bugs. So let's take a look at how Swift does map, filter and reduce.
+        Like the implementations you've used before, these BIF's have a lambda
+        function as a parameter.
       </p>
       <h4>Map</h4>
       <p>
-        Suppose for some strange reason you had an Array of doubles and you needed to square them all. Here is a really 
-        verbose way of doing this in Swift. You'll see how we can clean this up in a minute.
+        Suppose for some strange reason you had an Array of doubles and you
+        needed to square them all. Here is a really verbose way of doing this in
+        Swift. You'll see how we can clean this up in a minute.
       </p>
-      <p>
-      <pre>
-  <code class="Swift">let squaredNumbers = numbers.map({ (value: Double) -> Double in
+
+      <pre><code class="Swift">let squaredNumbers = numbers.map({ (value: Double) -> Double in
     return value * value
 })
-</code>
-  </pre>
+</code></pre>
+
+      <p>
+        Swift has first class support for
+        <a
+          href="https://docs.swift.org/swift-book/LanguageGuide/Closures.html"
+          target="_blank"
+          >closures</a
+        >, which is like a lambda in Python or an anonymous function in
+        JavaScript. In the previous example, a closure is the only parameter to
+        the map function. The <kbd>{</kbd> and <kbd>}</kbd> scope operators show
+        you where the closure begins and ends. Right after the
+        <kbd>{</kbd> operator you'll find the closure's signature. It has one
+        parameter called <kbd>value</kbd> of type <kbd>Double</kbd> and returns
+        a <kbd>Double</kbd>. There is a new keyword, <kbd>in</kbd>. This
+        separates the signature from the lines of code that make up the
+        computation the closure will perform.
       </p>
       <p>
-        Swift has first class support for <a href="https://docs.swift.org/swift-book/LanguageGuide/Closures.html" target="_blank">closures</a>,
-        which is like a lambda in Python or an anonymous function in JavaScript. In the previous example, a closure is the only parameter to the map function.
-        The <kbd>{</kbd> and <kbd>}</kbd> scope operators show you where the closure begins and ends. Right after the <kbd>{</kbd> operator 
-        you'll find the closure's signature. It has one parameter called <kbd>value</kbd> of type <kbd>Double</kbd> and 
-        returns a <kbd>Double</kbd>. There is a new keyword, <kbd>in</kbd>. This separates the signature from the lines of code that 
-        make up the computation the closure will perform.
+        Closures are such an important part of Swift that there are some ways
+        you can use to reduce the amount of code you have to type to use one. If
+        a function that has a closure as its last parameter, the closure can be
+        moved to after the call of the function. This removes having to keep
+        that closing <kbd>)</kbd> way down in other lines of your code. The
+        snippet below shows how this works.
       </p>
-      <p>
-        Closures are such an important part of Swift that there are some ways you can use to reduce the amount of code 
-        you have to type to use one. If a function that has a closure as its last parameter, the closure can be moved to 
-        after the call of the function. This removes having to keep that closing <kbd>)</kbd> way down in other lines of 
-        your code. The snippet below shows how this works.
-      </p>
-      <p>
-      <pre>
-  <code class="Swift">let squaredNumbers = numbers.map(){ (value: Double) -> Double in
+
+      <pre><code class="Swift">let squaredNumbers = numbers.map(){ (value: Double) -> Double in
     return value * value
 }
-</code>
-  </pre>
+</code></pre>
+
+      <p>
+        That change cleans it up a little, but there is another change we can
+        make to clean it up even more.
       </p>
       <p>
-        That change cleans it up a little, but there is another change we can make to clean it up even more.
+        Since the compiler knows the type of the elements of the Array it knows
+        the type of the parameter and the return type already, so that means you
+        don't have to type in the signature of the lambda if you don't want.
+        Also, if your computation is only one line long, you don't need to use
+        the <kbd>return</kbd> keyword. This is called an implicit return.
       </p>
       <p>
-        Since the compiler knows the type of the elements of the Array it knows the type of the parameter and the 
-        return type already, so that means you don't have to type in the signature of the lambda if you don't want.
-        Also, if your computation is only one line long, you don't need to use the <kbd>return</kbd> keyword. This is
-        called an implicit return.
+        Getting rid of the signature means you don't have a name for the
+        incoming variable. The <kbd>$0</kbd> is Swift's way of getting the value
+        of the zeroth element of the variable list so you can just use that. If
+        the lambda had multiple parameters you could access them using
+        <kbd>$0</kbd>, <kbd>$1</kbd>, <kbd>$2</kbd>, etc. The snippet below
+        shows a new, reduced version of using map that does the same thing as
+        the previous snippet.
       </p>
+
+      <pre><code class="Swift">let squaredNumbers = numbers.map(){$0*$0}</code></pre>
       <p>
-        Getting rid of the signature means you don't have a name for the incoming variable. The <kbd>$0</kbd> is Swift's way  
-        of getting the value of the zeroth element of the variable list so you can just use that. If the lambda had multiple 
-        parameters you could access them using <kbd>$0</kbd>, <kbd>$1</kbd>, <kbd>$2</kbd>, etc. 
-        The snippet below shows a new, reduced version of using map that does the same thing as the previous snippet.
+        But there is something else the compiler knows. It knows the
+        <kbd>map</kbd> function only has one parameter. If that's the case,
+        typing the <kbd>()</kbd> parameters is a waste...so let's not!
       </p>
+
+      <pre><code class="Swift">let squaredNumbers = numbers.map{$0 * $0}</code></pre>
       <p>
-      <pre>
-  <code class="Swift">let squaredNumbers = numbers.map(){$0*$0}</code></pre>
-      </p>
-      <p>
-        But there is something else the compiler knows. It knows the <kbd>map</kbd> function only has one parameter. If 
-        that's the case, typing the <kbd>()</kbd> parameters is a waste...so let's not!
-      </p>
-      <p>
-      <pre>
-  <code class="Swift">let squaredNumbers = numbers.map{$0 * $0}
-</code>
-  </pre>
-      </p>
-      <p>
-        There you go. This is a most succinct use of the map function. You can choose to use any of these versions, 
-        but remember that the fewer things you have to type, the fewer bugs you're going to write. <a href="https://www.infoq.com/news/2011/05/less-code-is-better/" target="_blank">Less code is good code.</a> 
-        As always, do what will make the code most readable for those who will be reading your code after you've gone. 
-        The last version is the one that is the most idiomatically Swift. That's probably the one you should use for 
-        simpler lambdas and reserve the others for when you may be using a parameter multiple times or in multiple 
-        ways.
+        There you go. This is a most succinct use of the map function. You can
+        choose to use any of these versions, but remember that the fewer things
+        you have to type, the fewer bugs you're going to write.
+        <a
+          href="https://www.infoq.com/news/2011/05/less-code-is-better/"
+          target="_blank"
+          >Less code is good code.</a
+        >
+        As always, do what will make the code most readable for those who will
+        be reading your code after you've gone. The last version is the one that
+        is the most idiomatically Swift. That's probably the one you should use
+        for simpler lambdas and reserve the others for when you may be using a
+        parameter multiple times or in multiple ways.
       </p>
       <h4>Filter</h4>
       <p>
-        The <kbd>filter</kbd> method also has only one parameter, and that parameter is also a closure. While we could show 
-        you all the longer, typing intensive ways, they would look nearly identical to the <kbd>map</kbd> examples we just 
-        showed you. So let's jump right to the most succinct version.
+        The <kbd>filter</kbd> method also has only one parameter, and that
+        parameter is also a closure. While we could show you all the longer,
+        typing intensive ways, they would look nearly identical to the
+        <kbd>map</kbd> examples we just showed you. So let's jump right to the
+        most succinct version.
       </p>
-      <p>
-      <pre>
-  <code class="Swift">let squaredNumbers = numbers.filter{$0 > 12.0}
-</code>
-  </pre>
-      </p>
+
+      <pre><code class="Swift">let squaredNumbers = numbers.filter{$0 > 12.0}</code></pre>
+
       <h4>Reduce</h4>
       <p>
-        The <kbd>reduce</kbd> method is a little different. It has two parameters so you do things a little differently 
-        when you want to decrease the amount of typing you need. The first parameter of <kbd>reduce</kbd> is the accumulator 
-        you've used in other languages. The second is the closure to apply when doing the reduction.
+        The <kbd>reduce</kbd> method is a little different. It has two
+        parameters so you do things a little differently when you want to
+        decrease the amount of typing you need. The first parameter of
+        <kbd>reduce</kbd> is the accumulator you've used in other languages. The
+        second is the closure to apply when doing the reduction.
       </p>
       <p>
-        The parameters of the closure are <kbd>$0</kbd>, the accumulating value, and <kbd>$1</kbd> the next value from the 
-        Array to accumulate. That means you can use the reduce function and apply some, but not all, of the tips that you 
-        saw for the <kbd>map</kbd> and <kbd>filter</kbd> functions. The snippet below shows how to use <kbd>0.0</kbd> as the 
-        initial value for the accumulator to sum all the values in the <kbd>numbers</kbd> Array.
+        The parameters of the closure are <kbd>$0</kbd>, the accumulating value,
+        and <kbd>$1</kbd> the next value from the Array to accumulate. That
+        means you can use the reduce function and apply some, but not all, of
+        the tips that you saw for the <kbd>map</kbd> and
+        <kbd>filter</kbd> functions. The snippet below shows how to use
+        <kbd>0.0</kbd> as the initial value for the accumulator to sum all the
+        values in the <kbd>numbers</kbd> Array.
       </p>
+      <pre><code class="Swift">let sum = numbers.reduce(0.0){$0+$1}</code></pre>
       <p>
-      <pre>
-  <code class="Swift">let sum = numbers.reduce(0.0){$0+$1}
-</code>
-  </pre>
+        But it wouldn't be fair to <kbd>reduce</kbd> to leave it having to have
+        more code than the others, right? It's a good thing the compiler knows
+        what's going on. If you are using something simple like the standard
+        operators <kbd>+</kbd>, <kbd>-</kbd>, <kbd>*</kbd>, etc., the compiler
+        can supply most of what is needed to do the reduction. The snippet below
+        does the exact same thing as the one above.
       </p>
+
+      <pre><code class="Swift">let sum = numbers.reduce(0.0,+)</code></pre>
       <p>
-        But it wouldn't be fair to <kbd>reduce</kbd> to leave it having to have more code than the others, right? It's 
-        a good thing the compiler knows what's going on. If you are using something simple like the standard operators 
-        <kbd>+</kbd>, <kbd>-</kbd>, <kbd>*</kbd>, etc., the compiler can supply most of what is needed to do the 
-        reduction. The snippet below does the exact same thing as the one above.
+        The compiler knows the second parameter is a closure. It also knows that
+        the two parameters are going to be reduced to one value that is
+        returned. All it actually needs to know is how to do the reduction. That
+        means if you are using something the compiler already understands, like
+        <kbd>+</kbd>, all you need to do is tell it you want to use that
+        operator for the reduction.
       </p>
-      <p>
-      <pre>
-  <code class="Swift">let sum = numbers.reduce(0.0,+)
-</code>
-  </pre>
-      </p>
-      <p>
-        The compiler knows the second parameter is a closure. It also knows that the two parameters are going to 
-        be reduced to one value that is returned. All it actually needs to know is how to do the reduction. 
-        That means if you are using something the compiler already understands, like <kbd>+</kbd>, all you need to do is 
-        tell it you want to use that operator for the reduction.
-      </p>
-      <p>
-        The programmer in me is yelling, "That's so cool!!"
-      </p>
+      <p>The programmer in me is yelling, "That's so cool!!"</p>
       <h4>Using Them Together</h4>
       <p>
-        Suppose I had the Array <kbd>numbers</kbd> and needed to first filter it, then map it, and then reduce it. 
-        I could do that on multiple lines of code or.... 
+        Suppose I had the Array <kbd>numbers</kbd> and needed to first filter
+        it, then map it, and then reduce it. I could do that on multiple lines
+        of code or....
       </p>
-      <p>
-      <pre>
-  <code class="Swift">let sumOfFilteredSquares = numbers.filter{$0>12}.map{$0*$0}.reduce(0.0,+)
-</code>
-  </pre>
-      </p>
+
+      <pre><code class="Swift">let sumOfFilteredSquares = numbers.filter{$0>12}.map{$0*$0}.reduce(0.0,+)</code></pre>
+
       <h4>Other Options</h4>
       <p>
-        If there is just no way to combine <kbd>map</kbd>, <kbd>filter</kbd>, and <kbd>reduce</kbd> to accomplish 
-        what you need to do, you can always fall back to using a <a href="https://learnappmaking.com/loops-swift-how-to/" target="_blank"><kbd>for</kbd> loop</a>. Please remember that using 
-        this loop is a last choice, not a first choice. Using a <kbd>for</kbd> loop dramatically increases 
-        the probability of you creating buggy code. Always use  <kbd>map</kbd>, <kbd>filter</kbd>, and <kbd>reduce</kbd> 
+        If there is just no way to combine <kbd>map</kbd>, <kbd>filter</kbd>,
+        and <kbd>reduce</kbd> to accomplish what you need to do, you can always
+        fall back to using a
+        <a href="https://learnappmaking.com/loops-swift-how-to/" target="_blank"
+          ><kbd>for</kbd> loop</a
+        >. Please remember that using this loop is a last choice, not a first
+        choice. Using a <kbd>for</kbd> loop dramatically increases the
+        probability of you creating buggy code. Always use <kbd>map</kbd>,
+        <kbd>filter</kbd>, and <kbd>reduce</kbd>
         if you can.
       </p>
       <p>
-        If you are using a loop with an Array, use the <kbd>for-in</kbd> loop. Let's reuse the <kbd>numbers</kbd> Array 
-        from earlier. The code snippet below prints out each element in the Array.
+        If you are using a loop with an Array, use the <kbd>for-in</kbd> loop.
+        Let's reuse the <kbd>numbers</kbd> Array from earlier. The code snippet
+        below prints out each element in the Array.
       </p>
-      <p>
-      <pre>
-  <code class="Swift">for number in numbers{
+      <pre><code class="Swift">for number in numbers{
   print(number)
 }
-</code>
-  </pre>
+</code></pre>
+      <p>
+        I can not emphasize enough that the <kbd>for-in</kbd> loop should not be
+        used unless there is no other way to accomplish what you need to do
+        using <kbd>map</kbd>, <kbd>filter</kbd>, and <kbd>reduce</kbd>. That
+        type of situation is very rare.
       </p>
       <p>
-        I can not emphasize enough that the <kbd>for-in</kbd> loop should not be used unless there is no other way to 
-        accomplish what you need to do using <kbd>map</kbd>, <kbd>filter</kbd>, and <kbd>reduce</kbd>. That type of situation 
-        is very rare.
-      </p>
-      <p>
-        If you are not working with an Array, there is another way to use the <kbd>for-in</kbd> loop. In this situation 
-        there is a range of numbers that is the data. In the snippet below, the numbers printed out will be <kbd>1</kbd> 
-        to and including <kbd>100</kbd>.
-      </p>
-      <p>
-      <pre>
-  <code class="Swift">for number in 1...100{
-  print(number)
-}
-</code>
-  </pre>
-      </p>
-      <p>
-        If you don't want to include the upper limit of your range, use the duck operator as you see in this snippet.
-      </p>
-      <p>
-      <pre>
-  <code class="Swift">for number in 1..<100{
-  print(number)
-}
-</code>
-  </pre>
-      </p>
-      <p>
-        If you squint and look at the duck operator just right you'll see the bill and body of the duck.
-      </p>
-      <p>
-        The use of the <kbd>for-in</kbd> loop with a range are valid uses as long as you don't try to use the numbers 
-        as indexes of an Array. These situations are pretty rare. Most data is stored in Arrays or other data collections 
-        you'll find out about in week 04.
-      </p>
-      <p>
-        Swift also has <a href="https://www.tutorialspoint.com/swift/swift_while_loop.htm" target="_blank">a logical loop called <kbd>while</kbd></a>. Consider a situation where you are asking the user of 
-        your application for a value in <kbd>1</kbd> through <kbd>10</kbd>. If they enter anything outside that 
-        range you give them additional instructions and then ask again. The code snippet below is one way this 
-        can be done.
+        If you are not working with an Array, there is another way to use the
+        <kbd>for-in</kbd> loop. In this situation there is a range of numbers
+        that is the data. In the snippet below, the numbers printed out will be
+        <kbd>1</kbd> to and including <kbd>100</kbd>.
       </p>
 
-      <p>
-      <pre>
-  <code class="Swift">while input <= 1 || input > 10 {
-  //code here to get user information and assign it to
-  //the input variable
+      <pre><code class="Swift">for number in 1...100{
+  print(number)
 }
-</code>
-  </pre>
+</code></pre>
+
+      <p>
+        If you don't want to include the upper limit of your range, use the duck
+        operator as you see in this snippet.
+      </p>
+      <pre><code class="Swift">for number in 1..<100{
+  print(number)
+}
+</code></pre>
+      <p>
+        If you squint and look at the duck operator just right you'll see the
+        bill and body of the duck.
       </p>
       <p>
-        Logical loops are valid as long as you don't try to twist them to iterate over the elements of an Array or some 
-        other collection of data.
+        The use of the <kbd>for-in</kbd> loop with a range are valid uses as
+        long as you don't try to use the numbers as indexes of an Array. These
+        situations are pretty rare. Most data is stored in Arrays or other data
+        collections you'll find out about in week 04.
+      </p>
+      <p>
+        Swift also has
+        <a
+          href="https://www.tutorialspoint.com/swift/swift_while_loop.htm"
+          target="_blank"
+          >a logical loop called <kbd>while</kbd></a
+        >. Consider a situation where you are asking the user of your
+        application for a value in <kbd>1</kbd> through <kbd>10</kbd>. If they
+        enter anything outside that range you give them additional instructions
+        and then ask again. The code snippet below is one way this can be done.
+      </p>
+
+      <pre><code class="Swift">while input <= 1 || input > 10 {
+  //code here to get user information and assign it to
+  //the input variable
+}</code></pre>
+      <p>
+        Logical loops are valid as long as you don't try to twist them to
+        iterate over the elements of an Array or some other collection of data.
       </p>
 
       <h2>Wrap Up</h2>
       <p>
-        While there was a lot covered in this reading, you've seen these before. Python has each 
-        of these types of things. The syntax is different for Swift and there are some new things you can do because 
-        of the compiler, but over all the concepts are the same.
+        While there was a lot covered in this reading, you've seen these before.
+        Python has each of these types of things. The syntax is different for
+        Swift and there are some new things you can do because of the compiler,
+        but over all the concepts are the same.
       </p>
       <p>
-        Differences are good. If all computer languages were the same, they'd all be the same language. Then we'd 
-        be stuck. We wouldn't be able to select languages to use based on what the languages are good at.
+        Differences are good. If all computer languages were the same, they'd
+        all be the same language. Then we'd be stuck. We wouldn't be able to
+        select languages to use based on what the languages are good at.
       </p>
-      
     </main>
     <footer>
       <a
@@ -783,7 +961,7 @@ else{
         target="_blank"
         ><img
           alt="This work is licensed under a Creative Commons Attribution 4.0 International License"
-          style="border-width: 0;"
+          style="border-width: 0"
           src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a
       ><br />This work is licensed under a
       <a
