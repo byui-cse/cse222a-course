@@ -73,7 +73,7 @@
       same type together in a specific order, an array is the way to go. But for
       other situations Arrays are slow. For example, searching in unsorted
       Arrays is uses a \(\mathcal{O}(n)\) algorithm in the best of situations.
-      That's way to slow. Let's look at the two other
+      That's way too slow. Let's look at the two other
       <a href="https://swift.org/blog/swift-collections/" target="_blank"
         >Built In Collections (BICs)</a
       >
@@ -92,18 +92,16 @@
       >.
     </p>
     <p>
-      There are a couple of ways you can create a Set, you can, as in the
+      There are a couple of ways you can create a Set. You can, as in the
       snippet below, create an empty set of some specific type and then add
       elements to it and remove elements when you need to.
     </p>
-    <pre>
-		<code class="JavaScript">var names = Set<String>()
+    <pre><code class="JavaScript">var names = Set&lt;String&gt;()
 names.insert("Sally")
 names.insert("Jose")
-names.insert("Sally")//no change. Sally is already there.
-names.remove("Jane")//no change. Jane isn't in there.
-</code>
-</pre>
+names.insert("Sally") //no change. Sally is already there.
+names.remove("Jane") //no change. Jane isn't in there.
+</code></pre>
     <p>
       You can also create a Set while setting its values. The snippet below
       shows you how to do this with three names.
@@ -113,15 +111,15 @@ names.remove("Jane")//no change. Jane isn't in there.
 
     <p>
       Notice that you have to tell the compiler that the type of collection you
-      want is a set. Otherwise it will make it be a list. Also, Sets don't
+      want is a set. Otherwise it will make it be an array. Also, Sets don't
       guarantee ordering. That's why they can do searching, inserting, and
-      removing much faster than an Array. If you need things to stay in order,
-      remember an Array is what you want.
+      removing much faster than an array. If you need things to stay in order,
+      remember an array is what you want.
     </p>
     <p>
       As an extra benefit for selecting Set as your collection type you get to
       use set operations like union, difference, intersection, and symmetric
-      difference. There are BIFs for these!
+      difference. There are Built-in Functions (BIFs) for these!
     </p>
     <p>
       One very important thing you must understand is that anything that you put
@@ -161,12 +159,14 @@ agesByName["Jane"] = 20
       snippet above, the compiler can figure it out. If you want to, you can
       also create and fill or partially fill a dictionary all at once.
     </p>
-    <pre><code class="JavaScript">var agesByName = ["Sally": 21,"Jose": 23,"Jane":20]
+    <pre><code class="Swift">var agesByName = ["Sally": 21,"Jose": 23,"Jane":20]
 </code></pre>
 
     <p>
       When you are declaring and filling a Dictionary, you don't even have to
       tell the compiler the key and value types. It can figure that out to.
+      However, the key <kbd>Type</kbd> must conform to the
+      <kbd>Hashable</kbd> protocol.
     </p>
     <p>
       There are many more methods that these and Arrays have that you can use.
@@ -176,7 +176,47 @@ agesByName["Jane"] = 20
         >Swift documentation</a
       >
       has good descriptions of the methods and how to use them. Go check it out.
+      There are also many other types of Collections for different purposes that
+      are included in the standard library. You can learn more about some of
+      them <a href="https://www.swift.org/blog/swift-collections/">here.</a>
     </p>
+
+    <h2>Generics</h2>
+    <p>
+      Even though all the elements in a Collection such as Array, Set or
+      Dictionary must be the same type, you are not limited to Collections of
+      Int or String, but can choose any type for the elements in your
+      Collection. Set elements are constrained to meet the Hashable protocol as
+      are Dictionary keys, but that still allows vast flexibility. As with many
+      languages, these built in types also have many functions that work
+      independent of the types of elements in the collection.
+    </p>
+    <p>
+      Swift takes that further and allows you to define your own generic Types
+      and functions that can work with many different Types of input or
+      elements. Dictionary is an example of a generic Type. It is defined as:
+    </p>
+    <pre><code class="Swift">public struct Dictionary&lt;Key, Value&gt; where Key : Hashable {…}</code></pre>
+    <p>
+      “Key” and “Value” refer to two types that are used later in the
+      definition. You can see it also has a “where” clause that requires the Key
+      type to be Hashable. Later in the definition it creates a typealias that
+      is an abbreviation for the elements in the Dictionary:
+    </p>
+    <pre><code class="Swift">public typealias Element = (key: Key, value: Value)</code></pre>
+    <p>
+      Then it can use Key, Value and Element in defining functions such as
+      filter() that can apply the same code for any types used for a specific
+      Dictionary:
+    </p>
+    <pre><code class="Swift">public func filter(_ isIncluded: (Dictionary&lt;Key, Value&gt;.Element)-> Bool) -> [Key : Value]</code></pre>
+    <p>
+      In Swift, you are not limited to the built-in generic types, but can
+      define your own generic types, functions and other language elements so
+      you don’t need to rewrite code that would be the same for each different
+      type.
+    </p>
+
     <h2>Applications of Collections</h2>
     <p>
       Let's revisit the pharmacy tracker from week 03. The model class
