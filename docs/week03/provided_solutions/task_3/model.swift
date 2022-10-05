@@ -21,11 +21,12 @@ enum AssignmentError {
 
 protocol EmployeeProtocol {
     var name: String { get set }
-    var hireDate: Date  { get set }
+    var hireDate: Date { get set }
     var yearsExperience: UInt8 { get set }
     var id: String { get set }
     var type: EmployeeType { get set }
 }
+
 /// A base-class that models all employees at our company.
 struct Employee: EmployeeProtocol {
     // set the default values of the properties
@@ -77,7 +78,7 @@ struct Manager: EmployeeProtocol {
     ///   - type: a selection from the EmployeeType enumeration
     ///   - yearsExperience: the number of years the employee has been functioning in this role in the industry
     /// - Complexity: O(1)
-    init(name: String, hireDate: Date, yearsExperience: UInt8, type: EmployeeType) {
+    init(name: String, hireDate: Date, type: EmployeeType, yearsExperience: UInt8) {
         self.name = name
         self.hireDate = hireDate
         self.yearsExperience = yearsExperience

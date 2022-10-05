@@ -3,7 +3,13 @@
 //  week03_task_1
 //
 //
-// To use this you just need to call generateData(). However, to make it work, you need to define some things in your own files:
+// In main.swift, you will call the following function from this file:
+//      func generateData(numManagersNeeded: Int, numProgrammersNeeded: Int) -> ([Manager], [Employee]) {
+// That will create the data your main.swift will then pass to a new function you create in
+// a file called control.swift file:
+//      func generateNeededHires(devLeads: [Manager]) -> [(String, Int)] {
+// See the task instructions for the functionality that is supposed to implement.
+// For this file to compile, you will need to define some other things in your own files:
 // In a model.swift file you need to define
 //      enum EmployeeType {
 //          case programmer
@@ -13,9 +19,14 @@
 //      class Manager that is a child of Employee
 // You also need to create this function:
 //      func add(managee:Employee, to aManager:Manager) -> (Bool,AssignmentError)
-//      It returns a tuple with a Bool to indicate if it was possible to add the employee to that manager under the rules
-//      and an enum of class AssignmentError (that you define) indicating the reason for failure if any
-// This will only compile if you provide those classes and this function
+// It returns a tuple with a Bool to indicate if it was possible to add the employee to that manager
+// under the rules defined in the task assignment. Be sure you implement any tests or guards needed by
+// the rules given in the assignment.
+// The other value returned in the tuple is an enum of class AssignmentError (that you define) indicating
+// the reason for failure if any. This will only compile if you provide those classes and this function
+//
+// You will include this file in all three tasks (be sure to make a clone of your project and
+// implement each task. For task 3 you will need to modify this file slightly.
 
 import Foundation
 

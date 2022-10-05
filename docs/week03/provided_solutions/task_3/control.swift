@@ -15,15 +15,23 @@ import Foundation
 ///   - aManager: the Manager to which the employee is to be assigned.
 /// - Returns: (true,AssignmentError.none) if the assignment occured. (false,AssignmentError.errorDescription) if the assignement could not be made.
 /// - Complexity: O(n)
-func add(managee: Employee, to aManager: Manager) -> (AssignmentError, Manager) {
-    var mutableManager = aManager
+func add(managee: Employee, to aManager: Manager) -> (Bool, AssignmentError, Manager) {
+    // With aManager  a struct, it is passed by value so any changes inside the function are made to a copy.
+    // We add a mutable Manager object to the returned tuple to get the modified manager outside the function.
+    //
+    // An alternative approach would be to add "inout" at the front of the definition of the second parameter like:
+    //     func add(managee: Employee, to aManager: inout Manager) -> (Bool, AssignmentError) {
+    // That would override standard usage and force the parameter to be mutable. In that case, whereever it was
+    // called in generateData() the object passed as the "to" parameter would need an "&" in front of it to
+    // explicitly acknowledge that we understand we are passing it as a mutable parameter.
     if aManager.managees.count > 15 {
-        return (.violatedAddManageCriteria, aManager)
+        return (false, .violatedAddManageCriteria, aManager)
     }
 
     // set the initial values for the return values
     var shouldAppendManagee = true
     var message = AssignmentError.none
+    var mutableManager = aManager
 
     let experiencedManagees = mutableManager.managees.filter {
         Date().timeIntervalSince($0.hireDate) >= oneYear && $0.yearsExperience > 5
@@ -42,7 +50,7 @@ func add(managee: Employee, to aManager: Manager) -> (AssignmentError, Manager) 
         mutableManager.managees.append(managee)
     }
 
-    return (message, mutableManager)
+    return (shouldAppendManagee, message, mutableManager)
 }
 
 /// Generates a list of hires that need to be made to meet the

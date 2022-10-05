@@ -3,7 +3,13 @@
 //  week03_task_3
 //
 //
-// To use this you just need to call generateData(). However, to make it work, you need to define some things in your own files:
+// In main.swift, you will call the following function from this file:
+//      func generateData(numManagersNeeded: Int, numProgrammersNeeded: Int) -> ([Manager], [Employee]) {
+// That will create the data your main.swift will then pass to a new function you create in
+// a file called control.swift file:
+//      func generateNeededHires(devLeads: [Manager]) -> [(String, Int)] {
+// See the task instructions for the functionality that is supposed to implement.
+// For this file to compile, you will need to define some other things in your own files:
 // In a model.swift file you need to define
 //      enum EmployeeType {
 //          case programmer
@@ -13,9 +19,14 @@
 //      class Manager that is a child of Employee
 // You also need to create this function:
 //      func add(managee:Employee, to aManager:Manager) -> (Bool,AssignmentError)
-//      It returns a tuple with a Bool to indicate if it was possible to add the employee to that manager under the rules
-//      and an enum of class AssignmentError (that you define) indicating the reason for failure if any
-// This will only compile if you provide those classes and this function
+// It returns a tuple with a Bool to indicate if it was possible to add the employee to that manager
+// under the rules defined in the task assignment. Be sure you implement any tests or guards needed by
+// the rules given in the assignment.
+// The other value returned in the tuple is an enum of class AssignmentError (that you define) indicating
+// the reason for failure if any. This will only compile if you provide those classes and this function
+//
+// You will include this file in all three tasks (be sure to make a clone of your project and
+// implement each task. For task 3 we needed to modify this file slightly.
 
 import Foundation
 
@@ -96,27 +107,25 @@ func generateData(numManagersNeeded: Int, numProgrammersNeeded: Int) -> ([Manage
 
     var unassignedProgrammers = [Employee]()
     // distrubute novice programmers to managers
-
     for programmerIndex in 0 ..< programmers.count {
-        var (message, updatedManager) = (AssignmentError.noManagers, existingManagers[0])
+        var (suceeded, message, updatedManager) = (false, AssignmentError.noManagers, existingManagers[0])
         var managerIndex = 0
-        while message != .none, managerIndex < existingManagers.count {
+        while !suceeded, managerIndex < existingManagers.count {
             // We use manager index to check each manager to see if we can add this programmer
             // By adding it to the programmerIndex and using % we change the order we try the managers
             // and so we spread them across all managers
-            (message, updatedManager) = add(managee: programmers[programmerIndex], to: existingManagers[Int(programmerIndex + managerIndex) % numManagersNeeded])
-            if message == .none {
+            (suceeded, message, updatedManager) = add(managee: programmers[programmerIndex], to: existingManagers[Int(programmerIndex + managerIndex) % numManagersNeeded])
+            if suceeded {
                 // Since structs are passed by reference rather than value, we need to return a copy of the modified manager record and then put it into the array
                 existingManagers[Int(programmerIndex + managerIndex) % numManagersNeeded] = updatedManager
             }
             managerIndex += 1
         }
-        if message != .none {
+        if !suceeded {
             unassignedProgrammers.append(programmers[programmerIndex])
             print("Couldn't add a novice Programmer \(programmerIndex) to a Manager. Reason: \(message)")
         }
     }
-
     return (existingManagers, unassignedProgrammers)
 }
 
@@ -156,7 +165,7 @@ private func buildManagers(numManagersNeeded: Int) -> [Manager] {
     if numManagersNeeded == 0 {
         return [Manager]()
     }
-    let aManager = Manager(name: randomName(), hireDate: Date(), yearsExperience: UInt8.random(in: 0 ..< 22), type: .devLead)
+    let aManager = Manager(name: randomName(), hireDate: Date(), type: .devLead, yearsExperience: UInt8.random(in: 0 ..< 22))
     return [aManager] + buildManagers(numManagersNeeded: numManagersNeeded - 1)
 }
 
@@ -181,7 +190,7 @@ private func assignExperiencedEmployee(employees: [Employee], managers: [Manager
     // Since the add(managee:to) function cannot modify the struct passed to it
     // we need to explictly update managerHead with the returned modified manager
     var managerHead = mutableManagers.remove(at: 0)
-    (_, managerHead) = add(managee: employeeHead, to: managerHead)
+    (_, _, managerHead) = add(managee: employeeHead, to: managerHead)
     return [managerHead] + assignExperiencedEmployee(employees: mutableEmployees, managers: mutableManagers)
 }
 
