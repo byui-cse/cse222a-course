@@ -80,9 +80,10 @@
         >computer science</a
       >
       and computation in general has borrowed. You've used them before in your
-      Python courses. You've also used them in Swift as closures when you did
-      the <kbd>map</kbd>, <kbd>filter</kbd>, and <kbd>reduce</kbd> tasks. Now
-      let's learn some more about them.
+      Python courses or as anonymous functions in JavaScript. You've also used
+      them in Swift as closures when you did the <kbd>map</kbd>,
+      <kbd>filter</kbd>, and <kbd>reduce</kbd> tasks. Now let's learn some more
+      about them.
     </p>
     <h3>Storing Closures in Variables and Data Collections</h3>
     <p>
@@ -156,18 +157,18 @@
       But there is even a bigger problem. What order are you going to do the
       checks in? String comparison is an expensive computation to perform in any
       language so you should put the most commonly used commands first. But
-      which command is that? Oh...by the way, the most commonly used command
-      will change over time.
+      which command is that? The most commonly used command will change over
+      time, so you need to make sure to always check what your users are doing.
     </p>
     <p>
-      What, then, can be done? Well, first of all, in web services you usually
-      do the same thing each time a command-data pairing is received. First you
-      have to make sure the command is a valid command. Hackers will send random
-      commands to see if they can get your service to send them back a failure
-      message. You'd better be validating the command.
+      In web services you usually do the same thing each time a command-data
+      pairing is received. First you have to make sure the command is a valid
+      command. Hackers will send random commands to see if they can get your
+      service to send them back a failure message. You'd better be validating
+      the command.
     </p>
     <p>
-      You also have to validate the data. Once they figure out a valid command,
+      You also need to validate the data. Once they figure out a valid command,
       these same hackers will send invalid data to try to crash your service so
       they can take over your system by performing a
       <a
@@ -178,18 +179,18 @@
       or some other type of attack.
     </p>
     <p>
-      Once you've validated both of these things, your web service will usually
-      interact with a database. This could be by getting data from the database,
-      putting data in the database, or both and then finally, your service will
-      put together some data to send back to the client.
+      Once you've validated both things, your web service will usually interact
+      with a database. This could be by getting data from the database, putting
+      data in the database, or both. Then your service will put together some
+      data to send back to the client.
     </p>
     <p>
-      So these steps are performed over, and over, and over. At major web sites
-      these steps are performed millions of times a minute. The naive
+      These steps are performed over and over. At major web sites these steps
+      are performed millions of times a minute. The naive
       <kbd>if-else if-else</kbd> design isn't going to be good enough. You'll
       have to duplicate this validation, access, response pattern for each
-      command. How then can this be made better? After all, each command has to
-      be dealt with in a specific way. The solution to this lies in using a
+      command. How then can this be made better? After all, each command must be
+      dealt with in a specific way. The solution to this lies in using a
       Dictionary and the principle that functions and closures are
       <a href="https://lispcast.com/what-are-first-class-functions/"
         >first class citizens</a
@@ -205,13 +206,25 @@
         target="_blank"
         >type aliases</a
       >
-      to make it easier to read code later on. After all, you don't want to keep
+      to make it easier to read code later. After all, you don't want to keep
       typing stuff you don't have too, right? &#128521;
     </p>
     <pre><code class="Swift">//some aliases to make the code easier to read
 typealias DataDictionary = Dictionary&lt;String,Any&gt;
 typealias CommandDictionary = Dictionary&lt;String,(DataDictionary)->DataDictionary?&gt;
 </code></pre>
+    <p>
+      Note that these explicitly use the fact that Dictionary is a generic type.
+      Our new <kbd>typealiases</kbd> define specific implementations of the
+      generic Dictionary type, one of which takes a String as key and Any value
+      as the value. The second takes a String as key and a closure that takes in
+      and returns a DataDictionary. See
+      <a href="https://docs.swift.org/swift-book/LanguageGuide/TypeCasting.html"
+        >Type Casting for Any and AnyObject</a
+      >
+      for more information about the Any type which should be used only in
+      special circumstances.
+    </p>
     <p>
       Now each time you need a <kbd>Dictionary</kbd> that has a
       <kbd>String</kbd> as a key and anything at all as the value, you can use
@@ -250,8 +263,8 @@ typealias CommandDictionary = Dictionary&lt;String,(DataDictionary)->DataDiction
       also mapped to one interaction function. This function does any database
       access and/or updates and data calculations needed. Finally, each command
       is mapped to a response generation function where the data is packaged
-      correctly for what ever client made the request be it a mobile app, a web
-      browser, or an application.
+      correctly for whichever client made the request. That might be a a mobile
+      app, a web browser, or a desktop application.
     </p>
     <p>
       That means that all <kbd>handleRequest</kbd> needs to do is get each of
@@ -355,9 +368,10 @@ func handleRequest(aCommand:String, theData:DataDictionary, theValidationFunctio
     </p>
     <p>
       What, then, does the method signature of a function that accepts a
-      function or closure look like? I'm going to give you a silly example below
-      so you can focus on the principle. I'd never actually write this function
-      for an application. Instead I'd use the <kbd>reduce</kbd> BIF.
+      function or closure look like? Here is an example that illustrates the
+      principle. In a real application, you should use the build in
+      <kbd>reduce</kbd> BIF, but this example is an interesting look at how you
+      could use a closure as a parameter.
     </p>
 
     <pre><code class="Swift">func doIntegerMath(integers:[Int], initialValue:Int, mathToDo:(Int, Int)->Int) -> Int {
@@ -382,7 +396,23 @@ func handleRequest(aCommand:String, theData:DataDictionary, theValidationFunctio
       put parameter names in closure type declarations. They will cause compiler
       errors.
     </p>
-
+    <p>
+      The actual generic reduce() function operating on an array whose elements
+      are of type Element is defined like this:
+    </p>
+    <pre><code class="Swift">func reduce&lt;Result&gt;(_ initialResult: Result, _ nextPartialResult: (Result, Self.Element)-> Result) -> Result</code></pre>
+    <p>
+      It is an instance method meaning it belongs to the specific type of array
+      from which it is called. That specific array type has a built in type
+      reference for generics to use called self.Element. &lt;Result&gt; is the
+      type of the result of the function which might be the same as the array
+      elements or something different entirely such as returning a Double from
+      calling reduce() on an array of Int. reduce() takes a first parameter that
+      is the same type as the Result and a second parameter that is a closure
+      taking two parameters. One parameter of the closure is the same type as
+      Result and the other is the same type as the Elements of the array. The
+      closure returns the Result type as does the function.
+    </p>
     <footer>
       <a
         rel="license"
