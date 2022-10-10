@@ -116,11 +116,10 @@
       some data that goes along with the command (username and password, the
       name of the file to download, the data from the file to store on the
       server, etc.). You could write a function with a huge
-      <kbd>if-else if-else</kbd> clause where each branch of the
-      <kbd>if-else if-else</kbd> clause checks the command and executes code
-      inside the scope of the correct branch to deal with the data sent. This
-      naive design has many problems and would look something like the code
-      below.
+      <kbd>if-else</kbd> clause where each branch of the
+      <kbd>if-else</kbd> clause checks the command and executes code inside the
+      scope of the correct branch to deal with the data sent. This naive design
+      has many problems and would look something like the code below.
     </p>
     <pre><code class="Swift">func handleRequest(aCommand:String, theData:DataDictionary){
 
@@ -187,11 +186,11 @@
     <p>
       These steps are performed over and over. At major web sites these steps
       are performed millions of times a minute. The naive
-      <kbd>if-else if-else</kbd> design isn't going to be good enough. You'll
-      have to duplicate this validation, access, response pattern for each
-      command. How then can this be made better? After all, each command must be
-      dealt with in a specific way. The solution to this lies in using a
-      Dictionary and the principle that functions and closures are
+      <kbd>if-else</kbd> design isn't going to be good enough. You'll have to
+      duplicate this validation, access, response pattern for each command. How
+      then can this be made better? After all, each command must be dealt with
+      in a specific way. The solution to this lies in using a Dictionary and the
+      principle that functions and closures are
       <a href="https://lispcast.com/what-are-first-class-functions/"
         >first class citizens</a
       >
@@ -204,7 +203,7 @@
       <a
         href="https://www.programiz.com/swift-programming/typealias"
         target="_blank"
-        >type aliases</a
+        >typealiases</a
       >
       to make it easier to read code later. After all, you don't want to keep
       typing stuff you don't have too, right? &#128521;
@@ -249,7 +248,7 @@ typealias CommandDictionary = Dictionary&lt;String,(DataDictionary)->DataDiction
       >
       functions, a second to hold interaction functions, and a third to hold
       response generation functions, you could completely get rid of the
-      <kbd>if-else if-else</kbd> clause from the <kbd>handlRequest</kbd>
+      <kbd>if-else</kbd> clause from the <kbd>handlRequest</kbd>
       function above and create a variation of the
       <a
         href="https://www.javaguides.net/2018/08/application-controller-design-pattern-in-java.html"
@@ -323,10 +322,10 @@ func handleRequest(aCommand:String, theData:DataDictionary, theValidationFunctio
       says, "Can you get the service to do this other thing too?" Your answer
       can be yes! All you need to do is add three functions to the dictionaries!
       No more wasted time trying to find the appropriate place in the
-      <kbd>if-else if-else</kbd> clause and no more duplicating code. Storing
-      functions and closures in variables and data collections is a very
-      powerful technique. As you get more and more comfortable with it you'll
-      see more and more ways to make your code more
+      <kbd>if-else</kbd> clause and no more duplicating code. Storing functions
+      and closures in variables and data collections is a very powerful
+      technique. As you get more and more comfortable with it you'll see more
+      and more ways to make your code more
       <a
         href="https://stackoverflow.com/questions/21220155/what-does-abstraction-mean-in-programming"
         target="_blank"
@@ -349,10 +348,10 @@ func handleRequest(aCommand:String, theData:DataDictionary, theValidationFunctio
       instead of one.
     </p>
     <p>
-      Having a function or closure as a parameter allows a programmer to decide
-      later, long after you've written your function, what some of the behavior
-      of your function should be. That way your function can be reused and there
-      will be less code duplication in the application.
+      Having a function as a parameter allows a programmer to decide later, long
+      after you've written your function, what some of the behavior of your
+      function should be. That way your function can be reused and there will be
+      less code duplication in the application.
     </p>
     <p>
       Imagine how horrible it would be to have to write a loop to filter each of
@@ -368,8 +367,8 @@ func handleRequest(aCommand:String, theData:DataDictionary, theValidationFunctio
     </p>
     <p>
       What, then, does the method signature of a function that accepts a
-      function or closure look like? Here is an example that illustrates the
-      principle. In a real application, you should use the build in
+      function look like? Here is an example that illustrates the principle. In
+      a real application, you should use the
       <kbd>reduce</kbd> BIF, but this example is an interesting look at how you
       could use a closure as a parameter.
     </p>
@@ -382,8 +381,8 @@ func handleRequest(aCommand:String, theData:DataDictionary, theValidationFunctio
     return accumulator
 }</code></pre>
     <p>
-      In the snippet, the <kbd>mathToDo</kbd> parameter is a function or closure
-      that has two integer parameters and has an integer as it's value. The
+      In the snippet, the <kbd>mathToDo</kbd> parameter is a function that has
+      two integer parameters and has an integer as it's value. The
       <kbd>mathToDo</kbd> parameter's type declaration ends at the
       <kbd>)</kbd> character that concludes the list of parameters for the
       <kbd>doIntegerMath</kbd> function. The <kbd>-> Int</kbd> characters after
