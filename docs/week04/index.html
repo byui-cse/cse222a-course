@@ -215,25 +215,26 @@ agesByName["Jane"] = 20
     <p>
       In Swift, you are not limited to the built-in generic types, but can
       define your own generic types, functions and other language elements so
-      you don’t need to rewrite code that would be the same for each different
+      you don't need to rewrite code that would be the same for each different
       type.
     </p>
 
     <h2>Applications of Collections</h2>
     <p>
-      Let's revisit the pharmacy tracker from week 03. The model class
-      <kbd>PharmaceuticalStockTracker</kbd> had an Array of
+      Let's consider an application for a pharmacy to track containers of
+      medications in inventory. You could create a class
+      <kbd>PharmaceuticalStockTracker</kbd> that has Array of
       <kbd>Medications</kbd> that it used to keep track of how many bottles,
-      bags, etc. of medications were in stock. It did this by having each
-      instance of <kbd>Medication</kbd> represent a bottle, bag, of medicine
+      bags, etc. of medications were in stock. It does this by having each
+      instance of <kbd>Medication</kbd> represent a bottle or bag, of medicine
       stored.
     </p>
     <p>
       But there is a problem with that design. It's the amount of time it takes
-      to find medication in the system. Ah... It sounds like Array was the wrong
-      choice. If we used a Dictionary of Arrays of Medications, that would solve
-      the finding problem and still let us keep multiple bottles or bags of
-      medication of a single type in the tracking system.
+      to find medication in the system. It sounds like Array may have been the
+      wrong choice. If we used a Dictionary of Arrays of Medications, that would
+      solve the finding problem and still let us keep multiple bottles or bags
+      of medication of a single type in the tracking system.
     </p>
 
     <p>
