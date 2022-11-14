@@ -241,9 +241,9 @@ private func test0(testNum: Int) -> TestResults {
 
             // if not the last test, the error message should contain the String version of the code from GuardedErrors
         } else {
-            guard message.contains(result.value) else {
+            guard message.contains(result.rawValue) else {
                 printTestValue(test: test)
-                return fail(testNum, "Expected error message '\(message)' to contain '\(result.value)'")
+                return fail(testNum, "Expected error message '\(message)' to contain '\(result.rawValue)'")
             }
         }
     }
@@ -257,7 +257,7 @@ private func test1(testNum: Int) -> TestResults {
 
     // Did they detect the error of optionalString beign nil
     guard result == .string_is_nil else {
-        return fail(testNum, "Called task1(nil) so expected return value \(GuardedErrors.string_is_nil.value)")
+        return fail(testNum, "Called task1(nil) so expected return value \(GuardedErrors.string_is_nil.rawValue)")
     }
 
     let testString = "Swift is fun"

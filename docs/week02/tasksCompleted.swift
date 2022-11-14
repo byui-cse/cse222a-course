@@ -1,3 +1,11 @@
+// ******** NOTES TO EDITOR OF tasksCompleted.swift and tasks.swift ******** //
+//  Please make any changes to tasksCompleted.swift. This includes all the task code
+//  but it also includes sample imlementation for testing. After you edit, lint, etc.
+//  this file, copy the entire file to tasks.swift and then follow the indications in
+//  in each task function to delete the sample code and just leave behind a stub.
+//  Most of the time, that will just be "return nil" but in a few cases it shows
+//  stub code that has a template in in for them to use. Finally, in tasks.swift
+//  please delete this note to the editor in thie first 8 lines of the file.
 //
 //  Tasks.swift
 //  Week 2 Tasks
@@ -193,32 +201,32 @@ let test3Array = [5, 4, 3, 2, 1, 0] // Do not  // Do not modeify this array mode
 typealias task3Func = (Int, Int) -> Int
 func task3() -> [task3Func]? {
     /*
-     let closureArray: Array<task3Func> = [
-           { // Closure 0:
-               (first_parameter, second_parameter) in
-               // your code goes here
-               return 0
-           },
-           { // Closure 1:
-               (parm1, parm2) in
-               // your code goes here
-               return 0
-           },
-           { // Closure 2:
-               (lhs, rhs) in
-               // your code goes here
-               return 0
-           },
-           { // Closure 3:
-               // your code goes here
-               return $0-$1
-           },
-           { // Closure 4:
-               // your code goes here
-               return $0-$1
-           }
-       ]
-       return nil
+     let closureArray: [task3Func] = [
+         { // Closure 0:
+             first_parameter, second_parameter in
+             // your code goes here
+             return 0
+         },
+         { // Closure 1:
+             parm1, parm2 in
+             // your code goes here
+             return 0
+         },
+         { // Closure 2:
+             lhs, rhs in
+             // your code goes here
+             return 0
+         },
+         { // Closure 3:
+             // your code goes here
+             return $0-$1
+         },
+         { // Closure 4:
+             // your code goes here
+             return $0-$1
+         },
+     ]
+     return nil
      */
 
     // The following code will be deleted and the /* */ comment above uncommented
@@ -278,20 +286,19 @@ func task3() -> [task3Func]? {
 //  All but two of the functions inside main.swift are market private?
 //
 func task4(inArray: [Int]) -> [Int]? {
-    /*
-     var returnArray = inArray
-     guard task4a(anArray: returnArray) else { return nil }
-     return returnArray
+    var returnArray = inArray
+   /*
+    guard task4a(anArray: returnArray) else { return nil }
+    return returnArray
 
-     func task4a(anArray: [Int]) -> Bool {
-         // insert your use of map and filter here, then change the return value to true
-         return false
-     }
+    func task4a(anArray: [Int]) -> Bool {
+        // insert your use of map and filter here, then change the return value to true
+        return false
+    }
      */
 
     // The following code will be deleted and the /* */ comment section unbommented
     // It is used to validate the test code.
-    var returnArray = inArray
     guard task4a(anArray: &returnArray) else { return nil }
     return returnArray
 
@@ -357,7 +364,7 @@ func task6(inArray: [Int]) -> Int? {
 func task7(inArray: [Int]) -> [Int]? {
     // You will append values to this array, then return it
     var returnArray: [Int] = []
-    // Insert your code here
+    // Insert your code here, then return returnArray instead of nil
     //    return nil
 
     // The following code used to validate the test code will be deleted for tasks.swift.

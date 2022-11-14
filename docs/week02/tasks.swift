@@ -59,7 +59,7 @@ enum GuardedErrors: String {
 //  the number of elements in a collection like an array and the number of characters in
 //  a string are both given by ".count".
 //
-func task0(aBool _: Bool, int1 _: Int, int2 _: Int, aString _: String) -> GuardedErrors? {
+func task0(aBool: Bool, int1: Int, int2: Int, aString: String) -> GuardedErrors? {
     return nil
 }
 
@@ -89,7 +89,7 @@ func task0(aBool _: Bool, int1 _: Int, int2 _: Int, aString _: String) -> Guarde
 //      Use "guard let" in this task. "??" does not allow you to report if it was optional.
 //  Remember to never use "!" to force unwrap an optional in this class.
 //
-func task1(_: String?) -> GuardedErrors? {
+func task1(_ optionalString: String?) -> GuardedErrors? {
     return nil
 }
 
@@ -137,7 +137,7 @@ func task2() -> Int? {
 //
 //  Hints
 //  1) Some closures are set up with names for the two parameters so use them. The syntax for that
-//  is to list the parameter names in ( ) inside the { } followed by the keyword "in".
+//  is to list the parameter names inside the { } followed by the keyword "in".
 //  2) If names are not set up for the parameters, use $0 and $1 to refer to the two parameters.
 //  3) FYI, parameter names lhs and rhs stand for "left hand side" and "right hand side" and are
 //  used, for example, for the names of the default parameter names for a closure for sort
@@ -152,27 +152,27 @@ typealias task3Func = (Int, Int) -> Int
 func task3() -> [task3Func]? {
     let closureArray: [task3Func] = [
         { // Closure 0:
-            _, _ in
-                // your code goes here
-                0
+            first_parameter, second_parameter in
+            // your code goes here
+            return 0
         },
         { // Closure 1:
-            _, _ in
-                // your code goes here
-                0
+            parm1, parm2 in
+            // your code goes here
+            return 0
         },
         { // Closure 2:
-            _, _ in
-                // your code goes here
-                0
+            lhs, rhs in
+            // your code goes here
+            return 0
         },
         { // Closure 3:
             // your code goes here
-            $0 - $1
+            return $0-$1
         },
         { // Closure 4:
             // your code goes here
-            $0 - $1
+            return $0-$1
         },
     ]
     return nil
@@ -205,7 +205,7 @@ func task4(inArray: [Int]) -> [Int]? {
     guard task4a(anArray: returnArray) else { return nil }
     return returnArray
 
-    func task4a(anArray _: [Int]) -> Bool {
+    func task4a(anArray: [Int]) -> Bool {
         // insert your use of map and filter here, then change the return value to true
         return false
     }
@@ -223,7 +223,7 @@ func task4(inArray: [Int]) -> [Int]? {
 //  Add code that uses reduce on the input array to produce a sum of the values in the array and
 //  return the result.
 //
-func task5(inArray _: [Int]) -> Int? {
+func task5(inArray: [Int]) -> Int? {
     return nil
 }
 
@@ -231,7 +231,7 @@ func task5(inArray _: [Int]) -> Int? {
 //  Add code that uses reduce on the input array to produce the product of the values in the array and
 //  return the result.
 //
-func task6(inArray _: [Int]) -> Int? {
+func task6(inArray: [Int]) -> Int? {
     return nil
 }
 
@@ -257,10 +257,10 @@ func task6(inArray _: [Int]) -> Int? {
 //  There are other, sometimes better ways to accomplish these steps, but
 //  the purpose of this exercise is to practice using for loops
 //
-func task7(inArray _: [Int]) -> [Int]? {
+func task7(inArray: [Int]) -> [Int]? {
     // You will append values to this array, then return it
     var returnArray: [Int] = []
-    // Insert your code here
+    // Insert your code here, then return returnArray instead of nil
     return nil
 }
 
@@ -281,7 +281,7 @@ func task7(inArray _: [Int]) -> [Int]? {
 //  of that Type like myInt.function().
 //  Search Swift documentation on the web for ways to generate random Ints.
 //
-func task8(rowCount _: Int, columnCount _: Int, aRange _: ClosedRange<Int>) -> [[Int]]? {
+func task8(rowCount: Int, columnCount: Int, aRange: ClosedRange<Int>) -> [[Int]]? {
     return nil
 }
 
@@ -299,6 +299,6 @@ func task8(rowCount _: Int, columnCount _: Int, aRange _: ClosedRange<Int>) -> [
 //  matches the value of anInt. For the calculation of mean, you may need to convert the values to Double
 //  before operations like division.
 //
-func task9(intValues _: [[Int]]) -> [[Double]]? {
+func task9(intValues: [[Int]]) -> [[Double]]? {
     return nil
 }
