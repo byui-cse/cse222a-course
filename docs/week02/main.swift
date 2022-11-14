@@ -1,11 +1,13 @@
+// *************************
 //  Do not modify this file!
+// *************************
 //  You are welcome to read this file and to try to understand it, but it may include
 //  elements of Swift that have not yet been taught in the course at this point.
 //  Your assignment is to edit task.swift and then run this file and task.swift in a project.
 //  The code in this file will test your task functions and indicate which task functions pass.
 //  It will also provide diagnostic inforamtion if a task function fails. You should definitely
 //  not try to just copy code from a test here to your task, but instead, understand how to
-//  correctly create a task that meets the needs of the test
+//  correctly create a task that meets the needs of the test.
 //
 //  main.swift
 //  Week 2 Tasks
@@ -20,17 +22,18 @@ enum TestResults {
     case testPassed
     case testFailed
 }
+
 // This must list the tests in order: test0, test1... so they can be called with their test number and
 // not need to hard code the Task name into the test except when calling the task function
-var tests:[(Int)->TestResults] = [test0, test1, test2, test3, test4, test5, test6, test7, test8, test9]
-var taskResults:[TestResults] = Array(repeating: .testNotImplemented, count: tests.count)
-var savedInput:[String?] = []
-var savedPrint:[String?] = []
-var currentTest = 0;
+var tests: [(Int) -> TestResults] = [test0, test1, test2, test3, test4, test5, test6, test7, test8, test9]
+var taskResults: [TestResults] = Array(repeating: .testNotImplemented, count: tests.count)
+var savedInput: [String?] = []
+var savedPrint: [String?] = []
+var currentTest = 0
 
 //  ========= Start of main body of code =========
 
-for testNum in 0..<tests.count {
+for testNum in 0 ..< tests.count {
     setupReadLineAndPrint(testNum: testNum)
     taskResults[testNum] = tests[testNum](testNum)
 }
@@ -44,37 +47,37 @@ print()
 //  ========= End of main body of code =========
 
 #if false
-print("savedInput:")
-print(savedInput)
-print("savedPrint:")
-print(savedPrint)
+    print("savedInput:")
+    print(savedInput)
+    print("savedPrint:")
+    print(savedPrint)
 #endif
 
 //  ========= Utility functions =========
 
 //  This prints the a list of the tasks that match a particular status
-private func printResults(message: String, result:TestResults) {
+private func printResults(message: String, result: TestResults) {
     var toPrint = message
     // count the tasks in that status
-    let resultCount = taskResults.filter({$0==result}).count
-    toPrint += String(describing:resultCount)
+    let resultCount = taskResults.filter { $0 == result }.count
+    toPrint += String(describing: resultCount)
     // List the numbers of the tasks that match that status
     if resultCount > 0 {
         toPrint += " Task numbers:"
-        var first = true //the first one does not need a comma in front of it
-        for testNum in 0..<tests.count {
+        var first = true // the first one does not need a comma in front of it
+        for testNum in 0 ..< tests.count {
             if taskResults[testNum] == result {
                 if first { first = false }
                 else { toPrint += "," }
-                toPrint += " "+String(describing:testNum)
+                toPrint += " " + String(describing: testNum)
             }
         }
     }
     print(toPrint)
 }
+
 // Called before starting each test. It sets up testReadLine() and testPrint()
-private func setupReadLineAndPrint(testNum: Int)
-{
+private func setupReadLineAndPrint(testNum: Int) {
     // clear input and print caches in case some other function used them
     savedInput = []
     if savedPrint.count > 0 {
@@ -83,14 +86,16 @@ private func setupReadLineAndPrint(testNum: Int)
     }
     currentTest = testNum
 }
+
 // This allows us to capture the students' use of readLine() for testing
 func testReadLine() -> String? {
     // so the user input stands out in the console log
-    print("Input>>> ",terminator:"")
+    print("Input>>> ", terminator: "")
     let aString = readLine()
     savedInput.append(aString)
     return aString
 }
+
 // This allows us to capture the students' use of print() for testing
 func testPrint(_ parameters: Any...) {
     if savedPrint.count == 0 {
@@ -108,8 +113,9 @@ func testPrint(_ parameters: Any...) {
         }
     }
 }
+
 // This function lets us write cleaner code in the tests for all of the error messages
-func fail(_ testNum: Int, _ message: String)->TestResults {
+func fail(_ testNum: Int, _ message: String) -> TestResults {
     print("Task \(testNum) Error: \(message)")
     return .testFailed
 }
@@ -184,7 +190,6 @@ func fail(_ testNum: Int, _ message: String)->TestResults {
 // and the call of the task function in the test function. All else should cleanly adjust.
 
 private func test0(testNum: Int) -> TestResults {
- 
     // Set up some test values. We have not taught struct yet, but that is clearly called for here
     struct testValueStruct {
         let aBool: Bool
@@ -199,7 +204,7 @@ private func test0(testNum: Int) -> TestResults {
         testValueStruct(aBool: true, int1: 6, int2: 5, aString: "four", error: .int1_less_than_or_equal_int1),
         testValueStruct(aBool: true, int1: 6, int2: 6, aString: "four", error: .int1_less_than_or_equal_int1),
         testValueStruct(aBool: true, int1: 6, int2: 7, aString: "eight", error: .aString_not_4_chars),
-        testValueStruct(aBool: true, int1: 6, int2: 7, aString: "four", error: .success)
+        testValueStruct(aBool: true, int1: 6, int2: 7, aString: "four", error: .success),
     ]
 
     // This is just to simplify the error reporting code below by having way to print what was passed into the test
@@ -214,31 +219,31 @@ private func test0(testNum: Int) -> TestResults {
         guard let result = task0(aBool: test.aBool, int1: test.int1, int2: test.int2, aString: test.aString) else {
             return .testNotImplemented
         }
- 
+
         // did it return the correct error code from GuardedErrors
         guard result == test.error else {
             printTestValue(test: test)
-            return fail(testNum,"Expected return value of \(test.error), but function returned \(result)")
+            return fail(testNum, "Expected return value of \(test.error), but function returned \(result)")
         }
 
         // Did they print an error message
         guard savedPrint.count - priorPrintCount == 1, let message = savedPrint[priorPrintCount] else {
             printTestValue(test: test)
-            return fail(testNum,"Expected one call to testPrint() with an error message or product of int1 * int2")
+            return fail(testNum, "Expected one call to testPrint() with an error message or product of int1 * int2")
         }
- 
+
         // Are we at the last test? If so, make sure they printed the correct final value
         if test.error == .success {
             guard message == "\(test.int1 * test.int2)" else {
                 printTestValue(test: test)
-                return fail(testNum,"Expected past testPrint to be the product int1 * int2 = '\(test.int1 * test.int2)', but printed '\(message)'")
+                return fail(testNum, "Expected past testPrint to be the product int1 * int2 = '\(test.int1 * test.int2)', but printed '\(message)'")
             }
 
-        // if not the last test, the error message should contain the String version of the code from GuardedErrors
+            // if not the last test, the error message should contain the String version of the code from GuardedErrors
         } else {
             guard message.contains(result.value) else {
                 printTestValue(test: test)
-                return fail(testNum,"Expected error message '\(message)' to contain '\(result.value)'")
+                return fail(testNum, "Expected error message '\(message)' to contain '\(result.value)'")
             }
         }
     }
@@ -247,51 +252,49 @@ private func test0(testNum: Int) -> TestResults {
 }
 
 private func test1(testNum: Int) -> TestResults {
-
     // Call the task function and report "testNotImplemented if it returns nil
     guard let result = task1(nil) else { return .testNotImplemented }
 
     // Did they detect the error of optionalString beign nil
     guard result == .string_is_nil else {
-        return fail(testNum,"Called task1(nil) so expected return value \(GuardedErrors.string_is_nil.value)")
+        return fail(testNum, "Called task1(nil) so expected return value \(GuardedErrors.string_is_nil.value)")
     }
 
     let testString = "Swift is fun"
     while true {
- 
         // Should not return nil here after returning non-nil on the previous call
         guard let result2 = task1(testString) else { return .testFailed }
 
         // Did they call testReadLine
         guard savedInput.count > 0 else {
             if result2 == .testReadLine_is_nil { continue }
-            return fail(testNum,"Should not return from calling test1(\"\(testString)\") if there was no call to testReadLine()")
+            return fail(testNum, "Should not return from calling test1(\"\(testString)\") if there was no call to testReadLine()")
         }
 
         // Was the last input nil? Not sure that should happen, but if so, did they report that correctly?
-        guard let lastInput = savedInput[savedInput.count-1] else {
+        guard let lastInput = savedInput[savedInput.count - 1] else {
             if result2 == .testReadLine_is_nil { continue }
             else {
-                return fail(testNum,"Should not return from calling test1(\"\(testString)\") if there last call to testReadLine() was empty")
+                return fail(testNum, "Should not return from calling test1(\"\(testString)\") if there last call to testReadLine() was empty")
             }
         }
 
         // Did they report success, and if so, did the user iput the correct string?
         if result2 == .success {
             guard lastInput == testString else {
-                return fail(testNum,"Should only return .success if testReadLine input '\(lastInput)' matched optionalString: '\(testString)'")
+                return fail(testNum, "Should only return .success if testReadLine input '\(lastInput)' matched optionalString: '\(testString)'")
             }
             break // we succeeded
- 
-        // If the last inoput was nil, just continue
+
+            // If the last inoput was nil, just continue
         } else if result2 != .testReadLine_is_nil {
             // If they did not report input not matching, we are out of valid return codes for this task
             guard result2 == .input_does_not_match else {
-                return fail(testNum,"Unknown return value fron calling test1(\(testString))")
+                return fail(testNum, "Unknown return value fron calling test1(\(testString))")
             }
             // If they did report input not matching, make sure the input does not match
             guard lastInput != testString else {
-                return fail(testNum,"Should  return .success if testReadLine input '\(lastInput)' matches optionalString: '\(testString)'")
+                return fail(testNum, "Should  return .success if testReadLine input '\(lastInput)' matches optionalString: '\(testString)'")
             }
             // If input did not match, let them try again
             continue
@@ -302,49 +305,48 @@ private func test1(testNum: Int) -> TestResults {
 }
 
 private func test2(testNum: Int) -> TestResults {
- 
     // Call the task function and report "testNotImplemented if it returns nil
     guard let result = task2() else { return .testNotImplemented }
- 
+
     // test that we saw some use of savedPrint
     guard savedPrint.count > 0 else {
-        return fail(testNum,"Expected use of testPrint()")
+        return fail(testNum, "Expected use of testPrint()")
     }
- 
+
     // Captuure the first thing printed which should be the instruction to enter a name ro "done"
     let firstQuerry = savedPrint[0]
     // filter out nil values and empty strings
-    var nonNilInput = savedInput.compactMap{$0}.filter{$0 != ""}
- 
+    var nonNilInput = savedInput.compactMap { $0 }.filter { $0 != "" }
+
     // check that the last input was "done"
-    guard nonNilInput.count > 0 && nonNilInput[nonNilInput.count-1] == "done" else {
-        return fail(testNum,"Expected last input to be 'done', but last input was \((nonNilInput.count > 0) ? nonNilInput[nonNilInput.count-1] : "nil")")
+    guard nonNilInput.count > 0, nonNilInput[nonNilInput.count - 1] == "done" else {
+        return fail(testNum, "Expected last input to be 'done', but last input was \((nonNilInput.count > 0) ? nonNilInput[nonNilInput.count - 1] : "nil")")
     }
 
     // remove done from the nonNilInput Array
     nonNilInput.removeLast()
     // test for correct return value
     guard result == nonNilInput.count else {
-        return fail(testNum,"Expected return value to be count of non-nil readLine() calls: \(nonNilInput.count), but function returned \(result)")
+        return fail(testNum, "Expected return value to be count of non-nil readLine() calls: \(nonNilInput.count), but function returned \(result)")
     }
 
     // remove any nil values and any use of the instruction message from the cache of testPrint() calls
-    let helloMessages = savedPrint.compactMap{$0}.filter{$0 != firstQuerry}
+    let helloMessages = savedPrint.compactMap { $0 }.filter { $0 != firstQuerry }
     // check that our remaining messages all start with "Hello"
-    let nonHelloMessages = helloMessages.filter{!$0.hasPrefix("Hello ")}
+    let nonHelloMessages = helloMessages.filter { !$0.hasPrefix("Hello ") }
     guard nonHelloMessages.count == 0 else {
-        return fail(testNum,"Only testPrint() calls should be resuest to user to input a name and 'Hello ' responses, but had '\(nonHelloMessages[0])'")
+        return fail(testNum, "Only testPrint() calls should be resuest to user to input a name and 'Hello ' responses, but had '\(nonHelloMessages[0])'")
     }
 
     // We should have one "Hello " message per non-empty name input to testReadLine()
     guard helloMessages.count == nonNilInput.count else {
-        return fail(testNum,"Expected one Hello message per name input. Had \(nonNilInput.count) names input, but had \(helloMessages.count) Hello messages")
+        return fail(testNum, "Expected one Hello message per name input. Had \(nonNilInput.count) names input, but had \(helloMessages.count) Hello messages")
     }
- 
+
     // Check for correctly formatted Hello messages. These are warning errors since they could somewhat
     // correctly use different spacing, etc. but we warn them so they can note if their messages vary widely
     // from what we expected
-    for index in 0..<helloMessages.count {
+    for index in 0 ..< helloMessages.count {
         // we already confirmed that helloMessages.count == nonNilInput.count so we can index them together
         let expectedMessage = "Hello \(nonNilInput[index])!"
         if helloMessages[index] != expectedMessage {
@@ -356,15 +358,14 @@ private func test2(testNum: Int) -> TestResults {
 }
 
 private func test3(testNum: Int) -> TestResults {
-
     // Call the task function and report "testNotImplemented if it returns nil
     guard let result = task3() else { return .testNotImplemented }
 
     // Make sure resulting Array has 5 elements
     guard result.count == 5 else {
-        return fail(testNum,"Return value should contain 5 closures, but had \(result.count)")
+        return fail(testNum, "Return value should contain 5 closures, but had \(result.count)")
     }
-    
+
     // Define some hard-wired tests rather than generating random tests for this Task
     struct testStruct {
         let num: Int // which closure are we testing
@@ -373,34 +374,34 @@ private func test3(testNum: Int) -> TestResults {
         let want: Int // value that we want returned from the closure
     }
     let tests = [
-        testStruct(num: 0, p1: 1, p2: 2, want: 3),      // 1 + 2 = 3
-        testStruct(num: 0, p1: -1, p2: 1, want: 0),     // -1 + 1 = 0
-        testStruct(num: 1, p1: 1, p2: 7, want: 7),      // 1 * 7 = 7
-        testStruct(num: 1, p1: -2, p2: 3, want: -6),    // -2 * 3 = -6
-        testStruct(num: 1, p1: 0, p2: 3, want: 0),      // 0 * 3 = 0
-        testStruct(num: 2, p1: -2, p2: 3, want: -1),    // -2 < 3 -> -1
-        testStruct(num: 2, p1: -4, p2: -4, want: 0),    // -4 == -4 -> 0
-        testStruct(num: 2, p1: -2, p2: -3, want: 1),    // -2 > -3 -> 1
-        testStruct(num: 3, p1: -2, p2: 0, want: -1),    // -2 < 0 -> -1
-        testStruct(num: 3, p1: 6, p2: 0, want: -2),     // 6 >= test3Array.count -> -2
-        testStruct(num: 3, p1: 0, p2: 0, want: 0),      // test3Array[0] != 0 -> 0
-        testStruct(num: 3, p1: 4, p2: 0, want: 0),      // test3Array[4] != 0 -> 0
-        testStruct(num: 3, p1: 5, p2: 0, want: 1),      // test3Array[5] == 0 -> 1
-        testStruct(num: 3, p1: 2, p2: 3, want: 1),      // test3Array[2] == 3 -> 1
-        testStruct(num: 4, p1: 1, p2: 3, want: -1),     // 1 and 3 both odd -> -1
-        testStruct(num: 4, p1: -2, p2: 4, want: 1),     // -2 and 4 both even -> 1
-        testStruct(num: 4, p1: 1, p2: 2, want: 0),      // 1 odd 2 even -> 0
-        testStruct(num: 4, p1: 2, p2: 1, want: 0)       // 2 odd 1 even -> 0
+        testStruct(num: 0, p1: 1, p2: 2, want: 3), // 1 + 2 = 3
+        testStruct(num: 0, p1: -1, p2: 1, want: 0), // -1 + 1 = 0
+        testStruct(num: 1, p1: 1, p2: 7, want: 7), // 1 * 7 = 7
+        testStruct(num: 1, p1: -2, p2: 3, want: -6), // -2 * 3 = -6
+        testStruct(num: 1, p1: 0, p2: 3, want: 0), // 0 * 3 = 0
+        testStruct(num: 2, p1: -2, p2: 3, want: -1), // -2 < 3 -> -1
+        testStruct(num: 2, p1: -4, p2: -4, want: 0), // -4 == -4 -> 0
+        testStruct(num: 2, p1: -2, p2: -3, want: 1), // -2 > -3 -> 1
+        testStruct(num: 3, p1: -2, p2: 0, want: -1), // -2 < 0 -> -1
+        testStruct(num: 3, p1: 6, p2: 0, want: -2), // 6 >= test3Array.count -> -2
+        testStruct(num: 3, p1: 0, p2: 0, want: 0), // test3Array[0] != 0 -> 0
+        testStruct(num: 3, p1: 4, p2: 0, want: 0), // test3Array[4] != 0 -> 0
+        testStruct(num: 3, p1: 5, p2: 0, want: 1), // test3Array[5] == 0 -> 1
+        testStruct(num: 3, p1: 2, p2: 3, want: 1), // test3Array[2] == 3 -> 1
+        testStruct(num: 4, p1: 1, p2: 3, want: -1), // 1 and 3 both odd -> -1
+        testStruct(num: 4, p1: -2, p2: 4, want: 1), // -2 and 4 both even -> 1
+        testStruct(num: 4, p1: 1, p2: 2, want: 0), // 1 odd 2 even -> 0
+        testStruct(num: 4, p1: 2, p2: 1, want: 0), // 2 odd 1 even -> 0
     ]
 
     // Default passing, but we do not stop this on the first failure so record any failure.
     var myReturnValue = TestResults.testPassed
     for test in tests {
         let aFunc = result[test.num]
-        let retVal =  aFunc(test.p1, test.p2)
+        let retVal = aFunc(test.p1, test.p2)
         // Report error if closure did not return the desired value
         if retVal != test.want {
-            myReturnValue = fail(testNum,"Called closure \(test.num) with (\(test.p1), \(test.p2)). Expected \(test.want), but closure returned \(retVal)")
+            myReturnValue = fail(testNum, "Called closure \(test.num) with (\(test.p1), \(test.p2)). Expected \(test.want), but closure returned \(retVal)")
         }
     }
 
@@ -419,17 +420,16 @@ private func test3(testNum: Int) -> TestResults {
 //      Array(0..<size).shuffled()
 
 private func test4(testNum: Int) -> TestResults {
-
     // Do tests with five random arrays
-    for _ in 0..<5 {
+    for _ in 0 ..< 5 {
         // Set up random Array parameter
-        let testArray = (0..<10).map{_ in Int.random(in: 1...100)}
+        let testArray = (0 ..< 10).map { _ in Int.random(in: 1 ... 100) }
 
         // Call the task function and report "testNotImplemented if it returns nil
         guard let result = task4(inArray: testArray) else { return .testNotImplemented }
 
         // Compare returned value to expected value
-        let testTarget = testArray.map{$0*$0}.filter{$0 % 10 != 1}
+        let testTarget = testArray.map { $0 * $0 }.filter { $0 % 10 != 1 }
         guard result == testTarget else {
             print("Task \(testNum) Error: Incorrect return value")
             print("Passed in: '\(testArray)'")
@@ -443,12 +443,11 @@ private func test4(testNum: Int) -> TestResults {
 }
 
 private func test5(testNum: Int) -> TestResults {
-
     // Do tests with five random arrays
-    for _ in 0..<5 {
+    for _ in 0 ..< 5 {
         // Set up random Array parameter
-        let testArray = (0..<10).map{_ in Int.random(in: -100...100)}
- 
+        let testArray = (0 ..< 10).map { _ in Int.random(in: -100 ... 100) }
+
         // Call the task function and report "testNotImplemented if it returns nil
         guard let result = task5(inArray: testArray) else { return .testNotImplemented }
 
@@ -466,16 +465,15 @@ private func test5(testNum: Int) -> TestResults {
 }
 
 private func test6(testNum: Int) -> TestResults {
-
     // Do tests with five random arrays
-    for _ in 0..<5 {
+    for _ in 0 ..< 5 {
         // Set up random Array parameter
         // Limit it to 10 numbers -10 to 10 to avoid integer overflow
-        let testArray = (0..<10).map{_ in Int.random(in: -10...10)}
-        
+        let testArray = (0 ..< 10).map { _ in Int.random(in: -10 ... 10) }
+
         // Call the task function and report "testNotImplemented if it returns nil
         guard let result = task6(inArray: testArray) else { return .testNotImplemented }
-        
+
         let testTarget = testArray.reduce(1,*)
         guard result == testTarget else {
             print("Task \(testNum) Error: Incorrect return value")
@@ -489,24 +487,23 @@ private func test6(testNum: Int) -> TestResults {
 }
 
 private func test7(testNum: Int) -> TestResults {
-
     // Specify the array we will pass in
-    let passArray = [ 7, 2, 5, 3, 1, 9]
+    let passArray = [7, 2, 5, 3, 1, 9]
     // Specify the expected values according to the instructions
     // We could organize this as a one dimensional array
     // but it seemed cleaner to list the four steps separately
     let wantedResults: [[Int]] = [
-        [ 2, 3, 4, 5, 6, 7 ],
-        [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
-        [ 5, 4, 3, 2, 1, 0 ],
+        [2, 3, 4, 5, 6, 7],
+        [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        [5, 4, 3, 2, 1, 0],
         // The final instruction is to return the values from the input array
         // so we include it in the wantedResults
-        passArray
+        passArray,
     ]
 
     // Call the task function and report "testNotImplemented if it returns nil
     guard let result = task7(inArray: passArray) else { return .testNotImplemented }
-    
+
     // We use for...in to step through wantedResults, but we also need to index through the result
     var resultIndex = 0
     // Step through the desired results
@@ -514,7 +511,7 @@ private func test7(testNum: Int) -> TestResults {
         for anInt in row {
             // Compare the wanted result to the actual returned values
             guard anInt == result[resultIndex] else {
-                return fail(testNum,"Expected item at index \(resultIndex) in returned array to be \(anInt), but it was \(result[resultIndex])")
+                return fail(testNum, "Expected item at index \(resultIndex) in returned array to be \(anInt), but it was \(result[resultIndex])")
             }
             // Increment to the next returned value
             resultIndex += 1
@@ -525,33 +522,32 @@ private func test7(testNum: Int) -> TestResults {
 }
 
 private func test8(testNum: Int) -> TestResults {
-
     // Do tests with five random arrays
-    for _ in 0...5 {
+    for _ in 0 ... 5 {
         // Each time choose random parameters
-        let myRowCount = Int.random(in: 10...30)
-        let myColumnCount = Int.random(in: 10...30)
-        let myRange = Int.random(in: 0...10)...Int.random(in: 20...30)
- 
+        let myRowCount = Int.random(in: 10 ... 30)
+        let myColumnCount = Int.random(in: 10 ... 30)
+        let myRange = Int.random(in: 0 ... 10) ... Int.random(in: 20 ... 30)
+
         // Call the task function and report "testNotImplemented if it returns nil
         guard let result = task8(rowCount: myRowCount, columnCount: myColumnCount, aRange: myRange)
-            else { return .testNotImplemented }
+        else { return .testNotImplemented }
 
         // Make sure the row count is correct
         guard result.count == myRowCount else {
-            return fail(testNum,"Expected \(myRowCount) rows, result has \(result.count) rows")
+            return fail(testNum, "Expected \(myRowCount) rows, result has \(result.count) rows")
         }
 
         // Step through the rows
         for oneRow in result {
             // Make sure the column counts is correct in each row
             guard oneRow.count == myColumnCount else {
-                return fail(testNum,"Expected \(myColumnCount) columns, result has \(oneRow.count) columns")
+                return fail(testNum, "Expected \(myColumnCount) columns, result has \(oneRow.count) columns")
             }
             // Mke sure the random numbers are in the expected range
             for oneInt in oneRow {
                 guard myRange.contains(oneInt) else {
-                    return fail(testNum,"Value \(oneInt) not in assigned range \(myRange)")
+                    return fail(testNum, "Value \(oneInt) not in assigned range \(myRange)")
                 }
             }
         }
@@ -561,46 +557,45 @@ private func test8(testNum: Int) -> TestResults {
 }
 
 private func test9(testNum: Int) -> TestResults {
-    
     // Do tests with five random arrays
-    for _ in 0...5 { // Run the test 5 times
+    for _ in 0 ... 5 { // Run the test 5 times
         // Each time send a random array
-        let myArray = Array(repeating: Array(repeating: Int.random(in: 0...40), count: Int.random(in: 10...30)), count: Int.random(in: 10...30))
-                                
+        let myArray = Array(repeating: Array(repeating: Int.random(in: 0 ... 40), count: Int.random(in: 10 ... 30)), count: Int.random(in: 10 ... 30))
+
         // Call the task function and report "testNotImplemented if it returns nil
         guard let result = task9(intValues: myArray) else { return .testNotImplemented }
 
         // Make sure the number of rows in the result matches the input
         guard result.count == myArray.count else {
-            return fail(testNum,"Expected \(myArray.count) rows, result has \(result.count) rows")
+            return fail(testNum, "Expected \(myArray.count) rows, result has \(result.count) rows")
         }
 
         // Step through the rows
-        for rowNum in 0..<result.count {
+        for rowNum in 0 ..< result.count {
             // Make sure the result has 3 columns in each row
             guard result[rowNum].count == 3 else {
-                return fail(testNum,"Expected 3 columns, result has \(result[rowNum].count) columns")
+                return fail(testNum, "Expected 3 columns, result has \(result[rowNum].count) columns")
             }
- 
+
             // Calculate the min from the array. Since it has >0 valid elements, min() should never return nil.
-            guard let myMin = myArray[rowNum].min() else { return fail(testNum,"Testing Error") }
+            guard let myMin = myArray[rowNum].min() else { return fail(testNum, "Testing Error") }
             // Make sure the first value is the correct minimum for each row
             guard Double(myMin) == result[rowNum][0] else {
-                return fail(testNum,"Expected mininum of row \(rowNum) to be \(Double(myMin)), result has \(result[rowNum][0])")
+                return fail(testNum, "Expected mininum of row \(rowNum) to be \(Double(myMin)), result has \(result[rowNum][0])")
             }
- 
+
             // Calculate the max from the array. Since it has >0 valid elements, max() should never return nil.
-            guard let myMax = myArray[rowNum].max() else { return fail(testNum,"Testing Error") }
+            guard let myMax = myArray[rowNum].max() else { return fail(testNum, "Testing Error") }
             // Make sure the second value is the correct maximum for each row
             guard Double(myMax) == result[rowNum][1] else {
-                return fail(testNum,"Expected maximum of row \(rowNum) to be \(Double(myMax)), result has \(result[rowNum][1])")
+                return fail(testNum, "Expected maximum of row \(rowNum) to be \(Double(myMax)), result has \(result[rowNum][1])")
             }
 
             // Calculate the mean or average
-            let myAverage = Double(myArray[rowNum].reduce(0,+))/Double(myArray[rowNum].count)
+            let myAverage = Double(myArray[rowNum].reduce(0,+)) / Double(myArray[rowNum].count)
             // Make sure the third value is the correct mean for each row
             guard myAverage == result[rowNum][2] else {
-                return fail(testNum,"Expected average of row \(rowNum) to be \(myAverage), result has \(result[rowNum][2])")
+                return fail(testNum, "Expected average of row \(rowNum) to be \(myAverage), result has \(result[rowNum][2])")
             }
         }
     }
