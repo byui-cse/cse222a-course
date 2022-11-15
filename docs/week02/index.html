@@ -35,11 +35,11 @@
       <h1>Some Similarities and Differences</h1>
       <h3>Shared Operators</h3>
       <p>
-        Remember, both Python and Swift have C as one of their ancestors.
-        Because of this, it is not shocking to find out that they share some of
-        the same C-type operators. These include +, -, /, *, ==, !=, &lt, &gt,
-        etc. Go to these two sites, and can compare the operators for the two
-        languages.
+        Remember, Python, C++, JavaScript and Swift have C as one of their
+        ancestors. Because of this, it is not shocking to find out that they
+        share some of the same C-type operators. These include +, -, /, *, ==,
+        !=, &lt, &gt, etc. Go to these two sites, and can compare the operators
+        for Python and Swift.
         <a
           href="https://www.tutorialspoint.com/python/python_basic_operators.htm"
           target="_blank"
@@ -246,25 +246,31 @@ name = 3.1456778889547637653//compilation failure, type change</code></pre>
         but that would also be incorrect. This code will also fail to compile
         and you will get an error message that includes a '?' character. This is
         because Swift is designed to be safer than other languages you may have
-        used. Instead, you would need a varable that is an 'Optional' type.
+        used. Instead, you would need a variable that is an 'Optional' type.
       </p>
       <h3>Optionals</h3>
       <p>
-        In Swift, variables of type
+        Consider this common situation that has to be handled in code. You have
+        retrieved some sort of data from a database, a file, the user, or a a
+        web service. It's possible that the data doesn't exist. Therefore it
+        could be nil. That means you have to check to see if the variable
+        holding the data is nil. In Swift, variables and function return values
+        that can sometimes be nil are called
         <a
           href="https://www.programiz.com/swift-programming/optionals"
           target="_blank"
-          >Optional</a
+          >Optionals.</a
         >
-        are either nil, or are wrappers around regular variable types. For
-        example, this code snippet
+        An Optional is either nil or it is a wrapper around a regular variable
+        type. An Optional is indicated by putting a "?" immediately afer the
+        Type like this:
       </p>
       <pre><code>var city:String? = nil</code></pre>
       <p>
-        reads, in English, like this: "Create a variable called city of type
-        String Optional and set it to nil." If you later figure out what the
-        city variable should be set to, you can have the city variable wrap a
-        value by doing something similar to this.
+        In English things reads: "Create a variable called city of type String
+        Optional and set it to nil." If you later figure out what the city
+        variable should be set to, you can have the city variable wrap a value
+        by doing something similar to this.
       </p>
       <pre><code>city = "Kinshasa"</code></pre>
       <p>
@@ -274,15 +280,11 @@ name = 3.1456778889547637653//compilation failure, type change</code></pre>
         Optional now is wrapped around the String "Kinshasa".
       </p>
       <p>
-        When you have a String Optional and want to get the string back out, you
-        use the '!' operator. Be careful! If you try this
-      </p>
-      <pre><code>print(city!)</code></pre>
-      <p>
-        and city is nil, you will get a runtime failure with a message saying
-        that an unexpected nil was found. These optionals come in VERY handy and
-        it is EASY to check to see if something is nil using optionals. Take a
-        look at the following snippet.
+        To perform normal operations on an Optional variable, you must first
+        “unwrap" it. One way to unwrap it is to use the “??” operator which
+        unwraps the variable to the left of the “??” operator so it can be used.
+        If that variable is nil and cannot be unwrapped, then instead “??” gives
+        the default value to the right of the “??” operator.
       </p>
       <pre><code>print(city ?? "Unknown")</code></pre>
       <p>
@@ -290,6 +292,16 @@ name = 3.1456778889547637653//compilation failure, type change</code></pre>
         value wrapped by the String Optional if city is not nil. this is due to
         the nil-coalescing operator, ??. That's its job. In this case, Kinshasa
         is printed out since city is not nil.
+      </p>
+      <p>
+        You can also “force—unwrap” a variable by putting a “!” right after it.
+        But this completely defeats the features of Swift that help avoid many
+        of the common errors responsible for zero-day attacks on the internet.
+        So we strongly recommend against ever using that operator. We want you
+        to learn to use Swift with best practices including safe use of
+        Optionals. So if you submit an assignment that uses the “force—unwrap”
+        operator, we will return it and ask you to resubmit it without the use
+        of “force—unwrap.”
       </p>
       <h3>Wrap Up</h3>
 
@@ -302,7 +314,11 @@ name = 3.1456778889547637653//compilation failure, type change</code></pre>
         will know exactly what you meant to have happen. Also, because of this
         explicitness, a variable can't be accidentally declared twice in Swift,
         a situation which can produce strange, difficult to debug, bad behavior
-        in large Python code sets.
+        in large Python code sets. One way Swift helps reduce the extra words in
+        code making it generally easier to read is by not requring you to
+        specify things that the compiler can figure out. And example is not
+        needing to specify a variable or constant Type if it can be inferred by
+        the compiler.
       </p>
       <p>
         Which set of operators to include in a language often depends on the
@@ -494,7 +510,7 @@ name = 3.1456778889547637653//compilation failure, type change</code></pre>
   </pre>
 
       with the <kbd>-></kbd> operator indicating the type of the data being
-      returned.
+      returned. You can read the <kbd>-></kbd> operator as "returns."
       <p>
         Notice the '{' and '}' operators. These are the Swift
         <a
@@ -603,7 +619,16 @@ print(averageTwoNumbers(5.0,3.0))</code></pre>
         _ operator for argument labels when doing anything else would make the
         code less readable.
       </p>
-
+      <p>
+        In addition to using "_" in front of the internal variable name to
+        indicate that parameter name does not need to be named in the parameter
+        list when calling a function, you could instead list a second name in
+        front of the internal name. The first name will be used when calling the
+        function and the second name will be used inside the function. Sometimes
+        the code reads more cleanly if a different names are use to call a
+        function than the name used inside the function. You will see examples
+        of this in the documentation for built-in functions.
+      </p>
       <h3>Conditional Branching - ifs and other amazing things</h3>
       <p>
         If statements are fine. In fact sometimes they are exactly what you
@@ -641,6 +666,13 @@ print(averageTwoNumbers(5.0,3.0))</code></pre>
         sense.
       </p>
       <p>
+        You can think of a guard statement as guarding the rest of the function
+        from some error or condition. So the else clause must include a return
+        statement. If a guard is used inside a loop, then it is guarding the
+        rest of the code in the loop and the else clause must include a break,
+        continue or return statement.
+      </p>
+      <p>
         If statements are to be used when choosing between different
         computational flows, not guarding. Here is a silly example.
       </p>
@@ -656,17 +688,11 @@ else{
   print("\(aNumber) is zero")
 }</code>
   </pre>
-
+      <h3>Using if and guard with optionals</h3>
       <p>
-        Consider this common situation that has to be handled in code. You have
-        retrieved some sort of data from a database, a file, the user, or a a
-        web service. It's possible that the data doesn't exist. Therefore it
-        could be <kbd>nil</kbd>. That means you have to check to see if the
-        variable holding the data is nil.
-      </p>
-      <p>
-        This is such a common pattern in programming that Swift includes special
-        nil checking syntax. It combines the
+        Sometimes you want to unwrap an Optional, but take a different action if
+        the value is nil. This is such a common pattern in programming that
+        Swift includes special nil checking syntax. It combines the
         <a
           href="https://agrawalsuneet.github.io/blogs/if-vs-if-let-vs-guard-let-in-swift/"
           >if and let keywords</a
@@ -674,19 +700,17 @@ else{
       </p>
 
       <pre>
-  <code class="Swift">func silly(){
+  <code class="Swift">func silly() {
   let name:String? = nil
-  if let name = name{
+  if let name = name {
       //code to use the name
       print(name.uppercased())
-  }
-  else{
+  } else {
       //some code to handle when there
       //is no name
   }
 }</code>
   </pre>
-
       <p>
         Notice that the name variable is declared with the
         <kbd>let</kbd> keyword. It may seem that this code snippet breaks the
@@ -701,12 +725,32 @@ else{
         the line <kbd>print(name.uppercased())</kbd> would fail to compile.
       </p>
       <p>
-        Notice how <kbd>if let</kbd> is similar to and different from
-        <kbd>guards</kbd>, a regular <kbd>if else</kbd>, or the
-        <kbd>nil</kbd> coalescing code structure from before. Each has its use.
-        Each works best when used for what it was designed for. Can you use them
-        in place of each other? Of course. Should you use them in place of each
-        other? No.
+        The other common pattern for unwrapping an optional is “guard let” which
+        unwraps a value and guards the rest of the function or loop against the
+        nil case.
+      </p>
+      <pre>
+    <code class="Swift">func sillyGuard() {
+    let name:String? = nil
+    guard let name = name else {
+      //some code to handle when there
+      //is no name
+    }
+    //code to use the name
+    print(name.uppercased())
+  }</code>
+    </pre>
+      <p>
+        Note that the scope of the unwrapped variable for “if let” is the inside
+        of the if statement’s “true” clause (before the “else”). The scope of
+        the unwrapped variable for “guard let” is the remainder of the function
+        (or the remainder of the loop if it is in a loop). This can help you
+        avoid nesting code as deeply within if statements making it more
+        readable.
+      </p>
+      <p>
+        Also, you can use “if var” and “guard var” if you need to be able to
+        later modify the unwrapped value.
       </p>
       <h3>Map, Filter, and Reduce</h3>
       <p>
@@ -869,26 +913,25 @@ else{
         fall back to using a
         <a href="https://learnappmaking.com/loops-swift-how-to/" target="_blank"
           ><kbd>for</kbd> loop</a
-        >. Please remember that using this loop is a last choice, not a first
-        choice. Using a <kbd>for</kbd> loop dramatically increases the
-        probability of you creating buggy code. Always use <kbd>map</kbd>,
-        <kbd>filter</kbd>, and <kbd>reduce</kbd>
-        if you can.
+        >.
       </p>
       <p>
         If you are using a loop with an Array, use the <kbd>for-in</kbd> loop.
-        Let's reuse the <kbd>numbers</kbd> Array from earlier. The code snippet
-        below prints out each element in the Array.
+        Swift has several ways to use this kind of loop. If you have a
+        collection like an Array, you can use for-in to step through all the
+        values in the array. Let's reuse the <kbd>numbers</kbd> Array from
+        earlier. The code snippet below prints out each element in the Array.
       </p>
       <pre><code class="Swift">for number in numbers{
   print(number)
 }
 </code></pre>
       <p>
-        I can not emphasize enough that the <kbd>for-in</kbd> loop should not be
-        used unless there is no other way to accomplish what you need to do
-        using <kbd>map</kbd>, <kbd>filter</kbd>, and <kbd>reduce</kbd>. That
-        type of situation is very rare.
+        The variable “number” is assigned a value of the first element of
+        numbers, then the second and so forth. Within each iteration of the loop
+        it is a constant value. If “numbers” were an Array of Arrays, then
+        “number” would be an Array (row) from within the outer Array for each
+        iteration.
       </p>
       <p>
         If you are not working with an Array, there is another way to use the
@@ -918,7 +961,9 @@ else{
         The use of the <kbd>for-in</kbd> loop with a range are valid uses as
         long as you don't try to use the numbers as indexes of an Array. These
         situations are pretty rare. Most data is stored in Arrays or other data
-        collections you'll find out about in week 04.
+        collections you'll find out about in week 04. One time you might use a
+        <kbd>for-in</kbd> loop with a range is when you are constructing an
+        Array.
       </p>
       <p>
         Swift also has
