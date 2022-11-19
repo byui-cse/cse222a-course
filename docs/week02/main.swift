@@ -38,6 +38,7 @@ for testNum in 0 ..< tests.count {
     taskResults[testNum] = tests[testNum](testNum)
 }
 
+print()
 print("===== Task Status =====")
 printResults(message: "Tasks Passed: ", result: .testPassed)
 printResults(message: "Tasks Failed: ", result: .testFailed)

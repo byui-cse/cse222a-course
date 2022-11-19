@@ -32,75 +32,45 @@
     </header>
     <main>
       <h1>Week 2 Task Instructions</h1>
-      <h2>The Fundamentals</h2>
       <section>
-        <h3>Before beginning this Task:</h3>
+        <h3>Before beginning this Assignment:</h3>
         <ol>
-          <li>Be part of a team consisting of 2-3 members.</li>
           <li>
             Make sure you have reviewed the
-            <a href="../week01/" target="_blank">Installation and Purpose</a>
-            and <a href="../week02/" target="_blank">The Fundamentals</a> course
+            <a href="../week01/index.html" target="_blank">Installation and Purpose</a>
+            and <a href="index.html" target="_blank">The Fundamentals</a> course
             content.
           </li>
         </ol>
       </section>
       <section>
-        <h3>Task 1</h3>
         <p>
-          Create a variable named <kbd>diastolicBloodPressures</kbd> and
-          initialize it to be an
-          <a
-            href="https://stackoverflow.com/questions/25127700/two-dimensional-array-in-swift"
-            >Array of Arrays of Integers</a
-          >. There are to be 100 sub-Arrays in the
-          <kbd>diastolicBloodPressurs</kbd> Array, each representing diastolic
-          blood pressures taken and recorded over some period of time. Each of
-          these sub-Arrays is to contain 40 random Integers between 60 and 130.
-          Put this code in <kbd>main.swift</kbd>.
+          Please download the <a href="tasks.swift">tasks.swift</a> 
+          and <a href="main.swift">main.swift</a> files 
+          for this week’s assignment and create a Swift project that contains 
+          these two files. You should not modify main.swift in any way. 
+          You should be able to successfully compile the two files. When the project
+          runs it will print a message to the console saying that 10 tasks are not started.
         </p>
         <p>
-          The <kbd>diastolicBloodPressures</kbd> Array is the parameter for a
-          function called <kbd>generateArrayStats</kbd> that is to be put in a
-          file named <kbd>stats_lib.swift</kbd>. This function will return an
-          Array of Arrays of Doubles. Each sub-Array (row) of the result being
-          returned is to have, in this order, the mean, maximum, and minimum of
-          the corresponding sub-Array in the data.
+          Your tasks are in comments in tasks.swift. Follow the instructions for each task
+          and implement code to make it work. Each time you successfully 
+          compile and run, the test functions in main.swift will test your progress 
+          and report which tasks are successfully completed, which are currently 
+          failing on or more tests and which are not started.
         </p>
         <p>
-          Create another function called
-          <kbd>repeatedlyPrintRequestedStats</kbd> that has as a parameter an
-          Array of Arrays of Doubles. Put it in a file called
-          <kbd>patient_ui_lib.swift</kbd>. It should safely and repeatedly print
-          out each requested patient's information. The user will enter a
-          'patient number' in the terminal that you are to interpret as being
-          the index of the sub-array to print. You are also to warn the user if
-          they enter an invalid patient number. Feel free to use part of the
-          sample code from last week as a template, beginning point, for this
-          function.
+          If a task fails, the test code 
+          will also provide some diagnostic information about what may have gone wrong or 
+          at least what was different between what your code did and what the test code
+          expected.
         </p>
-      </section>
-      <section>
-        <h3>Stretch Challenge</h3>
-        <p>Add median and mode to the statistics for each row.</p>
-      </section>
-      <section>
-        <h3>Review</h3>
-        <h4>After completing the previous steps:</h4>
-        <ol>
-          <li>
-            Review one of the many
-            <a href="task_1_provided_solution.zip">possible solutions</a> for
-            this task,
-          </li>
-          <li>
-            Compare and contrast your code with the possible solution's code,
-            and
-          </li>
-          <li>
-            Make note of any improvements you could make for future tasks.
-          </li>
-        </ol>
+        <p>
+          Your goal is to write code in tasks.swift so that all tasks are passing.
+        </p>
+        <p>
+          When all tasks are passing, submit your work in the Canvas system. You should submit two files: your copy of tasks.swift and a screenshot showing successful execution.
+        </p>
       </section>
     </main>
     <footer>

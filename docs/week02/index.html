@@ -71,7 +71,7 @@
         <li>&lt&gt - an alternative to !=</li>
         <li>**= - the exponent and assign operator</li>
         <li>and - the logical and operator</li>
-        <li>or - the locical or operator</li>
+        <li>or - the logical or operator</li>
         <li>not - the logical not operator</li>
       </ul>
       <p>
@@ -168,7 +168,7 @@ age = "old"//compilation failure, type change</code></pre>
 <code class="Swift">var height = 3.25
 height = 4.2
 height = 4//no compilation failure, 4 is converted to a Double
-height = age//compiliation failure, age's type in the previous example doesn't match
+height = age//compilation failure, age's type in the previous example doesn't match
 height = "tall"//compilation failure, type change</code></pre>
       <p>
         Here is an example where the compiler interpolates a variable to be of
@@ -179,7 +179,7 @@ height = "tall"//compilation failure, type change</code></pre>
 name = "Gunhilda"
 name = "7"
 name = 4//compilation failure, type change
-name = age//compiliation failure, age's type in the previous example doesn't match
+name = age//compilation failure, age's type in the previous example doesn't match
 name = 3.1456778889547637653//compilation failure, type change</code></pre>
       <h3>Constants</h3>
       <p>
@@ -303,8 +303,8 @@ name = 3.1456778889547637653//compilation failure, type change</code></pre>
         operator, we will return it and ask you to resubmit it without the use
         of “force—unwrap.”
       </p>
+      
       <h3>Wrap Up</h3>
-
       <p>
         As with all things, there are pluses and minuses of requiring keywords
         like <kbd>var</kbd> and <kbd>let</kbd> and having or not having some
@@ -315,8 +315,8 @@ name = 3.1456778889547637653//compilation failure, type change</code></pre>
         explicitness, a variable can't be accidentally declared twice in Swift,
         a situation which can produce strange, difficult to debug, bad behavior
         in large Python code sets. One way Swift helps reduce the extra words in
-        code making it generally easier to read is by not requring you to
-        specify things that the compiler can figure out. And example is not
+        code making it generally easier to read is by not requiring you to
+        specify things that the compiler can figure out. An example is not
         needing to specify a variable or constant Type if it can be inferred by
         the compiler.
       </p>
@@ -625,7 +625,7 @@ print(averageTwoNumbers(5.0,3.0))</code></pre>
         list when calling a function, you could instead list a second name in
         front of the internal name. The first name will be used when calling the
         function and the second name will be used inside the function. Sometimes
-        the code reads more cleanly if a different names are use to call a
+        the code reads more cleanly if a different name is use to call a
         function than the name used inside the function. You will see examples
         of this in the documentation for built-in functions.
       </p>
@@ -849,6 +849,16 @@ else{
         for simpler lambdas and reserve the others for when you may be using a
         parameter multiple times or in multiple ways.
       </p>
+          <p>
+            Swift also provides a special version of <kbd>map</kbd> to work with an Array of optionals.
+            Suppose you have an array of optionals like <kbd>[Int?]</kbd>. There is a built-in
+            function called <kbd>compactMap</kbd> that works almost like <kbd>map</kbd>.
+            But if the closure returns <kbd>nil</kbd> for some values, <kbd>compactMap</kbd>
+            removes those nil values and it returns an array of non-optionals.
+            If our <kbd>[Int?]</kbd> is called <kbd>anArray</kbd>
+            then <kbd>anArray.compactMap{$0}</kbd> simply removes all optionals and returns
+            an Array of type <kbd>[Int]</kbd>.
+          </p>
       <h4>Filter</h4>
       <p>
         The <kbd>filter</kbd> method also has only one parameter, and that
