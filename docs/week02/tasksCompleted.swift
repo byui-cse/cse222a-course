@@ -197,7 +197,7 @@ func task2() -> Int? {
 //  statement in those closure templates that says return $0-$1. You will replace that with
 //  the appropriate return statement.
 //
-let test3Array = [5, 4, 3, 2, 1, 0] // Do not  // Do not modeify this array modeify this array
+let test3Array = [5, 4, 3, 2, 1, 0] // Do not modify this array
 typealias task3Func = (Int, Int) -> Int
 func task3() -> [task3Func]? {
     /*

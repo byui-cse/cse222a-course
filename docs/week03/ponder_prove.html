@@ -34,7 +34,7 @@
       </section>
     </header>
     <main>
-      <h1>Your Task</h1>
+      <h1>Your Assignment</h1>
       <section>
         <h3>Before beginning this Task:</h3>
         <ul>
@@ -45,127 +45,44 @@
         </ul>
       </section>
       <section>
-        <h2>Situation</h2>
         <p>
-          You are working for a company that needs a technology solution to
-          determine how many of what types of programmers they need to hire.
-          They plan on dramatically increasing the technology staff and want to
-          have 52 development leads when the expansion is complete. They have
-          data in a database that contains all pertinent information regarding
-          all current employees for the company. The company also has a series
-          of rules that apply to programmers and their development leads. They
-          are:
+          Like last week, please download the <a href="tasks.swift">tasks.swift</a> 
+          and <a href="main.swift">main.swift</a> files 
+          for this week’s assignment and create a Swift project that contains these
+          two files. You should not modify main.swift in any way. 
+          Your tasks are in comments in tasks.swift. Each time you successfully 
+          compile and run, the test functions in main.swift will test your progress 
+          and report which tasks are successfully completed, which are currently 
+          failing on or more tests and which are not started.
         </p>
-        <ol>
-          <li>
-            The type of managers being tracked in the data set for this problem
-            is Development Lead.
-          </li>
-          <li>All managers must manage at least 3 employees.</li>
-          <li>Managers can manage no more than 15 employees.</li>
-          <li>
-            All programmer teammates must be managed by the same development
-            lead.
-          </li>
-          <li>
-            Each programmer with less than 5 years experience must have at least
-            one teammate that has worked for the company for more than 1 year
-            and has at least 5 years experience.
-          </li>
-          <li>No programmer can be a member of more than one team.</li>
-        </ol>
+            <p>
+          Your goal is to write code in tasks.swift so that all tasks are passing.
+            </p>
         <p>
-          The company needs to know how quickly they can get to the point where
-          they have 123 total programmers assuming all current programmers are
-          retained. To this end, they need to know how many programmers they
-          need to train to become experienced so the expansion can happen. The
-          data your code produces will be used to develop a hiring schedule.
+          The first task this week includes implementing the data structures in this UML diagram.
         </p>
-      </section>
-      <section>
-        <h3>Task 1</h3>
+        <figure>
+          <img
+            src="images/W3UML2.svg"
+            alt="An image showing each of the classes: MedicationContainer, Liquid Medication Container, Tablet Medication Container, and the struct Pharmaceutical Stock Tracker, their properties, and the relationships between them"
+          />
+          <figcaption>
+            Fig.1 - A UML Class and Struct Diagram for the MedicationContainer, LiquidMedicationContainer, 
+            TabletMedicationContainer, and PharmaceuticalStockTracker
+            classes.
+          </figcaption>
+        </figure>
 
         <p>
-          Using classes, create a code set that indicates what types of
-          programmers need to be hired to meet the criteria above. Use classes
-          and apply only IS-A inheritance between the classes you create. You
-          will not have access to the employee database, so to test your
-          application the Quality Assurance group has asked that you generate a
-          testing data set to run your code against. This data set is to consist
-          of 52 development leads and between 120 and 125 programmers. You are
-          instructed to create the data set in such a way that the experience
-          constraint is violated. This
-          <a href="provided_solutions/task_1/generate_data.swift"
-            >generate_data.swift</a
-          >
-          file has been provided for you to meet this requirement. Use it as if
-          you had written it as per the requirement. The
-          <kbd>generateData</kbd> function is all you will need to call.
+          This is similar to, but not identical to the UML diagram in the reading this 
+          week. Since the test code refers to these classes and struct, the project 
+          will not initially compile until you have implemented the necessary data 
+          structures.
         </p>
-
+        
         <p>
-          This UML diagram has been provided by the engineers at your company.
-          Write code to match this UML diagram. The
-          <kbd>generateData</kbd> function will use your implementation of these
-          classes.
-          <figure>
-            <img
-              src="images/cse222a_week03_prove_uml.png"
-              alt="An image showing the Emplyee and Manager classes, their properties, and the relationships between them. It also shows the EmplyeeType and AssignmentError enumerations."
-            />
-            <figcaption>
-              Fig.1 - A UML Class Diagram for the Employee class, the Manager
-              class, and the EmployeeType and AssignmentError enumerations.
-            </figcaption>
-          </figure>
+        When all tasks are passing, submit your work in the Canvas system. You should submit two files: your copy of tasks.swift and a screenshot showing successful execution.
         </p>
-
-        <p>As part of the code set required by your employers,</p>
-        <ul>
-          <li>
-            create a function that assigns programmers to development leads
-            based on the criteria stated, and
-          </li>
-          <li>
-            create a function using the result of the assignment function. Name
-            this function <kbd>generateNeededHires</kbd>. It has a list of
-            <kbd>Managers</kbd> as one of it's parameters and must return data
-            describing the types of programmers that need to be hired.
-          </li>
-        </ul>
-      </section>
-      <section>
-        <h3>Task 2</h3>
-        <p>
-          Recreate your solution for Task 1 using classes but this time use only
-          HAS-A type inheritance.
-        </p>
-      </section>
-      <section>
-        <h3>Task 3</h3>
-        <p>
-          Recreate your solution for Task 1 using structures and protocols. This
-          time choose between using either or both IS-A and HAS-A inheritance.
-          Use your best judgment to make these decisions. You will need to
-          judiciously modify the generate_data.swift file to make this work.
-        </p>
-      </section>
-      <section>
-        <h3>Review</h3>
-        <h4>After completing the previous steps:</h4>
-        <ol>
-          <li>
-            For each of the tasks, review one of the many
-            <a href="provided_solutions.zip">possible solutions</a>,
-          </li>
-          <li>
-            Compare and contrast your code with the possible solution's code,
-            and
-          </li>
-          <li>
-            Make note of any improvements you could make for future tasks.
-          </li>
-        </ol>
       </section>
     </main>
     <footer>

@@ -303,8 +303,18 @@ name = 3.1456778889547637653//compilation failure, type change</code></pre>
         operator, we will return it and ask you to resubmit it without the use
         of “force—unwrap.”
       </p>
+          <p>
+            Swift also provides a way to work with an Array of optionals. Suppose
+            you have an array of optionals like <kbd>[Int?]</kbd>. There is a built-in
+            function called <kbd>compactMap</kbd> that works almost like <kbd>map</kbd>.
+            But if the closure returns <kbd>nil</kbd> for some values, the resulting
+            array has those values removed and it returns an array of non-optionals.
+            If our <kbd>[Int?]</kbd> is called <kbd>anArray</kbd>
+            then <kbd>anArray.compactMap{$0}</kbd> simply removes all optionals and returns
+              an Array of type <kbd>[Int]</kbd>.
+          </p>
+      
       <h3>Wrap Up</h3>
-
       <p>
         As with all things, there are pluses and minuses of requiring keywords
         like <kbd>var</kbd> and <kbd>let</kbd> and having or not having some
