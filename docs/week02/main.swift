@@ -5,7 +5,7 @@
 //  elements of Swift that have not yet been taught in the course at this point.
 //  Your assignment is to edit task.swift and then run this file and task.swift in a project.
 //  The code in this file will test your task functions and indicate which task functions pass.
-//  It will also provide diagnostic inforamtion if a task function fails. You should definitely
+//  It will also provide diagnostic information if a task function fails. You should definitely
 //  not try to just copy code from a test here to your task, but instead, understand how to
 //  correctly create a task that meets the needs of the test.
 //
@@ -182,7 +182,7 @@ func fail(_ testNum: Int, _ message: String) -> TestResults {
  •    Hint mentioned “??” to unpack an optional, but did not have them use it
  •    Type “Any”
  •    Operator “as”?
- •    compactMap() (with heavy use of optionals,
+ •    compactMap() (with heavy use of optionals)
  */
 
 //  ========= Tests =========
