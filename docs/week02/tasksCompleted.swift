@@ -174,14 +174,14 @@ func task2() -> Int? {
 //
 //  Closure 0: return the sum of the two parameters
 //  Closure 1: return the product of the two parameters
-//  Closure 2: return -1 if the first paramater is less than the second parameter,
+//  Closure 2: return -1 if the first parameter is less than the second parameter,
 //              return 0 if they are equal
 //              return 1 if the first parameter is greater than the second parameter
-//  Closure 3: return -1 if the first paramter is < 0
-//              return -2 if the first parammater is >= test3Array.count
+//  Closure 3: return -1 if the first parameter is < 0
+//              return -2 if the first parameter is >= test3Array.count
 //              return 0 if test3Array[first_parameter] != second_parameter
 //              return 1 if test3Array[first_parameter] == second_parameter
-//  Closure 4: return -1 if both paramneters are odd
+//  Closure 4: return -1 if both parameters are odd
 //              return 1 if both parameters are even
 //              return 0 if one parameter is odd and the other is even
 //
@@ -265,7 +265,7 @@ func task3() -> [task3Func]? {
 
 //  Task 4
 //  Almost everything other than class objects (that we will learn about later) is passed to
-//  functions by value. That means that a an copy is sent to the function that is unmutable
+//  functions by value. That means that a copy is sent to the function that is unmutable
 //  (cannot be modified). But what if we want to return two things from a function such as
 //  a boolean and a modified array? You can indicate a parameter is mutable by putting "inout"
 //  after the colon, but in front of the Type like "myInt: inout Int". Then the calling function
