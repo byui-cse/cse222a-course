@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSE 222a: Week 05 | Ponder and Prove</title>
+    <script type="text/javascript">
+      var codeType = "JavaScript";
+    </script>
+    <script
+      type="text/javascript"
+      src="https://byui-cse.github.io/Language-Courses/site/highlight.pack.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://byui-cse.github.io/Language-Courses/site/highlight_styles/xcode.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://byui-cse.github.io/Language-Courses/site/weekly.css"
+    />
+    <script
+      type="text/javascript"
+      src="https://byui-cse.github.io/Language-Courses/site/weekly.js"
+    ></script>
+    <script
+      type="text/javascript"
+      async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML"
+    ></script>
+    <link rel="stylesheet" href="../main.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+          tex2jax: {
+              inlineMath: [['\\(', '\\)']]
+          }
+      });
+      MathJax.Hub.Config({
+          TeX: {
+              equationNumbers: {
+                  autoNumber: "AMS"
+              }
+          }
+      });
+      MathJax.Hub.Config({
+          "HTML-CSS": {
+              availableFonts: [],
+              preferredFont: null,
+              // force Web fonts
+              webFont: "Latin-Modern"
+          }
+      });
+      MathJax.Hub.Config({
+          TeX: {
+              extensions: ["color.js"]
+          }
+      });
+    </script>
+  </head>
+
+  <body>
+    <header class="hero-image">
+      <section class="hero-text">
+        <h1>CSE 222a: Week 05</h1>
+        <p>Ponder and Prove</p>
+      </section>
+    </header>
+    <main>
+      <h1>Your Tasks</h1>
+      <section>
+        <h3>Before beginning these Tasks:</h3>
+        <ul>
+          <li>
+            Make sure you have reviewed the
+            <a href="../week05/" target="_blank"
+              >\(\lambda\) Functions and Closures</a
+            >
+            course content.
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Task 1</h2>
+        <p>
+          Rewrite the Application Controller example in the reading to be a
+          Swift module implementing the design found in the UML diagram below.
+          Document any public functions.
+        </p>
+        <img src="images/cse222a_task01_uml.png" />
+        <p>
+          The validation, interaction, and response closures may, or may not,
+          return a new or modified <kbd>DataDictionary</kbd>. If validation,
+          interaction, or response fails, handle that failure gracefully as in
+          the reading.
+        </p>
+        <p>
+          Exercise your code. To do this, create validation, interaction, and
+          response closures for the command <kbd>login</kbd> using as data that
+          which is traditional. Your interaction function should pretend to
+          access a database of information that would allow you to determine if
+          the login data is valid. Have one data set that produces a successful
+          login. Any other data sets should produce a login failure.
+        </p>
+        <p>
+          Also make sure you are validating the login command's data in the
+          validation function. You will need to decide what formats and sizes
+          the data must have to be valid. Exercise your validation function with
+          both success and failures.
+        </p>
+        <p>
+          You will need to decide what the appropriate response function results
+          are for a successful login. This could depend on the situation you are
+          simulating with your exercise code.
+        </p>
+      </section>
+      <section>
+        <h2>Task 2</h2>
+        <p>
+          Create a random distribution stream similar to but different than the
+          one you saw in the <a href="">possible solution</a> for week 3 task 1.
+          The required structure a generalized version of the
+          <kbd>TriangularDistributionStream</kbd>. The name of the new stream is
+          <kbd>RandomDistStream</kbd>. It is to have two properties. The first
+          is a Dictionary with the keys of type String and values of type Any,
+          since Any is the base class for any standard type in Swift. The second
+          property is a closure. The closure has one parameter that is a
+          Dictionary Optional with String keys and Any as the values. The
+          closure returns an Any. <kbd>RandomDistStream</kbd> must also have a
+          function called <kbd>next</kbd> that has no parameters that returns an
+          Any. Calling <kbd>next</kbd> repeatedly yields a stream of random
+          numbers for the distribution calculated by the closure.
+        </p>
+        <p>
+          This function design allows you to create a stream that uses any
+          distribution, not just the triangular distribution you saw in the code
+          example. By using Any as the types for the input and the results, this
+          distribution can return Double, Float, or Int values of any size.
+        </p>
+        <p>
+          Write the <kbd>RandomDistStream</kbd> structure. Rewrite the code from
+          the triangular distribution stream so that it can be stored as a
+          closure in the <kbd>RandomDistStream</kbd>. Create an instance of
+          <kbd>RandomDistStream</kbd> and exercise your code to make sure it is
+          working correctly while generating a random set of numbers that are
+          distributed triangularly.
+        </p>
+        <p>
+          Write another closure that can be passed to a different instance of
+          <kbd>RandomDistStream</kbd>. This closure is to allow the stream to
+          generate a stream of random numbers that have a
+          <a
+            href="https://www.randomservices.org/random/special/Logarithmic.html"
+            >logarithmic distribution</a
+          >. The mathematics for this calculation is below.
+        </p>
+        <p>
+          \[ p,x\in \mathcal{R}^+\\ p\in [0,1]\\ f(x)=\frac{p^x}{-x \log
+          (1-p)}\]
+        </p>
+        <p>
+          Here is a scatter plot of 21 randomly chosen numbers in \([0,100]\)
+          and the probability of that number. This plot was done in a
+          spreadsheet. You can check your work by counting how many times your
+          code produces random numbers that fall into a set of evenly sized
+          ranges (buckets) and plotting the count for each range. If the scatter
+          plot of those values is logarithmic in shape, similar to the image
+          below, your code is working correctly.
+        </p>
+        <img src="images/log_dist_plot.png" />
+      </section>
+      <section>
+        <h3>Review</h3>
+        <h4>After completing the previous steps:</h4>
+        <ol>
+          <li>
+            Review one of the many
+            <a href="provided_solutions.zip">possible solutions</a> for this
+            task,
+          </li>
+          <li>
+            Compare and contrast your code with the possible solution's code,
+            and
+          </li>
+          <li>
+            Make note of any improvements you could make for future tasks.
+          </li>
+        </ol>
+      </section>
+      <section>
+        <h3>Stretch (optional)</h3>
+        <p>
+          Write additional closures so that your
+          <kbd>RandomDistStream</kbd> calculates random numbers using two
+          distributions from
+          <a
+            href="https://en.wikipedia.org/wiki/List_of_probability_distributions"
+            >the Wikipedia list</a
+          >
+          of distribution types other than uniform distributions. Exercise both
+          of your closures to check if they work.
+        </p>
+      </section>
+    </main>
+    <footer>
+      <a
+        rel="license"
+        href="http://creativecommons.org/licenses/by/4.0/"
+        target="_blank"
+        ><img
+          alt="This work is licensed under a Creative Commons Attribution 4.0 International License"
+          style="border-width: 0"
+          src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a
+      ><br />This work is licensed under a
+      <a
+        rel="license"
+        href="http://creativecommons.org/licenses/by/4.0/"
+        target="_blank"
+        >Creative Commons Attribution 4.0 International License</a
+      >.
+    </footer>
+  </body>
+</html>

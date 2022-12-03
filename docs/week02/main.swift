@@ -430,7 +430,9 @@ private func test4(testNum: Int) -> TestResults {
         guard let result = task4(inArray: testArray) else { return .testNotImplemented }
 
         // Compare returned value to expected value
-        let testTarget = testArray.map { $0 * $0 }.filter { $0 % 10 != 1 }
+        var testTarget = testArray
+        testTarget.reverse()
+        testTarget = testTarget.map { $0 * $0 }.filter { $0 % 10 != 1 }
         guard result == testTarget else {
             print("Task \(testNum) Error: Incorrect return value")
             print("Passed in: '\(testArray)'")

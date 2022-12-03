@@ -19,20 +19,30 @@
 //  You would usually use the print() function to write to the console and the
 //  readline() function to read user input from the console. However, for this class,
 //  please instead use testPrint() and testReadline(). Those will behave the same way,
-//  but allow         test code to see what you print and what is input from the user.
+//  but allow test code to see what you print and what is input from the user.
 //
-//  Due to the tests we need to perform, sometimes a line in main.swit will gemerate
-//  a warning ewrror. If you get an unexplained warning error from main.swift, please
-//  check if there is a comment on that line saying to ignore that error
+//  Due to the tests we need to perform, lines in main.swift may generate
+//  warning errors. If you get an unexplained warning error from main.swift, please
+//  check if there is a comment near that line saying to ignore warning errors.
 //
 import Foundation
 
 //  Task 0
 //  This week the project will not compile without errors until you complete task 0.
 //  Please add classes and structs as defined in the UML document in the assignment
-//  web page. After you have correctl completed task 1 the project should successsfully
+//  web page. After you have correctly completed task 0 the project should successsfully
 //  compile and acknowledge that task 0 passed.
+//
 //  Hint: when writing initializers for child classes, list the parent parameters first.
+//  That is not a Swift requirement, but allows
+//
+//  As mentioned in the reading, the parent type MedicationContainer includes generic
+//  properties and methods. We also store medications as MedicationContainers alowing
+//  both child types in the same array. But it is not meanintful to create an object
+//  of type MedicationContainer, only of the child types. We cannot prevent this entirely,
+//  but best practice would be to put the keyword fileprivate before the init for
+//  MedicationContainer which will at least prevent any code from another file in the
+//  project accidentally trying to directly create a MedicationContainer.
 //
 //  Add the classes and structs here:
 
@@ -52,18 +62,18 @@ struct PharmaceuticalStockTracker: TrackerProtocol, TrackerProtocol2 {
             { if $1.name == name { return $0+1 } else { return $0 }})
     }
 }
-class MedicationContainer {
+class MedicationContainer: ContainerProtocol {
     let id = UUID().uuidString
     let name: String
     let expirationDate: Date
     var isExpired: Bool  { get { return Date() >= expirationDate } }
 
-    init(name: String, expirationDate: Date) {
+    fileprivate init(name: String, expirationDate: Date) {
         self.name = name
         self.expirationDate = expirationDate
     }
 }
-class LiquidMedicationContainer: MedicationContainer {
+class LiquidMedicationContainer: MedicationContainer, LiquidContainerProtocol {
     let volume: Double
     let concentration: Int
     let concentrationUnits: String
@@ -75,7 +85,7 @@ class LiquidMedicationContainer: MedicationContainer {
         super .init(name: name, expirationDate: expirationDate)
     }
 }
-class TabletMedicationContainer: MedicationContainer {
+class TabletMedicationContainer: MedicationContainer, TabletContainerProtocol {
     let pillCount: Int
     let potency: Double
     let potencyUnits: String
@@ -111,19 +121,18 @@ func dateToString(_ aDate: Date) -> String {
 //  other tasks, but task0() is already set up to make sure you create the correct
 //  class and struct types above.
 var aStockTracker = PharmaceuticalStockTracker()
-func task0() -> (MedicationContainer, MedicationContainer, MedicationContainer) {
+func task0() -> (MedicationContainer, MedicationContainer) {
     // Print some sample dates
     print("Yesterday: \(dateToString(futureDate(daysFromNow: -1)))")
     print("Today: \(dateToString(Date()))")
     print("Tomorrow: \(dateToString(futureDate(daysFromNow: 1)))")
 
     // initiailize a test variable of each class
-    let aContainer = MedicationContainer(name: "med1", expirationDate: futureDate(daysFromNow: 180))
-    let aLiquidContainer = LiquidMedicationContainer(name: "med2", expirationDate: futureDate(daysFromNow: 120),
+    let aLiquidContainer = LiquidMedicationContainer(name: "med1", expirationDate: futureDate(daysFromNow: 120),
                                                      volume: 4.5, concentration: 2, concentrationUnits: "ml")
-    let aTabletContainer = TabletMedicationContainer(name: "med3", expirationDate: futureDate(daysFromNow: 90),
+    let aTabletContainer = TabletMedicationContainer(name: "med2", expirationDate: futureDate(daysFromNow: 90),
                                                      pillCount: 90, potency: 2.3, potencyUnits: "mg")
-   return (aContainer, aLiquidContainer, aTabletContainer)
+   return (aLiquidContainer, aTabletContainer)
 }
 
 //  Task 1
@@ -134,20 +143,19 @@ func task0() -> (MedicationContainer, MedicationContainer, MedicationContainer) 
 //  to the corresponding struct and classes as explained in last week's reading.
 //  You do not need to create the protocols. They already exist in main.swift. Just use them.
 //
-//  Using the code in Task() as an example, create an object of each of the three class Types
+//  Using the code in Task() as an example, create an object of each of the two child class Types
 //  and then return then from the task in the tuple instead of nil values.
-//  Note that the test code will report this function as not implemented as long as any of the three
+//  Note that the test code will report this function as not implemented as long as either of the two
 //  values returned in the tuple is nil.
-func task1() -> (MedicationContainer?, LiquidMedicationContainer?, TabletMedicationContainer?) {
+func task1() -> (LiquidMedicationContainer?, TabletMedicationContainer?) {
     //    return (nil, nil, nil)
     
     // The following code used to validate the test code will be deleted for tasks.swift.
-    let aContainer = MedicationContainer(name: "med1", expirationDate: futureDate(daysFromNow: 180))
-    let aLiquidContainer = LiquidMedicationContainer(name: "med2", expirationDate: futureDate(daysFromNow: 120),
+    let aLiquidContainer = LiquidMedicationContainer(name: "med1", expirationDate: futureDate(daysFromNow: 120),
                                                      volume: 4.5, concentration: 2, concentrationUnits: "ml")
-    let aTabletContainer = TabletMedicationContainer(name: "med3", expirationDate: futureDate(daysFromNow: 90),
+    let aTabletContainer = TabletMedicationContainer(name: "med2", expirationDate: futureDate(daysFromNow: 90),
                                                      pillCount: 90, potency: 2.3, potencyUnits: "mg")
-   return (aContainer, aLiquidContainer, aTabletContainer)
+   return (aLiquidContainer, aTabletContainer)
 }
 
 //  Task 2

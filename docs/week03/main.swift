@@ -185,11 +185,11 @@ Task 9
 
 private func test0(testNum: Int) -> TestResults {
 
-    let (container1, container2, container3): (MedicationContainer, MedicationContainer, MedicationContainer) = task0()
-    //  The first item should be a struct of type PharmaceuticalStockTracker
-    //  The second item should contain a MedicationContainer
-    //  The third item should contain a LiquidMedicationContainer stored in a variable of Type MedicationContainer
-    //  The fourth item should contain a TabletMedicationContainer stored in a variable of Type MedicationContainer
+    let (container1, container2): (Any, Any) = task0()
+    //  The first item should contain a LiquidMedicationContainer stored in a variable of Type MedicationContainer
+    //  The second item should contain a TabletMedicationContainer stored in a variable of Type MedicationContainer
+    //  Make them all Any so we don't get warning errors about some of the followiong tests
+    //  being always true
 
     //  Check that aStockTracker is still a PharmaceuticalStockTracker
     //  To avoid warning errors we copy it to an Any object and then do
@@ -200,27 +200,23 @@ private func test0(testNum: Int) -> TestResults {
     }
     //  Make sure aStockTracker (and PharmaceuticalStockTracker) is a struct, not a class
     guard Mirror(reflecting:aStockTracker).displayStyle == .struct else {
-        return fail(testNum, "First returned value should be a struct, but it is a class")
+        return fail(testNum, "aStockTracker should be a struct, but it is a class")
     }
  
-    //  We do not need to check if container1 is a MedicationContainer, but make sure it is a class
-    guard Mirror(reflecting:container1).displayStyle == .class else {
-         return fail(testNum, "Second returned value should be a class, but it is a struct")
-     }
-    //  conmtainer1 could be a child Type of MedicationContainer, so let's make sure it is not
-    guard !(container1 is LiquidMedicationContainer) else {
-        return fail(testNum, "Second returned value should be a MedicationContainer, but it is a LiquidMedicationContainer")
+    //  make sure container1 is a LiquidMedicationContainer and container3 is a TabletMedicationContainer
+    guard container1 is LiquidMedicationContainer else {
+        if container1 is TabletMedicationContainer  {
+            return fail(testNum, "Second returned value should be a LiquidMedicationContainer, but it is a TabletMedicationContainer")
+        } else {
+            return fail(testNum, "Second returned value should be a LiquidMedicationContainer, but it is a MedicationContainer")
+        }
     }
-    guard !(container1 is TabletMedicationContainer) else {
-        return fail(testNum, "Second returned value should be a MedicationContainer, but it is a TabletMedicationContainer")
-    }
-
-    //  make sure container2 is a LiquidMedicationContainer and container3 is a TabletMedicationContainer
-    guard container2 is LiquidMedicationContainer else {
-        return fail(testNum, "Third returned value should be a LiquidMedicationContainer, but it is a MedicationContainer")
-    }
-    guard container3 is TabletMedicationContainer else {
-        return fail(testNum, "Third returned value should be a LiquidMedicationContainer, but it is a MedicationContainer")
+    guard container2 is TabletMedicationContainer else {
+        if container2 is LiquidMedicationContainer {
+            return fail(testNum, "Third returned value should be a TabletMedicationContainer, but it is a LiquidMedicationContainer")
+        } else {
+            return fail(testNum, "Third returned value should be a TabletMedicationContainer, but it is a MedicationContainer")
+        }
     }
 
     return .testPassed
@@ -275,7 +271,7 @@ struct testItem {
         self.wantResult = wantResult
     }
 }
-func testContainer(_ t: testItem) -> MedicationContainer {
+func testContainer(_ t: testItem) -> MedicationContainer? {
     if let volume = t.volume { // specified volume so want liquid container
         let concentration = t.concentration ?? 1
         let concentrationUnits = t.concentrationUnits ?? "ml"
@@ -284,8 +280,9 @@ func testContainer(_ t: testItem) -> MedicationContainer {
         let potency = t.potency ?? 1
         let potencyUnits = t.potencyUnits ?? "mg"
         return TabletMedicationContainer(name: t.name, expirationDate: futureDate(daysFromNow: t.expDays), pillCount: pillCount, potency: potency, potencyUnits: potencyUnits)
+    } else {
+        return nil // cannot instantiate the parent class type
     }
-    return MedicationContainer(name: t.name, expirationDate: futureDate(daysFromNow: t.expDays))
 }
 
 //  One challenge with these functions was to find a way to let the files compile
@@ -300,37 +297,35 @@ func testContainer(_ t: testItem) -> MedicationContainer {
 //  implement task 0.
 private func test1(testNum: Int) -> TestResults {
     // Call the task function and report "testNotImplemented if it returns nil
-    let (container1, container2, container3) = task1()
+    let (container1, container2) = task1()
     let tracker: Any = aStockTracker
     guard let container1: Any = container1 else { return .testNotImplemented }
     guard let container2: Any = container2 else { return .testNotImplemented }
-    guard let container3: Any = container3 else { return .testNotImplemented }
 
-    // Make sure each type conforms to its  concentrationUnits
+    // Make sure each type conforms to its  protocol
     guard tracker is TrackerProtocol else {
         return fail(testNum, "PharmaceuticalStockTracker needs to conform to TrackerProtocol")
     }
-    guard container1 is ContainerProtocol else {
-        return fail(testNum, "MedicationContainer needs to conform to TrackerProtocol")
+    guard container1 is LiquidContainerProtocol else {
+        return fail(testNum, "LiquidMedicationContainer needs to conform to LiquidContainerProtocol")
     }
-    guard container2 is LiquidContainerProtocol else {
-        return fail(testNum, "LiquidMedicationContainer needs to conform to TrackerProtocol")
-    }
-    guard container3 is TabletContainerProtocol else {
-        return fail(testNum, "TabletMedicationContainer needs to conform to TrackerProtocol")
+    guard container2 is TabletContainerProtocol else {
+        return fail(testNum, "TabletMedicationContainer needs to conform to TabletContainerProtocol")
     }
 
     // Test the functionality of .isExpired
     let tests: [testItem] = [
-        testItem(n: "med", d: 50, nil,nil,nil, nil,nil,nil, want: false), // 50 days in past
-        testItem(n: "med", d: 1, nil,nil,nil, nil,nil,nil, want: false), // 1 day in future
-        testItem(n: "med", d: -1, nil,nil,nil, nil,nil,nil, want: true), // 1 day in past
-        testItem(n: "med", d: -30, nil,nil,nil, nil,nil,nil, want: true), // 30 days in the past
+        testItem(n: "med", d: 50, 2.0,1,"ml", nil,nil,nil, want: false), // 50 days in past
+        testItem(n: "med", d: 1, 2.0,1,"ml", nil,nil,nil, want: false), // 1 day in future
+        testItem(n: "med", d: -1, 2.0,1,"ml", nil,nil,nil, want: true), // 1 day in past
+        testItem(n: "med", d: -30, 2.0,1,"ml", nil,nil,nil, want: true), // 30 days in the past
     ]
     // create a temporary MedicationContainer, convert it to ContainerProtocol and return .isExpired
 
     for test in tests {
-        let aContainer: Any = testContainer(test)
+        guard let aContainer: Any = testContainer(test) else {
+            return fail(testNum, "Internal testing error. Test tried to instantiate an object of the parent class type")
+        }
         guard let protocolItem = aContainer as? ContainerProtocol else {
             return fail(testNum, "MedicationContainer does not conform to ContainerProtocol")
         }
@@ -359,7 +354,7 @@ private func test2(testNum: Int) -> TestResults {
  
     // Test the functionality of addContainer() and count(of:)
     let testContainerSpecifications: [testItem] = [
-        testItem(n: "med1", d: 90, nil,nil,nil, nil,nil,nil, want: true), // One MedicationContainer
+        testItem(n: "med1", d: 90, 0.01,2,"cc", nil,nil,nil, want: true), // One LiquidMedicationContainers
         testItem(n: "med2", d: 90, 2.0,1,"ml", nil,nil,nil, want: true), // Two LiquidMedicationContainers
         testItem(n: "med2", d: 90, 2.5,2,"oz", nil,nil,nil, want: true),
         testItem(n: "med3", d: 90, nil,nil,nil, 30,4.1,"mg", want: true), // Three LiquidMedicationContainers
@@ -369,7 +364,10 @@ private func test2(testNum: Int) -> TestResults {
     // set up some containers
     var containers: [MedicationContainer] = []
     for spec in testContainerSpecifications {
-        containers.append(testContainer(spec))
+        guard let aContainer = testContainer(spec) else {
+            return fail(testNum, "Internal testing error. Could not create test container")
+        }
+        containers.append(aContainer)
     }
     // Add one container and check the count
 

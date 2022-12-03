@@ -36,7 +36,56 @@ import Foundation
 //  project accidentally trying to directly create a MedicationContainer.
 //
 //  Add the classes and structs here:
+struct PharmaceuticalStockTracker: TrackerProtocol, TrackerProtocol2 {
+    var inStockMedications: [MedicationContainer] = []
 
+    mutating func addContainer(_ container: MedicationContainer) -> Bool {
+        for aContainer in inStockMedications {
+            if aContainer.id == container.id { return false }
+        }
+        inStockMedications.append(container)
+        return true
+    }
+    func count(of name: String) -> Int {
+        return inStockMedications.reduce(0,
+            { if $1.name == name { return $0+1 } else { return $0 }})
+    }
+}
+class MedicationContainer: ContainerProtocol {
+    let id = UUID().uuidString
+    let name: String
+    let expirationDate: Date
+    var isExpired: Bool  { get { return Date() >= expirationDate } }
+
+    fileprivate init(name: String, expirationDate: Date) {
+        self.name = name
+        self.expirationDate = expirationDate
+    }
+}
+class LiquidMedicationContainer: MedicationContainer, LiquidContainerProtocol {
+    let volume: Double
+    let concentration: Int
+    let concentrationUnits: String
+    
+    init(name: String, expirationDate: Date, volume: Double, concentration: Int, concentrationUnits: String) {
+        self.volume = volume
+        self.concentration = concentration
+        self.concentrationUnits = concentrationUnits
+        super .init(name: name, expirationDate: expirationDate)
+    }
+}
+class TabletMedicationContainer: MedicationContainer, TabletContainerProtocol {
+    let pillCount: Int
+    let potency: Double
+    let potencyUnits: String
+    
+    init(name: String, expirationDate: Date, pillCount: Int, potency: Double, potencyUnits: String) {
+        self.pillCount = pillCount
+        self.potency = potency
+        self.potencyUnits = potencyUnits
+        super .init(name: name, expirationDate: expirationDate)
+    }
+}
 
 //  Do not edit the following date utilities that you are selcome to use.
 //  You are welcome to edit the line with "ddMMMyyyy" to try different date formats

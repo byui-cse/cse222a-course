@@ -679,13 +679,13 @@ print(averageTwoNumbers(5.0,3.0))</code></pre>
 
       <pre>
   <code class="Swift">if aNumber < 0.0 {
-    print("\(aNumber) is negative")
+    print(aNumber, " is negative")
 }
 else if aNumber > 0.0 {
-  print("\(aNumber) is positive")
+    print(aNumber, " is positive")
 }
 else{
-  print("\(aNumber) is zero")
+    print(aNumber, " is zero")
 }</code>
   </pre>
       <h3>Using if and guard with optionals</h3>
@@ -996,6 +996,37 @@ else{
         iterate over the elements of an Array or some other collection of data.
       </p>
 
+          <h3>Optional Chaining</h3>
+          <p>
+            There is a way to use optionals without immediately unwrapping 
+            them called Optional Chaining. Suppose we want to apply 
+            <kbd>filter()</kbd> and <kbd>map()</kbd> to a variable containing
+            an array of <kbd>Int</kbd> like this:
+          </p>
+          <pre><code>let intArray = [1, 2, 3]
+            let result = intArray.filter{$0 % 2 == 1}.map{$0 * $0}
+          </code></pre>
+          <p>
+            The type of <kbd>result</kbd> would be <kbd>[Int]</kbd>. But suppose 
+            <kbd>intArray</kbd> were an optional of Type <kbd>[Int]?</kbd>. 
+            We could unwrap it before applying <kbd>filter()</kbd> and 
+            <kbd>map()</kbd>, but we could also use Optional Chaining by 
+            putting a <kbd>?</kbd> after the name of the variable to 
+            acknowledge that it is an optional like this:
+          </p>
+          <pre><code>let result = intArray?.filter{$0 % 2 == 1}.map{$0 * $0}</code></pre>
+          <p>
+            In this case, the type of <kbd>result</kbd> would be 
+            <kbd>[Int]?</kbd>. If the value of <kbd>intArray</kbd> is not 
+            <kbd>nil</kbd>, <kbd>filter()</kbd> and 
+            <kbd>map()</kbd> are called as usual. But 
+            if <kbd>intArray</kbd> is <kbd>nil</kbd> then no functions 
+            are called, and the result of the entire expression becomes 
+            <kbd>nil</kbd>. With Optional Chaining we still are left with 
+            an optional that needs to be unwrapped, but we can do some 
+            processing (on any non-nil values) and unwrap the result later.
+          </p>
+          
       <h2>Wrap Up</h2>
       <p>
         While there was a lot covered in this reading, you've seen these before.

@@ -21,6 +21,10 @@
 //  please instead use testPrint() and testReadline(). Those will behave the same way,
 //  but allow the test code to see what you print and what is input from the user.
 //
+//  Due to the tests we need to perform, lines in main.swift may generate
+//  warning errors. If you get an unexplained warning error from main.swift, please
+//  check if there is a comment near that line saying to ignore warning errors.
+//
 
 import Foundation
 
@@ -264,49 +268,46 @@ func task3() -> [task3Func]? {
 }
 
 //  Task 4
-//  Almost everything other than class objects (that we will learn about later) is passed to
-//  functions by value. That means that a copy is sent to the function that is unmutable
-//  (cannot be modified). But what if we want to return two things from a function such as
-//  a boolean and a modified array? You can indicate a parameter is mutable by putting "inout"
-//  after the colon, but in front of the Type like "myInt: inout Int". Then the calling function
-//  must acknowledge that it knows this is a mutable parameter by putting a & in front of the
-//  name of the variable being passed into the function.
+//  Almost everything (other than class objects that we will learn about later) is passed to
+//  functions by value. That means that a an copy is sent to the function that is unmutable
+//  (cannot be modified). This sounds like a straightforward concept, but it is important to
+//  understand becuse it comes up frequently. And if you modify a parameter inside a function
+//  (other than a class object) you may find yourself with an obscure bug where you can see
+//  it being set and yet after the function returns it has somehow reverted to the prior
+//  value. The concept of mutable and immutable comes up in other places such as Swift
+//  asking you to explicity indicate whether a variable or property is mutable (by using
+//  var) or immutable (by using let).
 //
-//  Add code to function task4a (not to task4) that uses map() to square each element of the input
-//  array. Then use filter() to remove any results that have a "1" in the last digit. When you
-//  first try modifying "anArray" inside Task4a, the compiler will complain that it is not
-//  mutable. You will need to use the information in the previous paragraph to solve that.
-//  You should not modify the main body of task4 except a one-character change on the line
-//  where task4a is called
+//  Like many other areas that tend to cause obscure bugs in large programs, Swift tries to
+//  help with this issue by not letting you modify an immutable parameter. You can think
+//  of immutable parameters as being defined with "let" in front of them. And like many
+//  features in Swift, there is a way to override it by putting "inout" in front of the
+//  type of a parameter like "myInt: inout Int", but like other langage overrides such
+//  as "!" to force unpack, best practice is to not use inout except in rare cases.
 //
-//  Hint: This demostrates function scope. Top level functions are usually visible to any
-//  other function in the project, even those in other files. But functions embedded inside
-//  another function are only visible to that function. If you put "private" in front of
-//  the "func" keyword then a top-level function is only visible inside that file.
-//  All but two of the functions inside main.swift are market private?
+//  In the task4() code below, uncomment the first 3 lines and delete the line
+//  with "return nil". You will see some compiler errors that talk about inArray
+//  being immutable and it being a let constant. Fix this by adding a "var"
+//  variable to the function.
+//
+//  Note: you can name the new variable anything you choose, but when a variable
+//  is added explicitly to gain mutaiblity it is common to make that clear in the
+//  naming so you might write something like "var mutableArray = inArray".
 //
 func task4(inArray: [Int]) -> [Int]? {
-    var returnArray = inArray
-   /*
-    guard task4a(anArray: returnArray) else { return nil }
-    return returnArray
-
-    func task4a(anArray: [Int]) -> Bool {
-        // insert your use of map and filter here, then change the return value to true
-        return false
-    }
-     */
-
-    // The following code will be deleted and the /* */ comment section unbommented
-    // It is used to validate the test code.
-    guard task4a(anArray: &returnArray) else { return nil }
-    return returnArray
-
-    func task4a(anArray: inout [Int]) -> Bool {
-        // insert your use of map and filter here, then change the return value to true
-        anArray = anArray.map { $0 * $0 }.filter { $0 % 10 != 1 }
-        return true
-    }
+// EDITOR for task.swift keep the four lines following the #if false and remove the rest.
+// Delete these comments and Leave 3 of the 4 lines you keep commented out.
+#if false
+//    inArray.reverse()
+//    inArray = inArray.map { $0 * $0 }.filter { $0 % 10 != 1 }
+//    return inArray
+    return nil
+#else
+    var mutableArray = inArray
+    mutableArray.reverse()
+    mutableArray = mutableArray.map { $0 * $0 }.filter { $0 % 10 != 1 }
+    return mutableArray
+#endif
 }
 
 //  Task 5

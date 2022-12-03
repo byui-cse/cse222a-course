@@ -356,6 +356,17 @@ class TabletMedicationContainer: MedicationContainer {
         first and then use the <kbd>super</kbd> keyword to call the 
         <kbd>init</kbd> method of the class.
       </p>
+          <p>
+            An important point to notice about this data model is that while
+            the parent class <kbd>MedicationContainer</kbd> defines the common properties 
+            and shared methods for both <kbd>LiquidMedicationContainer</kbd> and
+            <kbd>TabletMedicationContainer</kbd>, it does not make any sense to create
+            objects directly from the parent Type. And although 
+            <kbd>inStockMedications</kbd> claims to store only
+            MedicationContainers, in reality it will store a combination of
+            LiquidMedicationContainers and TabletMedicationContainer and
+            should never contain an object created directly from the parent Type.
+          </p>
       <h2>IS-A Inheritance By Extension</h2>
       <p>
         There is another very cool way to do what is usually done in other
