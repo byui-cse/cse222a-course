@@ -312,46 +312,10 @@ for aValue in aDictionary.values { loop actions }
               <p>
 will return a substring that matches a US Phone number patten if there is one.
               </p>
-
-        <h2>Operator Methods</h2>
-    <p>
-    You may sometimes find it necessary to override or provide definitions 
-    for existing operators to use with objects from a Class or Struct. For 
-    example, making a Class comply with the Hashable protocol requires 
-    defining a <kbd>==</kbd> operator for the class or struct since one 
-    is not always automatically provided. Having a Class or Struct 
-    provide its own custom Operator Methods to implement versions of
-    those operators is known as overloading the existing operators.
-    </p>
-    <p>
-    You can also create custom operators using combinations of 
-    certain special characters. If you want to use a custom 
-    operator,you must first declare it as a prefix, infix or 
-    postfix operator. For an infix operator you would also assign 
-    it to a precedence group like <kbd>: AdditionPrecedence</kbd>. 
-    For example, suppose we want to define a new postfix operator 
-    <kbd>&lt||&gt</kbd> that returns a count of the containers in an
-    instance of the PharmaceuticalStockTracker from last week. We 
-    could use an extension to add a method that implements the 
-    <kbd>&lt||&gt</kbd> operator like this:
-    </p>
-  <pre><code class="swift">postfix operator &lt||&gt // indicates this is a new operator
-  
-extension PharmaceuticalStockTracker {
-    static postfix func <||> (tracker: PharmaceuticalStockTracker) -> Int {
-        return tracker.inStockMedications.count    }
-}</code></pre>
-        <p>
-          The syntax for overriding or specifying a Class or Struct 
-          implementation of an existing operator is written in a similar 
-          way except that you do not need the line declaring it to be a
-          prefix, infix or postfix operator, nor do you put the prefix,
-          infix or postfix indicator in front of the function definition.
-        </p>
               <p>
                 The assignment this week will give you some experience with
-                Sets and Dictionaries, regular expressions, operator
-                methods and generics, plus continuing to use the things
+                Sets and Dictionaries, regular expressions
+                and generics, plus continuing to use the things
                 we learned in previous weeks.
               </p>
 

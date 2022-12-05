@@ -29,159 +29,102 @@ import Foundation
 
 //  Task 0 Assignment
 //  This week the project will not compile without errors until you complete task 0.
-//  Below are the classes from last week (except we changed
-//  PharmaceuticalStockTracker to be a class). Please modify
-//  them to partially match the UML diagram. There are three changes
-//  to be done in task0:
+//  Below are the classes from last week except we changed some things, mostly
+//  to matcthe new UML diagram:
 //
-//      1) Insert a constant String called ndcPackageCode as the first property of
-//          the MedicationContainer type. We will explain it later. You will need to
-//          adjust the initializers for all three container types.
+//      1) PharmaceuticalStockTracker is now a class
 //
-//      2) Change inStockMedications from an array of MedicationContainers to a
-//          dictionary with a String for the key and a value that is an array
-//          of MedicationContainers. The string will be the ndcPackageCode of
-//          the containers in the value array.
+//      2) MedicationContainer has a new property ndcPackageCode that identifies
+//      the specific type of medication container (more about that later)
 //
-//      3) Change the addContainer() method so it works correctly for the new
-//          type of inStockMedications. It will need to check if there is already
-//          a dictionary entry matching the ndcPackageCode. If yes, make sure the
-//          container parameter is not already in the value array associated with
-//          that key, then append the container parameter to that array. If there
-//          is not a matching dictionary entry, create one the correct key and
-//          a value that is an array containing only the container.
+//      3) "inStockMedications" changed from an Array of MedicationContainers to
+//      a Dictionary where the key is a String (actually an ndcPackageCode) and
+//      the value is a Set of MedicationContainers. Each Dictionary entry in
+//      inStockMedications will contain the Set of MedicationContainers that
+//      have that ndcPackageCode.
 //
-//  We will not make the final change in the UML to use a Set during Task 0.
+//      4) Added two new computed properties "description" and "count" and
+//      made PharmaceuticalStockTracker conform to the CustomStringConvertible
+//      to activate the description property when needed.
+//
+//      5) Changed the parameter to count(of:) from a name to an ndcPackageCode.
+//
+//      6) As explained in the reading, Elements of a set must conform to
+//      the Hashable protocol. So we marked MedicationContainer as Hashable.
+//
+//  Your Task 0 assignment is to get the file to compile by doing the following:
+//
+//      1) Implement the computed variable "count" which should be a count of
+//      all MedicationContainers stored in ndcPackageCode.
+//
+//      2) Change count(of:) to correctly count how many containers of a
+//      particular ndcPackageCode are stored in ndcPackageCode.
+//
+//      3) Change addContainer() to work correctly for the new data model
+//      using the ndcPackageCode inside the MedicationContainer parameter
+//      as the key. Be sure to address both the case where one or more
+//      MedicationContainers with the same ndcPackageCode have already been
+//      added.
+//
+//      4) We just marked MedicationContainer as Hashable. You need to make it
+//      actually comply with the Hashable protocol.
+//
 //  After you correctly complete this task, the project should compile and
 //  task0() should be shown as passing.
 
-/* NOTE TO EDITOR: The lines below within #if false are the starting version of
- the struct and classes and should be kept for tasks.swift. The lines below
- within  #else should be deleted for tasks.swift. They are the revised versions
- */
-#if false // ========= Keep the following lines for tasks.swift
+class PharmaceuticalStockTracker: CustomStringConvertible {
 
-class PharmaceuticalStockTracker: CustomStringConvertible, TrackerProtocol {
+    var inStockMedications: [String: Set<MedicationContainer>] = [:]
 
-    var inStockMedications: [MedicationContainer] = []
-
+    //  The default description when printing an object of this class is
+    //  "Week4Completed.PharmaceuticalStockTracker". To help with debugging
+    //  we provide a more informative description. Note that the new
+    //  description is only active for printing if we also mark the
+    //  PharmaceuticalStockTracker Type as conforming to CustomStringConvertible.
+    //  You should do not need to edit this method, but it requires the new
+    //  computed property "count" that you need to implement.
+    var description: String {
+        return "StockTracker holding \(self.count) MedicationContainers"
+    }
+// EDITOR keep the #if false section and remove the other section for tasks.swift
+#if false
+    //  Implement this computed property
+    var count: Int { get
+        {
+        }
+    }
+    //  Correct this method
+    func count(of name: String) -> Int {
+        return inStockMedications.reduce(0,
+            { if $1.name == name { return $0+1 } else { return $0 }})
+    }
+    //  Correct this method
     func addContainer(_ container: MedicationContainer) -> Bool {
         for aContainer in inStockMedications {
             if aContainer.id == container.id { return false }
         }
         inStockMedications.append(container)
-        return true
-    }
-
-    // We define count to be the number of of MedicatonContainers inside
-    // Arrays or Sets inside Dictionaries.
-    // The default description when printing an object of this class is just
-    // "Week4Tasks.PharmaceuticalStockTracker" so we provide a more
-    // informative description. Note that the new description is only active
-    // if we also make PharmaceuticalStockTracker conform to CustomStringConvertible.
-    // These two methods are provided to help you get started.
-    // You should not need to modify either of these methods.
-    var count: Int { get
-        {
-            var returnValue = 0;
-            for medsArray in inStockMedications.values {
-                returnValue += medsArray.count
-            }
-            return returnValue
+            return true
         }
-    }
-    var description: String {
-        return "StockTracker holding \(self.count) MedicationContainers"
-    }
-
-}
-class MedicationContainer: ContainerProtocol {
-    let id = UUID().uuidString
-    let name: String
-    let expirationDate: Date
-    var isExpired: Bool  { get { return Date() >= expirationDate } }
-    
-    init(name: String, expirationDate: Date) {
-        self.name = name
-        self.expirationDate = expirationDate
-    }
-}
-class LiquidMedicationContainer: MedicationContainer, LiquidContainerProtocol {
-    let volume: Double
-    let concentration: Int
-    let concentrationUnits: String
-    
-    init(name: String, expirationDate: Date, volume: Double, concentration: Int, concentrationUnits: String) {
-        self.volume = volume
-        self.concentration = concentration
-        self.concentrationUnits = concentrationUnits
-        super .init(name: name, expirationDate: expirationDate)
-    }
-}
-class TabletMedicationContainer: MedicationContainer, TabletContainerProtocol {
-    let pillCount: Int
-    let potency: Double
-    let potencyUnits: String
-    
-    init(name: String, expirationDate: Date, pillCount: Int, potency: Double, potencyUnits: String) {
-        self.pillCount = pillCount
-        self.potency = potency
-        self.potencyUnits = potencyUnits
-        super .init(name: name, expirationDate: expirationDate)
-    }
-}
-#else // ========= delete the following lines for tasks.swift
-
-#if false
-// The first version here is the version after task0(), but before task3()
-class PharmaceuticalStockTracker: CustomStringConvertible, TrackerProtocol {
-    
-    var inStockMedications: [String: [MedicationContainer]] = [:]
-    
-    func addContainer(_ container: MedicationContainer) -> Bool {
-        let aCode: String = container.ndcPackageCode
-        if let inStockArray = inStockMedications[aCode] {
-            // if it already has an array for that ndcPackageCode, check to
-            // make sure that the array does not already include this object
-            for aContainer in inStockArray {
-                if aContainer.id == container.id { return false }
-            }
-            inStockMedications[aCode]?.append(container)
-        } else {
-            inStockMedications[aCode] = [container]
-        }
-        return true
-    }
-
-    // We define count to be the number of of MedicatonContainers inside
-    // Arrays or Sets inside Dictionaries.
-    // The default description when printing an object of this class is just
-    // "Week4Completed.PharmaceuticalStockTracker" so we provide a more
-    // informative description. Note that the new description is only active
-    // if we also make PharmaceuticalStockTracker conform to CustomStringConvertible.
-    // These two methods are provided to help you get started.
-    // You should not need to modify either of these methods.
-    var count: Int { get
-        {
-            var returnValue = 0;
-            for medsArray in inStockMedications.values {
-                returnValue += medsArray.count
-            }
-            return returnValue
-        }
-    }
-    var description: String {
-        return "StockTracker holding \(self.count) MedicationContainers"
-    }
-
-}
 #else
-// This second version here is the version after task3()
-class PharmaceuticalStockTracker: CustomStringConvertible, TrackerProtocol2 {
-
-    var inStockMedications: [String: Set<MedicationContainer>] = [:]
-
+// EDITOR This is the completed version
+    //  Implement this computed property
+    var count: Int { get
+        {
+            var returnValue = 0;
+            for medsArray in inStockMedications.values {
+                returnValue += medsArray.count
+            }
+            return returnValue
+        }
+    }
+    //  Correct this method
+    func count(of ndcPackageCode: String) -> Int {
+        return inStockMedications[ndcPackageCode]?.count ?? 0
+    }
+    //  Correct this method
     func addContainer(_ container: MedicationContainer) -> Bool {
+        // EDITOR keep the #if false section and remove the other section for tasks.swift
         let aCode: String = container.ndcPackageCode
         if let inStockArray = inStockMedications[aCode] {
             // if it already has an array for that ndcPackageCode, check to
@@ -193,44 +136,33 @@ class PharmaceuticalStockTracker: CustomStringConvertible, TrackerProtocol2 {
         }
         return true
     }
-
-    // We define count to be the number of of MedicatonContainers inside
-    // Arrays or Sets inside Dictionaries.
-    // The default description when printing an object of this class is just
-    // "Week4Completed.PharmaceuticalStockTracker" so we provide a more
-    // informative description. Note that the new description is only active
-    // if we also make PharmaceuticalStockTracker conform to CustomStringConvertible.
-    // These two methods are provided to help you get started.
-    // You should not need to modify either of these methods.
-    var count: Int { get
-        {
-            var returnValue = 0;
-            for medsArray in inStockMedications.values {
-                returnValue += medsArray.count
-            }
-            return returnValue
-        }
-    }
-    var description: String {
-        return "StockTracker holding \(self.count) MedicationContainers"
-    }
-
-}
 #endif
-class MedicationContainer: ContainerProtocol {
+}
+ class MedicationContainer: Hashable {
     let ndcPackageCode: String
     let id = UUID().uuidString
     let name: String
     let expirationDate: Date
     var isExpired: Bool  { get { return Date() >= expirationDate } }
-
-    init(ndcPackageCode: String, name: String, expirationDate: Date) {
+    
+     fileprivate init(ndcPackageCode: String, name: String, expirationDate: Date) {
         self.ndcPackageCode = ndcPackageCode
         self.name = name
         self.expirationDate = expirationDate
     }
+// EDITOR remove the remainder of the contents of this class for tasks.swift
+
+     // conformance to the Equatable protocol which is a parent of Hashable
+     static func == (lhs: MedicationContainer, rhs: MedicationContainer) -> Bool {
+         return lhs.id == rhs.id
+     }
+     // conformance to the Hashable protocol
+     func hash(into hasher: inout Hasher) {
+         hasher.combine(id)
+     }
+
 }
-class LiquidMedicationContainer: MedicationContainer, LiquidContainerProtocol {
+class LiquidMedicationContainer: MedicationContainer {
     let volume: Double
     let concentration: Int
     let concentrationUnits: String
@@ -242,7 +174,7 @@ class LiquidMedicationContainer: MedicationContainer, LiquidContainerProtocol {
         super .init(ndcPackageCode: ndcPackageCode, name: name, expirationDate: expirationDate)
     }
 }
-class TabletMedicationContainer: MedicationContainer, TabletContainerProtocol {
+class TabletMedicationContainer: MedicationContainer {
     let pillCount: Int
     let potency: Double
     let potencyUnits: String
@@ -254,7 +186,6 @@ class TabletMedicationContainer: MedicationContainer, TabletContainerProtocol {
         super .init(ndcPackageCode: ndcPackageCode, name: name, expirationDate: expirationDate)
     }
 }
-#endif // ========= end of rows to delete when creating tasks.swift
 
 //  Do not edit the following date utilities that you are selcome to use.
 //  You are welcome to edit the line with "ddMMMyyyy" to try different date formats
@@ -279,17 +210,16 @@ func dateToString(_ aDate: Date) -> String {
 //  class and struct types above.
 var aStockTracker = PharmaceuticalStockTracker()
 
-func task0() -> (MedicationContainer, MedicationContainer, MedicationContainer) {
+func task0() -> (MedicationContainer, MedicationContainer) {
     // Print some sample dates
 
     let aCode: String = "12345-123-12"
-    // initiailize a test variable of each class
-    let aContainer = MedicationContainer(ndcPackageCode: aCode, name: "med1", expirationDate: futureDate(daysFromNow: 180))
-    let aLiquidContainer = LiquidMedicationContainer(ndcPackageCode: aCode, name: "med2", expirationDate: futureDate(daysFromNow: 120),
+    // initiailize a test variable of both classes
+    let aLiquidContainer = LiquidMedicationContainer(ndcPackageCode: aCode, name: "med1", expirationDate: futureDate(daysFromNow: 120),
         volume: 4.5, concentration: 2, concentrationUnits: "ml")
-    let aTabletContainer = TabletMedicationContainer(ndcPackageCode: aCode, name: "med3", expirationDate: futureDate(daysFromNow: 90),
+    let aTabletContainer = TabletMedicationContainer(ndcPackageCode: aCode, name: "med2", expirationDate: futureDate(daysFromNow: 90),
         pillCount: 90, potency: 2.3, potencyUnits: "mg")
-   return (aContainer, aLiquidContainer, aTabletContainer)
+   return (aLiquidContainer, aTabletContainer)
 }
 
 //  Task 1
@@ -325,13 +255,8 @@ func task0() -> (MedicationContainer, MedicationContainer, MedicationContainer) 
 //  the test code to access your new operators.
 //
 // EDITOR remove ": Equatable, Comparable" to produce tasks.swift
-extension MedicationContainer: Equatable, Comparable {
+extension MedicationContainer: Comparable {
     
-    static func == (lhs: MedicationContainer, rhs: MedicationContainer) -> Bool {
-        // replace the following with your code for a real comparitor operator
-        // EDITOR replace the following line with "return false"
-        return lhs.id == rhs.id
-    }
     static func < (lhs: MedicationContainer, rhs: MedicationContainer) -> Bool {
         // replace the following with your code for a real comparitor operator
         // EDITOR replace the following line with "return false"
@@ -377,15 +302,6 @@ func task1() -> ((PharmaceuticalStockTracker) -> Int, (PharmaceuticalStockTracke
 //  The "hasher.combine" approach to producing a hash function works even if
 //  there is only one class property to "combine."
 //
-extension MedicationContainer: Hashable {
-
-    // conformance to the Hashable protocol
-    func hash(into hasher: inout Hasher) {
-        // Put your code here to create a real Hasher function
-        // EDITOR delete the following line
-        hasher.combine(id)
-    }
-}
 func task2() -> MedicationContainer? {
     let readyToTest = true // change to true when ready to test task2
     guard readyToTest else { return nil }
@@ -434,10 +350,6 @@ func task2() -> MedicationContainer? {
 //  Finally change the constant in first line of task3() to return true rather than
 //  nil to indicated you have completed this task and it is ready to be tested.
 
-func preloadAStockTracker() {
-    // EDITOR: comment out the following line for tasks.slack
-    aStockTracker.inStockMedications = preloadedMedications
-}
 func task3() -> Bool? {
     let readyToTest = true // change to true when ready to test task3
     guard readyToTest else { return nil }
@@ -673,7 +585,7 @@ extension MedicationContainer: CustomStringConvertible {
         } else if let tabletContainer = self as? TabletMedicationContainer {
             return "Tablet Medication Container with ndcPackageCode: \(tabletContainer.ndcPackageCode), name:  \(tabletContainer.name), expirationDate: \(dateToString(tabletContainer.expirationDate)), pillCount: \(tabletContainer.pillCount), potency: \(tabletContainer.potency), potencyUnits: \(tabletContainer.potencyUnits)"
         } else {
-            return "Generic Medication Container with ndcPackageCode: \(self.ndcPackageCode), name:  \(self.name), expirationDate: \(dateToString(self.expirationDate))"
+            return "Generic Medication Container with ndcPackageCode: \(self.ndcPackageCode), name:  \(self.name), expirationDate: \(dateToString(self.expirationDate)) Note: This object should not exist"
         }
     }
 }

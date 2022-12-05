@@ -415,6 +415,50 @@ extension TabletMedicationContainer {
         may start to overuse it. Once again, be wise. Use it when it makes your
         code easier to read and when it lets you write less code.
       </p>
+          
+          <h2>Operator Methods</h2>
+          <p>
+            You may sometimes find it necessary to override or provide definitions 
+            for existing operators to use with objects from a Class or Struct. For 
+            example, making a Class comply with the Equitable and Hashable protocols may 
+            require defining a <kbd>==</kbd> operator for the class or struct since one 
+            is not always automatically provided. Having a Class or Struct 
+            provide its own custom <a
+              href="https://docs.swift.org/swift-book/LanguageGuide/AdvancedOperators.html#ID42"
+              target="_blank"
+            >Operator Methods</a
+            > to implement versions of existing operators is known as overloading those 
+            operators. You can add an operator method to the Class or Struct definition 
+            or use an extension like this:
+          </p>
+<pre><code class="swift">extension PharmaceuticalStockTracker {
+    static func == (lhs: MedicationContainer, rhs: MedicationContainer) -> Bool {
+        return lhs.id == rhs.id
+    }
+}</code></pre>
+          <p>
+            You can also create <a
+              href="https://docs.swift.org/swift-book/LanguageGuide/AdvancedOperators.html#ID46"
+              target="_blank"
+            >Custom Operators</a
+              > using combinations of 
+            <a
+              href="https://docs.swift.org/swift-book/ReferenceManual/LexicalStructure.html#ID418"
+              target="_blank"
+            >certain special characters</a>. If you want to use a custom 
+            operator, you must first declare it as a <kbd>prefix</kbd>, <kbd>infix</kbd> or 
+            <kbd>postfix</kbd> operator. For an infix operator you would also assign 
+            it to a precedence group like <kbd>: AdditionPrecedence</kbd>. 
+            For example, suppose we want to define a new postfix operator 
+            <kbd>&lt||&gt</kbd> that returns a count of the containers in an
+            instance of the PharmaceuticalStockTracker. We can do it like this:
+          </p>
+<pre><code class="swift">postfix operator &lt||&gt // indicates this is a new operator
+            
+extension PharmaceuticalStockTracker {
+    static postfix func &lt||&gt (tracker: PharmaceuticalStockTracker) -> Int {
+        return tracker.inStockMedications.count    }
+}</code></pre>
 
           <h2>UUID and Unique Objects</h2>
           <p>
@@ -499,7 +543,7 @@ extension TabletMedicationContainer {
         assignment. To conform to a protocol, search the documentation for that protocol.
       </p>
           <p>
-            The official documentation for a protocol always contains a section 
+            The official documentation for a built-in protocol always contains a section 
             about how to conform. For example, the documentation for the Sequence 
             protocol indicates that your class must either implement a function 
             that generates an Iterator or else your class must also explicitly 

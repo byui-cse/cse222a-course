@@ -275,7 +275,7 @@ struct testItem {
     }
 }
 
-func testContainer(_ t: testItem) -> MedicationContainer {
+func testContainer(_ t: testItem) -> MedicationContainer? {
     if let volume = t.volume { // specified volume so want liquid container
         let concentration = t.concentration ?? 1
         let concentrationUnits = t.concentrationUnits ?? "ml"
@@ -284,8 +284,9 @@ func testContainer(_ t: testItem) -> MedicationContainer {
         let potency = t.potency ?? 1
         let potencyUnits = t.potencyUnits ?? "mg"
         return TabletMedicationContainer(ndcPackageCode: t.ndcPackageCode, name: t.name, expirationDate: futureDate(daysFromNow: t.expDays), pillCount: pillCount, potency: potency, potencyUnits: potencyUnits)
+    } else {
+        return nil // cannot instantiate the parent class type
     }
-    return MedicationContainer(ndcPackageCode: t.ndcPackageCode, name: t.name, expirationDate: futureDate(daysFromNow: t.expDays))
 }
 
 struct MedSpec {
@@ -300,7 +301,7 @@ struct MedSpec {
 }
 
 func setupGlobals() -> Bool {
-    let pseudoMed = MedSpec(ndcPackageCode: "12345-678-90", name: "Med", volume: nil, concentration: nil, concentrationUnits: nil, pillCount: nil, potency: nil, potencyUnits: nil)
+    let pseudoMed = MedSpec(ndcPackageCode: "12345-678-90", name: "Med", volume: nil, concentration: nil, concentrationUnits: nil, pillCount: 90, potency: 30, potencyUnits: "MEQ")
     let tylenol = MedSpec(ndcPackageCode: "50580-692-02", name: "TYLENOL", volume: nil, concentration: nil, concentrationUnits: nil, pillCount: 100, potency: 500, potencyUnits: "mg")
     let chidrensTylenol = MedSpec(ndcPackageCode: "50580-170-01", name: "Children's TYLENOL", volume: 120, concentration: 160, concentrationUnits: "mg/5ml", pillCount: nil, potency: nil, potencyUnits: nil)
     
@@ -315,7 +316,11 @@ func setupGlobals() -> Bool {
     
     // set up some containers
     for spec in testContainerSpecifications {
-        testContainers.append(testContainer(spec))
+        guard let aContainer = testContainer(spec) else {
+            print("Internal testing error. Test tried to instantiate an object of the parent class type")
+            continue
+        }
+        testContainers.append(aContainer)
     }
     //  We can use this to preload preloaded inStockMedications with
     //  six containers in 3 sets
@@ -333,9 +338,12 @@ preloadedMedications = [
     return true
 }
 
+func preloadAStockTracker() {
+    aStockTracker.inStockMedications = preloadedMedications
+}
 private func test0(testNum: Int) -> TestResults {
 
-    let (container1, container2, container3): (Any, Any, Any) = task0()
+    let (container1, container2): (Any, Any) = task0()
     //  The first item should contain a MedicationContainer
     //  The second item should contain a LiquidMedicationContainer stored in a variable of Type MedicationContainer
     //  The third item should contain a TabletMedicationContainer stored in a variable of Type MedicationContainer
@@ -354,48 +362,20 @@ private func test0(testNum: Int) -> TestResults {
         return fail(testNum, "aStockTracker should be a class, but it is a struct")
     }
  
-    //  We do not need to check if container1 is a MedicationContainer, but make sure it is a class
-    guard Mirror(reflecting:container1).displayStyle == .class else {
-         return fail(testNum, "First returned value should be a class, but it is a struct")
-     }
-    //  conmtainer1 could be a child Type of MedicationContainer, so let's make sure it is not
-    guard !(container1 is LiquidMedicationContainer) else {
-        return fail(testNum, "First returned value should be a MedicationContainer, but it is a LiquidMedicationContainer")
-    }
-    guard !(container1 is TabletMedicationContainer) else {
-        return fail(testNum, "First returned value should be a MedicationContainer, but it is a TabletMedicationContainer")
-    }
-
-    //  make sure container2 is a LiquidMedicationContainer and container3 is a TabletMedicationContainer
-    guard container2 is LiquidMedicationContainer else {
-        if container2 is TabletMedicationContainer  {
-            return fail(testNum, "Second returned value should be a LiquidMedicationContainer, but it is a TabletMedicationContainer")
+    //  make sure 1 is a LiquidMedicationContainer and container3 is a TabletMedicationContainer
+    guard container1 is LiquidMedicationContainer else {
+        if container1 is TabletMedicationContainer  {
+            return fail(testNum, "First returned value should be a LiquidMedicationContainer, but it is a TabletMedicationContainer")
         } else {
-            return fail(testNum, "Second returned value should be a LiquidMedicationContainer, but it is a MedicationContainer")
+            return fail(testNum, "First returned value should be a LiquidMedicationContainer, but it is a MedicationContainer")
         }
     }
-    guard container3 is TabletMedicationContainer else {
-        if container3 is LiquidMedicationContainer {
-            return fail(testNum, "Third returned value should be a TabletMedicationContainer, but it is a LiquidMedicationContainer")
+    guard container2 is TabletMedicationContainer else {
+        if container2 is LiquidMedicationContainer {
+            return fail(testNum, "Second returned value should be a TabletMedicationContainer, but it is a LiquidMedicationContainer")
         } else {
-            return fail(testNum, "Third returned value should be a TabletMedicationContainer, but it is a MedicationContainer")
+            return fail(testNum, "Decond returned value should be a TabletMedicationContainer, but it is a MedicationContainer")
         }
-    }
-
-    // Make sure each type conforms to its  protocol
-    // We allow PharmaceuticalStockTracker to confrom to TrackerProtocol or TrackerProtocol2
-    // so this test still passes after Task2()
-    guard tracker is TrackerProtocol || tracker is TrackerProtocol2 else {
-        return fail(testNum, "PharmaceuticalStockTracker needs to conform to TrackerProtocol")
-    }
-    guard container1 is ContainerProtocol else {
-        return fail(testNum, "MedicationContainer needs to conform to ContainerProtocol")
-    }
-    guard container2 is LiquidContainerProtocol else {
-        return fail(testNum, "LiquidMedicationContainer needs to conform to LiquidContainerProtocol")
-    }
-    guard container3 is TabletContainerProtocol else {
-        return fail(testNum, "TabletMedicationContainer needs to conform to TabletContainerProtocol")
     }
 
     // Make sure inStockMedications is a Dictionary
@@ -486,9 +466,12 @@ private func test1(testNum: Int) -> TestResults {
 
 //  Test Comparable
     
-    let aCode: String = "12345-123-12"
-    let aContainer = MedicationContainer(ndcPackageCode: aCode, name: "med1", expirationDate: futureDate(daysFromNow: 180))
-    let bContainer = MedicationContainer(ndcPackageCode: aCode, name: "med1", expirationDate: futureDate(daysFromNow: 360))
+    // Make sure the testContainers are set up
+    guard testContainers.count == 6 else {
+        return fail(testNum, "Internal testing error. testContainers.count should be 6, but it is \(testContainers.count)")
+    }
+    let aContainer = testContainers[4]
+    let bContainer = testContainers[5]
 
     // Make sure aStockTracker conforms to TrackerProtocol3
     let anyContainer: Any = aContainer
@@ -885,8 +868,9 @@ private func test8(testNum: Int) -> TestResults {
     
     // include the year and day of month since those should
     // be there for any date format they choose
-    let matches1 = ["12345-678-90", "Med", testContainers[0].expirationDate.yearString(), testContainers[0].expirationDate.dayOfMonthString()]
-    let notMatches1 = ["Liquid", "Tablet"]
+    let matches1 = ["12345-678-90", "Med", "90","30", "MEQ",
+        testContainers[0].expirationDate.yearString(), testContainers[0].expirationDate.dayOfMonthString()]
+    let notMatches1 = ["Liquid"]
     var (aString, lastLine, wasMatchError) = matchPrint(matches: matches1, notMatches: notMatches1)
 
     guard lastLine != "" else {
