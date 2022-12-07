@@ -55,7 +55,7 @@
           href="https://docs.swift.org/swift-book/LanguageGuide/BasicOperators.html"
           target="blank"
           >the official documentation</a
-        >. When you operators for the two languages, you will find that Python
+        >. When using operators for the two languages, you will find that Python
         has a few that Swift does not and that Swift has a few that Python does
         not. You will also see that the conditional operators, also known as
         logical operators, exist in both languages but use different characters.
@@ -227,7 +227,7 @@ name = 3.1456778889547637653//compilation failure, type change</code></pre>
       Sue. Notice the use of the <kbd>var</kbd> keyword. This declares a
       <kbd>mutable</kbd> variable.
       <p>
-        Swift has something analogous the Python's None. In Swift it is nil.
+        Swift has something analogous to Python's None. In Swift it is nil.
         Declaring the type of a variable is required if the variable is
         initialized to nil. Think about this for a minute and take a look at
         this code snippet.
@@ -281,10 +281,10 @@ name = 3.1456778889547637653//compilation failure, type change</code></pre>
       </p>
       <p>
         To perform normal operations on an Optional variable, you must first
-        “unwrap" it. One way to unwrap it is to use the “??” operator which
-        unwraps the variable to the left of the “??” operator so it can be used.
-        If that variable is nil and cannot be unwrapped, then instead “??” gives
-        the default value to the right of the “??” operator.
+        “unwrap" it. One way to unwrap it is to use the ?? operator which
+        unwraps the variable to the left of the ?? operator so it can be used.
+        If that variable is nil and cannot be unwrapped, then instead ?? gives
+        the default value to the right of the ?? operator.
       </p>
       <pre><code>print(city ?? "Unknown")</code></pre>
       <p>
@@ -306,7 +306,7 @@ name = 3.1456778889547637653//compilation failure, type change</code></pre>
       
       <h3>Wrap Up</h3>
       <p>
-        As with all things, there are pluses and minuses of requiring keywords
+        As with all things, there are pros and cons of requiring keywords
         like <kbd>var</kbd> and <kbd>let</kbd> and having or not having some
         operators. One disadvantage of requiring <kbd>var</kbd> and
         <kbd>let</kbd> is the extra cluttering of the code with 'unnecessary'
@@ -521,7 +521,7 @@ name = 3.1456778889547637653//compilation failure, type change</code></pre>
         operators. These are used instead of the white-space scope operator used
         in Python. In Swift, white space means nothing but when writing your
         code, it is important to use white space to help make your code easier
-        to read. Never left justify your code.
+        to read. Never remove all indentations in your code.
       </p>
       <p>
         Additionally, the name and type of the parameters must be declared with
@@ -569,7 +569,7 @@ name = 3.1456778889547637653//compilation failure, type change</code></pre>
       <p>
         The Swift language has a concept called 'module scope'. When you declare
         a function, your function is created and lives in this module scope. An
-        advantage of this is that you can write code using the function in in
+        advantage of this is that you can write code using the function in
         one file when the declaration of the function is in a second file. As
         long as the two files are in the same module (app or library), no import
         declaration is needed. Here is an example.
@@ -625,10 +625,12 @@ print(averageTwoNumbers(5.0,3.0))</code></pre>
         list when calling a function, you could instead list a second name in
         front of the internal name. The first name will be used when calling the
         function and the second name will be used inside the function. Sometimes
-        the code reads more cleanly if a different name is use to call a
+        the code reads more cleanly if a different name is used to call a
         function than the name used inside the function. You will see examples
         of this in the documentation for built-in functions.
       </p>
+      <!-- Maybe include code example here -->
+
       <h3>Conditional Branching - ifs and other amazing things</h3>
       <p>
         If statements are fine. In fact sometimes they are exactly what you
@@ -690,7 +692,7 @@ else{
   </pre>
       <h3>Using if and guard with optionals</h3>
       <p>
-        Sometimes you want to unwrap an Optional, but take a different action if
+        Sometimes you want to unwrap an Optional, and take a different action if
         the value is nil. This is such a common pattern in programming that
         Swift includes special nil checking syntax. It combines the
         <a
