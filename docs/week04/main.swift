@@ -23,7 +23,7 @@ enum TestResults {
 
 // This must list the tests in order: test0, test1... so they can be called with their test number and
 // not need to hard code the Task name into the test except when calling the task function
-var tests: [(Int) -> TestResults] = [test0, test1, test2, test3, test4, test5, test6, test7, test8]
+var tests: [(Int) -> TestResults] = [test0, test1, test2, test3, test4, test5, test6, test7, test8, test9]
 var taskResults: [TestResults] = Array(repeating: .testNotImplemented, count: tests.count)
 var savedInput: [String?] = []
 var savedPrint: [String?] = []
@@ -138,10 +138,14 @@ func fail(_ testNum: Int, _ message: String) -> TestResults {
         inStockMedications now being a Dictionary of Sets
  •    Reaserch how and conform to Hashable
  Task 1
+ •    Use an extension to define a new method
+ •    Use filter() to identify expired and non-expired MedicationContainers
+ •    Use sorted() (not sort())
+ Task 2
  •    Work with regular expressions
  •    Build a function to test compliance with the NDC Code format
         using a regular expression
- Task 2
+ Task 3
  •    Work with Dictionaries and Sets
  •    Work with Tuple return values and error codes
  •    Work with enums
@@ -150,7 +154,7 @@ func fail(_ testNum: Int, _ message: String) -> TestResults {
         for adding a MedicationContainer
  •    Use an extension to add a new method that adds a Set of
         MedicationContainers rather just one like the existing method
- Task 3
+ Task 4
  •    Work with Dictionaries and Sets
  •    Work with Tuple return values and error codes
  •    Work with enums
@@ -159,7 +163,7 @@ func fail(_ testNum: Int, _ message: String) -> TestResults {
  •    Use an extension to add a new method that provides the
         stock of a particular type of medication using the NFC Code
  •    Work with sort() and closures
-Task 4
+Task 5
  •    Work with Dictionaries and Sets
  •    Work with Tuple return values and error codes
  •    Work with enums
@@ -170,22 +174,22 @@ Task 4
  •    Work with sort() and closures
  •    Delete an Array of elements from a set
  •    Delete a Dictionary entry
- Task 5
+ Task 6
  •    Extract tuples to set individual variables
  •    Add a struct method
  •    This is an easy task to set up the next tasks
  •    Tasks 7-9 are a set
- Task 6
+ Task 7
  •    Use extension to extend a struct Type
  •    Conform to the Sequence protocol
  •    Work with dates in the past and future
  •    Use struct method to generate a sequence of dates
  •    Handle a sequence that goes up or down in time
- Task 7
+ Task 8
  •    Work with tuple parameters
  •    Create an object of the date sequencer Type from Tasks 7 and 8
  •    Create an array of dates returned from the sequencer
- Task 8
+ Task 9
  •    Generics, Generic Extensions, Generic Functions
  •    Work with sort() and closures
  •    Create a protocol, then use it to qualify generic types
@@ -199,38 +203,6 @@ Task 4
 
 // To reorder tasks, just change the numbers in the names of the task function stub, the test function
 // and the call of the task function in the test function. All else should cleanly adjust.
-
-protocol TrackerProtocol {
-    var inStockMedications: [String: [MedicationContainer]] { get set }
-    
-    mutating func addContainer(_ container: MedicationContainer) -> Bool
-    
-    var count: Int { get }
-}
-protocol TrackerProtocol2 {
-    var inStockMedications: [String: Set<MedicationContainer>] { get set }
-    
-    mutating func addContainer(_ container: MedicationContainer) -> Bool
-    
-    var count: Int { get }
-}
-protocol ContainerProtocol {
-    var ndcPackageCode: String  { get }
-    var id: String { get }
-    var name: String { get }
-    var expirationDate: Date { get }
-    var isExpired: Bool { get }
-}
-protocol LiquidContainerProtocol {
-    var volume: Double  { get }
-    var concentration: Int  { get }
-    var concentrationUnits: String  { get }
-}
-protocol TabletContainerProtocol {
-    var pillCount: Int { get }
-    var potency: Double { get }
-    var potencyUnits: String { get }
-}
 
 struct testItem {
     let ndcPackageCode: String
@@ -289,12 +261,12 @@ func setupGlobals() -> Bool {
     let chidrensTylenol = MedSpec(ndcPackageCode: "50580-170-01", name: "Children's TYLENOL", volume: 120, concentration: 160, concentrationUnits: "mg/5ml", pillCount: nil, potency: nil, potencyUnits: nil)
     
     let testContainerSpecifications: [testItem] = [
-        testItem(med: pseudoMed, expDays: 90), // One MedicationContainer
+        testItem(med: pseudoMed, expDays: -90), // One MedicationContainer
         testItem(med: chidrensTylenol, expDays: 120), // Two LiquidMedicationContainers
         testItem(med: chidrensTylenol, expDays: 90),
         testItem(med: tylenol, expDays: 90), // Three LiquidMedicationContainers
-        testItem(med: tylenol, expDays: 180),
-        testItem(med: tylenol, expDays: 360)
+        testItem(med: tylenol, expDays: -180),
+        testItem(med: tylenol, expDays: -360),
     ]
     
     // set up some containers
@@ -321,51 +293,29 @@ preloadedMedications = [
     return true
 }
 
-func preloadAStockTracker() {
-    aStockTracker.inStockMedications = preloadedMedications
-}
 private func test0(testNum: Int) -> TestResults {
 
     let (container1, container2): (Any, Any) = task0()
-    //  The first item should contain a MedicationContainer
-    //  The second item should contain a LiquidMedicationContainer stored in a variable of Type MedicationContainer
-    //  The third item should contain a TabletMedicationContainer stored in a variable of Type MedicationContainer
-    //  Make them all Any so we don't get warning errors about some of the followiong tests
+    //  The first item should contain a LiquidMedicationContainer stored in a variable of Type MedicationContainer
+    //  The second item should contain a TabletMedicationContainer stored in a variable of Type MedicationContainer
+    //  Make them Any so we don't get warning errors about some of the followiong tests
     //  being always true
 
-    //  Check that aStockTracker is still a PharmaceuticalStockTracker
-    //  To avoid warning errors we copy it to an Any object and then do
-    //  the test.
-    let tracker: Any = aStockTracker
-    guard tracker is PharmaceuticalStockTracker else {
-        return fail(testNum, "aStockTracker should be a PharmaceuticalStockTracker")
-    }
-    //  Make sure aStockTracker (and PharmaceuticalStockTracker) is a struct, not a class
-    guard Mirror(reflecting:aStockTracker).displayStyle == .class else {
-        return fail(testNum, "aStockTracker should be a class, but it is a struct")
-    }
- 
-    //  make sure 1 is a LiquidMedicationContainer and container3 is a TabletMedicationContainer
+    //  make sure 1 is a LiquidMedicationContainer and container2 is a TabletMedicationContainer
     guard container1 is LiquidMedicationContainer else {
         if container1 is TabletMedicationContainer  {
             return fail(testNum, "First returned value should be a LiquidMedicationContainer, but it is a TabletMedicationContainer")
         } else {
-            return fail(testNum, "First returned value should be a LiquidMedicationContainer, but it is a MedicationContainer")
+            return fail(testNum, "First returned value should be a LiquidMedicationContainer, but it is a generic MedicationContainer")
         }
     }
     guard container2 is TabletMedicationContainer else {
         if container2 is LiquidMedicationContainer {
             return fail(testNum, "Second returned value should be a TabletMedicationContainer, but it is a LiquidMedicationContainer")
         } else {
-            return fail(testNum, "Decond returned value should be a TabletMedicationContainer, but it is a MedicationContainer")
+            return fail(testNum, "Decond returned value should be a TabletMedicationContainer, but it is a generic MedicationContainer")
         }
     }
-
-    // Make sure inStockMedications is a Dictionary
-    let medsStyle = Mirror(reflecting:aStockTracker.inStockMedications).displayStyle
-    guard medsStyle == .dictionary else {
-        return fail(testNum, "inStockMedications should be a Dictionary, but it is a \(String(describing: medsStyle))")
-     }
 
     // Test the functionality of addContainer() and count(of:)
 
@@ -433,24 +383,79 @@ private func test0(testNum: Int) -> TestResults {
     return .testPassed
 }
 
-//  One challenge with these functions was to find a way to let the files compile
-//  and then have the student add functionality which can be tested.
-//  The solution taken is to have the student add a protocol to each class or struct
-//  after thaey do their work that will confirm they added the correct properties
-//  and methods. But in Swift we can use protocols as pseudo types so once we have
-//  confirmed that they added protocol comformance, we can create an object of the
-//  protocol type and use that to access properties or methods that did not exist
-//  when the code was initially compiling as they worked on eariler tasks. Note that
-//  this is not needed for task 0 since we allow the files to not compile until they
-//  implement task 0.
-
+private func describeArrayOfContainers(_ containers: [MedicationContainer]) -> String {
+    var returnString = "[\n\t"
+    var first = true
+    for container in containers {
+        if first {
+            first = false
+        } else {
+            returnString += ", \n\t"
+        }
+        returnString += "\(container)"
+    }
+    return returnString + "]"
+}
+private func describeContainerDictionary(_ aDict: [String: Set<MedicationContainer>]) -> String {
+    var returnString = "[\n\t"
+    var first = true
+    for (code, containers) in aDict {
+        if first {
+            first = false
+        } else {
+            returnString += ", \n\t"
+        }
+        returnString += "\(code):\(describeArrayOfContainers(Array(containers)))"
+    }
+    return returnString + "]"
+}
+private func compareContainerDictionaries(_ lhs: [String: Set<MedicationContainer>], _ rhs: [String: Set<MedicationContainer>]) -> Bool {
+    guard lhs.count == rhs.count else { return false }
+    for (code, containers) in lhs {
+        guard rhs[code] == containers else {
+            return false
+        }
+    }
+    return true
+}
 private func test1(testNum: Int) -> TestResults {
     guard let returnValue = task1() else { return .testNotImplemented }
     if returnValue != true {
         return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
     }
+ 
+    // Set it up with some containers
+    let testTracker = PharmaceuticalStockTracker()
+    testTracker.inStockMedications = preloadedMedications
+    // testContainers 0, 4 and 5 are expired with dates -90, -180, -360 respectively
+    
+    let deletedContainers = testTracker.removeExpired()
+    // Make sure they deleted the right containers
+    let wantRemoved = [testContainers[5], testContainers[4], testContainers[0]]
+    guard deletedContainers == wantRemoved else {
+        print("Applied removeExpired() to a PharmaceuticalStockTracker with inStockMedications = \(describeContainerDictionary(preloadedMedications))")
+        print("Expected returned array of deleted containers to be \(describeArrayOfContainers(wantRemoved))")
+        return fail(testNum, "Actual returned array of deleted containers was \(describeArrayOfContainers(deletedContainers))")
+    }
+    //Set up what the result should look like
+    var wantedRetained = preloadedMedications
+    wantedRetained[testContainers[0].ndcPackageCode] = nil // remove dictionary entry for the first container
+    wantedRetained[testContainers[3].ndcPackageCode] = Set([testContainers[3]])
+    // Make sure they kept the right containers
+    guard compareContainerDictionaries(testTracker.inStockMedications, wantedRetained) else {
+        print("Applied removeExpired() to a PharmaceuticalStockTracker with inStockMedications = \(describeContainerDictionary(preloadedMedications))")
+        print("Expected containers retained in inStockMedications to be \(describeContainerDictionary(wantedRetained))")
+        return fail(testNum, "Actual containers retained in inStockMedications are \(describeContainerDictionary(testTracker.inStockMedications))")
+    }
 
-    // test0() will have already validated that most of the code still works
+    return .testPassed
+}
+
+private func test2(testNum: Int) -> TestResults {
+    guard let returnValue = task2() else { return .testNotImplemented }
+    if returnValue != true {
+        return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
+    }
     
     // Test some valid ndcPackageCodes first
     let validCodes = ["12345-678-90", "00000-000-00", "09876-563-21"]
@@ -471,8 +476,8 @@ private func test1(testNum: Int) -> TestResults {
     return .testPassed
 }
 
-private func test2(testNum: Int) -> TestResults {
-    guard let returnValue = task2() else { return .testNotImplemented }
+private func test3(testNum: Int) -> TestResults {
+    guard let returnValue = task3() else { return .testNotImplemented }
     if returnValue != true {
         return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
     }
@@ -533,8 +538,8 @@ private func test2(testNum: Int) -> TestResults {
     return .testPassed
 }
 
-private func test3(testNum: Int) -> TestResults {
-    guard let returnValue = task3() else { return .testNotImplemented }
+private func test4(testNum: Int) -> TestResults {
+    guard let returnValue = task4() else { return .testNotImplemented }
     if returnValue != true {
         return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
     }
@@ -542,7 +547,7 @@ private func test3(testNum: Int) -> TestResults {
     // Test the functionality of currentStock(of:)
     
     // Preload aStockTracker with containers
-    preloadAStockTracker()
+    aStockTracker.inStockMedications = preloadedMedications
     
     // Try with an invaid expectedNdcPackageCode
     var (returnBool2, returnMessage2, returnContainers) = aStockTracker.currentStock(of: testContainers[3].ndcPackageCode + "x")
@@ -589,8 +594,8 @@ private func test3(testNum: Int) -> TestResults {
     return .testPassed
 }
 
-private func test4(testNum: Int) -> TestResults {
-    guard let returnValue = task4() else { return .testNotImplemented }
+private func test5(testNum: Int) -> TestResults {
+    guard let returnValue = task5() else { return .testNotImplemented }
     if returnValue != true {
         return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
     }
@@ -598,7 +603,7 @@ private func test4(testNum: Int) -> TestResults {
     // Test the functionality of sellContainers(of:)
     
     // Preload aStockTracker with containers
-    preloadAStockTracker()
+    aStockTracker.inStockMedications = preloadedMedications
 
     // Make sure it preloaded correctly
     guard aStockTracker.count == 6 else {
@@ -696,8 +701,8 @@ protocol DateSequencerProtocol {
     
     mutating func setDates(daysTuple: (Int, Int))
 }
-private func test5(testNum: Int) -> TestResults {
-    guard let returnValue = task5() else { return .testNotImplemented }
+private func test6(testNum: Int) -> TestResults {
+    guard let returnValue = task6() else { return .testNotImplemented }
     if returnValue != true {
         return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
     }
@@ -733,9 +738,9 @@ protocol DateSequencerProtocol2 {
     
     mutating func next() -> Date?
 }
-private func test6(testNum: Int) -> TestResults {
+private func test7(testNum: Int) -> TestResults {
     
-    guard let returnValue = task6() else { return .testNotImplemented }
+    guard let returnValue = task7() else { return .testNotImplemented }
     if returnValue != true {
         return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
     }
@@ -793,7 +798,7 @@ private func test6(testNum: Int) -> TestResults {
     return .testPassed
 }
 
-private func test7(testNum: Int) -> TestResults {
+private func test8(testNum: Int) -> TestResults {
  
     // Do 5 random tests of DateSequencer()
     for _ in 0..<5 {
@@ -815,7 +820,7 @@ private func test7(testNum: Int) -> TestResults {
             datesArray.append(futureDate(daysFromNow: aDays))
         }
 
-        guard let returnArray = task7(aTuple) else { return .testNotImplemented }
+        guard let returnArray = task8(aTuple) else { return .testNotImplemented }
 
         // Compare size of returned value to size of expected value
         guard returnArray.count == datesArray.count else {
@@ -837,11 +842,11 @@ private func test7(testNum: Int) -> TestResults {
 }
 
 //  We use this to generate some sample PharmaceuticalStockTrackers
-//  to help testing Task8
+//  to help testing Task9
 func generateTracker(_ countainerCount: Int) -> PharmaceuticalStockTracker {
     // Preload it with six items
     let myStockTracker = PharmaceuticalStockTracker()
-    preloadAStockTracker()
+    aStockTracker.inStockMedications = preloadedMedications
     myStockTracker.inStockMedications = aStockTracker.inStockMedications
 
 
@@ -951,8 +956,8 @@ func summarizeSetsOfMedicationContainers(_ arrayOfSets: [any Collection<Medicati
     returnValue.removeLast()
     return returnValue + "]"
 }
-private func test8(testNum: Int) -> TestResults {
-    guard let returnValue = task8() else { return .testNotImplemented }
+private func test9(testNum: Int) -> TestResults {
+    guard let returnValue = task9() else { return .testNotImplemented }
     if returnValue != true {
         return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
     }

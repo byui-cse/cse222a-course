@@ -314,7 +314,7 @@ func task9() -> ((MedicationContainer, MedicationContainer)->Bool)? {
 //  medication from a PharmaceuticalStockTracker. It should remove any expired containers
 //  from the tracker and return an array of any containers that were removed.
 //  Tee array of expired containers should be sorted with the oldest expiration
-//  dates first. Deine the characters that make up your operator using any
+//  dates first. Define the characters that make up your operator using any
 //  allowed combination of characters as defined here:
 //      https://docs.swift.org/swift-book/ReferenceManual/LexicalStructure.html#ID418
 //

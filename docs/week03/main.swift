@@ -180,7 +180,7 @@ Task 8
  Task 10
  •    Example of custom infix operator and setting precedence
  •    Use an extension to create a new custom operator
- •    Use filter() to identify expired and non-sxpired MedicationContainers
+ •    Use filter() to identify expired and non-expired MedicationContainers
  •    Use sorted() (not sort())
  •    Have a funtion return a closure (to facilitate testing)
  */

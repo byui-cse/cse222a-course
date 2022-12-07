@@ -241,6 +241,51 @@ func task0() -> (MedicationContainer, MedicationContainer) {
 }
 
 //  Task 1
+//  For the last assignment last week you created an operator that
+//  cleaned any expired medication from a PharmaceuticalStockTracker.
+//  Use the extension below to re-implement that funcationality (as a
+//  method this time) for the new model. It should remove any expired
+//  containers from the PharmaceuticalStockTracker and return an array
+//  of any containers that were removed. The array of expired containers
+//  should be sorted with the oldest expiration dates first. And let's
+//  keep things tidy: if you remove all the containers in a Dictionary
+//  entry, go ahead and remove the Dictionary entry also.
+//
+//  When you have completed and tested the code for removeExpired(),
+//  change the constant in first line of task1() to true to indicate
+//  that Task 1 is ready to be tested.
+//
+extension PharmaceuticalStockTracker {
+    func removeExpired() -> [MedicationContainer] {
+        // EDITOR When creating tasks.swift, replace the body of this
+        // method with return []
+        var expiredContainers: [MedicationContainer] = []
+        for (code, containers) in inStockMedications {
+            let expiredForCode = containers.filter{$0.isExpired}
+            if expiredForCode.count > 0 {
+                expiredContainers += expiredForCode
+                let keptContainers = containers.filter{!$0.isExpired}
+                if keptContainers.count > 0 {
+                    // update dictionary entry
+                    inStockMedications[code] = keptContainers
+                } else {
+                    // remove dictionary entry
+                    inStockMedications[code] = nil
+                }
+            }
+        }
+        return expiredContainers.sorted(by: <)
+    }
+}
+func task1() -> Bool? {
+    let readyToTest = true // change to true when ready to test task1
+    guard readyToTest else { return nil }
+    // Please ignore the "will never be executed" warnings
+
+    return true
+}
+
+//  Task 2
 //  The ndcPackageCode that tells what type of medication is in a container
 //  follows the code pattern in the NDC database:
 //      https://www.accessdata.fda.gov/scripts/cder/ndc/dsp_searchresult.cfm
@@ -250,22 +295,22 @@ func task0() -> (MedicationContainer, MedicationContainer) {
 //  real codes from the database along with real information, or you may make them up.
 //
 //  When you have completed and tested the code for isFormattedAsNDCCode(), change the
-//  constant in first line of task1() to true to indicate that it is ready to be tested.
+//  constant in first line of tas2() to true to indicate that it is ready to be tested.
 
 func isFormattedAsNDCCode(code: String) -> Bool {
     // Replace the following line with your code
     // EDITOR replace the following line with "return false" for tasks.swift
     return code.range(of: #"^\d{5}[-]\d{3}[-]\d{2}$"#, options: .regularExpression) != nil
 }
-func task1() -> Bool? {
-    let readyToTest = true // change to true when ready to test task1
+func task2() -> Bool? {
+    let readyToTest = true // change to true when ready to test task2
     guard readyToTest else { return nil }
-    
     // Please ignore the "will never be executed" warning
+
     return true
 }
 
-//  Task 2
+//  Task 3
 //  Edit addContainer() to call isFormattedAsNDCCode to validate that the ndcPackageCode
 //  in the container to be added has a valid NDCCode format. If not, do not add the
 //  container and return false.
@@ -280,7 +325,7 @@ func task1() -> Bool? {
 //  performing all needed tests including isFormattedAsNDCCode to verify the code format.
 //
 //  When you have completed and tested the codefor addContainers(), change the constant
-//  in first line of task2() to true to indicate that it is ready to be tested.
+//  in first line of task3() to true to indicate that it is ready to be tested.
 
 enum AddMessage: String {
     case success
@@ -318,15 +363,15 @@ extension PharmaceuticalStockTracker {
     }
 }
 
-func task2() -> Bool? {
-    let readyToTest = true // change to true when ready to test task2
+func task3() -> Bool? {
+    let readyToTest = true // change to true when ready to test task3
     guard readyToTest else { return nil }
-    
     // Please ignore the "will never be executed" warning
+
     return true
 }
 
-//  Task 3
+//  Task 4
 //  Fill out the method currentStock(of:) below. This accepts as its parameter an
 //   ndcPackageCode. It returns a tuple with a Bool, an enum of a type specifiedanected
 //  and an optional array of MedicationContainers. Validate the ndcPackageCode format,
@@ -336,7 +381,7 @@ func task2() -> Bool? {
 //  dates come first.
 //
 //  When you have completed and tested the code for currentStock(of:), change the constant
-//  in first line of task3() to true to indicate that it is ready to be tested.
+//  in first line of task4() to true to indicate that it is ready to be tested.
 
 enum StockMessage: String {
     case success
@@ -362,15 +407,15 @@ extension PharmaceuticalStockTracker {
         return (true, .success, returnValue)
     }
 }
-func task3() -> Bool? {
-    let readyToTest = true // change to true when ready to test task3
+func task4() -> Bool? {
+    let readyToTest = true // change to true when ready to test task4
     guard readyToTest else { return nil }
-
     // Please ignore the "will never be executed" warning
+
     return true
 }
 
-//  Task 4
+//  Task 5
 //  Fill out the method sellContainers(count:of) below. This accepts as parameters a
 //  count of containers to sell, and an ndcPackageCode.
 //  It returns a Bool, a SellMessage and an optional array of MedicationContainers.
@@ -384,7 +429,7 @@ func task3() -> Bool? {
 //  you should remove that NDCCode from being a key in the inStockMedications Dictionary.
 //
 //  When you have completed and tested the code for sellContainers(), change the constant
-//  in first line of task4() to true to indicate that it is ready to be tested.
+//  in first line of task5() to true to indicate that it is ready to be tested.
 
 enum SellMessage: String {
     case success
@@ -428,15 +473,15 @@ extension PharmaceuticalStockTracker {
         return (true, .success, returnValue)
     }
 }
-func task4() -> Bool? {
-    let readyToTest = true // change to true when ready to test task7
+func task5() -> Bool? {
+    let readyToTest = true // change to true when ready to test task5
     guard readyToTest else { return nil }
-
     // Please ignore the "will never be executed" warning
+
     return true
 }
 
-//  Task 5
+//  Task 6
 //  Add a mutating method called setDates to DateSequencer with one parameter called
 //  daysTuple that is a tuple of two Ints. Use them to set the values (in order)
 //  of the two properties.
@@ -444,7 +489,7 @@ func task4() -> Bool? {
 //  Then apply the additional protocol DateSequencerProtocol that will let the tests
 //  conform that your solution has the correct functrions implemented
 //
-//  Then change task5() to return true rather than nil
+//  Then change task6() to return true rather than nil
 struct DateSequencer: DateSequencerProtocol  {
     
     var sequenceCurrent = 0
@@ -456,14 +501,14 @@ struct DateSequencer: DateSequencerProtocol  {
         (sequenceCurrent, sequenceEnd) = daysTuple
     }
 }
-func task5() -> Bool? {
+func task6() -> Bool? {
 //    return nil
 
     // When creating tasks.swift, change this back to "return nil"
     return true
 }
 
-//  Task 6
+//  Task 7
 //  Edit the extension below to make the DateSequencer conform to the Sequence protocol.
 //  Use the approach that has it also conforms to the IteratorProtocol.
 //  Every time it generates a sequence element it should return a date optional that
@@ -478,7 +523,7 @@ func task5() -> Bool? {
 //  Then apply the additional protocol DateSequencerProtocol2 to the extension that
 //  will let the tests conform that your solution has the correct functrion implemented
 //
-//  Then change task6() to return true rather than nil
+//  Then change task7() to return true rather than nil
 //
 /* NOTE TO EDITOR: use the following version of the extension that is empty and
  without the list of protocols when creating tasks.swift
@@ -499,22 +544,22 @@ extension DateSequencer: Sequence, IteratorProtocol, DateSequencerProtocol2  {
         }
     }
 }
-func task6() -> Bool? {
+func task7() -> Bool? {
 //    return nil
 
     // When creating tasks.swift, change this back to "return nil"
     return true
 }
 
-//  Task 7
+//  Task 8
 //  Add an empty variable of Type [Date] called returnValue.
-//  Add code to task7() that creates a local object of type DateSequencer. Use the
+//  Add code to task8() that creates a local object of type DateSequencer. Use the
 //  input paramater with .setDates() to set the properties inside that DateSequencer
 //  object. Add "for let aDate in yourObject" to create a loop where
 //  "yourObject" is whatever you called your DateSequencer object.
 //  Inside that loop, append each date returned by the DateSequencer
 //  to the returnValue array. Then return the returnValue array instead of nil.
-func task7(_ aTuple: (Int, Int)) -> [Date]? {
+func task8(_ aTuple: (Int, Int)) -> [Date]? {
     //    return nil
 
     // The following code used to validate the test code will be deleted for tasks.swift.
@@ -525,7 +570,7 @@ func task7(_ aTuple: (Int, Int)) -> [Date]? {
     return returnValue
 }
 
-//  Task 8
+//  Task 9
 //  Suppose we want to sort the objects in a Collection by size (using the "count"
 //  property in those objects). If we have many different configurations of Collections,
 //  we would need to write and test many different sort functions. Look in the body of
@@ -579,15 +624,15 @@ extension Collection where Element: Countable {
 }
 
 //  When you have implemented sortedBySize() change the constant in the
-// first line of task8() to true.
+// first line of task9() to true.
 
-func task8() -> Bool? {
+func task9() -> Bool? {
     // change to true when ready to test task9
     // DO NOT change any other lines in task9()
     let readyToTest = true
     guard readyToTest else { return nil }
-
     // Please ignore the "will never be executed" warning
+
     let arrayOfStrings = ["One", "Three", "Five"]
     testPrint("arrayOfStrings.sortedBySize() increasing, then decreasing:")
     testPrint(">  \(arrayOfStrings.sortedBySize())")
