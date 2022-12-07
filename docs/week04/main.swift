@@ -138,25 +138,10 @@ func fail(_ testNum: Int, _ message: String) -> TestResults {
         inStockMedications now being a Dictionary of Sets
  •    Reaserch how and conform to Hashable
  Task 1
- •    Extract tuples to set individual variables
- •    Add a struct method
- •    This is an easy task to set up the next tasks
- •    Tasks 7-9 are a set
- Task 2
- •    Use extension to extend a struct Type
- •    Conform to the Sequence protocol
- •    Work with dates in the past and future
- •    Use struct method to generate a sequence of dates
- •    Handle a sequence that goes up or down in time
- Task 3
- •    Work with tuple parameters
- •    Create an object of the date sequencer Type from Tasks 7 and 8
- •    Create an array of dates returned from the sequencer
- Task 4
  •    Work with regular expressions
  •    Build a function to test compliance with the NDC Code format
         using a regular expression
- Task 5
+ Task 2
  •    Work with Dictionaries and Sets
  •    Work with Tuple return values and error codes
  •    Work with enums
@@ -165,7 +150,7 @@ func fail(_ testNum: Int, _ message: String) -> TestResults {
         for adding a MedicationContainer
  •    Use an extension to add a new method that adds a Set of
         MedicationContainers rather just one like the existing method
- Task 6
+ Task 3
  •    Work with Dictionaries and Sets
  •    Work with Tuple return values and error codes
  •    Work with enums
@@ -174,7 +159,7 @@ func fail(_ testNum: Int, _ message: String) -> TestResults {
  •    Use an extension to add a new method that provides the
         stock of a particular type of medication using the NFC Code
  •    Work with sort() and closures
-Task 7
+Task 4
  •    Work with Dictionaries and Sets
  •    Work with Tuple return values and error codes
  •    Work with enums
@@ -185,7 +170,22 @@ Task 7
  •    Work with sort() and closures
  •    Delete an Array of elements from a set
  •    Delete a Dictionary entry
-Task 8
+ Task 5
+ •    Extract tuples to set individual variables
+ •    Add a struct method
+ •    This is an easy task to set up the next tasks
+ •    Tasks 7-9 are a set
+ Task 6
+ •    Use extension to extend a struct Type
+ •    Conform to the Sequence protocol
+ •    Work with dates in the past and future
+ •    Use struct method to generate a sequence of dates
+ •    Handle a sequence that goes up or down in time
+ Task 7
+ •    Work with tuple parameters
+ •    Create an object of the date sequencer Type from Tasks 7 and 8
+ •    Create an array of dates returned from the sequencer
+ Task 8
  •    Generics, Generic Extensions, Generic Functions
  •    Work with sort() and closures
  •    Create a protocol, then use it to qualify generic types
@@ -441,158 +441,11 @@ private func test0(testNum: Int) -> TestResults {
 //  confirmed that they added protocol comformance, we can create an object of the
 //  protocol type and use that to access properties or methods that did not exist
 //  when the code was initially compiling as they worked on eariler tasks. Note that
-//  this is not eneded for task 0 since we allow the files to not compile until they
+//  this is not needed for task 0 since we allow the files to not compile until they
 //  implement task 0.
 
-
-protocol DateSequencerProtocol {
-    var sequenceCurrent: Int { get set }
-    var sequenceEnd: Int  { get set }
-    
-    mutating func setDates(daysTuple: (Int, Int))
-}
 private func test1(testNum: Int) -> TestResults {
     guard let returnValue = task1() else { return .testNotImplemented }
-    if returnValue != true {
-        return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
-    }
-
-    // Make sure DateSequencer confroms to DateSequencerProtocol
-    // Use "Any" to avoid warning message
-    let testProtocol: Any = DateSequencer()
-    guard var testSequencer = testProtocol as? DateSequencerProtocol else {
-        return fail(testNum, "DateSequencer needs to conform to DateSequencerProtocol")
-    }
-    
-    // Do 5 random tests of setDates()
-    for _ in 0..<5 {
-        let aTuple = (Int.random(in: -10...10), Int.random(in: -10...10))
-        testSequencer.setDates(daysTuple: aTuple)
-        guard testSequencer.sequenceCurrent == aTuple.0 else {
-            return fail(testNum, "After call of .setDates(\(aTuple)) expected sequenceCurrent to be \(aTuple.0) but it was \(testSequencer.sequenceCurrent)")
-        }
-        guard testSequencer.sequenceEnd == aTuple.1 else {
-            return fail(testNum, "After call of .setDates(\(aTuple)) expected sequenceEnd to be \(aTuple.1) but it was \(testSequencer.sequenceEnd)")
-        }
-    }
-
-    return .testPassed
-}
-
-protocol DateSequencerProtocol2 {
-    
-    var sequenceCurrent: Int { get set }
-    var sequenceEnd: Int  { get set }
-    
-    mutating func setDates(daysTuple: (Int, Int))
-    
-    mutating func next() -> Date?
-}
-private func test2(testNum: Int) -> TestResults {
-    
-    guard let returnValue = task2() else { return .testNotImplemented }
-    if returnValue != true {
-        return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
-    }
-
-    // Make sure DateSequencer confroms to DateSequencerProtocol2
-    // Use "Any" to avoid warning message
-    let testProtocol: Any = DateSequencer()
-    guard var testSequencer = testProtocol as? DateSequencerProtocol2 else {
-        return fail(testNum, "DateSequencer extension needs to conform to DateSequencerProtocol2")
-    }
-    // Also make sure DateSequencer confroms to Sequence protocol and IteratorProtocol
-    // Note the use of "any" (not "Any") which lets us test membership in a generic protocol
-    guard testProtocol is any Sequence else {
-        return fail(testNum, "DateSequencer extension needs to conform to the Sequence protocol")
-    }
-    guard testProtocol is any IteratorProtocol else {
-        return fail(testNum, "DateSequencer extension needs to conform to the Sequence protocol")
-    }
-
-    // Do 5 random tests of DateSequencer()
-    for _ in 0..<5 {
-        let aTuple = (Int.random(in: -10...10), Int.random(in: -10...10))
-        testSequencer.setDates(daysTuple: aTuple)
-        // We do not use testSequencer as a Sequence in a for loop since
-        // that is the next task for the user
-        // Set up an array of the offsets of dates that should be returned
-        var testArray = [Int]()
-        if aTuple.0 < aTuple.1 {
-            testArray = Array(aTuple.0..<aTuple.1)
-        } else if aTuple.0 > aTuple.1 {
-            // Swift does not do decreasing ranges so built it forward then reverse it
-            testArray = Array(aTuple.1 + 1...aTuple.0)
-            testArray.reverse()
-        } else {
-            testArray = []
-        }
-        for testIndex in 0..<testArray.count {
-            // we do not just use "for aDays in testArray" because we
-            // need testIndex for the error messages
-            let aDays = testArray[testIndex]
-            let expectedDate = dateToString(futureDate(daysFromNow: aDays))
-            guard let nextDate = testSequencer.next() else {
-                return fail(testNum, "After calling .setDates(\(aTuple)) calls to .next() should produce \(testArray.count) dates, but it returned nil on call number \(testIndex + 1)")
-            }
-            let returnedDate = dateToString(nextDate)
-            guard returnedDate == expectedDate else {
-                return fail(testNum, "After calling .setDates(\(aTuple)), expected call number \(testIndex + 1) to return \(expectedDate), but it returned \(returnedDate) \n testArray")
-            }
-        }
-        if let aDate = testSequencer.next() {
-            return fail(testNum, "After calling .setDates(\(aTuple)), expected call number \(testArray.count + 1) to return nil but it returned \(dateToString(aDate)) \n testArray")
-        }
-    }
-
-    return .testPassed
-}
-
-private func test3(testNum: Int) -> TestResults {
- 
-    // Do 5 random tests of DateSequencer()
-    for _ in 0..<5 {
-        let aTuple = (Int.random(in: -10...10), Int.random(in: -10...10))
-        // Set up an array of the expected days in the future or past
-        var daysArray = [Int]()
-        if aTuple.0 < aTuple.1 {
-            daysArray = Array(aTuple.0..<aTuple.1)
-        } else if aTuple.0 > aTuple.1 {
-            // Swift does not do decreasing ranges so built it forward then reverse it
-            daysArray = Array(aTuple.1 + 1...aTuple.0)
-            daysArray.reverse()
-        } else {
-            daysArray = []
-        }
-        // Set up an array with the expected actual values
-        var datesArray = [Date]()
-        for aDays in daysArray {
-            datesArray.append(futureDate(daysFromNow: aDays))
-        }
-
-        guard let returnArray = task3(aTuple) else { return .testNotImplemented }
-
-        // Compare size of returned value to size of expected value
-        guard returnArray.count == datesArray.count else {
-            return fail(testNum, "Called task\(testNum)(\(aTuple)) and expected an Array of size \(datesArray.count) but it returned an Array of size \(returnArray.count)")
-        }
-            
-        for dateIndex in 0..<datesArray.count {
-            // we do not just use "for aDate in dateArray" because we
-            // need testIndex for the error messages
-            let expectedDate = dateToString(datesArray[dateIndex])
-            let returnedDate = dateToString(returnArray[dateIndex])
-            guard returnedDate == expectedDate else {
-                return fail(testNum, "Called task\(testNum)(\(aTuple)) and expected returnValue[\(dateIndex)] to be \(expectedDate) but it was \(returnedDate)")
-            }
-        }
-    }
-    
-    return .testPassed
-}
-
-private func test4(testNum: Int) -> TestResults {
-    guard let returnValue = task4() else { return .testNotImplemented }
     if returnValue != true {
         return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
     }
@@ -618,8 +471,8 @@ private func test4(testNum: Int) -> TestResults {
     return .testPassed
 }
 
-private func test5(testNum: Int) -> TestResults {
-    guard let returnValue = task5() else { return .testNotImplemented }
+private func test2(testNum: Int) -> TestResults {
+    guard let returnValue = task2() else { return .testNotImplemented }
     if returnValue != true {
         return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
     }
@@ -680,8 +533,8 @@ private func test5(testNum: Int) -> TestResults {
     return .testPassed
 }
 
-private func test6(testNum: Int) -> TestResults {
-    guard let returnValue = task6() else { return .testNotImplemented }
+private func test3(testNum: Int) -> TestResults {
+    guard let returnValue = task3() else { return .testNotImplemented }
     if returnValue != true {
         return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
     }
@@ -736,8 +589,8 @@ private func test6(testNum: Int) -> TestResults {
     return .testPassed
 }
 
-private func test7(testNum: Int) -> TestResults {
-    guard let returnValue = task6() else { return .testNotImplemented }
+private func test4(testNum: Int) -> TestResults {
+    guard let returnValue = task4() else { return .testNotImplemented }
     if returnValue != true {
         return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
     }
@@ -837,8 +690,154 @@ private func test7(testNum: Int) -> TestResults {
     return .testPassed
 }
 
+protocol DateSequencerProtocol {
+    var sequenceCurrent: Int { get set }
+    var sequenceEnd: Int  { get set }
+    
+    mutating func setDates(daysTuple: (Int, Int))
+}
+private func test5(testNum: Int) -> TestResults {
+    guard let returnValue = task5() else { return .testNotImplemented }
+    if returnValue != true {
+        return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
+    }
+
+    // Make sure DateSequencer confroms to DateSequencerProtocol
+    // Use "Any" to avoid warning message
+    let testProtocol: Any = DateSequencer()
+    guard var testSequencer = testProtocol as? DateSequencerProtocol else {
+        return fail(testNum, "DateSequencer needs to conform to DateSequencerProtocol")
+    }
+    
+    // Do 5 random tests of setDates()
+    for _ in 0..<5 {
+        let aTuple = (Int.random(in: -10...10), Int.random(in: -10...10))
+        testSequencer.setDates(daysTuple: aTuple)
+        guard testSequencer.sequenceCurrent == aTuple.0 else {
+            return fail(testNum, "After call of .setDates(\(aTuple)) expected sequenceCurrent to be \(aTuple.0) but it was \(testSequencer.sequenceCurrent)")
+        }
+        guard testSequencer.sequenceEnd == aTuple.1 else {
+            return fail(testNum, "After call of .setDates(\(aTuple)) expected sequenceEnd to be \(aTuple.1) but it was \(testSequencer.sequenceEnd)")
+        }
+    }
+
+    return .testPassed
+}
+
+protocol DateSequencerProtocol2 {
+    
+    var sequenceCurrent: Int { get set }
+    var sequenceEnd: Int  { get set }
+    
+    mutating func setDates(daysTuple: (Int, Int))
+    
+    mutating func next() -> Date?
+}
+private func test6(testNum: Int) -> TestResults {
+    
+    guard let returnValue = task6() else { return .testNotImplemented }
+    if returnValue != true {
+        return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
+    }
+
+    // Make sure DateSequencer confroms to DateSequencerProtocol2
+    // Use "Any" to avoid warning message
+    let testProtocol: Any = DateSequencer()
+    guard var testSequencer = testProtocol as? DateSequencerProtocol2 else {
+        return fail(testNum, "DateSequencer extension needs to conform to DateSequencerProtocol2")
+    }
+    // Also make sure DateSequencer confroms to Sequence protocol and IteratorProtocol
+    // Note the use of "any" (not "Any") which lets us test membership in a generic protocol
+    guard testProtocol is any Sequence else {
+        return fail(testNum, "DateSequencer extension needs to conform to the Sequence protocol")
+    }
+    guard testProtocol is any IteratorProtocol else {
+        return fail(testNum, "DateSequencer extension needs to conform to the Sequence protocol")
+    }
+
+    // Do 5 random tests of DateSequencer()
+    for _ in 0..<5 {
+        let aTuple = (Int.random(in: -10...10), Int.random(in: -10...10))
+        testSequencer.setDates(daysTuple: aTuple)
+        // We do not use testSequencer as a Sequence in a for loop since
+        // that is the next task for the user
+        // Set up an array of the offsets of dates that should be returned
+        var testArray = [Int]()
+        if aTuple.0 < aTuple.1 {
+            testArray = Array(aTuple.0..<aTuple.1)
+        } else if aTuple.0 > aTuple.1 {
+            // Swift does not do decreasing ranges so built it forward then reverse it
+            testArray = Array(aTuple.1 + 1...aTuple.0)
+            testArray.reverse()
+        } else {
+            testArray = []
+        }
+        for testIndex in 0..<testArray.count {
+            // we do not just use "for aDays in testArray" because we
+            // need testIndex for the error messages
+            let aDays = testArray[testIndex]
+            let expectedDate = dateToString(futureDate(daysFromNow: aDays))
+            guard let nextDate = testSequencer.next() else {
+                return fail(testNum, "After calling .setDates(\(aTuple)) calls to .next() should produce \(testArray.count) dates, but it returned nil on call number \(testIndex + 1)")
+            }
+            let returnedDate = dateToString(nextDate)
+            guard returnedDate == expectedDate else {
+                return fail(testNum, "After calling .setDates(\(aTuple)), expected call number \(testIndex + 1) to return \(expectedDate), but it returned \(returnedDate) \n testArray")
+            }
+        }
+        if let aDate = testSequencer.next() {
+            return fail(testNum, "After calling .setDates(\(aTuple)), expected call number \(testArray.count + 1) to return nil but it returned \(dateToString(aDate)) \n testArray")
+        }
+    }
+
+    return .testPassed
+}
+
+private func test7(testNum: Int) -> TestResults {
+ 
+    // Do 5 random tests of DateSequencer()
+    for _ in 0..<5 {
+        let aTuple = (Int.random(in: -10...10), Int.random(in: -10...10))
+        // Set up an array of the expected days in the future or past
+        var daysArray = [Int]()
+        if aTuple.0 < aTuple.1 {
+            daysArray = Array(aTuple.0..<aTuple.1)
+        } else if aTuple.0 > aTuple.1 {
+            // Swift does not do decreasing ranges so built it forward then reverse it
+            daysArray = Array(aTuple.1 + 1...aTuple.0)
+            daysArray.reverse()
+        } else {
+            daysArray = []
+        }
+        // Set up an array with the expected actual values
+        var datesArray = [Date]()
+        for aDays in daysArray {
+            datesArray.append(futureDate(daysFromNow: aDays))
+        }
+
+        guard let returnArray = task7(aTuple) else { return .testNotImplemented }
+
+        // Compare size of returned value to size of expected value
+        guard returnArray.count == datesArray.count else {
+            return fail(testNum, "Called task\(testNum)(\(aTuple)) and expected an Array of size \(datesArray.count) but it returned an Array of size \(returnArray.count)")
+        }
+            
+        for dateIndex in 0..<datesArray.count {
+            // we do not just use "for aDate in dateArray" because we
+            // need testIndex for the error messages
+            let expectedDate = dateToString(datesArray[dateIndex])
+            let returnedDate = dateToString(returnArray[dateIndex])
+            guard returnedDate == expectedDate else {
+                return fail(testNum, "Called task\(testNum)(\(aTuple)) and expected returnValue[\(dateIndex)] to be \(expectedDate) but it was \(returnedDate)")
+            }
+        }
+    }
+    
+    return .testPassed
+}
+
 //  We use this to generate some sample PharmaceuticalStockTrackers
-//  to help testing Task9
+//  to help testing Task8
 func generateTracker(_ countainerCount: Int) -> PharmaceuticalStockTracker {
     // Preload it with six items
     let myStockTracker = PharmaceuticalStockTracker()
