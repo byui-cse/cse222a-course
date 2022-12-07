@@ -1,3 +1,4 @@
+//
 //  Tasks.swift
 //  Week 3 Tasks
 //
@@ -37,9 +38,8 @@ import Foundation
 //
 //  Add the classes and structs here:
 
-
-//  Do not edit the following date utilities that you are selcome to use.
-//  You are welcome to edit the line with "ddMMMyyyy" to try different date formats
+//  Do not edit the following date utilities. You are welcome to use them.
+//  You can edit the line with "ddMMMyyyy" to try different date formats.
 func daysToSeconds(_ numDays: Int) -> Double {
     let msPerDay: Double = 60 * 60 * 24
     return Double(numDays) * msPerDay
@@ -124,18 +124,21 @@ func task2() -> Bool? {
 //  Task 3
 //  A Range cannot step backwards, but sometimes we want to count down.
 //  An Array can act like a sequence and be used many places that a Range
-//  can be used. If the int1 <= int2 return the matching Range. Otherwise
-//  return an Array that has values counting from int1 down to and including
-//  int 2.
-func task3(_ int1: Int, _ int2: Int) -> Any? {
+//  can be used. Let's create a function that can generate a Range or a pseudo
+//  range. In generateRange() below, if the int1 <= int2 return the matching Range.
+//  Otherwise return an Array that has values counting from int1 down to and including
+//  int2 which can be used most places a range could be used.
+//  Note: most tasks have a function called taskN(), but we gave
+//  the function for Task 3 a more meaningful name.
+func generateRange(_ int1: Int, _ int2: Int) -> Any? {
     return nil
 }
 
 //  Task 4
-//  task4() is called with two Ints. Call task3() with the parameters received.
-//  Return 1 if the value returned from task3() is a ClosedRange<Int>.
-//  Return 2 if the value returned from task3() is an Array<Int>.
-//  Otherwise return 0 (this case should not happen if task3() is correct)
+//  task4() is called with two Ints. Call generateRange() with the parameters received.
+//  Return 1 if the value returned from generateRange() is a ClosedRange<Int>.
+//  Return 2 if the value returned from generateRange() is an Array<Int>.
+//  Otherwise return 0 (this case should not happen if generateRange() is correct)
 func task4(_ int1: Int, _ int2: Int) -> Int? {
     return nil
 }
@@ -155,7 +158,7 @@ func task5(_ anyArray: [Any?]) -> [Int]? {
 }
 
 //  Task 6
-//  Tnis function receives the same array as Task5. This time use compactMap to
+//  This function receives the same array as Task5. This time use compactMap to
 //  remove the optionals. Map it to an array of Double that has the following values:
 //      if the value received is an Int, convert it to a Double and put it in the Array.
 //      if the value received is a Double, put it in the Array.
@@ -170,55 +173,124 @@ func task6(_ anyArray: [Any?]) -> [Double]? {
 }
 
 //  Task 7
-//  Add a mutating method called setDates to DateSequencer with one parameter called
-//  daysTuple that is a tuple of two Ints. Use them to set the values (in order)
-//  of the two properties.
+//  When we print a MecicationContainer, it just says
+//  Week3Tasks.MedicationContainer. Among other things, that makes it
+//  harder to print things and track down errors.
 //
-//  Then apply the additional protocol DateSequencerProtocol that will let the tests
-//  conform that your solution has the correct functrions implemented
+//  Assignment: use the empty extension below to fix this by adding compliance
+//  with the CustomStringConvertible protocol. That will allow more detailed
+//  information when printing. In the extension, add a String computed property
+//  called description that returns a string with details about all the
+//  non-computed properties in the MedicationContainer. Remember that since
+//  MedicationContainer is a class with children, the MedicationContainer
+//  may actually be a LiquidMedicationContainer or a TabletMedicationContainer.
+//  Use "is" to figure out what it is and include all the properties of the
+//  appropriate type in your description string.
 //
-//  Then change task3() to return true rather than nil
-struct DateSequencer  {
-    
-    var sequenceCurrent = 0
-    var sequenceEnd = 10
+//  When you have completed and tested the code task7() to return true
+//  instead of nil which will cause some test objects to be printed
+
+extension MedicationContainer {
+    // put your code here to add a computed description property
 }
+
 func task7() -> Bool? {
     return nil
 }
 
 //  Task 8
-//  Edit the extension below to make the DateSequencer conform to the Sequence protocol.
-//  Use the approach that has it also conforms to the IteratorProtocol.
-//  Every time it generates a sequence element it should return a date optional that
-//  is sequenceCurrent days in the future and also increment sequenceCurrent towards
-//  sequenceEnd. That means if sequenceCurrent < sequenceEnd add one to sequenceCurrent
-//  and if sequenceCurrent > sequenceEnd subtract one from sequenceCurrent. If it
-//  is asked to generate another sequence element when sequenceCurrent == sequenceEnd
-//  return nil. Note that the date returned should be based on the value of sequenceCurrent
-//  prior to its being incremented. You are welcome to call daysToMs() or futureDate()
-//  or borrow code from them.
+//  The "==" operator is not automatically defined for classes since there may be many
+//  different ways to define equality of objects. If we want to compare two
+//  MedicationContainers using "==" we need to override that operator for
+//  MedicationContainers.
 //
-//  Then apply the additional protocol DateSequencerProtocol2 to the extension that
-//  will let the tests conform that your solution has the correct functrion implemented
-//
-//  Then change task4() to return true rather than nil
-//
-extension DateSequencer {
-}
+//  Assignment: Complete the extension below to override "==" and also
+//  mark the extension with ": Equatable" to indicate that it is now compliant.
 
-func task8() -> Bool? {
+//  Hint: In some data models we may want "==" to mean pbjects have the same values, but
+//  think about this data model. We might have several containers of the same tablets
+//  with the same expiration date and yet not want them to be "==" unless they
+//  actually represent the same object. What member uniquely identifies an object?
+//
+//  After you are done, change "return nil" in task8() to "return {$0==$1}" to
+//  allow Task 7 to be tested.
+//
+extension MedicationContainer {
+    
+    static func == (lhs: MedicationContainer, rhs: MedicationContainer) -> Bool {
+        // replace the following with your code to define the "==" operator
+        return false
+    }
+}
+func task8() -> ((MedicationContainer, MedicationContainer)->Bool)? {
     return nil
 }
 
 //  Task 9
-//  Add an empty variable of Type [Date] called returnValue.
-//  Add code to task9() that creates a local object of type DateSequencer. Use the
-//  input paramater with .setDates() to set the properties inside that DateSequencer
-//  object. Add "for let aDate in yourObject" to create a loop where
-//  "yourObject" is whatever you called your DateSequencer object.
-//  Inside that loop, append each date returned by the DateSequencer
-//  to the returnValue array. Then return the returnValue array instead of nil.
-func task9(_ aTuple: (Int, Int)) -> [Date]? {
+//  In tasks next week, you will need to sort an array of MedicationContainers.
+//  They should be sorted by expirationDate. We could explicitly do that comparison
+//  every time we do a sort, but if we want to us a simplified sort operation like
+//  "anArray.sort(>)" then we need to address the fact that MedicationContainers
+//  do not have a built-in defintion for the "<" and ">" operations. To do that we
+//  can make MedicationContainer conform to the Comparable protocol. Since Equatable is
+//  a parent of the the Comparable protocol, we would need to conform to Equatable which
+//  we already did. So to conform to Comparable all we need to do is override the "<"
+//  operator. Think about why we don't need to override the ">" operator as well.
+//  Assignment: For this task use an extension to define the "<" operator for
+//  MedicationContainers. Be sure to also mark your extension as conforming with Comparable.
+//
+//  Hint: Think about the data model again. Since we want to sell the oldest medication
+//  containers first, we should always sort using the expirationDate property.
+//
+//  After you are done, change "return nil" in task9() to "return {$0<$1}" to
+//  allow Task 9 to be tested.
+//
+func task9() -> ((MedicationContainer, MedicationContainer)->Bool)? {
+    return nil
+}
+
+//  Task 10
+//  Suppose we add a MedicationContainer to a PharmaceuticalStockTracker a lot in our
+//  code and we really want every occurance of that to stand out. We might create a
+//  special opeator to use for that to make them more visible in our code.
+//
+//  As an example have defined a new infix operator "<-||". Since it
+//  is an infix operator we needed to indicate it's precedence in expressions.
+//  We labeled it ": AdditionPrecedence", giving it the same precdedence in
+//  expressions with multiple operators as addition and subtraction, but lower than
+//  multiplication and division.
+//
+//  Your first assignment is to implement "<-||" by replacing the line that says
+//  return false inside the definition below with a call to the existing
+//  addContainer() method. Now we could can use the <-|| operator like this:
+//      guard aStockTracker <-|| aContainer, aStockTracker <-|| bContainer else ...
+//      if aStockTracker <-|| aContainer { ... } else { ... }
+//  When lookking through code for cases where we add MedicationContainers
+//  to a PharmaceuticalStockTracker, those will really stand out now.
+//
+//  Your second assignment is to create new postfix operator that will clean any expired
+//  medication from a PharmaceuticalStockTracker. It should remove any expired containers
+//  from the tracker and return an array of any containers that were removed.
+//  The array of expired containers should be sorted with the oldest expiration
+//  dates first. Deine the characters that make up your operator using any
+//  allowed combination of characters as defined here:
+//      https://docs.swift.org/swift-book/ReferenceManual/LexicalStructure.html#ID418
+//
+//  Suppose your operator were defined as |||. Then it could be used like this:
+//      let removedContainers: [MedicationContainer] = aStockTracker|||
+//
+//  Hint: you may find "filter()" and "sorted()" useful here.
+//
+//  After you are done, change "return nil" in task10() to "return {$0|||}" but
+//  using the operator you define instead of "|||" in the closure.
+//
+infix operator <-||: AdditionPrecedence
+extension PharmaceuticalStockTracker {
+    static func <-|| (tracker: inout PharmaceuticalStockTracker, container: MedicationContainer) -> Bool {
+        // replace this line with a call to addContainer()
+        return false
+    }
+}
+func task10() -> ((inout PharmaceuticalStockTracker)->[MedicationContainer])? {
     return nil
 }

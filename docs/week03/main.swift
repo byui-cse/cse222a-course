@@ -25,7 +25,7 @@ enum TestResults {
 
 // This must list the tests in order: test0, test1... so they can be called with their test number and
 // not need to hard code the Task name into the test except when calling the task function
-var tests: [(Int) -> TestResults] = [test0, test1, test2, test3, test4, test5, test6, test7, test8, test9]
+var tests: [(Int) -> TestResults] = [test0, test1, test2, test3, test4, test5, test6, test7, test8, test9, test10]
 var taskResults: [TestResults] = Array(repeating: .testNotImplemented, count: tests.count)
 var savedInput: [String?] = []
 var savedPrint: [String?] = []
@@ -161,21 +161,28 @@ func fail(_ testNum: Int, _ message: String) -> TestResults {
         after first extracting underlying values
  •    Use built in values of basic types (Double.infinity)
 Task 7
- •    Work with tuple parameters
- •    Extract tuples to set individual variables
- •    Add a struct method
- •    This is an easy task to set up the next tasks
- •    Tasks 7-9 are a set
- Task 8
- •    Use extension to extend a struct Type
- •    Conform to the Sequence protocol
- •    Work with dates in the past and future
- •    Use struct method to generate a sequence of dates
- •    Handle a sequence that goes up or down in time
-Task 9
- •    Work with tuple parameters
- •    Create an object of the date sequencer Type from Tasks 7 and 8
- •    Create an array of dates returned from the sequencer
+ •    Using extension to add a computed property to a class
+ •    Conforming with CustomStringConvertible using the
+        computed "description" property
+ •    Formatting properties into a String for printing
+ •    String interpolaton
+ •    using is and as? to determine whether an object is a
+        member of the parent or child class and to access
+        properties from the child class as needed
+Task 8
+ •    Use an existing extension to override an operator
+ •    Conform to the Equatable protocol
+ •    Have a funtion return a closure (to facilitate testing)
+ Task 9
+ •    Create an new extension to override an operator
+ •    Conform to the Comparable protocol
+ •    Have a funtion return a closure (to facilitate testing)
+ Task 10
+ •    Example of custom infix operator and setting precedence
+ •    Use an extension to create a new custom operator
+ •    Use filter() to identify expired and non-sxpired MedicationContainers
+ •    Use sorted() (not sort())
+ •    Have a funtion return a closure (to facilitate testing)
  */
 
 //  ========= Tests =========
@@ -259,7 +266,7 @@ struct testItem {
     //  So abbreviate the first two and last two, let the othere be unnamed
     //  and let the second be skipped if we are not doing things with
     //  dates
-    init(n name: String, d expDays: Int = 180, _ volume: Double?, _ concentration: Int?, _ concentrationUnits: String?, _ pillCount: Int?, _ potency: Double?, _ potencyUnits: String?, want wantResult: Bool) {
+    init(n name: String, d expDays: Int = 180, _ volume: Double?, _ concentration: Int?, _ concentrationUnits: String?, _ pillCount: Int?, _ potency: Double?, _ potencyUnits: String?, want wantResult: Bool = true) {
         self.name = name
         self.expDays = expDays
         self.volume = volume
@@ -354,12 +361,12 @@ private func test2(testNum: Int) -> TestResults {
  
     // Test the functionality of addContainer() and count(of:)
     let testContainerSpecifications: [testItem] = [
-        testItem(n: "med1", d: 90, 0.01,2,"cc", nil,nil,nil, want: true), // One LiquidMedicationContainers
-        testItem(n: "med2", d: 90, 2.0,1,"ml", nil,nil,nil, want: true), // Two LiquidMedicationContainers
-        testItem(n: "med2", d: 90, 2.5,2,"oz", nil,nil,nil, want: true),
-        testItem(n: "med3", d: 90, nil,nil,nil, 30,4.1,"mg", want: true), // Three LiquidMedicationContainers
-        testItem(n: "med3", d: 90, nil,nil,nil, 60,1.0,"mg", want: true),
-        testItem(n: "med3", d: 90, nil,nil,nil, 90,4.1,"meq", want: true),
+        testItem(n: "med1", d: 90, 0.01,2,"cc", nil,nil,nil), // One LiquidMedicationContainers
+        testItem(n: "med2", d: 90, 2.0,1,"ml", nil,nil,nil), // Two LiquidMedicationContainers
+        testItem(n: "med2", d: 90, 2.5,2,"oz", nil,nil,nil),
+        testItem(n: "med3", d: 90, nil,nil,nil, 30,4.1,"mg"), // Three TabletMedicationContainers
+        testItem(n: "med3", d: 90, nil,nil,nil, 60,1.0,"mg"),
+        testItem(n: "med3", d: 90, nil,nil,nil, 90,4.1,"meq"),
     ]
     // set up some containers
     var containers: [MedicationContainer] = []
@@ -455,7 +462,7 @@ private func test3(testNum: Int) -> TestResults {
     // Do 5 random tests of to generate a Range or an Array
     for _ in 0..<5 {
         let aTuple = (Int.random(in: -10...10), Int.random(in: -10...10))
-        guard let returnValue = task3(aTuple.0, aTuple.1) else { return .testNotImplemented }
+        guard let returnValue = generateRange(aTuple.0, aTuple.1) else { return .testNotImplemented }
         if aTuple.0 <= aTuple.1 { // should return a ClosedRange
             guard let returnRange = returnValue as? ClosedRange<Int> else {
                 return fail(testNum, "Called task\(testNum)(\(aTuple.0), \(aTuple.1)), but it did not return a ClosedRange as expected")
@@ -586,148 +593,237 @@ private func test6(testNum: Int) -> TestResults {
     return .testPassed
 }
 
-protocol DateSequencerProtocol {
-    var sequenceCurrent: Int { get set }
-    var sequenceEnd: Int  { get set }
-    
-    mutating func setDates(daysTuple: (Int, Int))
+// Utilities to pull pieces out of dates to match to printing
+extension Date {
+    func yearString() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy"
+        return dateFormatter.string(from: self)
+    }
+    func momthString() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM"
+        return dateFormatter.string(from: self)
+    }
+    func dayOfMonthString() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd"
+        return dateFormatter.string(from: self)
+    }
 }
+// Check to make sure the last printed line containes and does not contain some strings
+private func matchPrint(called: String, matches: [String], notMatches: [String]) -> (String, Bool) {
+    // "called" is the string to use to describe what was called that produced the last printed line
+    // returns ("", true) if all is good
+    // returns (errorString, false) if there is an error
+ 
+    // Make sure we can access the last line printed
+    guard savedPrint.count > 0, let lastPrint = savedPrint[savedPrint.count - 1] else {
+        return ("Expected \(called)\n\tto print, but it did not", false)
+    }
+    for s in matches {
+        guard lastPrint.lowercased().contains(s.lowercased()) else {
+            return ("Expected print from \(called)\n\tto contain \(s), but it did not", false)
+        }
+    }
+    for s in notMatches {
+        guard !lastPrint.lowercased().contains(s.lowercased()) else {
+            return ("Expected print from \(called)\n\tto not contain \(s), but it did", false)
+        }
+    }
+    return ("", true)
+}
+
 private func test7(testNum: Int) -> TestResults {
-    guard let returnValue = task7() else { return .testNotImplemented }
-    if returnValue != true {
-        return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
+ 
+    guard let returnValue1 = task7() else { return .testNotImplemented }
+    if returnValue1 != true {
+        return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue1)")
     }
 
-    // Make sure DateSequencer confroms to DateSequencerProtocol
-    // Use "Any" to avoid warning message
-    let testProtocol: Any = DateSequencer()
-    guard var testSequencer = testProtocol as? DateSequencerProtocol else {
-        return fail(testNum, "DateSequencer needs to conform to DateSequencerProtocol")
+    // Set up and test a container
+    guard let aContainer = testContainer(testItem(n: "Med", d: 90, nil,nil,nil, 90,30,"MEQ")) else { // TabletMedicationContainer
+        return fail(testNum, "Internal testing error. Could not create test container.")
     }
+    testPrint(aContainer)
     
-    // Do 5 random tests of setDates()
-    for _ in 0..<5 {
-        let aTuple = (Int.random(in: -10...10), Int.random(in: -10...10))
-        testSequencer.setDates(daysTuple: aTuple)
-        guard testSequencer.sequenceCurrent == aTuple.0 else {
-            return fail(testNum, "After call of .setDates(\(aTuple)) expected sequenceCurrent to be \(aTuple.0) but it was \(testSequencer.sequenceCurrent)")
-        }
-        guard testSequencer.sequenceEnd == aTuple.1 else {
-            return fail(testNum, "After call of .setDates(\(aTuple)) expected sequenceEnd to be \(aTuple.1) but it was \(testSequencer.sequenceEnd)")
-        }
+    // include the year and day of month since those should
+    // be there for any date format they choose
+    let matches1 = ["Tablet", "Med", "90","30", "MEQ", aContainer.id, aContainer.expirationDate.yearString(), aContainer.expirationDate.dayOfMonthString()]
+    let notMatches1 = ["Liquid"]
+    var (errorString, matchGood) = matchPrint(called: "task\(testNum)(\n\t\(aContainer))", matches: matches1, notMatches: notMatches1)
+    guard matchGood else {
+        print()
+        return fail(testNum, errorString)
+    }
+   
+    // Set up and test b container
+    guard let bContainer = testContainer(testItem(n: "Children's TYLENOL", d: 120, 120,160,"mg/5ml", nil,nil,nil)) else { // LiquidMedicationContainer
+         return fail(testNum, "Internal testing error. Could not create test container.")
+     }
+    testPrint(bContainer)
+
+    let matches2 = ["Liquid", "Children's TYLENOL", "120.0", "160", "mg/5ml", bContainer.id, bContainer.expirationDate.yearString(), bContainer.expirationDate.dayOfMonthString()]
+    let notMatches2 = ["Tablet"]
+    (errorString, matchGood) = matchPrint(called: "task\(testNum)(\n\t\(bContainer))", matches: matches2, notMatches: notMatches2)
+    guard matchGood else {
+        print()
+        return fail(testNum, errorString)
+    }
+
+    // Set up and test c container
+    guard let cContainer = testContainer(testItem(n: "TYLENOL", d: 180, nil,nil,nil, 100,500,"mg")) else { // Another TabletMedicationContainer
+        return fail(testNum, "Internal testing error. Could not create test container.")
+    }
+    testPrint(cContainer)
+
+    let matches3 = ["Tablet", "TYLENOL", "100", "500.0", "mg", cContainer.id, cContainer.expirationDate.yearString(), cContainer.expirationDate.dayOfMonthString()]
+    let notMatches3 = ["Liquid"]
+    (errorString, matchGood) = matchPrint(called: "task\(testNum)(\n\t\(cContainer))", matches: matches3, notMatches: notMatches3)
+    guard matchGood else {
+        print()
+        return fail(testNum, errorString)
     }
 
     return .testPassed
 }
-
-protocol DateSequencerProtocol2 {
-    
-    var sequenceCurrent: Int { get set }
-    var sequenceEnd: Int  { get set }
-    
-    mutating func setDates(daysTuple: (Int, Int))
-    
-    mutating func next() -> Date?
-}
 private func test8(testNum: Int) -> TestResults {
+    guard let returnedFunction: ((MedicationContainer, MedicationContainer)->Bool) = task8() else { return .testNotImplemented }
     
-    guard let returnValue = task8() else { return .testNotImplemented }
-    if returnValue != true {
-        return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
+    // Set up some containers
+    guard let aContainer = testContainer(testItem(n: "med1", d: 90, 0.01,2,"cc", nil,nil,nil)), // LiquidMedicationContainer
+          let bContainer = testContainer(testItem(n: "med1", d: 90, 0.01,2,"cc", nil,nil,nil)), // Identical LiquidMedicationContainer
+          let cContainer = testContainer(testItem(n: "med2", d: 180, nil,nil,nil, 30,4.1,"mg")) else { // TabletMedicationContainer
+        return fail(testNum, "Internal testing error. Could not create test containers.")
     }
-
-    // Make sure DateSequencer confroms to DateSequencerProtocol2
-    // Use "Any" to avoid warning message
-    let testProtocol: Any = DateSequencer()
-    guard var testSequencer = testProtocol as? DateSequencerProtocol2 else {
-        return fail(testNum, "DateSequencer extension needs to conform to DateSequencerProtocol2")
+    
+    //  Set up an "Any" version to avoid warning errors about the "is" test below always returning true or false.
+    let aAnyContainer: Any = aContainer
+    // Make sure MedicationContainer conforms to Equatable
+    guard aAnyContainer is (any Equatable) else {
+        return fail(testNum, "Expected MedicationContainer extension to conform to Equatable protocol")
     }
-    // Also make sure DateSequencer confroms to Sequence protocol and IteratorProtocol
-    // Note the use of "any" (not "Any") which lets us test membership in a generic protocol
-    guard testProtocol is any Sequence else {
-        return fail(testNum, "DateSequencer extension needs to conform to the Sequence protocol")
+    // Make sure different containers are not "=="
+    guard !returnedFunction(aContainer, cContainer) else {
+        return fail(testNum, "Expected \(aContainer) to not == \(cContainer)")
     }
-    guard testProtocol is any IteratorProtocol else {
-        return fail(testNum, "DateSequencer extension needs to conform to the Sequence protocol")
+    guard !returnedFunction(aContainer, bContainer) else {
+        return fail(testNum, "Expected \(aContainer) to not == \(bContainer) even though they are identical")
     }
-
-    // Do 5 random tests of DateSequencer()
-    for _ in 0..<5 {
-        let aTuple = (Int.random(in: -10...10), Int.random(in: -10...10))
-        testSequencer.setDates(daysTuple: aTuple)
-        // We do not use testSequencer as a Sequence in a for loop since
-        // that is the next task for the user
-        // Set up an array of the offsets of dates that should be returned
-        var testArray = [Int]()
-        if aTuple.0 < aTuple.1 {
-            testArray = Array(aTuple.0..<aTuple.1)
-        } else if aTuple.0 > aTuple.1 {
-            // Swift does not do decreasing ranges so built it forward then reverse it
-            testArray = Array(aTuple.1 + 1...aTuple.0)
-            testArray.reverse()
-        } else {
-            testArray = []
-        }
-        for testIndex in 0..<testArray.count {
-            // we do not just use "for aDays in testArray" because we
-            // need testIndex for the error messages
-            let aDays = testArray[testIndex]
-            let expectedDate = dateToString(futureDate(daysFromNow: aDays))
-            guard let nextDate = testSequencer.next() else {
-                return fail(testNum, "After calling .setDates(\(aTuple)) calls to .next() should produce \(testArray.count) dates, but it returned nil on call number \(testIndex + 1)")
-            }
-            let returnedDate = dateToString(nextDate)
-            guard returnedDate == expectedDate else {
-                return fail(testNum, "After calling .setDates(\(aTuple)), expected call number \(testIndex + 1) to return \(expectedDate), but it returned \(returnedDate) \n testArray")
-            }
-        }
-        if let aDate = testSequencer.next() {
-            return fail(testNum, "After calling .setDates(\(aTuple)), expected call number \(testArray.count + 1) to return nil but it returned \(dateToString(aDate)) \n testArray")
-        }
+    // Make sure a container is "==" to itself
+    guard returnedFunction(aContainer, aContainer) else {
+        return fail(testNum, "Expected \(aContainer) to == itself")
     }
 
     return .testPassed
 }
 
 private func test9(testNum: Int) -> TestResults {
- 
-    // Do 5 random tests of DateSequencer()
-    for _ in 0..<5 {
-        let aTuple = (Int.random(in: -10...10), Int.random(in: -10...10))
-        // Set up an array of the expected days in the future or past
-        var daysArray = [Int]()
-        if aTuple.0 < aTuple.1 {
-            daysArray = Array(aTuple.0..<aTuple.1)
-        } else if aTuple.0 > aTuple.1 {
-            // Swift does not do decreasing ranges so built it forward then reverse it
-            daysArray = Array(aTuple.1 + 1...aTuple.0)
-            daysArray.reverse()
-        } else {
-            daysArray = []
-        }
-        // Set up an array with the expected actual values
-        var datesArray = [Date]()
-        for aDays in daysArray {
-            datesArray.append(futureDate(daysFromNow: aDays))
-        }
-
-        guard let returnArray = task9(aTuple) else { return .testNotImplemented }
-
-        // Compare size of returned value to size of expected value
-        guard returnArray.count == datesArray.count else {
-            return fail(testNum, "Called task\(testNum)(\(aTuple)) and expected an Array of size \(datesArray.count) but it returned an Array of size \(returnArray.count)")
-        }
-            
-        for dateIndex in 0..<datesArray.count {
-            // we do not just use "for aDate in dateArray" because we
-            // need testIndex for the error messages
-            let expectedDate = dateToString(datesArray[dateIndex])
-            let returnedDate = dateToString(returnArray[dateIndex])
-            guard returnedDate == expectedDate else {
-                return fail(testNum, "Called task\(testNum)(\(aTuple)) and expected returnValue[\(dateIndex)] to be \(expectedDate) but it was \(returnedDate)")
-            }
-        }
+    guard let returnedFunction: ((MedicationContainer, MedicationContainer)->Bool) = task9() else { return .testNotImplemented }
+    
+    // Set up some containers
+    guard let aContainer = testContainer(testItem(n: "med1", d: 90, 0.01,2,"cc", nil,nil,nil)), // LiquidMedicationContainer
+        let bContainer = testContainer(testItem(n: "med1", d: 120, 0.01,2,"cc", nil,nil,nil)), // Another LiquidMedicationContainer, identical except expiration date
+        let cContainer = testContainer(testItem(n: "med2", d: 180, nil,nil,nil, 30,4.1," 4")), // TabletMedicationContainer
+        let dContainer = testContainer(testItem(n: "med2", d: -10, nil,nil,nil, 30,4.1,"mg")) else { // Another TabletMedicationContainer, expired
+        return fail(testNum, "Internal testing error. Could not create test containers.")
     }
     
+    //  Set up an "Any" version to avoid warning errors about the "is" test below always returning true or false.
+    let aAnyContainer: Any = aContainer
+    // Make sure MedicationContainer conforms to Equatable
+    guard aAnyContainer is (any Comparable) else {
+        return fail(testNum, "Expected MedicationContainer extension to conform to Comparable protocol")
+    }
+    // Make sure "<" compares correctly using expiration date
+    guard returnedFunction(bContainer, cContainer) else {
+        return fail(testNum, "Expected \(bContainer) < \(cContainer)")
+    }
+    guard !returnedFunction(cContainer, bContainer) else {
+        return fail(testNum, "Expected \(cContainer) > \(bContainer)")
+    }
+
+    guard returnedFunction(aContainer, bContainer) else {
+        return fail(testNum, "Expected \(aContainer) < \(bContainer)")
+    }
+    guard !returnedFunction(bContainer, aContainer) else {
+        return fail(testNum, "Expected \(bContainer) > \(aContainer)")
+    }
+
+
+    guard returnedFunction(dContainer, aContainer) else {
+        return fail(testNum, "Expected \(dContainer) < \(aContainer)")
+    }
+    guard !returnedFunction(aContainer, dContainer) else {
+        return fail(testNum, "Expected \(bContainer) > \(dContainer)")
+    }
+
+    return .testPassed
+}
+
+private func describeArrayOfContainers(_ containers: [MedicationContainer]) -> String {
+    var returnString = "[\n\t"
+    var first = true
+    for container in containers {
+        if first {
+            first = false
+        } else {
+            returnString += ", \n\t"
+        }
+        returnString += "\(container)"
+    }
+    return returnString + "]"
+}
+//  We can't use "==" for this because it is not defined for MedicationContainers
+//  until Task 8 so we would not compile before then. It also has an option to ignore
+//  the order of the items in the arrays which is extra funcationality.
+private func compareContainerArrays(_ lhs: [MedicationContainer], _ rhs: [MedicationContainer], ordered: Bool) -> Bool {
+    guard lhs.count == rhs.count else { return false }
+    if ordered {
+        for index in 0..<lhs.count {
+            guard lhs[index].id == rhs[index].id else { return false }
+        }
+    } else {
+        for lhsContainer in lhs {
+            var found = false
+            for rhsContainer in rhs {
+                if lhsContainer.id == rhsContainer.id {
+                    found = true
+                    break
+                }
+            }
+            guard found else { return false }
+        }
+    }
+    return true
+}
+private func test10(testNum: Int) -> TestResults {
+    guard let returnFunction: ((inout PharmaceuticalStockTracker)->[MedicationContainer]) = task10() else { return .testNotImplemented }
+    
+    // Set up some containers
+    guard let aContainer = testContainer(testItem(n: "med1", d: 90, 0.01,2,"cc", nil,nil,nil)), // LiquidMedicationContainer
+          let bContainer = testContainer(testItem(n: "med1", d: -120, 0.01,2,"cc", nil,nil,nil)), // Another LiquidMedicationContainer, identical except expiration date
+          let cContainer = testContainer(testItem(n: "med2", d: 180, nil,nil,nil, 30,4.1,"mg")), // TabletMedicationContainer
+          let dContainer = testContainer(testItem(n: "med2", d: -10, nil,nil,nil, 30,4.1,"mg")) else { // Another TabletMedicationContainer, expired
+        return fail(testNum, "Internal testing error. Could not create test containers.")
+    }
+    
+    var testTracker = PharmaceuticalStockTracker()
+    testTracker.inStockMedications = [aContainer, bContainer, cContainer, dContainer]
+    
+    let deletedContainers = returnFunction(&testTracker)
+    // Make sure they deleted the right containers
+    guard compareContainerArrays(deletedContainers, [bContainer, dContainer], ordered: true) else {
+        print("Applied new operator to PharmaceuticalStockTracker with inStockMedications = \(describeArrayOfContainers([aContainer, bContainer, cContainer, cContainer]))")
+        print("Expected returned array of deleted containers to be \(describeArrayOfContainers([bContainer, dContainer]))")
+        return fail(testNum, "Actual returned array of deleted containers was \(describeArrayOfContainers(deletedContainers))")
+    }
+    // Make sure they kept the right containers
+    guard compareContainerArrays(testTracker.inStockMedications, [aContainer, cContainer], ordered: false) else {
+        print("Applied new operator to PharmaceuticalStockTracker with inStockMedications = \(describeArrayOfContainers([aContainer, bContainer, cContainer, cContainer]))")
+        print("Expected containers retained in inStockMedications to be \(describeArrayOfContainers([aContainer, cContainer]))")
+        return fail(testNum, "Actual containers retained in inStockMedications are \(describeArrayOfContainers(testTracker.inStockMedications))")
+    }
+
     return .testPassed
 }
