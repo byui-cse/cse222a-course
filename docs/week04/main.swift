@@ -36,6 +36,7 @@ var currentTest = 0
 //  from week 2 in the first part of this file up to the line with "Concepts taught
 //  or reinforced in each task".
 var testContainers: [MedicationContainer] = []
+var badCodeContainers: [MedicationContainer] = []
 var loadedSets: [Set<MedicationContainer>] = []
 var preloadedMedications: [String: Set<MedicationContainer>] = [:]
 guard setupGlobals() else {
@@ -284,15 +285,24 @@ func setupGlobals() -> Bool {
         [testContainers[1], testContainers[2]],
         [testContainers[3], testContainers[4], testContainers[5]]
     ]
-preloadedMedications = [
+    preloadedMedications = [
         testContainers[0].ndcPackageCode : loadedSets[0],
         testContainers[1].ndcPackageCode : loadedSets[1],
         testContainers[3].ndcPackageCode : loadedSets[2]
     ]
     
+    guard let badContainer1 = testContainer(testItem(med: MedSpec(ndcPackageCode: "x2345-678-90", name: "Med", volume: nil, concentration: nil, concentrationUnits: nil, pillCount: 90, potency: 30, potencyUnits: "MEQ"), expDays: 90)) else {
+        print("Internal testing error. Test tried to instantiate an object of the parent class type")
+        return false
+    }
+    guard let badContainer2 = testContainer(testItem(med: MedSpec(ndcPackageCode: "12345-678-90x", name: "Med", volume: nil, concentration: nil, concentrationUnits: nil, pillCount: 90, potency: 30, potencyUnits: "MEQ"), expDays: 90)) else {
+        print("Internal testing error. Test tried to instantiate an object of the parent class type")
+        return false
+    }
+    badCodeContainers.append(badContainer1)
+    badCodeContainers.append(badContainer2)
     return true
 }
-
 private func test0(testNum: Int) -> TestResults {
 
     let (container1, container2): (Any, Any) = task0()
@@ -317,12 +327,12 @@ private func test0(testNum: Int) -> TestResults {
         }
     }
 
-    // Test the functionality of addContainer() and count(of:)
-
     // Make sure the testContainers are set up
     guard testContainers.count == 6 else {
         return fail(testNum, "Internal testing error. testContainers.count should be 6, but it is \(testContainers.count)")
     }
+
+    // Test the functionality of addContainer() and count()
     // Add one container and check the count
      guard aStockTracker.addContainer(testContainers[0]) else {
         return fail(testNum, "addContainer() returned false when adding first MedicationContainer object")
@@ -380,10 +390,27 @@ private func test0(testNum: Int) -> TestResults {
         return fail(testNum, "After adding 6, then trying to add the same LiquidMedicationContainer object again, expected aStockTracker.count to still be 6, but it was \(aStockTracker.count)")
     }
 
-    return .testPassed
+    // Test the functionality of count(of:)
+    let code1 = testContainers[0].ndcPackageCode
+    guard aStockTracker.count(of: code1) == 1 else {
+        return fail(testNum, "Added only one container with ndcPackageCode = \(code1) so calling .count(of: \"\(code1)\") should return 1, but it returned \(aStockTracker.count(of: code1))")
+    }
+    let code2 = testContainers[1].ndcPackageCode
+    guard aStockTracker.count(of: code2) == 2 else {
+        return fail(testNum, "Added two containerw with ndcPackageCode = \(code2) so calling .count(of: \"\(code2)\") should return 2, but it returned \(aStockTracker.count(of: code2))")
+    }
+    let code3 = testContainers[3].ndcPackageCode
+    guard aStockTracker.count(of: code3) == 3 else {
+        return fail(testNum, "Added three containers with ndcPackageCode = \(code3) so calling .count(of: \"\(code3)\") should return 3, but it returned \(aStockTracker.count(of: code3))")
+    }
+    let code4 = "00000-000-00"
+    guard aStockTracker.count(of: code4) == 0 else {
+        return fail(testNum, "Added no containers with ndcPackageCode = \(code4) so calling .count(of: \"\(code4)\") should return 0, but it returned \(aStockTracker.count(of: code4))")
+    }
+   return .testPassed
 }
 
-private func describeArrayOfContainers(_ containers: [MedicationContainer]) -> String {
+private func describeContainerArray(_ containers: [MedicationContainer]) -> String {
     var returnString = "[\n\t"
     var first = true
     for container in containers {
@@ -405,7 +432,7 @@ private func describeContainerDictionary(_ aDict: [String: Set<MedicationContain
         } else {
             returnString += ", \n\t"
         }
-        returnString += "\(code):\(describeArrayOfContainers(Array(containers)))"
+        returnString += "\(code):\(describeContainerArray(Array(containers)))"
     }
     return returnString + "]"
 }
@@ -434,8 +461,8 @@ private func test1(testNum: Int) -> TestResults {
     let wantRemoved = [testContainers[5], testContainers[4], testContainers[0]]
     guard deletedContainers == wantRemoved else {
         print("Applied removeExpired() to a PharmaceuticalStockTracker with inStockMedications = \(describeContainerDictionary(preloadedMedications))")
-        print("Expected returned array of deleted containers to be \(describeArrayOfContainers(wantRemoved))")
-        return fail(testNum, "Actual returned array of deleted containers was \(describeArrayOfContainers(deletedContainers))")
+        print("Expected returned array of deleted containers to be \(describeContainerArray(wantRemoved))")
+        return fail(testNum, "Actual returned array of deleted containers was \(describeContainerArray(deletedContainers))")
     }
     //Set up what the result should look like
     var wantedRetained = preloadedMedications
@@ -446,6 +473,18 @@ private func test1(testNum: Int) -> TestResults {
         print("Applied removeExpired() to a PharmaceuticalStockTracker with inStockMedications = \(describeContainerDictionary(preloadedMedications))")
         print("Expected containers retained in inStockMedications to be \(describeContainerDictionary(wantedRetained))")
         return fail(testNum, "Actual containers retained in inStockMedications are \(describeContainerDictionary(testTracker.inStockMedications))")
+    }
+
+    // What happens if there are no expired medications
+    let saveStock = testTracker.inStockMedications
+    let moreDeleted = testTracker.removeExpired()
+    guard moreDeleted.count == 0 else {
+        print("Applied removeExpired() to a PharmaceuticalStockTracker with no expired medications =  \(describeContainerDictionary(saveStock))")
+        return fail(testNum, "Should have returned an empty array, but instead returned \(describeContainerArray(moreDeleted))")
+    }
+    guard compareContainerDictionaries(testTracker.inStockMedications, saveStock) else {
+        print("Applied removeExpired() to a PharmaceuticalStockTracker with no expired medications =  \(describeContainerDictionary(saveStock))")
+       return fail(testNum, "Should not have modified the PharmaceuticalStockTracker, but it was modified to be \(describeContainerDictionary(testTracker.inStockMedications))")
     }
 
     return .testPassed
@@ -482,7 +521,21 @@ private func test3(testNum: Int) -> TestResults {
         return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
     }
 
+    // Test the added functionality of addContainer()
+
+    // Empty the the tracker
+    aStockTracker.inStockMedications = [:]
+
     // Test the functionality of addContainers()
+    guard aStockTracker.addContainer(testContainers[0]) else {
+        return fail(testNum, "Expected addContainer() of a valid container to return (true, .success) but it returned false")
+    }
+    guard !aStockTracker.addContainer(badCodeContainers[0]) else {
+        return fail(testNum, "Expected addContainer() of a container with invalid ndcPackageCode to return false but it returned true")
+    }
+    guard !aStockTracker.addContainer(badCodeContainers[1]) else {
+        return fail(testNum, "Expected addContainer() of a container with invalid ndcPackageCode to return false but it returned true")
+    }
 
     // Empty the the tracker
     aStockTracker.inStockMedications = [:]
@@ -498,7 +551,8 @@ private func test3(testNum: Int) -> TestResults {
     }
 
     // Try with an invaid expectedNdcPackageCode
-    (returnBool, returnMessage) = aStockTracker.addContainers(expectedNdcPackageCode: testContainers[3].ndcPackageCode + "x", containersToAdd: goodSet)
+    let badCodeSet: Set = [badCodeContainers[0]]
+    (returnBool, returnMessage) = aStockTracker.addContainers(expectedNdcPackageCode: badCodeContainers[0].ndcPackageCode, containersToAdd: badCodeSet)
     guard returnBool == false && returnMessage == .poorlyFormattedNDCCode else {
         return fail(testNum, "Expected add with expectedNdcPackageCode having an invalid format to return (false, .poorlyFormattedNDCCode) but it returned (\(returnBool), \(returnMessage))")
     }
@@ -580,17 +634,7 @@ private func test4(testNum: Int) -> TestResults {
     guard container2 == want2 else {
         return fail(testNum, "Expected currentStock(of:\(testContainers[0].ndcPackageCode)) to return \(want2), but it returned  \(container2)")
     }
-    
-    // Try the third valid set
-    (returnBool2, returnMessage2, returnContainers) = aStockTracker.currentStock(of: testContainers[3].ndcPackageCode)
-    guard returnBool2, returnMessage2 == .success, let container3 = returnContainers else {
-        return fail(testNum, "Expected currentStock(of:) with an NDCCode with current inventory to return (true, .success, containerArray) with the matching MedicationPackages in containerArray, but it returned (\(returnBool2), \(returnMessage2), \(String(describing: returnContainers))")
-    }
-    let want3 = loadedSets[2].sorted(by: {$0.expirationDate < $1.expirationDate})
-    guard container3 == want3 else {
-        return fail(testNum, "Expected currentStock(of:\(testContainers[3].ndcPackageCode)) to return \(want3), but it returned  \(container3)")
-    }
-
+ 
     return .testPassed
 }
 
@@ -696,8 +740,8 @@ private func test5(testNum: Int) -> TestResults {
 }
 
 protocol DateSequencerProtocol {
-    var sequenceCurrent: Int { get set }
-    var sequenceEnd: Int  { get set }
+    var currentDaysOut: Int { get set }
+    var lastDaysOut: Int  { get set }
     
     mutating func setDates(daysTuple: (Int, Int))
 }
@@ -718,22 +762,19 @@ private func test6(testNum: Int) -> TestResults {
     for _ in 0..<5 {
         let aTuple = (Int.random(in: -10...10), Int.random(in: -10...10))
         testSequencer.setDates(daysTuple: aTuple)
-        guard testSequencer.sequenceCurrent == aTuple.0 else {
-            return fail(testNum, "After call of .setDates(\(aTuple)) expected sequenceCurrent to be \(aTuple.0) but it was \(testSequencer.sequenceCurrent)")
+        guard testSequencer.currentDaysOut == aTuple.0 else {
+            return fail(testNum, "After call of .setDates(\(aTuple)) expected currentDaysOut to be \(aTuple.0) but it was \(testSequencer.currentDaysOut)")
         }
-        guard testSequencer.sequenceEnd == aTuple.1 else {
-            return fail(testNum, "After call of .setDates(\(aTuple)) expected sequenceEnd to be \(aTuple.1) but it was \(testSequencer.sequenceEnd)")
+        guard testSequencer.lastDaysOut == aTuple.1 else {
+            return fail(testNum, "After call of .setDates(\(aTuple)) expected lastDaysOut to be \(aTuple.1) but it was \(testSequencer.lastDaysOut)")
         }
     }
 
     return .testPassed
 }
 
-protocol DateSequencerProtocol2 {
-    
-    var sequenceCurrent: Int { get set }
-    var sequenceEnd: Int  { get set }
-    
+protocol DateSequencerProtocol2: DateSequencerProtocol {
+
     mutating func setDates(daysTuple: (Int, Int))
     
     mutating func next() -> Date?
@@ -803,6 +844,9 @@ private func test8(testNum: Int) -> TestResults {
     // Do 5 random tests of DateSequencer()
     for _ in 0..<5 {
         let aTuple = (Int.random(in: -10...10), Int.random(in: -10...10))
+        guard let returnArray = task8(aTuple) else {
+            return .testNotImplemented
+        }
         // Set up an array of the expected days in the future or past
         var daysArray = [Int]()
         if aTuple.0 < aTuple.1 {
@@ -814,19 +858,18 @@ private func test8(testNum: Int) -> TestResults {
         } else {
             daysArray = []
         }
-        // Set up an array with the expected actual values
+        // Set up an array with the expected dates using the expected days in the future
         var datesArray = [Date]()
         for aDays in daysArray {
             datesArray.append(futureDate(daysFromNow: aDays))
         }
 
-        guard let returnArray = task8(aTuple) else { return .testNotImplemented }
-
         // Compare size of returned value to size of expected value
         guard returnArray.count == datesArray.count else {
             return fail(testNum, "Called task\(testNum)(\(aTuple)) and expected an Array of size \(datesArray.count) but it returned an Array of size \(returnArray.count)")
         }
-            
+
+        // compare each element in the returned array to the wanted array
         for dateIndex in 0..<datesArray.count {
             // we do not just use "for aDate in dateArray" because we
             // need testIndex for the error messages
@@ -836,6 +879,15 @@ private func test8(testNum: Int) -> TestResults {
                 return fail(testNum, "Called task\(testNum)(\(aTuple)) and expected returnValue[\(dateIndex)] to be \(expectedDate) but it was \(returnedDate)")
             }
         }
+        // Print the correct results to make sure the students can see the results
+        var printString = "For Task \(testNum), DateSequencer with \(aTuple) correctly generated:\n\t["
+        var isFirst = true
+        for aDate in returnArray {
+            if isFirst { isFirst = false }
+            else { printString += ", " }
+            printString += dateToString(aDate)
+        }
+        print(printString + "]")
     }
     
     return .testPassed
@@ -849,9 +901,8 @@ func generateTracker(_ countainerCount: Int) -> PharmaceuticalStockTracker {
     aStockTracker.inStockMedications = preloadedMedications
     myStockTracker.inStockMedications = aStockTracker.inStockMedications
 
-
-    // countainerCount keeps all 6 preloaded MedicationContainers. The other values
-    // keep only the Dictionary entry that matches that count of MedicationContainers.
+    // countainerCount == 6 keeps all 6 preloaded MedicationContainers. The other values
+    // keep only the Dictionary entry that matche that count of MedicationContainers.
     if countainerCount == 6 || (countainerCount >= 1 && countainerCount <= 3) {
         // Now remove the objects that are not part of this count
         // If count is not 1 nor 6, remove the one container set
@@ -867,11 +918,13 @@ func generateTracker(_ countainerCount: Int) -> PharmaceuticalStockTracker {
             myStockTracker.inStockMedications[testContainers[3].ndcPackageCode] = nil
         }
     }
-    
     return myStockTracker
 }
 //  Replace the content of any phrase like Set(...) with Set(count)
 //  where count is the number of characters inside the ()
+//  We use this to validate the results without needing to worry about the order of
+//  the elements of the set since the order is undefined and may not be the same
+//  every time.
 func simplifySets(_ aString: String) -> String {
     var returnValue = ""
     var last4chars = ""
@@ -897,6 +950,9 @@ func simplifySets(_ aString: String) -> String {
 }
 //  Replace the content of any phrase like [...:...] with Dictionary[count]
 //  where count is the number of characters inside the [].
+//  We use this to validate the results without needing to worry about the order of
+//  the elements of the Dictionary since the order is undefined and may not be the same
+//  every time.
 func simplifyDictionaries(_ aString: String) -> String {
     var returnValue = ""
     var sinceLastOpenBracket = 0
@@ -934,9 +990,9 @@ func compareAdjustSetsAndDictionaries(_ lhs: String, _ rhs: String) -> Bool {
 
     return simplifyDictionaries(simplifySets(lhs)) == simplifyDictionaries(simplifySets(rhs))
 }
-//  This is used in the example of sorting the sets of containers inside a PharmaceuticalStockTracker.
+//  This is used in sorting the sets of containers inside a PharmaceuticalStockTracker.
 //  If we did not do this, the text we would need to compare would be very long and the results
-//  would not be clear to the students
+//  would be hard for the students to parse through to find their errors.
 func summarizeSetsOfMedicationContainers(_ arrayOfSets: [any Collection<MedicationContainer>]) -> String {
     if arrayOfSets.isEmpty { return "Empty Array of Sets" }
     var returnValue = "["
@@ -1010,18 +1066,6 @@ private func test9(testNum: Int) -> TestResults {
         "<  [Set of 3 MedicationContainers with ndcPackageCode: 50580-692-02, Set of 2 MedicationContainers with ndcPackageCode: 50580-170-01, Set of 1 MedicationContainer with ndcPackageCode: 12345-678-90]"
 
     ]
-#if false
-    // Test simplifySets and simplifyDictionaries
-    print("Sets before and after simplifySets(): ")
-    print(">  [Set([1]), Set([1, 2]), Set([1, 2, 3])]")
-    print(simplifySets(">  [Set([1]), Set([1, 2]), Set([1, 2, 3])]"))
-    print("Dictionaries before and after simplifyDictionaries(): ")
-    print(">  [[1: 1], [2: 2, 1: 2], [3: 3, 2: 3, 1: 3]]")
-    print(simplifyDictionaries(">  [[1: 1], [2: 2, 1: 2], [3: 3, 2: 3, 1: 3]]"))
-    print("String Keyed Dictionaries before and after simplifyDictionaries(): ")
-    print(">  [[\"one\": 1], [\"one\": 2, \"two\": 2], [\"one\": 1, \"two\": 2, \"three\": 3]]")
-    print(simplifyDictionaries(">  [[\"one\": 1], [\"one\": 2, \"two\": 2], [\"one\": 1, \"two\": 2, \"three\": 3]]"))
-#endif
 
     guard savedPrint.count == expectedPrint.count else {
         return fail(testNum, "Expected task\(testNum) to testPrint \(expectedPrint.count) lines, but testPrinted \(savedPrint.count) lines")

@@ -180,8 +180,9 @@ agesByName["Jane"] = 20
         >Swift documentation</a
       >
       has good descriptions of the methods and how to use them. Go check it out.
-      There are also many other types of Collections for different purposes that
-      are included in the standard library. You can learn more about some of
+      There are also other types of Collections for different purposes that
+      are included in the standard library or in an standard add-on package called
+      <kbd>Collections</kbd>. You can learn more about some of
       them <a href="https://www.swift.org/blog/swift-collections/">here.</a>
     </p>
 
@@ -241,16 +242,16 @@ for aValue in aDictionary.values { loop actions }
 
     <h2>Applications of Collections</h2>
     <p>
-      Let's consider an application for a pharmacy to track containers of
-      medications in inventory. You could create a class
-      <kbd>PharmaceuticalStockTracker</kbd> that has Array of
-      <kbd>Medications</kbd> that it used to keep track of how many bottles,
+      Let's revisit the application for a pharmacy to track containers of
+      medications in inventory. Previously we created a class
+      <kbd>PharmaceuticalStockTracker</kbd> that had Array of
+      <kbd>Medications</kbd>, used to keep track of how many bottles,
       bags, etc. of medications were in stock. It does this by having each
       instance of <kbd>Medication</kbd> represent a bottle or bag, of medicine
       stored.
     </p>
     <p>
-      But there is a problem with that design. It's the amount of time it takes
+      But there is a problem with that design: the amount of time it takes
       to find medication in the system. It sounds like Array may have been the
       wrong choice. If we used a Dictionary of Arrays of Medications, that would
       solve the finding problem and still let us keep multiple bottles or bags
@@ -258,18 +259,26 @@ for aValue in aDictionary.values { loop actions }
     </p>
 
     <p>
+      Suppose further that we want to make sure we do not accidentally add an
+      object representing a specific container of medication to the stock tracker
+      multiple times. We don't want to think we have several containers when in fact
+      we accidentally have several copies of the same object representing a single
+      actual container of medication. We could make sure to check for that every
+      time we add a medication, but we can use the Set Type to make sure there is
+      only one copy of each medication container object in our inventory.
+      
       But what would the code for that look like? Since the system would need to
-      start without any medication being stored, we'd need to create an empty
-      Dictionary. The example is in the snippet below.
+      start without any medication being stored, would create an empty
+      Dictionary that has Sets of MedicationContainers as values like this:
     </p>
-    <pre><code class="swift">var inStockMedications = [String:[Medication]]()</code></pre>
+    <pre><code class="swift">var inStockMedications = [String:Set&lt;MedicationContainer&gt;]()</code></pre>
 
     <p>
-      There we go. That's it. The key is a String and the value is an Array of
-      Medications. But what would the code look like when medication was
-      purchased and needed to be added to the model? Great question. That's part
-      of your task this week. But first let’s cover a few more things you will 
-      need to know.
+      The key is a String and the value is a Set of MedicationContainers. 
+      But what would the code look like when medication was purchased
+      and needed to be added to the model? Great question. That's part
+      of your assignment this week. But first let’s cover a few more things  
+      you will need to know about.
     </p>
         <h2>Regular Expressions</h2>
 
@@ -307,10 +316,11 @@ for aValue in aDictionary.values { loop actions }
               result of the search to the original String to see if the
               match is the full string or else use <kbd>^</kbd> and 
               <kbd>$</kbd> to indicate that you want your comparison 
-              to match the full string like this:
+              to match the full string. This example:
 <pre><code class="swift">aString.range(of: #"^\d{3}[-]\d{3}[-]\d{4}$"#, options: .regularExpression)</code></pre>
               <p>
-will return a substring that matches a US Phone number patten if there is one.
+                will return a substring (if there is one) that exactly matches 
+                a US Phone number patten with no extra characters in the string.
               </p>
               <p>
                 The assignment this week will give you some experience with

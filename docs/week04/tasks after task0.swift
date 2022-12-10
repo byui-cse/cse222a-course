@@ -3,77 +3,83 @@
 //  Week 4 Tasks
 //
 //  You need to write code to complete the functions below to complete each task.
-//  You can develop and test each function individually.
+//  You can develop and test each function individually, but some sequentially depend
+//  on the tasks before them.
 //  As long as a function returns nil, it is assumed to not be implemented.
 //  Initially you may see some warnings about unused variables that you will address
-//  when you impelement those functions.
+//  when you impelement those functions. After you complete the tasks, there will be
+//  a few warning errors abourt code that will not execute. Notes in the tasks
+//  indicate which of those you can ignore.
 //
 //  You would usually use the print() function to write to the console and the
 //  readline() function to read user input from the console. However, for this class,
 //  please instead use testPrint() and testReadline(). Those will behave the same way,
 //  but allow test code to see what you print and what is input from the user.
 //
-//  Due to the tests we need to perform, lines in main.swift may generate
-//  warning errors. If you get an unexplained warning error from main.swift, please
-//  check if there is a comment near that line saying to ignore warning errors.
-//
 import Foundation
 
 //  Task 0 Assignment
 //  This week the project will not compile without errors until you complete task 0.
-//  Below are the classes from last week (except we changed
-//  PharmaceuticalStockTracker to be a class). Please modify
-//  them to partially match the UML diagram. There are three changes
-//  to be done in task0:
+//  We have included the classes from last week as we left them except for a few changes,
+//  mostly to matcthe new UML diagram:
 //
-//      1) Insert a constant String called ndcPackageCode as the first property of
-//          the MedicationContainer type. We will explain it later. You will need to
-//          adjust the initializers for all three container types.
+//      1) PharmaceuticalStockTracker is now a class
 //
-//      2) Change inStockMedications from an array of MedicationContainers to a
-//          dictionary with a String for the key and a value that is an array
-//          of MedicationContainers. The string will be the ndcPackageCode of
-//          the containers in the value array.
+//      2) MedicationContainer has a new property ndcPackageCode that identifies
+//      the specific type of medication container (more about that later in task 2).
 //
-//      3) Change the addContainer() method so it works correctly for the new
-//          type of inStockMedications. It will need to check if there is already
-//          a dictionary entry matching the ndcPackageCode. If yes, make sure the
-//          container parameter is not already in the value array associated with
-//          that key, then append the container parameter to that array. If there
-//          is not a matching dictionary entry, create one the correct key and
-//          a value that is an array containing only the container.
+//      3) Changed "inStockMedications" from an Array of MedicationContainers to
+//      a Dictionary. The key is a String (actually an ndcPackageCode) and
+//      the value is a Set of MedicationContainers each of which have an ndcPackageCode
+//      attribute that matches the key.
 //
-//  We will not make the final change in the UML to use a Set during Task 0.
+//      4) Added two new computed properties "description" and "count" and
+//      made PharmaceuticalStockTracker conform to the CustomStringConvertible
+//      to activate the description property when needed.
+//
+//      5) Changed the parameter to count(of:) from "name" to "ndcPackageCode".
+//
+//  Your Task 0 assignment is to get the file to compile by doing the following:
+//
+//      1) Implement the computed property "count" that should return a
+//      total count of all MedicationContainers with any ndcPackageCode
+//      stored in inStockMedications.
+//
+//      2) Change count(of:) to correctly count how many containers of a
+//      specific ndcPackageCode are stored in inStockMedications.
+//
+//      3) Change addContainer() to work correctly for the new data model
+//      using the ndcPackageCode inside the MedicationContainer parameter
+//      as the key. Be sure to address both the case where one or more
+//      MedicationContainers with the same ndcPackageCode have already been
+//      added.
+//
+//      4) As explained in the reading, Elements of a set must conform to
+//      the Hashable protocol. Mark the MedicationContainer class as
+//      conforming to Hashable. Then make it actually conform to Hashable.
+//      Note that since Equatable is a parent of Hashable, we must also
+//      conform to Equatable. Fortunately we alraedy did that last week.
+//      Hint: The combine() approach to conforming to Hashable works even
+//      if you are only "combining" one property,
+//
 //  After you correctly complete this task, the project should compile and
 //  task0() should be shown as passing.
 
-class PharmaceuticalStockTracker: CustomStringConvertible, TrackerProtocol {
+class PharmaceuticalStockTracker: CustomStringConvertible {
 
-    var inStockMedications: [String : [MedicationContainer]] = [:]
+    var inStockMedications: [String: Set<MedicationContainer>] = [:]
 
-    func addContainer(_ container: MedicationContainer) -> Bool {
-        let aCode: String = container.ndcPackageCode
-        if let inStockArray = inStockMedications[aCode] {
-            // if it already has an array for that ndcPackageCode, check to
-            // make sure that the array does not already include this object
-            for aContainer in inStockArray {
-                if aContainer.id == container.id { return false }
-            }
-            inStockMedications[aCode]?.append(container)
-        } else {
-            inStockMedications[aCode] = [container]
-        }
-        return true
+    //  The default description when printing an object of this class is
+    //  "Week4Completed.PharmaceuticalStockTracker". To help with debugging
+    //  we provide a more informative description. Note that the new
+    //  description is only active for printing if we also mark the
+    //  PharmaceuticalStockTracker Type as conforming to CustomStringConvertible.
+    //  You should do not need to edit this method, but to work correctly ir
+    //  requires the new computed property "count" that you need to implement.
+    var description: String {
+        return "StockTracker holding \(self.count) MedicationContainers"
     }
-
-    // We define count to be the number of of MedicatonContainers inside
-    // Arrays or Sets inside Dictionaries.
-    // The default description when printing an object of this class is just
-    // "Week4Tasks.PharmaceuticalStockTracker" so we provide a more
-    // informative description. Note that the new description is only active
-    // if we also make PharmaceuticalStockTracker conform to CustomStringConvertible.
-    // These two methods are provided to help you get started.
-    // You should not need to modify either of these methods.
+    //  Implement this computed property
     var count: Int { get
         {
             var returnValue = 0;
@@ -83,25 +89,62 @@ class PharmaceuticalStockTracker: CustomStringConvertible, TrackerProtocol {
             return returnValue
         }
     }
-    var description: String {
-        return "StockTracker holding \(self.count) MedicationContainers"
+    //  Correct this method
+    func count(of ndcPackageCode: String) -> Int {
+        return inStockMedications[ndcPackageCode]?.count ?? 0
     }
-
+    //  Correct this method
+    func addContainer(_ container: MedicationContainer) -> Bool {
+        let aCode: String = container.ndcPackageCode
+        if let inStockArray = inStockMedications[aCode] {
+            // if it already has an array for that ndcPackageCode, check to
+            // make sure that the array does not already include this object
+            if inStockArray.contains(container) { return false }
+            inStockMedications[aCode]?.insert(container)
+        } else {
+            inStockMedications[aCode] = [container]
+        }
+        return true
+    }
 }
-class MedicationContainer: ContainerProtocol {
+class MedicationContainer: Hashable, Equatable, Comparable, CustomStringConvertible {
     let ndcPackageCode: String
     let id = UUID().uuidString
     let name: String
     let expirationDate: Date
     var isExpired: Bool  { get { return Date() >= expirationDate } }
     
-    init(ndcPackageCode: String, name: String, expirationDate: Date) {
+    fileprivate init(ndcPackageCode: String, name: String, expirationDate: Date) {
         self.ndcPackageCode = ndcPackageCode
         self.name = name
         self.expirationDate = expirationDate
     }
+    var description: String {
+        if let liquidContainer = self as? LiquidMedicationContainer {
+            return "Liquid Medication Container with id: \(self.id), ndcPackageCode: \(self.ndcPackageCode), name:  \(self.name), expirationDate: \(dateToString(self.expirationDate)), volume: \(liquidContainer.volume), concentration: \(liquidContainer.concentration), concentrationUnits: \(liquidContainer.concentrationUnits)"
+        } else if let tabletContainer = self as? TabletMedicationContainer {
+            return "Tablet Medication Container with id: \(self.id), ndcPackageCode: \(self.ndcPackageCode), name:  \(self.name), expirationDate: \(dateToString(self.expirationDate)), pillCount: \(tabletContainer.pillCount), potency: \(tabletContainer.potency), potencyUnits: \(tabletContainer.potencyUnits)"
+        } else {
+            return "Generic Medication Container with id: \(self.id), ndcPackageCode: \(self.ndcPackageCode), name:  \(self.name), expirationDate: \(dateToString(self.expirationDate)) Note: This object should not exist"
+        }
+    }
+    // conformance to the Equatable protocol which is a parent of Comparable and Hashable
+    static func == (lhs: MedicationContainer, rhs: MedicationContainer) -> Bool {
+        return lhs.id == rhs.id
+    }
+    // conformance to the Comparable protocol
+    static func < (lhs: MedicationContainer, rhs: MedicationContainer) -> Bool {
+        // replace the following with your code for a real comparitor operator
+        // EDITOR replace the following line with "return false"
+        return lhs.expirationDate < rhs.expirationDate
+    }
+    // conformance to the Hashable protocol
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
 }
-class LiquidMedicationContainer: MedicationContainer, LiquidContainerProtocol {
+class LiquidMedicationContainer: MedicationContainer {
     let volume: Double
     let concentration: Int
     let concentrationUnits: String
@@ -113,7 +156,7 @@ class LiquidMedicationContainer: MedicationContainer, LiquidContainerProtocol {
         super .init(ndcPackageCode: ndcPackageCode, name: name, expirationDate: expirationDate)
     }
 }
-class TabletMedicationContainer: MedicationContainer, TabletContainerProtocol {
+class TabletMedicationContainer: MedicationContainer {
     let pillCount: Int
     let potency: Double
     let potencyUnits: String
@@ -126,8 +169,8 @@ class TabletMedicationContainer: MedicationContainer, TabletContainerProtocol {
     }
 }
 
-//  Do not edit the following date utilities that you are selcome to use.
-//  You are welcome to edit the line with "ddMMMyyyy" to try different date formats
+//  Do not edit the following date utilities that you are welcome to use.
+//  However, you can edit the "ddMMMyyyy" to try different date formats.
 func daysToSeconds(_ numDays: Int) -> Double {
     let msPerDay: Double = 60 * 60 * 24
     return Double(numDays) * msPerDay
@@ -149,198 +192,86 @@ func dateToString(_ aDate: Date) -> String {
 //  class and struct types above.
 var aStockTracker = PharmaceuticalStockTracker()
 
-func task0() -> (MedicationContainer, MedicationContainer, MedicationContainer) {
+func task0() -> (MedicationContainer, MedicationContainer) {
     // Print some sample dates
 
     let aCode: String = "12345-123-12"
-    // initiailize a test variable of each class
-    let aContainer = MedicationContainer(ndcPackageCode: aCode, name: "med1", expirationDate: futureDate(daysFromNow: 180))
-    let aLiquidContainer = LiquidMedicationContainer(ndcPackageCode: aCode, name: "med2", expirationDate: futureDate(daysFromNow: 120),
+    // initiailize a test variable of both classes
+    let aLiquidContainer = LiquidMedicationContainer(ndcPackageCode: aCode, name: "med1", expirationDate: futureDate(daysFromNow: 120),
         volume: 4.5, concentration: 2, concentrationUnits: "ml")
-    let aTabletContainer = TabletMedicationContainer(ndcPackageCode: aCode, name: "med3", expirationDate: futureDate(daysFromNow: 90),
+    let aTabletContainer = TabletMedicationContainer(ndcPackageCode: aCode, name: "med2", expirationDate: futureDate(daysFromNow: 90),
         pillCount: 90, potency: 2.3, potencyUnits: "mg")
-   return (aContainer, aLiquidContainer, aTabletContainer)
+   return (aLiquidContainer, aTabletContainer)
 }
 
 //  Task 1
-//  In later tasks, you will need to sort an array of MedicationContainers.
-//  They should be sorted by expirationDate. We could explicitly do that comparison
-//  every time we do a sort, but if we want to us a simplified sort operation like
-//  "anArray.sort(>)" then we need to address the fact that MedicationContainers
-//  Do not have a built-in defintion for the "<" or ">" operation. To do that we
-//  can make MedicationContainer comply with the Comparable protocol. In the
-//  extension below, we have set up functions to specify the "<" and "==" operators
-//  fill in the functions (replacing "return false") and then in the first line of
-//  the extension after "MedicationContainer" insert ": Equatable, Comparable" to mark
-//  it compliant. Note that while "<" or ">" are based on the expirationDate property
-//  the "==" operator should be based on the id property since that uniquely identifies
-//  a MedicationContainer.
+//  For the last assignment last week you created an operator that
+//  cleaned any expired medication from a PharmaceuticalStockTracker.
+//  Use the extension below to re-implement that funcationality (as a
+//  method this time) for the new model. It should remove any expired
+//  containers from the PharmaceuticalStockTracker and return an array
+//  of any containers that were removed. The array of expired containers
+//  should be sorted with the oldest expiration dates first. And let's
+//  keep things tidy: if you remove all the containers in a Dictionary
+//  entry, go ahead and remove the Dictionary entry also.
 //
-//  Below that extension and above task1() we have defined a postfix
-//  operator <||> and an infix operator with AdditionPrecedence <-||.
+//  When you have completed and tested the code for removeExpired(),
+//  change task1() to return true rather than nil
 //
-//  Create an extension to PharmaceuticalStockTracker. In that extension, define a method
-//  for <||> that counts the total number of containers in the tracker. It will be
-//  more complicated than the example in the reading since we now have a dictionary with
-//  multiple arrays. You are welcome to call the count() computed property to
-//  implement it. The <-|| operator should take a PharmaceuticalStockTracker as the left
-//  parameter and a MedicationContainer as the right parameter and add the container to
-//  the tracker. You are welcome to use the addContainer() function to implement it.
-//
-//  Then add the TrackerProtocol3 to the extension.
-//
-//  Finally change "return nil" in task1() to "return ({$0<||>}, {$0<-||$1})".
-//  Be sure to copy the return value inside the quotes exaxtly. Returning those two
-//  closures allows the test software to know your code is ready to test and allow
-//  the test code to access your new operators.
-//
-// EDITOR remove ": Equatable, Comparable" to produce tasks.swift
-extension MedicationContainer {
-    
-    static func == (lhs: MedicationContainer, rhs: MedicationContainer) -> Bool {
-        // replace the following with your code for a real comparitor operator
-        return false
+extension PharmaceuticalStockTracker {
+    func removeExpired() -> [MedicationContainer] {
+        return []
     }
-    static func < (lhs: MedicationContainer, rhs: MedicationContainer) -> Bool {
-        // replace the following with your code for a real comparitor operator
-        return false
-    }
-    
 }
-postfix operator <||>
-infix operator <-||: AdditionPrecedence
-//  Put the extension to PharmaceuticalStockTracker here
-
-func task1() -> ((PharmaceuticalStockTracker) -> Int, (PharmaceuticalStockTracker, MedicationContainer) -> Bool)? {
+func task1() -> Bool? {
     return nil
 }
 
 //  Task 2
-//  To get the project to compile, we needed to pretend we conform to the Hashable
-//  protocol using the extension below. Please research how to make MedicationContainer
-//  actually comply with Hashable. You do not need to compare all fields nor hash
-//  all properties since the id property uniquely identifies a MedicationContainer
-//  object. So you can just hash and compare on the id property. But you do need to
-//  correctly fill in the contents of the hash functions or none of the following
-//  tasks will work. We already added the required commpliance with the Equitable
-//  protocol in an earlier task
-//
-
-//  Then change the constant in first line of task32 to return true rather than
-//  nil. This indicates you have completed this task and it is ready to be tested.
-//  That will cause task2() to create and return a MedicationContainer object from
-//  the task instead of nil.
-//
-//  Hint:
-//  The "hasher.combine" approach to producing a hash function works even if
-//  there is only one class property to "combine."
-//
-extension MedicationContainer: Hashable {
-
-    // conformance to the Hashable protocol
-    func hash(into hasher: inout Hasher) {
-        // Put your code here to create a real Hasher function
-    }
-}
-func task2() -> MedicationContainer? {
-    let readyToTest = false // change to true when ready to test task2
-    guard readyToTest else { return nil }
-    
-    // Please ignore the "will never be executed" warning
-    let aCode: String = "12345-123-12"
-    let aContainer = MedicationContainer(ndcPackageCode: aCode, name: "med1", expirationDate: futureDate(daysFromNow: 180))
-   return aContainer
-}
-
-//  Task 3
-//  Each time we add a MedicationContainer object to inStockMedications we
-//  need to search through all existing containers in that the array for
-//  that ndcPackageCode to make sure that it is not already there so we avoid
-//  accidentally adding two container objects in in the system's inventory
-//  that actually refer to the same object in the "real world."
-//  One way to avoid having more than one copy of an object in a Swift
-//  collection is to use a Set insrtead of an Array.
-//
-//  In the Dictionary property called inStockMedications change the type of
-//  Dictionary value from an Array, to a Set replacing:
-//      [MedicationContainer]
-//  with this:
-//      Set<MedicationContainer>
-//  Elements of a Set and Keys of a Dictionary must conform to the
-//  Hashable protocol which we did task 1 so this change to a Set should
-//  be allowed.
-//
-//  Then edit the addContainer() method to realize the benefit that this is
-//  a set. You will still need to check if there is a Dictionary entry
-//  for that ndcPackageCode so you know whether to add a new entry or
-//  add the package to the existing Set. But if the Dictionary entry
-//  already exists, you do not need to search through every container
-//  to make sure it is not already added. If we tried to add the same
-//  object a second time, it would just ignore the action. But since
-//  addContainer() returns a Boolean telling us we actually inserted
-//  the container, we can use .contains() to see if it was already there.
-//
-//  Change PharmaceuticalStockTracker from complying with TrackerProtocol to instead
-//  comply with TrackerProtocol2.
-//
-//  Now uncomment the single line in the preloadAStockTracker. We need it for later
-//  testing, but it requires inStockMedications to be a Dictionary of Sets. So
-//  it would not compile until you completed this task.
-//
-//  Finally change the constant in first line of task3() to return true rather than
-//  nil to indicated you have completed this task and it is ready to be tested.
-
-func preloadAStockTracker() {
-//    aStockTracker.inStockMedications = preloadedMedications
-}
-func task3() -> Bool? {
-    let readyToTest = false // change to true when ready to test task3
-    guard readyToTest else { return nil }
-    
-    // Please ignore the "will never be executed" warning
-    return true
-}
-
-//  Task 4
-//  The ndcPackageCode that tells what type of medication is in a container
+//  The ndcPackageCode that tells what medication is in a container
 //  follows the code pattern in the NDC database:
 //      https://www.accessdata.fda.gov/scripts/cder/ndc/dsp_searchresult.cfm
 //  Using regular expression pattern matching, add code to the isFormattedAsNDCCode()
 //  function to return true if and only if the code is in a valid pattern for those
 //  codes: [5 digits]-[3 digits]-[2 digits]. When testing your code you may use
 //  real codes from the database along with real information, or you may make them up.
+//  The only thing that matters for this exercise is matching the pattern, not
+//  whether it is an actual code from the web site.
 //
-//  When you have completed and tested the code for isFormattedAsNDCCode(), change the
-//  constant in first line of task4() to true to indicate that it is ready to be tested.
+//  When you have completed and tested the code for isFormattedAsNDCCode(),
+//  change task2() to return true rather than nil
 
 func isFormattedAsNDCCode(code: String) -> Bool {
     // Replace the following line with your code
     return false
 }
-func task4() -> Bool? {
-    let readyToTest = false // change to true when ready to test task4
-    guard readyToTest else { return nil }
-    
-    // Please ignore the "will never be executed" warning
-    return true
+func task2() -> Bool? {
+    return nil
 }
 
-//  Task 5
-//  Edit addContainer() to call isFormattedAsNDCCode to validate that the ndcPackageCode
-//  in the container to be added has a valid NDCCode format. If not, do not add the
-//  container and return false.
+//  Task 3
+//  Edit addContainer() to call isFormattedAsNDCCode() to validate
+//  that the ndcPackageCode in the container to be added has a valid
+//  NDCCode format. If not, do not add the container and return false.
 //
-//  Now fill out the method addContainers() below. This accepts as parameters of
-//  an expectedNdcPackageCode and a collection of containers to be added to the
+//  Now fill out the method addContainers() below. This accepts as parameters
+//  an expectedNdcPackageCode and a Set of containers to be added to the
 //  Stock Tracker. Since this system is supposed to be dealing with medications
 //  there are extra layers of checking. All of the containers to add in a call
 //  to addContainers() should have the same ndcPackageCode and that code should
-//  match the expectedNdcPackageCode. The function returns a tuple with a Bool and an
-//  enum of a type specified. Your code should return each of the enum values if it is
-//  performing all needed tests including isFormattedAsNDCCode to verify the code format.
+//  match the expectedNdcPackageCode parameter. The function returns a tuple
+//  with a Bool and an enum of Type AddMessage. As you complete the method, you
+//  should find yourself returning each of the values in AddMessage except
+//  possibly .otherAddFailure. The others all represent error (or success)
+//  conditions that you should detect as you implement addContainers(). One
+//  error you should detect would be tested by calling the function
+//  isFormattedAsNDCCode() to verify the format of the NDCCodes used.
 //
-//  When you have completed and tested the codefor addContainers(), change the constant
-//  in first line of task5() to true to indicate that it is ready to be tested.
+//  Hint: Remember to deal with both the case where there are currently no
+//  containers marching the ndcPackageCode and the casa where there are.
+//
+//  When you have completed and tested the codefor addContainers(),
+//  change task3() to return true rather than nil
 
 enum AddMessage: String {
     case success
@@ -352,29 +283,26 @@ enum AddMessage: String {
 extension PharmaceuticalStockTracker {
     func addContainers(expectedNdcPackageCode: String, containersToAdd: Set<MedicationContainer>) -> (Bool, AddMessage) {
         // Your code goes here
+        
         return (true, .success)
     }
 }
 
-func task5() -> Bool? {
-    let readyToTest = false // change to true when ready to test task5
-    guard readyToTest else { return nil }
-    
-    // Please ignore the "will never be executed" warning
-    return true
+func task3() -> Bool? {
+    return nil
 }
 
-//  Task6
-//  Fill out the method currentStock(of:) below. This accepts as its parameter an
-//   ndcPackageCode. It returns a tuple with a Bool, an enum of a type specifiedanected
+//  Task 4
+//  Implement the method currentStock(of:) below. This accepts as its parameter an
+//  ndcPackageCode. It returns a tuple with a Bool, an enum of Type StockMessage
 //  and an optional array of MedicationContainers. Validate the ndcPackageCode format,
 //  check if there are any containers of that type and if there are, return them in an
 //  array. Since we should use up medications with the oldest expiration date first,
 //  sort the array by expiration date before returning it so the older expiration
 //  dates come first.
 //
-//  When you have completed and tested the code for currentStock(of:), change the constant
-//  in first line of task6() to true to indicate that it is ready to be tested.
+//  When you have completed and tested the code for currentStock(of:),
+//  change task4() to return true rather than nil
 
 enum StockMessage: String {
     case success
@@ -383,34 +311,30 @@ enum StockMessage: String {
 }
 extension PharmaceuticalStockTracker {
     func currentStock(of ndcPackageCode: String) -> (Bool, StockMessage, [MedicationContainer]?) {
+        // Please ignore a possible "will never be executed" warning
         var returnValue: [MedicationContainer]? = nil
         // Your code goes here
+        
         return (true, .success, returnValue)
     }
 }
-func task6() -> Bool? {
-    let readyToTest = false // change to true when ready to test task6
-    guard readyToTest else { return nil }
-
-    // Please ignore the "will never be executed" warning
-    return true
+func task4() -> Bool? {
+    return nil
 }
 
-//  Task 7
+//  Task 5
 //  Fill out the method sellContainers(count:of) below. This accepts as parameters a
 //  count of containers to sell, and an ndcPackageCode.
 //  It returns a Bool, a SellMessage and an optional array of MedicationContainers.
 //  Like usual, this should validate the format of the ndcPackageCode, then find out
 //  if there is any inventory of the ndcPackageCode. If so, confirm that there is
-//  enough. If not return a tuple of false, an error and nil. If there is enough of
-//  the correct ndcPackageCode return a sorted array of those with the earliest
-//  expirationDate first in the array. And be sure to sell those with the earliest
-//  dates first. Be sure to subtract anything sold from the Set associated with that
-//  NDCCode in inStockMedications. And if the sale results in the Set being empty,
-//  you should remove that NDCCode from being a key in the inStockMedications Dictionary.
+//  enough. If not, return a tuple of (false, .notEnoughInventory, nil). If there
+//  is enough of inventory of the requested ndcPackageCode, be sure to sell those
+//  with the earliest dates first. Return a sorted array of the containers sold.
+//  If the sale results in the Set being empty, remove that dictionary entry..
 //
-//  When you have completed and tested the code for sellContainers(), change the constant
-//  in first line of task7() to true to indicate that it is ready to be tested.
+//  When you have completed and tested the code for sellContainers(),
+//  change task5() to return true rather than nil
 
 enum SellMessage: String {
     case success
@@ -421,69 +345,120 @@ enum SellMessage: String {
 }
 extension PharmaceuticalStockTracker {
     func sellContainers(count: Int, of ndcPackageCode: String) -> (Bool, SellMessage, [MedicationContainer]?) {
+        // Please ignore a possible "will never be executed" warning
         var returnValue: [MedicationContainer]? = nil
         // Your code goes here
+        
         return (true, .success, returnValue)
     }
 }
+func task5() -> Bool? {
+    return nil
+}
+
+//  Task 6
+//  Add a mutating method called setDates to DateSequencer struct below
+//  with a parameter called daysTuple. The parameter should be of type (Int, Int).
+//  The method should use the parameter to set the values (in order) of the two
+//  predefined properties. THis is just to set us up for the following tasks.
+//
+//  Then apply the additional protocol DateSequencerProtocol that will let the
+//  tests run.
+//
+//  When you have completed and tested the code for setDates(),
+//  change task6() to return true rather than nil
+//
+struct DateSequencer {
+    
+    var currentDaysOut = 0
+    var lastDaysOut = 10
+    
+    // your code goes here
+}
+func task6() -> Bool? {
+    return nil
+}
+
+//  Task 7
+//  Add to the extension below to make the DateSequencer conform to the Sequence
+//  protocol. In conforming to this protocol you can either have the object create
+//  a serpate iterator or you can have the object be its own itnernator. For this
+//  task, use the option where it is its own interator so in addition to conform
+//  to Sequence, it needs to explicitly conform to IteratorProtocol. You will
+//  need to add both of these protocols to the first line of the extension.
+//
+//  The next() function you implement to conform should return a date optional.
+//      If currentDaysOut == lastDaysOut then it should return nil.
+//      Otherwise it should return a Date currentDaysOut in the future.
+//  Returning nil is how it indicates that the sequence is complete.
+//  It should then increment currentDaysOut "towards" lastDaysOut. That is:
+//      if currentDaysOut < lastDaysOut add 1 to currentDaysOut
+//      if currentDaysOut > lastDaysOut subtract 1 from currentDaysOut.
+//  In implementing this, you are welcome to call either or
+//  both of daysToMs() and futureDate() or to borrow code from them.
+//
+//  The result of your code will be objects that generate a sequence of dates.
+//  if you call setDates(x, y) then the struct will behave as a sequence of dates
+//  starting x days in the future and continuing up or down the calendar until
+//  just before it would output y days into the future.
+//
+//  When you have completed and tested these changes apply the additional
+//  protocol DateSequencerProtocol2 to the extension abd change task7() to
+//  return true rather than nil.
+//
+
+extension DateSequencer {
+    // add your code here
+}
 func task7() -> Bool? {
-    let readyToTest = false // change to true when ready to test task7
-    guard readyToTest else { return nil }
-
-    // Please ignore the "will never be executed" warning
-    return true
+    return nil
 }
-
-//  Task 8
-//  We provided a custom description to use when describing or printing
-//  objects of the PharmaceuticalStockTracker Type. But when we print a
-//  MecicationContainer, it still just says Week4Tasks.MecicationContainer.
-//  Use the empty extension below to fix this. Add the compliance with
-//  the CustomStringConvertible protocol using the extension. Add a
-//  add a computed property called description of Type String that
-//  describes a specific MecicationContainer. Remember that since
-//  MedicationContainer is a class with children, the MedicationContainer
-//  may actually be a MedicationContainer, a LiquidMedicationContainer
-//  or a TabletMedicationContainer. Figure out what it is using "is"
-//  or "as?", then return a string with all the relevant data for its type.
-
-//  When you have completed and tested the code, change the constant
-//  in first line of task8() to true to indicate that it is ready to be tested.
-//  This will cause the test code to print some MecicationContainers to
-//  test the new extension.
-
-extension MedicationContainer {
-    // put your code here to add a computed description property
-}
-
-func task8() -> Bool? {
-    let readyToTest = false // change to true when ready to test task8
-    guard readyToTest else { return nil }
-
-    return true
+    
+//  Lets demonstrate how having our our the DateSequencer object conform to
+//  Sequence really addes value. In task8() below, create a DateSequencer
+//  object. Call setDates() on your DateSequencer using the parameterts passed
+//  into task8(). Create an empty array of type [Date]. Then write a for-in
+//  loop that loops on your DateSequencer that appends each item returns to your
+//  array of Dates. The result will be that for-in uses your struct to hel you
+//  create an array of dates that matches the parameters.
+//
+//  When you are done with your code, change task8() to return the array produced
+//  instead of returning nil.
+//
+func task8(_ aTuple: (Int, Int)) -> [Date]? {
+    return nil
 }
 
 //  Task 9
-//  Suppose we want to sort the objects in a Collection by size (using the "count"
-//  property in those objects). If we have many different configurations of Collections,
-//  we would need to write and test many different sort functions. Look in the body of
-//  task9() below to see just a few samples of the different configurations that would
-//  each need their own function. That would include any object that has a count property
-//  including objects from our custom PharmaceuticalStockTracker class. Fortunately,
-//  we can write a single generic method to cover all of those cases.
+//  Now that we have seen how conformance to the simple Sequence protocol unlocked
+//  somewhat surprising power, let's experiment with how a simple use of a
+//  generic method extension combined with a simple protocol can have far reaching
+//  effects on a wide range of different types of collections of objects.
 //
-//  First, to identify which object Types can use this method, we have defined a protocol
-//  that just confirms the Type has a count property. In many cases, including our
-//  PharmaceuticalStockTracker class the count proerty is computed, but it does not
-//  matter for our purposes whether it is or is not computed. Here is the protocol:
+//  Suppose we want to sort the object in a Collection by size (using the "count"
+//  property already built into most objects). We could write a special sort method
+//  for one particular type of collection such as an Array of Strings. But we could
+//  also create a generic method that would work for any collections where the
+//  elements implement count.
+//
+//  First, to identify which object Types can use this method, we have defined a
+//  Protocol that just confirms the Type has a "count" property. In most cases,
+//  including our PharmaceuticalStockTracker class, the count proerty is computed.
+//  All our Protocol cares about is that the property exists, not whether it is
+//  a stored or computed propety. Here where we define the Protocol:
 
 protocol Countable {
     var count: Int { get }
 }
 
-//  Swift does not implicitly recognize compliance with a protocol. We need to explicitly
-//  state the compliance. One way to do that is in an extension of an existing type. So
-//  let's mark some common Types as Countable.
+//  Swift does not implicitly recognize compliance with a protocol. Even though
+//  many Types have a count propertry and would comply with this property, we
+//  must explicitly state that compliance, for example with an extension like
+//  we do here for many common Types. Note that we are able to apply this to
+//  generic Types. Applying it to Set means it works for any Set no matter
+//  what contents it has. Likewise for Array, Dictionary and String. We
+//  can also apply it to our PharmaceuticalStockTracker since it has an Int
+//  property called count.
 
 extension Array: Countable {}
 extension Set: Countable {}
@@ -491,36 +466,47 @@ extension Dictionary: Countable {}
 extension String: Countable {}
 extension PharmaceuticalStockTracker: Countable {}
 
-//  Now we can define a generic method that applies to any type of
+//  Now we can define a generic method that applies to any
 //  Collection where the Elements are of a Countable Type.
-//  Elements of the type are Countable. Element is a predefined
-//  Associated Type within all Collection Types. Uncomment the
-//  two lines defining an empty sortedBySize() function and
-//  add functionaity to return an Array with the sorted Elemements
-//  of the top level Collection. Sort them according the size
-//  or count of each Element, increasing ro decreasing accoring to
-//  the parameter to the call. You can call the built-in
-//  sort function which is available for all Collections.
+//  Element is a predefined placeholder that representes the type
+//  of object that is collected in a Collection. We can require in
+//  the extension below that it apply to any Collection where
+//  Element (representing the Type of objects in the Collection) is
+//  Countable.
+//
+//  Your assignment is to replace "return []" in sortedBySize()
+//  below with code that sorts the top level elements of
+//  the Collection by size using the "count" property. Sort them
+//  increasing or decreasing accoring to the parameter. You
+//  are welcome to call the Built-In sort() Function to help you
+//  implement sortedBySize().
+//
+//  Once you write the method it will automatically apply to any
+//  Type that is a child of Collection that has Elements that comply
+//  with Countable. Suppose you came across another type of Collection
+//  called SpecialCollection. All you need to add is one line:
+//      extension SpecialCollection: Countable {}
+//  and you can apply sortedBySize() to Collections of that Type as well.
+//  With one line like that, this extension can be applied to types that
+//  not even exist yet.
+//
+//  When you have implemented sortedBySize() comment out the "return nil"
+//  line at the start task9. This will allow a test and demonstration of
+//  some of the many different combinations types that now can be sorted
+//  by size using this single generic method.
+
 
 extension Collection where Element: Countable {
     func sortedBySize(increasing: Bool = true) -> Array<Element> {
         // replace "return []" with your code to implement the sort
-        // Note to EDITOR: to prepare tasks.swift delete the following 6 lines
-        // and replace them with "return []"
         return []
     }
 }
 
-//  When you have implemented sortedBySize() change the constant in the
-// first line of task9() to true.
-
 func task9() -> Bool? {
-    // change to true when ready to test task9
-    // DO NOT change any other lines in task9()
-    let readyToTest = false
-    guard readyToTest else { return nil }
+    return nil // comment out this line when you are ready to test Task 9
 
-    // Please ignore the "will never be executed" warning
+    // Please ignore a possible "will never be executed" warning
     let arrayOfStrings = ["One", "Three", "Five"]
     testPrint("arrayOfStrings.sortedBySize() increasing, then decreasing:")
     testPrint(">  \(arrayOfStrings.sortedBySize())")
@@ -589,19 +575,23 @@ func task9() -> Bool? {
     //  generateTracker(_ countainerCount: Int) is implemented in
     //  main.swift. It generates a sample PharmaceuticalStockTracker
     //  with countainerCount MedicationContainers in it. It is only
-    //  implemented for containerCounts in 1...3 and 6.
+    //  implemented for containerCounts in 1, 2, 3 and 6.
     
     //  This first example is sorting PharmaceuticalStockTrackers to see which location or
-    //  warehouse represented by a PharmaceuticalStockTrackers has the most or least inventory.
+    //  warehouse represented by a PharmaceuticalStockTrackers have the most or least inventory.
     let arrayOfPharmaceuticalStockTrackers: [PharmaceuticalStockTracker] = [generateTracker(1), generateTracker(2), generateTracker(3)]
     testPrint("arrayOfPharmaceuticalStockTrackers.sortedBySize() increasing, then decreasing:")
     testPrint(">  \(arrayOfPharmaceuticalStockTrackers.sortedBySize())")
     testPrint("<  \(arrayOfPharmaceuticalStockTrackers.sortedBySize(increasing: false))")
 
     //  Now let's get a sorted array of all of the inventory in dictionaries inside a
-    //  PharmaceuticalStockTracker. We use summarizeSetsOfMedicationContainers to
-    //  provide a summary of the Sets. Otherwise this would print the detailed contents
-    //  of each MedicationContainer in each Set in the Dictionary.
+    //  PharmaceuticalStockTracker. We use sortedBySize to provide a sorted list of which
+    //  ndcPackageCodes have the most or least inventory in this tracker.
+    //  Note: to make the results more meaningful we use a funcation provided in main.swift
+    //  called summarizeSetsOfMedicationContainers(). This provides a summary of each Dictionary
+    //  or Set. Otherwise the following lines would print the detailed contents of each
+    //  MedicationContainer in inventory which would be a lot more detailed content to read
+    //  through to validate that the function is working correctly..
     let aStockTracker = generateTracker(6)
     testPrint("aStockTracker.inStockMedications.sortedBySize() increasing, then decreasing:")
     testPrint(">  \(summarizeSetsOfMedicationContainers(aStockTracker.inStockMedications.values.sortedBySize()))")

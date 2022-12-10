@@ -5,43 +5,44 @@
 //  in each task function to delete the sample code and just leave behind a stub.
 //  Most of the time, that will just be "return nil" but in a few cases it shows
 //  stub code that has a template in in for them to use. Finally, in tasks.swift
-//  please delete this note to the editor in thie first 8 lines of the file.
+//  please delete this note to the editor in thie first 10 lines of the file.
+//  After tasks.swift is created, make a copy called "tasks after task0.swift."
+//  Edit into this one just the changes for task 0. That allows us to compile it
+//  and confirm that everyting will still compile once the student completes task 0.
 //
 //  Tasks.swift
 //  Week 4 Tasks
 //
 //  You need to write code to complete the functions below to complete each task.
-//  You can develop and test each function individually.
+//  You can develop and test each function individually, but some sequentially depend
+//  on the tasks before them.
 //  As long as a function returns nil, it is assumed to not be implemented.
 //  Initially you may see some warnings about unused variables that you will address
-//  when you impelement those functions.
+//  when you impelement those functions. After you complete the tasks, there will be
+//  a few warning errors abourt code that will not execute. Notes in the tasks
+//  indicate which of those you can ignore.
 //
 //  You would usually use the print() function to write to the console and the
 //  readline() function to read user input from the console. However, for this class,
 //  please instead use testPrint() and testReadline(). Those will behave the same way,
 //  but allow test code to see what you print and what is input from the user.
 //
-//  Due to the tests we need to perform, lines in main.swift may generate
-//  warning errors. If you get an unexplained warning error from main.swift, please
-//  check if there is a comment near that line saying to ignore warning errors.
-//
 import Foundation
 
 //  Task 0 Assignment
 //  This week the project will not compile without errors until you complete task 0.
-//  Below are the classes from last week except we changed some things, mostly
-//  to matcthe new UML diagram:
+//  We have included the classes from last week as we left them except for a few changes,
+//  mostly to matcthe new UML diagram:
 //
 //      1) PharmaceuticalStockTracker is now a class
 //
 //      2) MedicationContainer has a new property ndcPackageCode that identifies
-//      the specific type of medication container (more about that later)
+//      the specific type of medication container (more about that later in task 2).
 //
-//      3) "inStockMedications" changed from an Array of MedicationContainers to
-//      a Dictionary where the key is a String (actually an ndcPackageCode) and
-//      the value is a Set of MedicationContainers. Each Dictionary entry in
-//      inStockMedications will contain the Set of MedicationContainers that
-//      have that ndcPackageCode.
+//      3) Changed "inStockMedications" from an Array of MedicationContainers to
+//      a Dictionary. The key is a String (actually an ndcPackageCode) and
+//      the value is a Set of MedicationContainers each of which have an ndcPackageCode
+//      attribute that matches the key.
 //
 //      4) Added two new computed properties "description" and "count" and
 //      made PharmaceuticalStockTracker conform to the CustomStringConvertible
@@ -52,8 +53,8 @@ import Foundation
 //  Your Task 0 assignment is to get the file to compile by doing the following:
 //
 //      1) Implement the computed property "count" that should return a
-//      count of all MedicationContainers with any ndcPackageCode stored
-//      in inStockMedications.
+//      total count of all MedicationContainers with any ndcPackageCode
+//      stored in inStockMedications.
 //
 //      2) Change count(of:) to correctly count how many containers of a
 //      specific ndcPackageCode are stored in inStockMedications.
@@ -66,11 +67,11 @@ import Foundation
 //
 //      4) As explained in the reading, Elements of a set must conform to
 //      the Hashable protocol. Mark the MedicationContainer class as
-//      conforming to Hashable. Then make it actually conform. Note that
-//      we already did some of the work to conform last week by makint it
-//      conform to Equatable, a required parent of Hashable.
-//      Hint: The combine() approach works even if you are only "combining"
-//      one property,
+//      conforming to Hashable. Then make it actually conform to Hashable.
+//      Note that since Equatable is a parent of Hashable, we must also
+//      conform to Equatable. Fortunately we alraedy did that last week.
+//      Hint: The combine() approach to conforming to Hashable works even
+//      if you are only "combining" one property,
 //
 //  After you correctly complete this task, the project should compile and
 //  task0() should be shown as passing.
@@ -84,12 +85,17 @@ class PharmaceuticalStockTracker: CustomStringConvertible {
     //  we provide a more informative description. Note that the new
     //  description is only active for printing if we also mark the
     //  PharmaceuticalStockTracker Type as conforming to CustomStringConvertible.
-    //  You should do not need to edit this method, but it requires the new
-    //  computed property "count" that you need to implement.
+    //  You should do not need to edit this method, but to work correctly ir
+    //  requires the new computed property "count" that you need to implement.
     var description: String {
         return "StockTracker holding \(self.count) MedicationContainers"
     }
-// EDITOR keep the #if false section and remove the other section for tasks.swift
+//  EDITOR keep the #if false section and remove the #else section
+//  for tasks.swift. When you add back in some of these changes to
+//  create "tasks after task0.swift" be sure to not put back in the
+//  line that reads
+//      guard isFormattedAsNDCCode(code: aCode) else { return false }
+//  since that is not added until Task 3.
 #if false
     //  Implement this computed property
     var count: Int { get
@@ -127,8 +133,10 @@ class PharmaceuticalStockTracker: CustomStringConvertible {
     }
     //  Correct this method
     func addContainer(_ container: MedicationContainer) -> Bool {
-        // EDITOR keep the #if false section and remove the other section for tasks.swift
         let aCode: String = container.ndcPackageCode
+//  EDITOR, when you put these three functions back into tasks after task0.swift
+//      do not includ the following line since it is added in a later task
+        guard isFormattedAsNDCCode(code: aCode) else { return false }
         if let inStockArray = inStockMedications[aCode] {
             // if it already has an array for that ndcPackageCode, check to
             // make sure that the array does not already include this object
@@ -206,7 +214,7 @@ class TabletMedicationContainer: MedicationContainer {
 }
 
 //  Do not edit the following date utilities that you are welcome to use.
-//  You can edit the line with "ddMMMyyyy" to try different date formats
+//  However, you can edit the "ddMMMyyyy" to try different date formats.
 func daysToSeconds(_ numDays: Int) -> Double {
     let msPerDay: Double = 60 * 60 * 24
     return Double(numDays) * msPerDay
@@ -252,8 +260,7 @@ func task0() -> (MedicationContainer, MedicationContainer) {
 //  entry, go ahead and remove the Dictionary entry also.
 //
 //  When you have completed and tested the code for removeExpired(),
-//  change the constant in first line of task1() to true to indicate
-//  that Task 1 is ready to be tested.
+//  change task1() to return true rather than nil
 //
 extension PharmaceuticalStockTracker {
     func removeExpired() -> [MedicationContainer] {
@@ -278,24 +285,25 @@ extension PharmaceuticalStockTracker {
     }
 }
 func task1() -> Bool? {
-    let readyToTest = true // change to true when ready to test task1
-    guard readyToTest else { return nil }
-    // Please ignore the "will never be executed" warnings
-
+    //    return nil
+    
+    // EDITOR, when creating tasks.swift, change this back to "return nil"
     return true
 }
 
 //  Task 2
-//  The ndcPackageCode that tells what type of medication is in a container
+//  The ndcPackageCode that tells what medication is in a container
 //  follows the code pattern in the NDC database:
 //      https://www.accessdata.fda.gov/scripts/cder/ndc/dsp_searchresult.cfm
 //  Using regular expression pattern matching, add code to the isFormattedAsNDCCode()
 //  function to return true if and only if the code is in a valid pattern for those
 //  codes: [5 digits]-[3 digits]-[2 digits]. When testing your code you may use
 //  real codes from the database along with real information, or you may make them up.
+//  The only thing that matters for this exercise is matching the pattern, not
+//  whether it is an actual code from the web site.
 //
-//  When you have completed and tested the code for isFormattedAsNDCCode(), change the
-//  constant in first line of tas2() to true to indicate that it is ready to be tested.
+//  When you have completed and tested the code for isFormattedAsNDCCode(),
+//  change task2() to return true rather than nil
 
 func isFormattedAsNDCCode(code: String) -> Bool {
     // Replace the following line with your code
@@ -303,29 +311,35 @@ func isFormattedAsNDCCode(code: String) -> Bool {
     return code.range(of: #"^\d{5}[-]\d{3}[-]\d{2}$"#, options: .regularExpression) != nil
 }
 func task2() -> Bool? {
-    let readyToTest = true // change to true when ready to test task2
-    guard readyToTest else { return nil }
-    // Please ignore the "will never be executed" warning
-
+    //    return nil
+    
+    // EDITOR, when creating tasks.swift, change this back to "return nil"
     return true
 }
 
 //  Task 3
-//  Edit addContainer() to call isFormattedAsNDCCode to validate that the ndcPackageCode
-//  in the container to be added has a valid NDCCode format. If not, do not add the
-//  container and return false.
+//  Edit addContainer() to call isFormattedAsNDCCode() to validate
+//  that the ndcPackageCode in the container to be added has a valid
+//  NDCCode format. If not, do not add the container and return false.
 //
-//  Now fill out the method addContainers() below. This accepts as parameters of
-//  an expectedNdcPackageCode and a collection of containers to be added to the
+//  Now fill out the method addContainers() below. This accepts as parameters
+//  an expectedNdcPackageCode and a Set of containers to be added to the
 //  Stock Tracker. Since this system is supposed to be dealing with medications
 //  there are extra layers of checking. All of the containers to add in a call
 //  to addContainers() should have the same ndcPackageCode and that code should
-//  match the expectedNdcPackageCode. The function returns a tuple with a Bool and an
-//  enum of a type specified. Your code should return each of the enum values if it is
-//  performing all needed tests including isFormattedAsNDCCode to verify the code format.
+//  match the expectedNdcPackageCode parameter. The function returns a tuple
+//  with a Bool and an enum of Type AddMessage. As you complete the method, you
+//  should find yourself returning each of the values in AddMessage except
+//  possibly .otherAddFailure. The others all represent error (or success)
+//  conditions that you should detect as you implement addContainers(). One
+//  error you should detect would be tested by calling the function
+//  isFormattedAsNDCCode() to verify the format of the NDCCodes used.
 //
-//  When you have completed and tested the codefor addContainers(), change the constant
-//  in first line of task3() to true to indicate that it is ready to be tested.
+//  Hint: Remember to deal with both the case where there are currently no
+//  containers marching the ndcPackageCode and the casa where there are.
+//
+//  When you have completed and tested the codefor addContainers(),
+//  change task3() to return true rather than nil
 
 enum AddMessage: String {
     case success
@@ -338,7 +352,7 @@ extension PharmaceuticalStockTracker {
     func addContainers(expectedNdcPackageCode: String, containersToAdd: Set<MedicationContainer>) -> (Bool, AddMessage) {
         // Your code goes here
 
-        // The following code is used to validate the test code will be deleted for tasks.swift.
+        // EDITOR The following code is used to validate the test code will be deleted for tasks.swift.
         guard !containersToAdd.isEmpty else {
             return (false, .emptySetOfContainers)
         }
@@ -357,31 +371,30 @@ extension PharmaceuticalStockTracker {
                 return (false, .otherAddFailure)
             }
         }
-        // End of test validation code to delete for tasks.swift.
+        // EDITOR End of test validation code to delete for tasks.swift.
         
         return (true, .success)
     }
 }
 
 func task3() -> Bool? {
-    let readyToTest = true // change to true when ready to test task3
-    guard readyToTest else { return nil }
-    // Please ignore the "will never be executed" warning
-
+    //    return nil
+    
+    // EDITOR, when creating tasks.swift, change this back to "return nil"
     return true
 }
 
 //  Task 4
-//  Fill out the method currentStock(of:) below. This accepts as its parameter an
-//   ndcPackageCode. It returns a tuple with a Bool, an enum of a type specifiedanected
+//  Implement the method currentStock(of:) below. This accepts as its parameter an
+//  ndcPackageCode. It returns a tuple with a Bool, an enum of Type StockMessage
 //  and an optional array of MedicationContainers. Validate the ndcPackageCode format,
 //  check if there are any containers of that type and if there are, return them in an
 //  array. Since we should use up medications with the oldest expiration date first,
 //  sort the array by expiration date before returning it so the older expiration
 //  dates come first.
 //
-//  When you have completed and tested the code for currentStock(of:), change the constant
-//  in first line of task4() to true to indicate that it is ready to be tested.
+//  When you have completed and tested the code for currentStock(of:),
+//  change task4() to return true rather than nil
 
 enum StockMessage: String {
     case success
@@ -400,18 +413,16 @@ extension PharmaceuticalStockTracker {
         guard let containerSet =  inStockMedications[ndcPackageCode] else {
             return (false, .noInventory, nil)
         }
-        returnValue = Array(containerSet)
-        returnValue?.sort(by:<)
+        returnValue = Array(containerSet).sorted(by:<)
         // End of test validation code to delete for tasks.swift.
         
-        return (true, .success, returnValue)
+        return (true, .success, returnValue)                                                                                               
     }
 }
 func task4() -> Bool? {
-    let readyToTest = true // change to true when ready to test task4
-    guard readyToTest else { return nil }
-    // Please ignore the "will never be executed" warning
-
+    //    return nil
+    
+    // EDITOR, when creating tasks.swift, change this back to "return nil"
     return true
 }
 
@@ -421,15 +432,13 @@ func task4() -> Bool? {
 //  It returns a Bool, a SellMessage and an optional array of MedicationContainers.
 //  Like usual, this should validate the format of the ndcPackageCode, then find out
 //  if there is any inventory of the ndcPackageCode. If so, confirm that there is
-//  enough. If not return a tuple of false, an error and nil. If there is enough of
-//  the correct ndcPackageCode return a sorted array of those with the earliest
-//  expirationDate first in the array. And be sure to sell those with the earliest
-//  dates first. Be sure to subtract anything sold from the Set associated with that
-//  NDCCode in inStockMedications. And if the sale results in the Set being empty,
-//  you should remove that NDCCode from being a key in the inStockMedications Dictionary.
+//  enough. If not, return a tuple of (false, .notEnoughInventory, nil). If there
+//  is enough of inventory of the requested ndcPackageCode, be sure to sell those
+//  with the earliest dates first. Return a sorted array of the containers sold.
+//  If the sale results in the Set being empty, remove that dictionary entry..
 //
-//  When you have completed and tested the code for sellContainers(), change the constant
-//  in first line of task5() to true to indicate that it is ready to be tested.
+//  When you have completed and tested the code for sellContainers(),
+//  change task5() to return true rather than nil
 
 enum SellMessage: String {
     case success
@@ -474,123 +483,148 @@ extension PharmaceuticalStockTracker {
     }
 }
 func task5() -> Bool? {
-    let readyToTest = true // change to true when ready to test task5
-    guard readyToTest else { return nil }
-    // Please ignore the "will never be executed" warning
-
+    //    return nil
+    
+    // EDITOR, when creating tasks.swift, change this back to "return nil"
     return true
 }
 
 //  Task 6
-//  Add a mutating method called setDates to DateSequencer with one parameter called
-//  daysTuple that is a tuple of two Ints. Use them to set the values (in order)
-//  of the two properties.
+//  Add a mutating method called setDates to DateSequencer struct below
+//  with a parameter called daysTuple. The parameter should be of type (Int, Int).
+//  The method should use the parameter to set the values (in order) of the two
+//  predefined properties. THis is just to set us up for the following tasks.
 //
-//  Then apply the additional protocol DateSequencerProtocol that will let the tests
-//  conform that your solution has the correct functrions implemented
+//  Then apply the additional protocol DateSequencerProtocol that will let the
+//  tests run.
 //
-//  Then change task6() to return true rather than nil
+//  When you have completed and tested the code for setDates(),
+//  change task6() to return true rather than nil
+//
+// EDITOR: remove DateSequencerProtocol from the following line for tasks.swift
 struct DateSequencer: DateSequencerProtocol  {
     
-    var sequenceCurrent = 0
-    var sequenceEnd = 10
+    var currentDaysOut = 0
+    var lastDaysOut = 10
     
-    /* NOTE TO EDITOR: Delete the following method when creating tasks.swift
-     so the struct will just have the two private properties above. */
+    // your code goes here
+    /* NOTE TO EDITOR: Delete the following methods when creating tasks.swift
+     so the struct will just have the two properties above. */
     mutating func setDates(daysTuple: (Int, Int)) {
-        (sequenceCurrent, sequenceEnd) = daysTuple
+        (currentDaysOut, lastDaysOut) = daysTuple
     }
 }
 func task6() -> Bool? {
-//    return nil
-
-    // When creating tasks.swift, change this back to "return nil"
+    //    return nil
+    
+    // EDITOR, when creating tasks.swift, change this back to "return nil"
     return true
 }
 
 //  Task 7
-//  Edit the extension below to make the DateSequencer conform to the Sequence protocol.
-//  Use the approach that has it also conforms to the IteratorProtocol.
-//  Every time it generates a sequence element it should return a date optional that
-//  is sequenceCurrent days in the future and also increment sequenceCurrent towards
-//  sequenceEnd. That means if sequenceCurrent < sequenceEnd add one to sequenceCurrent
-//  and if sequenceCurrent > sequenceEnd subtract one from sequenceCurrent. If it
-//  is asked to generate another sequence element when sequenceCurrent == sequenceEnd
-//  return nil. Note that the date returned should be based on the value of sequenceCurrent
-//  prior to its being incremented. You are welcome to call daysToMs() or futureDate()
-//  or borrow code from them.
+//  Add to the extension below to make the DateSequencer conform to the Sequence
+//  protocol. In conforming to this protocol you can either have the object create
+//  a serpate iterator or you can have the object be its own itnernator. For this
+//  task, use the option where it is its own interator so in addition to conform
+//  to Sequence, it needs to explicitly conform to IteratorProtocol. You will
+//  need to add both of these protocols to the first line of the extension.
 //
-//  Then apply the additional protocol DateSequencerProtocol2 to the extension that
-//  will let the tests conform that your solution has the correct functrion implemented
+//  The next() function you implement to conform should return a date optional.
+//      If currentDaysOut == lastDaysOut then it should return nil.
+//      Otherwise it should return a Date currentDaysOut in the future.
+//  Returning nil is how it indicates that the sequence is complete.
+//  It should then increment currentDaysOut "towards" lastDaysOut. That is:
+//      if currentDaysOut < lastDaysOut add 1 to currentDaysOut
+//      if currentDaysOut > lastDaysOut subtract 1 from currentDaysOut.
+//  In implementing this, you are welcome to call either or
+//  both of daysToMs() and futureDate() or to borrow code from them.
 //
-//  Then change task7() to return true rather than nil
+//  The result of your code will be objects that generate a sequence of dates.
+//  if you call setDates(x, y) then the struct will behave as a sequence of dates
+//  starting x days in the future and continuing up or down the calendar until
+//  just before it would output y days into the future.
 //
-/* NOTE TO EDITOR: use the following version of the extension that is empty and
- without the list of protocols when creating tasks.swift
- */
-// extension DateSequencer {
-// }
+//  When you have completed and tested these changes apply the additional
+//  protocol DateSequencerProtocol2 to the extension abd change task7() to
+//  return true rather than nil.
+//
 
 extension DateSequencer: Sequence, IteratorProtocol, DateSequencerProtocol2  {
+    // add your code here
+//  EDITOR: for tasks.swift delete the contents of the extension and
+//      remove all three protocols from the previous line
     mutating func next() -> Date? {
-        if sequenceCurrent < sequenceEnd {
-            sequenceCurrent += 1
-            return Date(timeIntervalSinceNow: daysToSeconds(sequenceCurrent-1))
-        } else if sequenceCurrent > sequenceEnd {
-            sequenceCurrent -= 1
-            return Date(timeIntervalSinceNow: daysToSeconds(sequenceCurrent+1))
+        if currentDaysOut < lastDaysOut {
+            currentDaysOut += 1
+            return Date(timeIntervalSinceNow: daysToSeconds(currentDaysOut-1))
+        } else if currentDaysOut > lastDaysOut {
+            currentDaysOut -= 1
+            return Date(timeIntervalSinceNow: daysToSeconds(currentDaysOut+1))
         } else {
             return nil
         }
     }
 }
 func task7() -> Bool? {
-//    return nil
-
-    // When creating tasks.swift, change this back to "return nil"
+    //    return nil
+    
+    // EDITOR, when creating tasks.swift, change this back to "return nil"
     return true
 }
 
 //  Task 8
-//  Add an empty variable of Type [Date] called returnValue.
-//  Add code to task8() that creates a local object of type DateSequencer. Use the
-//  input paramater with .setDates() to set the properties inside that DateSequencer
-//  object. Add "for let aDate in yourObject" to create a loop where
-//  "yourObject" is whatever you called your DateSequencer object.
-//  Inside that loop, append each date returned by the DateSequencer
-//  to the returnValue array. Then return the returnValue array instead of nil.
+//  Lets demonstrate how having our our the DateSequencer object conform to
+//  Sequence really addes value. In task8() below, create a DateSequencer
+//  object. Call setDates() on your DateSequencer using the parameterts passed
+//  into task8(). Create an empty array of type [Date]. Then write a for-in
+//  loop that loops on your DateSequencer that appends each item returns to your
+//  array of Dates. The result will be that for-in uses your struct to hel you
+//  create an array of dates that matches the parameters.
+//
+//  When you are done with your code, change task8() to return the array produced
+//  instead of returning nil.
+//
 func task8(_ aTuple: (Int, Int)) -> [Date]? {
     //    return nil
 
     // The following code used to validate the test code will be deleted for tasks.swift.
-    var returnValue: [Date] = []
     var seqObj = DateSequencer()
     seqObj.setDates(daysTuple: aTuple)
+    var returnValue: [Date] = []
     for aDate in seqObj { returnValue.append(aDate) }
     return returnValue
 }
 
 //  Task 9
-//  Suppose we want to sort the objects in a Collection by size (using the "count"
-//  property in those objects). If we have many different configurations of Collections,
-//  we would need to write and test many different sort functions. Look in the body of
-//  task9() below to see just a few samples of the different configurations that would
-//  each need their own function. That would include any object that has a count property
-//  including objects from our custom PharmaceuticalStockTracker class. Fortunately,
-//  we can write a single generic method to cover all of those cases.
+//  Now that we have seen how conformance to the simple Sequence protocol unlocked
+//  somewhat surprising power, let's experiment with how a simple use of a
+//  generic method extension combined with a simple protocol can have far reaching
+//  effects on a wide range of different types of collections of objects.
 //
-//  First, to identify which object Types can use this method, we have defined a protocol
-//  that just confirms the Type has a count property. In many cases, including our
-//  PharmaceuticalStockTracker class the count proerty is computed, but it does not
-//  matter for our purposes whether it is or is not computed. Here is the protocol:
+//  Suppose we want to sort the object in a Collection by size (using the "count"
+//  property already built into most objects). We could write a special sort method
+//  for one particular type of collection such as an Array of Strings. But we could
+//  also create a generic method that would work for any collections where the
+//  elements implement count.
+//
+//  First, to identify which object Types can use this method, we have defined a
+//  Protocol that just confirms the Type has a "count" property. In most cases,
+//  including our PharmaceuticalStockTracker class, the count proerty is computed.
+//  All our Protocol cares about is that the property exists, not whether it is
+//  a stored or computed propety. Here where we define the Protocol:
 
 protocol Countable {
     var count: Int { get }
 }
 
-//  Swift does not implicitly recognize compliance with a protocol. We need to explicitly
-//  state the compliance. One way to do that is in an extension of an existing type. So
-//  let's mark some common Types as Countable.
+//  Swift does not implicitly recognize compliance with a protocol. Even though
+//  many Types have a count propertry and would comply with this property, we
+//  must explicitly state that compliance, for example with an extension like
+//  we do here for many common Types. Note that we are able to apply this to
+//  generic Types. Applying it to Set means it works for any Set no matter
+//  what contents it has. Likewise for Array, Dictionary and String. We
+//  can also apply it to our PharmaceuticalStockTracker since it has an Int
+//  property called count.
 
 extension Array: Countable {}
 extension Set: Countable {}
@@ -598,22 +632,42 @@ extension Dictionary: Countable {}
 extension String: Countable {}
 extension PharmaceuticalStockTracker: Countable {}
 
-//  Now we can define a generic method that applies to any type of
+//  Now we can define a generic method that applies to any
 //  Collection where the Elements are of a Countable Type.
-//  Elements of the type are Countable. Element is a predefined
-//  Associated Type within all Collection Types. Uncomment the
-//  two lines defining an empty sortedBySize() function and
-//  add functionaity to return an Array with the sorted Elemements
-//  of the top level Collection. Sort them according the size
-//  or count of each Element, increasing ro decreasing accoring to
-//  the parameter to the call. You can call the built-in
-//  sort function which is available for all Collections.
+//  Element is a predefined placeholder that representes the type
+//  of object that is collected in a Collection. We can require in
+//  the extension below that it apply to any Collection where
+//  Element (representing the Type of objects in the Collection) is
+//  Countable.
+//
+//  Your assignment is to replace "return []" in sortedBySize()
+//  below with code that sorts the top level elements of
+//  the Collection by size using the "count" property. Sort them
+//  increasing or decreasing accoring to the parameter. You
+//  are welcome to call the Built-In sort() Function to help you
+//  implement sortedBySize().
+//
+//  Once you write the method it will automatically apply to any
+//  Type that is a child of Collection that has Elements that comply
+//  with Countable. Suppose you came across another type of Collection
+//  called SpecialCollection. All you need to add is one line:
+//      extension SpecialCollection: Countable {}
+//  and you can apply sortedBySize() to Collections of that Type as well.
+//  With one line like that, this extension can be applied to types that
+//  not even exist yet.
+//
+//  When you have implemented sortedBySize() comment out the "return nil"
+//  line at the start task9. This will allow a test and demonstration of
+//  some of the many different combinations types that now can be sorted
+//  by size using this single generic method.
+
 
 extension Collection where Element: Countable {
     func sortedBySize(increasing: Bool = true) -> Array<Element> {
         // replace "return []" with your code to implement the sort
-        // Note to EDITOR: to prepare tasks.swift delete the following 6 lines
-        // and replace them with "return []"
+        // EDITOR: to prepare tasks.swift delete the body of this
+        // function and replacer it with "return []"
+        
         return self.sorted(by: { lhs, rhs in
             if increasing {
                 return lhs.count < rhs.count
@@ -623,16 +677,11 @@ extension Collection where Element: Countable {
     }
 }
 
-//  When you have implemented sortedBySize() change the constant in the
-// first line of task9() to true.
-
 func task9() -> Bool? {
-    // change to true when ready to test task9
-    // DO NOT change any other lines in task9()
-    let readyToTest = true
-    guard readyToTest else { return nil }
-    // Please ignore the "will never be executed" warning
+// EDITOR, uncomment the following line when creating tasks.swkft
+    // return nil // comment out this line when you are ready to test Task 9
 
+    // Please ignore a possible "will never be executed" warning
     let arrayOfStrings = ["One", "Three", "Five"]
     testPrint("arrayOfStrings.sortedBySize() increasing, then decreasing:")
     testPrint(">  \(arrayOfStrings.sortedBySize())")
@@ -701,19 +750,23 @@ func task9() -> Bool? {
     //  generateTracker(_ countainerCount: Int) is implemented in
     //  main.swift. It generates a sample PharmaceuticalStockTracker
     //  with countainerCount MedicationContainers in it. It is only
-    //  implemented for containerCounts in 1...3 and 6.
+    //  implemented for containerCounts in 1, 2, 3 and 6.
     
     //  This first example is sorting PharmaceuticalStockTrackers to see which location or
-    //  warehouse represented by a PharmaceuticalStockTrackers has the most or least inventory.
+    //  warehouse represented by a PharmaceuticalStockTrackers have the most or least inventory.
     let arrayOfPharmaceuticalStockTrackers: [PharmaceuticalStockTracker] = [generateTracker(1), generateTracker(2), generateTracker(3)]
     testPrint("arrayOfPharmaceuticalStockTrackers.sortedBySize() increasing, then decreasing:")
     testPrint(">  \(arrayOfPharmaceuticalStockTrackers.sortedBySize())")
     testPrint("<  \(arrayOfPharmaceuticalStockTrackers.sortedBySize(increasing: false))")
 
     //  Now let's get a sorted array of all of the inventory in dictionaries inside a
-    //  PharmaceuticalStockTracker. We use summarizeSetsOfMedicationContainers to
-    //  provide a summary of the Sets. Otherwise this would print the detailed contents
-    //  of each MedicationContainer in each Set in the Dictionary.
+    //  PharmaceuticalStockTracker. We use sortedBySize to provide a sorted list of which
+    //  ndcPackageCodes have the most or least inventory in this tracker.
+    //  Note: to make the results more meaningful we use a funcation provided in main.swift
+    //  called summarizeSetsOfMedicationContainers(). This provides a summary of each Dictionary
+    //  or Set. Otherwise the following lines would print the detailed contents of each
+    //  MedicationContainer in inventory which would be a lot more detailed content to read
+    //  through to validate that the function is working correctly..
     let aStockTracker = generateTracker(6)
     testPrint("aStockTracker.inStockMedications.sortedBySize() increasing, then decreasing:")
     testPrint(">  \(summarizeSetsOfMedicationContainers(aStockTracker.inStockMedications.values.sortedBySize()))")
