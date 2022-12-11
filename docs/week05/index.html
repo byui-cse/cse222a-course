@@ -190,9 +190,9 @@
     </p>
     <pre><code class="Swift">//some aliases to make the code easier to read
 typealias DataDictionary = Dictionary&lt;String,Any&gt;
+typealias CommandFunction = (DataDictionary) -> (CommandMessages, DataDictionary?)
 typealias CommandDictionary = 
-      Dictionary&lt;String,(DataDictionary) -> (StatusMessages, DataDictionary?)&gt;
-</code></pre>
+      Dictionary&lt;String, CommandFunction&gt;</code></pre>
     <p>
       This supposes that we have an enum Type of possible errors (and .success) called 
       <kbd>StatusMessages</kbd>. Each entry in our <kbd>CommandDictionary</kbd> has
@@ -233,19 +233,38 @@ guard let charsToRead = data[“charsToRead”] as? Int else { handle error }</c
       call <kbd>commands</kbd>. As mentioned, we also have an enum Type of possible Error 
       Codes (plus one for .success) called <kbd>StatusMessages</kbd>. With those assumptions
       our execution engine look like this:
-<pre><code class="Swift">func handleRequest(aCommand:String, theData:DataDictionary)
-        -> (StatusMessages,DataDictionary?) {    guard let aCommandFunction = commands[aCommand] else {
-        return (.invalidCommand,theData)
+<pre><code class="Swift">enum CommandMessages {
+    case success
+    case invalidCommand
+}
+      
+func handleRequest(command: String, dataIn: DataDictionary) -> (CommandMessages, DataDictionary?) {
+    guard let commandFunction = commands[command] else {
+        var resposeData = dataIn
+        resposeData["response"] = "\(command) is not a valid command"
+        return (.invalidCommand, resposeData)
     }
-    let (message, responseData) = aCommandFunction(theData)
-    guard let responseData = responseData, message ==.success else {
-        return (message, theData)
+    let (message, responseData) = commandFunction(dataIn)
+    guard let responseData = responseData, message == .success else {
+        return (message, dataIn)
     }
-    return (.success,theResponseData)
+    return (.success, responseData)
+}</code></pre>
+              
+  <p>
+    This allows us to write and test a closure for each command. We would
+    need to have a way to make those closures accessible to handleRequest(), 
+    something like this:
+  </p>
+              <pre><code class="Swift">var commands: CommandDictionary = [:]
+
+func loadCommand(command: String, aFunc: @escaping CommandFunction) {
+    if command != "" {
+        commands[command] = aFunc
+    }
 }</code></pre>
     <p>
-      This allows us to write and test a closure for each command. As 
-      mentioned earlier, if there we want to separate the processing of
+      As mentioned earlier, if there we want to separate the processing of
       commands into three separate phases for each command, we could 
        implement three separate instances of <kbd>CommandDictionary</kbd>. 
         Our execution engine would validate that the command has been loaded 
@@ -438,223 +457,6 @@ guard let charsToRead = data[“charsToRead”] as? Int else { handle error }</c
                   </p>
 <pre><code class="Swift">guard let anInt = try? canThrow() else {
     report error, then return, continue or break
-}</code></pre>
-                  
-                  <h3>Data from a Web Site</h3>
-                  <p>
-                    One common thing we may want to do is retrieve data from a web site. 
-                    In Swift, the preferred way to do that in most cases it to use 
-                    <kbd>URLSession</kbd>. Here is some code that can do that:
-              </p>
-<pre><code class="Swift">guard let url = URL(string: "https://someWebSite") else {
-    handle error in URL format
-}
-var result: String = ""
-var done = false
-let task = URLSession.shared.dataTask(with: url) {
-    (data, response, error) in
-    if let anError = error {
-        handle error
-        done = true
-        return
-    }
-    guard let data = data else { 
-        handle unknown error
-        done = true
-        return
-    }
-    guard let theResult = String(data: data, encoding: .utf8) else { 
-      handle error converting data to String
-      done = true
-      return
-    }
-    result = theResult
-    done = true
-}
-
-task.resume()
-while !done {
-    do something else useful
-}
-print("Data: \(result)")</code></pre>
-                  <p>
-                    In this sample code we use <kbd>URLSession</kbd> to create a 
-                    <kbd>dataTask</kbd> with a URL and a closure. Swift concurrency 
-                    is beyond the scope of this course, but for now you just need to 
-                    know that the task it returns will execute concurrently from the 
-                    rest of our code and that it is initially in a suspended state. 
-                    We call .resume to have it start to do its work.
-                  </p>
-                  <p>
-                    The closure will be called when pulling data from
-                    the web site completes or fails. While the task is running, 
-                    our main code can do something else. Since both the web access 
-                    and  the closure run in a separate task, we need 
-                    a way to communicate its completion back to the main code. 
-                    We use the variable <kbd>done</kbd> as a simple semaphore to indicate 
-                    completion after the closure fills in the String. And we are 
-                    careful to not look at nor modify the String or other 
-                    variables the closure may affect until <kbd>done</kbd> is true.
-                  </p>
-                  <p>
-                    In addition to <kbd>dataTask</kbd>, <kbd>URLSessions</kbd> can also 
-                    use a <kbd>downloadTask</kbd> to download larger amounts of data 
-                    from the web to a file, use <kbd>uploadTask</kbd> to send a file 
-                    to a web site or use <kbd>streamTask</kbd> to establish a 
-                    bidirectional TCP/IP connection. When web sites return smaller 
-                    amounts of data like we would use with a <kbd>dataTask</kbd>, 
-                    they return the data in JSON format. The sample code above 
-                    just converts the entire block of returned data to a String. 
-                    But as we will see next, Swift has the capability to 
-                    help you parse JSON data into one or more data structures.
-                  </p>
-                  
-                  <h3>Decoding JSON Data</h3>
-                  <p>
-                    <a
-                      href="https://www.json.org/json-en.html"
-                      target="_blank"
-                    >JSON</a> is a standard way for web applications and some other 
-                    software to exchange data. Swift has a built-in decoder and 
-                    encoder for JSON. Suppose we want to decode some JSON data 
-                    that looks like this:
-                  </p>
-<pre><code class="Swift">{"country": "United States",
-        "places": [{"longitude": "-122.0152", "latitude": "37.0597"}]}</code></pre>
-                  <p>
-                    First, we would set up a matching struct. In this case, 
-                    since there is an Array inside the JSON, we would need 
-                    two structs. We mark both as conforming to the <kbd>Codable</kbd> 
-                    protocol which will validate that we can use the automatic 
-                    conversion like this:
-                  </p>
-<pre><code class="Swift">struct Place: Codable {
-    var longitude: String
-    var latitude: String
-}
-struct SomeData: Codable {
-    var country: String
-    var places: [Place]
-}</code></pre>
-                  <p>
-                    Then we create a decoder object and call it passing 
-                    the structure and the JSON data.
-                  </p>
-<pre><code class="Swift">let decoder = JSONDecoder()
-do {
-    let decoded = try decoder.decode(SomeData.self, from: JSONdata)
-    print(decoded)
-} catch {
-    print("decoder failed: \(error)")
-}</code></pre>
-                  <p>
-                    This is a good example of the power of 
-                    do-try-catch. If the JSONdata matches the structure 
-                    it will be filled in, but if not, then the error 
-                    message provides a good indication what went wrong.
-                    Note that you do not need to include every field from
-                    the JSON data as a property of your struct. If you
-                    leave the properties matching some fields out of your
-                    struct the decoder will just ignore those fields.
-                    Also note that numbers in the JSON data will come in
-                    as Strings. The corresponding properties for an Int or
-                    Double in the JSON data should be of type String and
-                    then you can try to covert them later using Int() or
-                    Double().
-                  </p>
-                  <p>
-                    Suppose the JSON data has something difficult to 
-                    match in a Swift structure like a space in a key 
-                    name like this:
-                  </p>
-<pre><code class="Swift">{"post code": "95066", "country": "United States", 
-      "places": [{"place name": "Scotts Valley", "longitude": "-122.0152", 
-      "latitude": "37.0597"}]}</code></pre>
-                  <p>
-                    We can’t really give "post code" a matching property 
-                    name with a space in it. One way to address this is that
-                    JSON allows us to specify a custom dictionary. That
-                    also allows us to do custom mappings if we want to 
-                    change names in our data structure from what is in
-                    the JSON. We put the dictionary for the custom 
-                    mapping as an enum as a property of the structure.
-                    The enum is called <kbd>CodingKeys</kbd> that conforms 
-                    to both the <kbd>String</kbd> and <kbd>CodingKey</kbd> 
-                    protocols. It must contain a case for every property 
-                    being decoded. We just list those that stay the same
-                    as a case entry with no value, but for those that need 
-                    a special mapping we list them explicitly so the class
-                    <kbd>SomeData</kbd> looks like this:
-<pre><code class="Swift">struct SomeData: Codable {
-    enum CodingKeys: String, CodingKey {
-        case country
-        case postCode = "post code"
-        case placeArray = "places"
-    }
-    var postCode: String
-    var country: String
-    var placesArray: [Place]
-}</code></pre>
-                </p>
-                  <p>
-                This allows "post code" to map to <kbd>postCode</kbd> 
-                and also renames “places” to be <kbd>placeArray</kbd>. 
-                With this functionality, you can easily decode most 
-                JSON data into your own data structures. 
-                  </p>
-                  <p>
-                In the previous section, we converted the data 
-                from the web site to a String. Now we can use 
-                JSONdecoder to decode that web data directly 
-                into a structure for use by our application. Putting it
-                all together looks like this:
-              </p>
-<pre><code class="Swift">guard let url = URL(string: "https://someWebSite") else {
-    handle error in URL format
-}
-var JSONdata: Data? = nil
-var done = false
-let task = URLSession.shared.dataTask(with: url) {
-    (data, response, error) in
-    if error = error {
-        handle web error
-        done = true
-        return
-    }
-    guard let data = data else { 
-        handle unknown error
-        done = true
-        return
-    }
-    JSONdata = data
-    done = true
-}
-
-task.resume()
-while !done {
-do something else useful
-}
-
-struct Place: Codable {
-    var longitude: String
-    var latitude: String
-}
-struct SomeData: Codable {
-    enum CodingKeys: String, CodingKey {
-        case country
-        case postCode = "post code"
-        case placeArray = "places"
-    }
-    var postCode: String
-    var country: String
-    var placesArray: [Place]
-}
-
-do {
-    let decoded = try decoder.decode(SomeData.self, from: JSONdata)
-    print(decoded)
-} catch {
-    print("decoder failed: \(error)")
 }</code></pre>
 
     <footer>

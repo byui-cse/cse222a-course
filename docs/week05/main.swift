@@ -23,7 +23,7 @@ enum TestResults {
 
 // This must list the tests in order: test0, test1... so they can be called with their test number and
 // not need to hard code the Task name into the test except when calling the task function
-private var tests: [(Int) -> TestResults] = [test0, test1, test2, test3, test4, test5, test6, test7, test8, test9]
+private var tests: [(Int) -> TestResults] = [test0, test1, test2, test3, test4]
 private var taskResults: [TestResults] = Array(repeating: .testNotImplemented, count: tests.count)
 private var savedInput: [String?] = []
 private var savedPrint: [String?] = []
@@ -132,45 +132,20 @@ func fail(_ testNum: Int, _ message: String) -> TestResults {
 //  ========= Concepts taught or reinforced in each task  =========
 /*
  Task 0
- •
- •
- •
+ •  enums with associated values
+ •  working with arrays of enums
+ •  simulating a random walk
  Task 1
- •
- •
- •
+ •  implementing code that throws errors
+ •  processing arrays of optionals
  Task 2
- •
- •
- •
+ •  calling a function that can throw
+ •  using Do-Try-Catch to handle thorn errors
+ •  using "throw error" to forward an error up the call stack
  Task 3
- •  random walk
- •
- •
+ •  TBD
  Task 4
- •  Do-Try-Catch with nil data
- •
- •
- Task 5
- •  Do-Try-Catch with black box
- •
- •
- Task 6
- •  Read Data from Web site
- •
- •
-Task 7
- •  Decode data
- •
- •
- Task 8
- •  Decode data on your own
- •
- •
-Task 9
- •  Access web site and decode data
- •
- •
+ •  TBD
  */
 
 //  ========= Tests =========
@@ -181,36 +156,6 @@ private func setupGlobals() -> Bool {
     walks = []
     ExpectedURLdata = #"{"post code": "83460", "country": "United States", "country abbreviation": "US", "places": [{"place name": "Rexburg", "longitude": "-111.691", "state": "Idaho", "state abbreviation": "ID", "latitude": "43.7761"}]}"#
     return true
-}
-
-private func test0(testNum: Int) -> TestResults {
-
-    guard let returnValue = task0() else { return .testNotImplemented }
-        if returnValue != true {
-            return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
-        }
-
-    return .testPassed
-}
-
-private func test1(testNum: Int) -> TestResults {
-
-    guard let returnValue = task1() else { return .testNotImplemented }
-        if returnValue != true {
-            return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
-        }
-
-    return .testPassed
-}
-
-private func test2(testNum: Int) -> TestResults {
-
-    guard let returnValue = task2() else { return .testNotImplemented }
-        if returnValue != true {
-            return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
-        }
-
-    return .testPassed
 }
 
 func saveWalk(_ theSteps: [Steps]) {
@@ -249,16 +194,16 @@ private func doWalk(_ theSteps: [Steps]) -> String {
     result += " E\(location.0),\(location.1)"
     return result
 }
-private func test3(testNum: Int) -> TestResults {
+private func test0(testNum: Int) -> TestResults {
 
     walks = []
-    guard let returnValue = task3() else { return .testNotImplemented }
+    guard let returnValue = task0() else { return .testNotImplemented }
         if returnValue != true {
             return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
         }
 
     guard walks.count >= 5 else {
-        return fail(testNum, "Expected task at least 5 random walk tests, but only see \(walks.count)")
+        return fail(testNum, "Expected at least 5 random walk tests, but only see \(walks.count) tests")
     }
     guard walks.count ==  savedPrint.count else {
         return fail(testNum, "Expected one line printed per random walk test, but see \(savedPrint.count) lines printed for \(walks.count) random walk tests")
@@ -279,15 +224,20 @@ private func test3(testNum: Int) -> TestResults {
     return passCode
 }
 
-private func test4(testNum: Int) -> TestResults {
+private func test1(testNum: Int) -> TestResults {
 
+    //  We will randomly do nil or not nil, but we want to do at least 2
+    //  with and 2 without nil so we count how many of each we did
     var didWithNil = 0
     var didWithoutNil = 0;
+    // We want at least 5 total, but want at least 2 with and 2 without nil
     while didWithNil + didWithoutNil < 5 || didWithNil < 2 || didWithoutNil < 2 {
         var anArray:[Int?] = (-10...10).randomArray(Int.random(in: 5...10))
         var doNil = Int.random(in: 0...1) == 0 // 50% chance of doing nils
         // if we didn't get at least 2 of each then force it
         var firstNil = 0
+        //  If we have 5 or more then force coverage of with or without nil,
+        //  whichever did not have enough
         if didWithNil + didWithoutNil >= 5 {
             if didWithNil < 2 {
                 doNil = true
@@ -295,19 +245,23 @@ private func test4(testNum: Int) -> TestResults {
                 doNil = false
             }
         }
+        // If doing nil, randomly choose whee in the array it will appear
         if doNil {
             didWithNil += 1
             firstNil = Int.random(in: 0..<anArray.count)
             anArray[firstNil] = nil
-            if firstNil < anArray.count / 2 { // nil in first half so add a second
+            // If our nil value is in the first half of the array,
+            // insert a second nil in the second half
+            if firstNil < anArray.count / 2 {
                 anArray[Int.random(in: firstNil+1..<anArray.count)] = nil
             }
         } else {
             didWithoutNil += 1
         }
   
+        // Call task1() catching the thrown "errors" and comparing results
         do {
-            guard let returnValue = try task4(anArray) else {
+            guard let returnValue = try task1(anArray) else {
                 return .testNotImplemented
             }
             guard !doNil else {
@@ -317,7 +271,7 @@ private func test4(testNum: Int) -> TestResults {
             guard returnValue == wantResult else {
                 return fail(testNum, "The following array should have returned the total of \(wantResult), but returned \(returnValue)\n\t\(anArray.compactMap{$0})")
             }
-        } catch task4ErrorType.nilValueAt(let errorIndex) {
+        } catch task1ErrorType.nilValueAt(let errorIndex) {
             guard
                 doNil else {
                 return fail(testNum, "Array without any nil values threw an error claiming thre was a nil at index \(errorIndex)")
@@ -326,7 +280,7 @@ private func test4(testNum: Int) -> TestResults {
                 return fail(testNum, "Array with first nil values at index \(firstNil) threw an error claiming thre was a nil at index \(errorIndex)")
             }
         } catch {
-            return fail(testNum, "Expected throw with task4ErrorType.nilValueAt, but did a throw with other error: \(error)")
+            return fail(testNum, "Expected throw with task1ErrorType.nilValueAt, but did a throw with other error: \(error)")
         }
         
     }
@@ -334,50 +288,69 @@ private func test4(testNum: Int) -> TestResults {
     return .testPassed
 }
 
-private func test5(testNum: Int) -> TestResults {
+private func test2(testNum: Int) -> TestResults {
     
-    // make these global
+    //  Set up some arrays to control the test
+    //  This is tha array passed to task2()
     let testArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    //  This is the array of values we return from the function
+    //  a nil value means to throw an error instead
     let testReturnValue = [0, nil, 2, 3, nil, 5, nil, 7, nil, 9]
-    let throwErrors: [task5ErrorType] = [
+    //  These are the errors we will throw for the nil values (in sequence)
+    let throwErrors: [Task2ErrorType] = [
         .someError,
         .errorWithInt(17),
         .errorWithString("Expected"),
         .errorWithDouble(14.3)
     ]
+    //  This is what we expect testPrinted for each error thrown
     let expectedPrint = [
         "Error: someError",
         "Error: errorWithInt 17",
         "Error: errorWithString Expected",
         "Error: errorWithDouble 14.3"
     ]
-    let unexpectedErrorString = "Unexpected error that is actually expected at this point"
-    let expectedValueUnexpectedError = "unexpectedError(\"Unexpected error that is actually expected at this point\")"
+    // Used to step through the errors each time we throw one
     var throwIndex = 0;
+    // String for when we throw an "unexpected" error
+    let unexpectedErrorString = "Unexpected error that is actually expected at this point"
+    // Value expected to come back to us for the unexpected error
+    let expectedValueUnexpectedError = "unexpectedError(\"Unexpected error that is actually expected at this point\")"
 
+    //  Remove all the spaces in a string so we can test the student's
+    //  printed results without worrying about spaces
     func unSpaced(_ stringWithSpaces: String) -> String {
         return stringWithSpaces.filter { $0 != " "}
     }
+    //  used to throw the "unexpected" error
     enum unexpectedErrorType: Error {
         case unexpectedError(String)
     }
+    // This is the function we pass to task3()
     func canThrow(_ anInt: Int) throws -> Int {
+        // Make sure we were called with a valid value
         guard (0..<testReturnValue.count).contains(anInt) else {
             throw unexpectedErrorType.unexpectedError("Expected canThrow to be called with values from the passsed array which are all in 0..<10, but it was called with \(anInt)")
         }
+        // Check if we should return an Int. nil values mean throw error
         guard let returnValue = testReturnValue[anInt] else {
             throwIndex += 1
             if throwIndex-1 < throwErrors.count {
                 throw throwErrors[throwIndex-1]
             } else {
+                //  The first time we call task2() this should not happen
+                //  If it does, it should cause task2() to "throw error"
+                //  which would prevent us from testing the returned value
                 throw unexpectedErrorType.unexpectedError(unexpectedErrorString)
             }
         }
         return returnValue
     }
 
+    // Call task2() the first time
+    // We catch the error, but it should not be thrown the first time
     do {
-        guard let returnValue = try task5(intArray: testArray, canThrow: canThrow) else {
+        guard let returnValue = try task2(intArray: testArray, canThrow: canThrow) else {
             return .testNotImplemented
         }
         guard savedPrint.count == throwErrors.count else {
@@ -398,134 +371,45 @@ private func test5(testNum: Int) -> TestResults {
             }
         }
     } catch {
-        return fail(testNum, "Did not expect unexpected error to be thrown from task5 during the first \(testArray.count) integers processed")
+        return fail(testNum, "Did not expect unexpected error to be thrown from task2 during the first \(testArray.count) integers processed")
     }
+
+    //  Now call task2() again. This time it should throw an unexpected
+    //  error so check if it is corectly thrown.
     do {
         // Call it one more time passing in a value that will cause it to throw an "expected" unexpected error
-        guard let returnValue = try task5(intArray: [1], canThrow: canThrow) else {
-            return fail(testNum, "Expected the second call to task5() to throw an error, but instead returned nil")
+        guard let returnValue = try task2(intArray: [1], canThrow: canThrow) else {
+            return fail(testNum, "Expected the second call to task2() to throw an error, but instead returned nil")
        }
-        return fail(testNum, "Expected second call to task5() to throw an \"unexpected\" error, but instead it returned  \(returnValue)")
+        return fail(testNum, "Expected second call to task2() to throw an \"unexpected\" error, but instead it returned  \(returnValue)")
     } catch {
         guard savedPrint.count == throwErrors.count else {
             return fail(testNum, "Did not expect throw of an \"unexpected\" error to call testPrint()")
         }
         let expectedError = "unexpectedError(\""+unexpectedErrorString+")\""
         guard String(describing: error) == expectedValueUnexpectedError else {
-            return fail(testNum, "Expected String(describing:) the error thrown from the second call to task5() to be:\n\t\(expectedError)\nbut it was:\n\t\(String(describing: error))")
+            return fail(testNum, "Expected String(describing:) the error thrown from the second call to task2() to be:\n\t\(expectedError)\nbut it was:\n\t\(String(describing: error))")
         }
     }
     return .testPassed
 }
-private func test6(testNum: Int) -> TestResults {
 
-    guard let (returnData, returnString) = task6(aURL: "https://api.zippopotam.us/us/83460") else { return .testNotImplemented }
-    guard returnString == ExpectedURLdata else {
-        return fail(testNum, "Returned:\n\t\(returnString)\nbut expected return to be\n\t\(ExpectedURLdata)")
-    }
-    guard String(data: returnData, encoding: .utf8) == returnString else {
-        return fail(testNum, "Returned Data does not match Returned String")
-    }
-    return .testPassed
-}
+private func test3(testNum: Int) -> TestResults {
 
-protocol Task7Protocol {
-    var name: String { get set }
-    var address: String { get set }
-    var city: String { get set }
-    var state: String { get set }
-    var zip: String { get set }
-    var country: String { get set }
-}
-extension Task7Protocol {
-    func checkTestData() -> Bool {
-        return name == "Equardo Jones" &&
-        address == "13 Camino do Oro" &&
-        city == "Rexburg" &&
-        state == "Idaho" &&
-        zip  == "83460" &&
-        country == "United States"
-    }
-}
-private func test7(testNum: Int) -> TestResults {
-
-    // We use Any to allow it to compile while the as? tests fail before task8() is completed
-    guard let returnValue: Any = task7() else { return .testNotImplemented }
-    guard let returnProtocol = returnValue as? Task7Protocol else {
-        return fail(testNum, "Expected Task7Data tp conmform to Task7Protocol")
-    }
-    let wantReturnedString = #"Task7Data(name: "Equardo Jones", address: "13 Camino do Oro", city: "Rexburg", state: "Idaho", zip: "83460", country: "United States")"#
-    guard returnProtocol.checkTestData() else {
-       return fail(testNum, "Returned value\n\t\(returnProtocol)\ndoes not match\n\t\(wantReturnedString)")
-    }
+    guard let returnValue = task3() else { return .testNotImplemented }
+        if returnValue != true {
+            return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
+        }
 
     return .testPassed
 }
 
-protocol Task8Protocol1 {
-    var placeName: String { get set }
-    var longitude: String { get set }
-    var state: String { get set }
-    var stateAbbreviation: String { get set }
-    var latitude: String { get set }
-}
-extension Task8Protocol1 {
-    func checkTestData() -> Bool {
-        return placeName == "Rexburg" &&
-        longitude == "-111.691" &&
-        state == "Idaho" &&
-        stateAbbreviation == "ID" &&
-        latitude == "43.7761"
-    }
-}
-protocol Task8Protocol2 {
-    var postCode: String { get set }
-    var country: String { get set }
-    var countryAbbreviation: String { get set }
-    var placeArray: [Place]  { get set }
-}
-extension Task8Protocol2 {
-    func checkTestData() -> Bool {
-        return postCode == "83460" &&
-        country == "United States" &&
-        countryAbbreviation == "US"
-    }
-}
-private func test8(testNum: Int) -> TestResults {
+private func test4(testNum: Int) -> TestResults {
 
-    let JSONdata = #"{"post code": "83460", "country": "United States", "country abbreviation": "US", "places": [{"place name": "Rexburg", "longitude": "-111.691", "state": "Idaho", "state abbreviation": "ID", "latitude": "43.7761"}]}"#.data(using: .utf8) ?? Data()
-// We use Any to allow it to compile while the as? tests fail before task8() is completed
-    guard let returnValue: Any = task8(JSONdata: JSONdata) else { return .testNotImplemented }
-    guard let returnProtocol = returnValue as? Task8Protocol2 else {
-        return fail(testNum, "Expected GeoData tp conmform to Task8Protocol2")
-    }
-    let returnArray: Any = returnProtocol.placeArray
-    guard let returnPlaceArray = returnArray as? [Task8Protocol1] else {
-        return fail(testNum, "Expected Place tp conmform to Task8Protocol1")
-    }
-    let wantReturnedString = #"GeoData(postCode: "83460", country: "United States", countryAbbreviation: "US", placeArray: [Week5Completed.Place(placeName: "Rexburg", longitude: "-111.691", state: "Idaho", stateAbbreviation: "ID", latitude: "43.7761")])"#
-    guard returnProtocol.checkTestData() else {
-       return fail(testNum, "Returned value\n\t\(returnProtocol)\ndoes not match\n\t\(wantReturnedString)")
-    }
-    guard returnPlaceArray.count == 1 else {
-       return fail(testNum, "Expected placeArry to have one place, but it has \(returnPlaceArray.count) places")
-    }
-    guard returnPlaceArray[0].checkTestData() else {
-       return fail(testNum, "Returned value\n\t\(returnProtocol)\ndoes not match expected\n\t\(wantReturnedString)")
-    }
-
-    return .testPassed
-}
-
-private func test9(testNum: Int) -> TestResults {
-
-    guard let returnValue: Any = task9(countryCode: "US", postalCode: "95066") else { return .testNotImplemented }
-
-    let returnedString = String(describing: returnValue)
-    let wantReturnedString = #"GeoData(postCode: "95066", country: "United States", countryAbbreviation: "US", placeArray: [Week5Completed.Place(placeName: "Scotts Valley", longitude: "-122.0152", state: "California", stateAbbreviation: "CA", latitude: "37.0597")])"#
-    guard returnedString == wantReturnedString else {
-       return fail(testNum, "Returned \n\t\(returnedString)\ndoes not match expected \n\t\(wantReturnedString)")
-    }
+    guard let returnValue = task4() else { return .testNotImplemented }
+        if returnValue != true {
+            return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
+        }
 
     return .testPassed
 }
