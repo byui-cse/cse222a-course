@@ -173,13 +173,74 @@ func task2(intArray: [Int], canThrow: throwingFunction) throws -> Int? {
     return nil
 }
 
-// The following are placeholders for the mini-project
-
-func task3() -> Bool? {
-    return nil
+//  Task 3
+//  The following enums define cell contents for a simple 2-dimensional spreadsheet.
+//  Each cell can contain an element of type Values that can be simple values,
+//  operators or references to another cell. The Values with operators can recursively
+//  contain values with other operators. FYI, the enum is marked indirect to let the
+//  comopiler know that we deliberately defined a recursive enum. Since the
+//  compiler cannot determine the size of a member of the enum at compile time,
+//  the compiler must know to store values of that Type indirectly (by reference
+//  rather than by value).
+//
+//  Your assignment is to write code in task4() and probably some other functions
+//  you will define that will evaluate a spreadsheet containing cells of type Values and
+//  return a two-dimensional array of the same Type, but with fully evaluated cells
+//  that contains no values of .unary, .binary or .ref.
+//  In evaluating a cell, the following rules apply:
+//      1) If an operator has invalid operatnds, produce a descriptive error for that cell
+//      2) Some operators do not make sense as unary, but may appear in the spreadsheet and should produce a descriptive error
+//      3) If an operator has only Int operands, produce an Int, except divide should produce an exact Int if possible and a Double otherwise
+//      4) A reference outside the dimensions of the array should produce a descriptive error
+//      5) You need to detect circular references and produce a descriptive error in each cell in the referene loop
+//
+//  We recommend that you set up two Dictionaries, one for unary and one for binary
+//  operators that have the operators as the key and closures as the value.
+//  We have provided typealiases to help you define those dictionaries.
+//
+//  Hint: You may find it easier to detect circular references
+//  in a separate part of your code from the other processing
+//  that runs before the other processing.
+//
+//  Changing the return value of task4()) from nil to a result of Type [[ProcessedValues]] indicates you are ready for your spreadsheet
+//  processor to be tested.
+//
+enum Operators: String, CustomStringConvertible {
+    case plus // if either parameter is String, convert both to String and concatenate
+    case minus
+    case times
+    case divide
+    case square
+    case reverse // only works for strings
+    var description: String { return self.rawValue }
 }
+indirect enum Values: CustomStringConvertible {
+    case int(Int)
+    case double(Double)
+    case string(String)
+    case unary(Operators, Values)
+    case binary(Values, Operators, Values)
+    case ref(Int, Int) // reference to contents of cell at (column, row).
+        // User oriented so 1 based meaning ref(1,1) is contents of top left cell
+    case error(String)
+    var description: String {
+        switch self {
+        case let .int(anInt): return ".int(\(anInt))"
+        case let .double(aDouble): return ".double(\(aDouble))"
+        case let .string(aString): return ".string(\"\(aString)\")"
+        case let .unary(anOp, value): return "(\(anOp) \(value))"
+        case let .binary(lhs, anOp, rhs): return "(\(lhs) \(anOp) \(rhs))"
+        case let .ref(col, row): return ".ref(\(col), \(row))"
+        case let .error(aString): return ".error: \(aString)"
+        }
+    }
+    static func == (lhs: Values, rhs: Values) -> Bool {
+        return lhs.description == rhs.description
+    }
+}
+typealias UnaryOperatorClosure = (Values) -> Values
+typealias BinaryOperatorClosure = (Values, Values) -> Values
 
-
-func task4() -> Bool? {
+func task3(_ theSheet: [[Values]]) -> ([[Values]])? {
     return nil
 }

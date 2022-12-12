@@ -23,7 +23,7 @@ enum TestResults {
 
 // This must list the tests in order: test0, test1... so they can be called with their test number and
 // not need to hard code the Task name into the test except when calling the task function
-private var tests: [(Int) -> TestResults] = [test0, test1, test2, test3, test4]
+private var tests: [(Int) -> TestResults] = [test0, test1, test2, test3]
 private var taskResults: [TestResults] = Array(repeating: .testNotImplemented, count: tests.count)
 private var savedInput: [String?] = []
 private var savedPrint: [String?] = []
@@ -394,22 +394,75 @@ private func test2(testNum: Int) -> TestResults {
     return .testPassed
 }
 
-private func test3(testNum: Int) -> TestResults {
-
-    guard let returnValue = task3() else { return .testNotImplemented }
-        if returnValue != true {
-            return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
+func printSheet(_ aSheet: [[Values]]) {
+    var aString = "["
+    var firstRow = true
+    for row in aSheet {
+        if firstRow { firstRow = false }
+        else { aString += ",\n" }
+        aString += "["
+        var firstCell = true
+        for cell in row {
+            if firstCell { firstCell = false }
+            else { aString += ", " }
+            aString += "\(cell)"
         }
-
-    return .testPassed
+        aString += "]"
+    }
+    print(aString + "]")
 }
-
-private func test4(testNum: Int) -> TestResults {
-
-    guard let returnValue = task4() else { return .testNotImplemented }
-        if returnValue != true {
-            return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
+func compareSheets(_ lhsSheet: [[Values]], _ rhsSheet: [[Values]]) -> (Bool, String) {
+    guard lhsSheet.count == rhsSheet.count else { return (false, "Number of rows do not match") }
+    for rowIndex in 0..<lhsSheet.count {
+        guard lhsSheet[rowIndex].count == rhsSheet[rowIndex].count else { return (false, "Number of columnsa do not match") }
+        for colIndex in 0..<lhsSheet[rowIndex].count {
+            // if both are .error do not compare the associated values since we did not specify exact wording
+            let lhsValue = lhsSheet[rowIndex][colIndex]
+            let rhsValue = rhsSheet[rowIndex][colIndex]
+            // handle .error special because we cannot compare associated values since we don's define exact wording
+            switch lhsValue {
+            case .error:
+                switch rhsValue {
+                case .error: continue // both .error so consider the cells equal
+                default: return (false, "cell at (\(colIndex+1), \(rowIndex+1)) \(lhsValue) != \(rhsValue)")
+                }
+            default:
+                guard lhsSheet[rowIndex][colIndex] == rhsSheet[rowIndex][colIndex] else {
+                    return (false, "cell at (\(colIndex+1), \(rowIndex+1)) \(lhsSheet[rowIndex][colIndex]) != \(rhsSheet[rowIndex][colIndex])")
+                }
+            }
         }
+    }
+    return (true, "")
+}
+private func test3(testNum: Int) -> TestResults {
+    
+    let firstTest: [[Values]] = [
+        [.int(2), .double(1.2), .string("One String"), .ref(3,1)],
+        [.unary(.plus, .ref(1,1)), .unary(.minus, .ref(1,1)), .unary(.times, .ref(1,1)), .unary(.square,.int(2))],
+        [.unary(.reverse,.ref(3,1)), .binary(.ref(2,1), .plus, .ref(1,1)), .binary(.ref(2,1), .plus, .ref(3,1)), .binary(.ref(2,1), .minus, .ref(1,1))],
+        [.binary(.ref(1,1), .minus, .ref(1,1)), .binary(.ref(2,1), .times, .ref(1,1)), .binary(.ref(2,1), .divide, .ref(1,1)), .binary(.ref(1,1), .divide, .ref(1,1))],
+        [.ref(4,1), .binary(.ref(1,1), .square, .ref(1,1)), .binary(.ref(1,1), .reverse, .ref(1,1)), .unary(.reverse, .ref(1,1))],
+        [.ref(4,6), .ref(1,6), .ref(2,6), .ref(3,6)]
+    ]
+    let firstResult: [[Values]] = [
+        [.int(2), .double(1.2), .string("One String"),  .string("One String")],
+         [.int(2), .int(-2), .error(""), .int(4)],
+         [.string("gnirtS enO"), .double(3.2), .string("1.2One String"), .double(-0.8)],
+         [.int(0), .double(2.4), .double(0.6), .int(1)],
+         [.string("One String"), .error(""), .error(""), .error("")],
+         [.error(""), .error(""), .error(""), .error("")]
+       ]
+        
+    guard let returnValue = task3(firstTest) else { return .testNotImplemented }
 
+    print("Test Sheet:")
+    printSheet(firstTest)
+    print("\nResult:")
+    printSheet(returnValue)
+    print()
+    let (resultBool, resultString) = compareSheets(returnValue, firstResult)
+    guard resultBool else { return fail(testNum, resultString) }
+    
     return .testPassed
 }

@@ -358,21 +358,35 @@ func loadCommand(command: String, aFunc: @escaping CommandFunction) {
     case qrCode(String) 
 }</code></pre> 
                   <p>
-              We can use these just like other enum values, assigning them to 
+              We can use these just like other <kbd>enum</kbd> values, assigning them to 
               constants or variables and even creating an Array of them. This is 
               a way that an Array can seem to have values of different types. All 
-              would be of the same enum type, but they each can have different 
+              would be of the same <kbd>enum</kbd> type, but they each can have different 
               associated values included with them. For example:
                   </p>
-<pre><code class="Swift">enum Barcode { 
-    let barcodes: [Barcode] = [
-        .upc(8, 85909, 51226, 3),
+<pre><code class="Swift">let barcodes: [Barcode] = [
         .qrCode("ABCDEFGHIJKLMNOP")
+        .upc(8, 85909, 51226, 3),
     ]
-}</code></pre> 
+</code></pre> 
 <p>
-              This is an array of the BarCode type, but the associated values are very different
-              from each other. One key use of enumerations with associated values to define error conditions for Swifts approach to error handling.
+              This is an array of the BarCode type, but the array values are 
+              very different from each other. We extract the associated values from 
+              an <kbd>enum</kbd> in a <kbd>switch</kbd> statement by putting a parenthesized 
+              list of constant or variable names preceded by <kbd>let</kbd> or <kbd>var</kbd> 
+              after the <kbd>case enumValue</kbd> like the .qrCode example below. If we are 
+              extracting several values all as <kbd>let</kbd> or <kbd>var</kbd>, we can put
+              the <kbd>let</kbd> or <kbd>var</kbd> once right after the keyword <kbd>case</kbd> 
+              like the .upc example below.
+</p>
+<pre><code class="Swift">switch barcodes[0] {
+    case .qrCode(let productCode):
+        print("QR: \(productCode).")
+    case let .upc(numberSystem, manufacturer, product, check):
+        print("UPC : \(numberSystem), \(manufacturer), \(product), \(check).")
+}</code></pre>
+                  <p>
+One key use of enumerations with associated values to define error conditions for Swifts approach to error handling.
               </p>
 
                   <h3>Error Handling in Swift</h3>
