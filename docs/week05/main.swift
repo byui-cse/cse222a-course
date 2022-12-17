@@ -112,13 +112,19 @@ func testPrint(_ parameters: Any..., terminator: String = "\n") {
         print("===== Output for Task \(currentTest) =====")
     }
     var countDown = parameters.count
-    for parameter in parameters {
-        savedPrint.append(String(describing: parameter))
-        countDown -= 1
-        if countDown > 0 {
-            print(parameter, terminator: "")
-        } else {
-            print(parameter, terminator: terminator)
+    if countDown == 0 {
+        // Being asked to print a blank line
+        savedPrint.append(nil)
+        print()
+    } else {
+        for parameter in parameters {
+            savedPrint.append(String(describing: parameter))
+            countDown -= 1
+            if countDown > 0 {
+                print(parameter, terminator: "")
+            } else {
+                print(parameter, terminator: terminator)
+            }
         }
     }
 }
@@ -143,9 +149,18 @@ func fail(_ testNum: Int, _ message: String) -> TestResults {
  •  using Do-Try-Catch to handle thorn errors
  •  using "throw error" to forward an error up the call stack
  Task 3
- •  TBD
- Task 4
- •  TBD
+ •  substantial mini-project
+ •  enums with associated values
+ •  recursive enums
+ •  closures stored in a Dictionary
+ •  general recursion to process recursive data structures
+ •  type conversions
+ •  string concatenation
+ •  complex switch and case handling
+ •  dealing with invalid values
+ •  adapting to user view (spreadsheet index 1 based,
+        column,row order of parameters
+
  */
 
 //  ========= Tests =========
@@ -393,25 +408,7 @@ private func test2(testNum: Int) -> TestResults {
     }
     return .testPassed
 }
-
-func printSheet(_ aSheet: [[Values]]) {
-    var aString = "["
-    var firstRow = true
-    for row in aSheet {
-        if firstRow { firstRow = false }
-        else { aString += ",\n" }
-        aString += "["
-        var firstCell = true
-        for cell in row {
-            if firstCell { firstCell = false }
-            else { aString += ", " }
-            aString += "\(cell)"
-        }
-        aString += "]"
-    }
-    print(aString + "]")
-}
-func compareSheets(_ lhsSheet: [[Values]], _ rhsSheet: [[Values]]) -> (Bool, String) {
+func compareSheets(_ lhsSheet: Spreadsheet, _ rhsSheet: Spreadsheet) -> (Bool, String) {
     guard lhsSheet.count == rhsSheet.count else { return (false, "Number of rows do not match") }
     for rowIndex in 0..<lhsSheet.count {
         guard lhsSheet[rowIndex].count == rhsSheet[rowIndex].count else { return (false, "Number of columnsa do not match") }
@@ -428,39 +425,112 @@ func compareSheets(_ lhsSheet: [[Values]], _ rhsSheet: [[Values]]) -> (Bool, Str
                 }
             default:
                 guard lhsSheet[rowIndex][colIndex] == rhsSheet[rowIndex][colIndex] else {
-                    return (false, "cell at (\(colIndex+1), \(rowIndex+1)) \(lhsSheet[rowIndex][colIndex]) != \(rhsSheet[rowIndex][colIndex])")
+                    return (false, "Cell at (\(colIndex+1), \(rowIndex+1)) has: \(lhsSheet[rowIndex][colIndex]) should have: \(rhsSheet[rowIndex][colIndex])")
                 }
             }
         }
     }
     return (true, "")
 }
+func printSheet(_ aSheet: Spreadsheet, userView: Bool = false) {
+    var aString = ""
+    if userView {
+        var firstRow = true
+        var lastCellStart = 0
+        for row in aSheet {
+            if firstRow { firstRow = false }
+            else { aString += "\n" }
+            aString += "\t"
+            var firstCell = true
+            for cell in row {
+                if firstCell { firstCell = false }
+                else { // pad after cell at least 5, but cell length at least 15
+                    while aString.count - lastCellStart < 10 {
+                        aString += " "
+                    }
+                    aString += "     "
+                }
+                lastCellStart = aString.count
+                aString += cell.userDescription
+            }
+        }
+    } else {
+        aString += "["
+        var firstRow = true
+        for row in aSheet {
+            if firstRow { firstRow = false }
+            else { aString += ",\n" }
+            aString += "["
+            var firstCell = true
+            for cell in row {
+                if firstCell { firstCell = false }
+                else { aString += ", " }
+                aString += "\(cell)"
+            }
+            aString += "]"
+        }
+        aString += "]"
+    }
+    testPrint(aString)
+}
+var visited: [[Bool]] = []
+var tempSheet: Spreadsheet = []
+func circularError(row: Int, col: Int) -> Bool {
+    visited[row][col] = true
+    switch tempSheet[row][col] {
+    case let .ref(refCol, refRow):
+        guard refRow > 0, refRow <= tempSheet.count else {
+            return false // do not check out of range references, let the student handle those
+        }
+        guard refCol > 0, refCol <= tempSheet[refRow-1].count else {
+            return false // do not check out of range references, let the student handle those
+        }
+        if visited[refRow - 1][refCol - 1] || circularError(row: refRow - 1,col: refCol - 1) {
+            tempSheet[row][col] = .error("circular .ref")
+            return true
+        }
+        default: return false
+    }
+    return false
+}
+func removeCircularReferences(_ aSheet: Spreadsheet) -> Spreadsheet {
+    tempSheet = aSheet
+    // Check for circular loops first and put a value of .error in any circular cells
+    for rowIndex in 0..<tempSheet.count {
+        for colIndex in 0..<tempSheet[rowIndex].count {
+            visited = Array(repeating: Array(repeating: false, count: tempSheet[0].count), count: tempSheet.count)
+            _ = circularError(row: rowIndex, col: colIndex)
+        }
+    }
+    return tempSheet
+}
 private func test3(testNum: Int) -> TestResults {
-    
-    let firstTest: [[Values]] = [
+    let firstTest: Spreadsheet = [
         [.int(2), .double(1.2), .string("One String"), .ref(3,1)],
-        [.unary(.plus, .ref(1,1)), .unary(.minus, .ref(1,1)), .unary(.times, .ref(1,1)), .unary(.square,.int(2))],
-        [.unary(.reverse,.ref(3,1)), .binary(.ref(2,1), .plus, .ref(1,1)), .binary(.ref(2,1), .plus, .ref(3,1)), .binary(.ref(2,1), .minus, .ref(1,1))],
-        [.binary(.ref(1,1), .minus, .ref(1,1)), .binary(.ref(2,1), .times, .ref(1,1)), .binary(.ref(2,1), .divide, .ref(1,1)), .binary(.ref(1,1), .divide, .ref(1,1))],
-        [.ref(4,1), .binary(.ref(1,1), .square, .ref(1,1)), .binary(.ref(1,1), .reverse, .ref(1,1)), .unary(.reverse, .ref(1,1))],
-        [.ref(4,6), .ref(1,6), .ref(2,6), .ref(3,6)]
+        [.op(.ref(1,1), .plus, .ref(1,1)), .op(.ref(2,1), .plus, .ref(1,1)), .op(.ref(2,1), .plus, .ref(3,1)), .op(.ref(2,1), .minus, .ref(1,1))],
+        [.op(.ref(2,1), .times, .ref(1,1)), .op(.ref(2,1), .divide, .ref(1,1)), .op(.int(6), .divide, .ref(1,1)), .op(.int(6), .minus, .string("something"))],
+        [.ref(4,1), .op(.ref(2,1), .divide, .int(0)), .op(.int(3), .divide, .ref(1,1)), .op(.ref(3,1), .divide, .ref(1,1))],
+        [.ref(3,5), .ref(1,5), .ref(2,5), .op(.op(.op(.ref(1,1), .plus, .string(" + ")), .plus, .ref(2,1)), .plus, .op(.string(" = "), .plus, .op(.ref(1,1), .plus, .ref(2,1))))]
     ]
-    let firstResult: [[Values]] = [
+    let firstResult: Spreadsheet = [
         [.int(2), .double(1.2), .string("One String"),  .string("One String")],
-         [.int(2), .int(-2), .error(""), .int(4)],
-         [.string("gnirtS enO"), .double(3.2), .string("1.2One String"), .double(-0.8)],
-         [.int(0), .double(2.4), .double(0.6), .int(1)],
-         [.string("One String"), .error(""), .error(""), .error("")],
-         [.error(""), .error(""), .error(""), .error("")]
+        [.int(4), .double(3.2), .string("1.2One String"), .double(-0.8)],
+        [.double(2.4), .double(0.6), .int(3), .error("Some error message")],
+        [.string("One String"), .error("Some error message"), .double(1.5), .error("Some error message")],
+        [.error("Some error message"), .error("Some error message"), .error("Some error message"), .string("2 + 1.2 = 3.2")]
        ]
         
     guard let returnValue = task3(firstTest) else { return .testNotImplemented }
 
-    print("Test Sheet:")
+    testPrint("User view of input spreasheet:")
+    printSheet(firstTest, userView: true)
+    testPrint("\nInternal view of input spreasheet:")
     printSheet(firstTest)
-    print("\nResult:")
+    testPrint("\nInternal view of returned value:")
     printSheet(returnValue)
-    print()
+    testPrint("\nUser view of returned value:")
+    printSheet(returnValue, userView: true)
+    testPrint()
     let (resultBool, resultString) = compareSheets(returnValue, firstResult)
     guard resultBool else { return fail(testNum, resultString) }
     

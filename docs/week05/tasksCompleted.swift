@@ -236,117 +236,170 @@ func task2(intArray: [Int], canThrow: throwingFunction) throws -> Int? {
 }
 
 //  Task 3
-//  The following enums define cell contents for a simple 2-dimensional spreadsheet.
-//  Each cell can contain an element of type Values that can be simple values,
-//  operators or references to another cell. The Values with operators can recursively
-//  contain values with other operators. FYI, the enum is marked indirect to let the
-//  comopiler know that we deliberately defined a recursive enum. Since the
-//  compiler cannot determine the size of a member of the enum at compile time,
-//  the compiler must know to store values of that Type indirectly (by reference
-//  rather than by value).
+//  Most of you are vary familiar with spreadsheets which are basically two dimensional
+//  arrays of cells. Each cell can contain a number or text or a formula. The formulas
+//  can use numbers in the formula itself or they can reference the values of other cells.
+//  THe spreadsheet software needs to evaluate each cell and figure out what number
+//  or text to display. Let's simulate a simple spreadsheet and have you evaluate the
+//  spreadsheet so it could be displayed a hypothetical user.
+//
+//  Together the enums ValueOrFormula and Operators define the contents of a cell in our
+//  spreadsheet. Each cell can contain a .int, a .double, a .string, an .op (operation)
+//  (with a lhs (left-hand-side), an Operator, and a rhs (right-hand-side)), a .ref
+//  (reference to the contents of another cell) or an .error (with an assocated String).
+//  The lhs and rhs of a operation cam themselves be anyting in ValueOrFormula
+//  allowing the user to write more complex formulas.
+//
+//  For example, a user might type something like this into the firs row of a spreadsheet:
+//      2               One String           @(2,1)
+//  This would be represented internally like this:
+//      [ .int(2), .string("One String"), .ref(2,1) ]
+//  The first two cellls contain values. The thrid cell contains a reference to the
+//  second cell so when we evaluata this row we would wind up with:
+//      [ .int(2), .string("One String"),  .string("One String")]
+//  and the user display would have something like this:
+//      2               One String          One String
+//
+//  In the second row, the user might type something like this:
+//      1.2 * 2         3.1 - @(1,1)        -7.4 + ( @(1,1) + @(3,1) )
+//  We would represent that internally like this:
+//     [ .op(.double(1.2), .times, .int(2)),
+//              .op(.double(3.1), .minus, .ref(1,1)),
+//              .op(.double(-7.4), .plus, .op(.ref(1,1), .plus, .ref(3,1))) ]
+//  When we evaluate it, the result would be this:
+//     [ .double(2.4)   .double(1.1)    .string("-7.42One String") ]
 //
 //  Your assignment is to write code in task4() and probably some other functions
-//  you will define that will evaluate a spreadsheet containing cells of type Values and
-//  return a two-dimensional array of the same Type, but with fully evaluated cells
-//  that contains no values of .unary, .binary or .ref.
-//  In evaluating a cell, the following rules apply:
-//      1) If an operator has invalid operatnds, produce a descriptive error for that cell
-//      2) Some operators do not make sense as unary, but may appear in the spreadsheet and should produce a descriptive error
-//      3) If an operator has only Int operands, produce an Int, except divide should produce an exact Int if possible and a Double otherwise
-//      4) A reference outside the dimensions of the array should produce a descriptive error
-//      5) You need to detect circular references and produce a descriptive error in each cell in the referene loop
+//  you create that will evaluate a spreadsheet containing cells of type ValueOrFormula
+//  and return an array of the same Type with fully evaluated cells with no .op nor .ref
+//  values in the cells. The evaluation rules are as follows (in priority order):
+//      1) If a cell contains an .int, .double, .string, or .error just leave it as-is
+//      2) If either operand of any operator is a .error, the value of the operation is
+//              same the .error
+//      2) If either operand of .plus is a .string, convert both operators to strings
+//              and concatenate the strings together
+//      2) If either operand of the other three operators is a .string, the result
+//              will be a descriptive .error
+//      3) If the rhs of .divide evaluates to 0, the result will be a descriptive .error
+//      4) If both operands of an operator are .int, the result should be .int except
+//              for .divide. If both operands of .divide are .int the result should
+//              be .int if the rhs divides into the lhs evenly and otherwise the
+//              result should be .double
+//      5) If one operand of an operator is a .double and the other operand is either
+//              a .int or a .double convert both operands to Double before performing
+//              the operation and the result is .double
+//      6) A .ref reference has the evaluated value of the referenced cell. That means
+//              as you evaluate the a cell that contains a reference, you will need to
+//              evaluate the referenced cell before continuing to evaluate the current
+//              cell containing the reference. So your evaluation function will need to
+//              be recursive. Recursion is also needed since an operand of an operator
+//              can itself contain a nested operator. If .ref refers to an call outside
+//              the bounds of the spreadsheet, replace it with a descriptive .error.
+//      7) Usually, you would need to detect and handle recursive loops where a chain
+//              of references refers back to an earlier cell in the chain. We have
+//              provided a routine called removeCicrular that turns all cells in a
+//              recursive loop of references into descriptive .errors so you do not
+//              need to handle those cases.
 //
-//  We recommend that you set up two Dictionaries, one for unary and one for binary
-//  operators that have the operators as the key and closures as the value.
-//  We have provided typealiases to help you define those dictionaries.
-////  You will probably find it useful to use throw-catch to handle error
-////  values since they may be detected down a recursive operator chain.
-//  Hint: You may find it easier to detect circular references
-//  in a separate part of your code from the other processing
-//  that runs before the other processing.
+//  Note: When we code user facing software, we must remember to represent things
+//  the way the user expects to see them, not the way we would normally handle
+//  and represent them internal to our code. For that reason .ref is 1 based, not
+//  0 based so (1,1) refers to the top left cell. Your bounds checkiong needs to
+//  take that into account. Also, while we internally refer to arrays with row
+//  first like "anArray[row][column]", Spreadsheet users expect to refer to
+//  a cell in Column,Row order so that is how .ref(col,row) is used. Be careful
+//  to adjust for the 1 based references and for the use of the column,row
+//  ordering inside a .ref or your code may may give you interesting crashes.
 //
-//  Changing the return value of task4()) from nil to a result of Type [[ProcessedValues]] indicates you are ready for your spreadsheet
-//  processor to be tested.
+//  We recommend that you set up a Dictionary to help you evaluate operators
+//  with a key of type Operators and a value that is a closure to evaluate that
+//  Oparator. We provide a typealias for the closure to help you define that
+//  Dictionary. We have also provided a function printSheet() that will print a
+//  spreadsheet in a format that is easier to read and more meaningful than
+//  the default printout you would get from just calling testPrint(). We
+//  also defined discription and userDescription properties for the two
+//  types and made them comply with CustomStringConvertible to help us
+//  print more descriptive information about them.
+//
+//  Changing the the last line of task3() from "return nil" to instead say
+//  return resultSheet will indicate that you are ready to have the code
+//  in main.swift test your evaluation of the input spreadsheet
+//  stored in resultSheet.
 //
 enum Operators: String, CustomStringConvertible {
     case plus // if either parameter is String, convert both to String and concatenate
     case minus
     case times
     case divide
-    case square
-    case reverse // only works for strings
+
     var description: String { return self.rawValue }
+    // this is used to print the user view of the spreadsheet
+    var userDescription: String {
+        switch self {
+            case .plus: return " + "
+            case .minus: return " - "
+            case .times: return " * "
+            case .divide: return " / "
+        }
+    }
 }
-indirect enum Values: CustomStringConvertible {
+//  Because ValueOrFormula has associated values of type ValueOrFormula
+//  it is a recursive Type. That means that the compiler cannot determine
+//  at runtime the size of a particualr value of ValueOrFormula. To address
+//  this, we must mark the type "indirect" which causes it to be used
+//  by reference like a class rather than by value like a typical enum.
+indirect enum ValueOrFormula: CustomStringConvertible {
     case int(Int)
     case double(Double)
     case string(String)
-    case unary(Operators, Values)
-    case binary(Values, Operators, Values)
+    case op(ValueOrFormula, Operators, ValueOrFormula)
     case ref(Int, Int) // reference to contents of cell at (column, row).
         // User oriented so 1 based meaning ref(1,1) is contents of top left cell
     case error(String)
+
     var description: String {
         switch self {
         case let .int(anInt): return ".int(\(anInt))"
         case let .double(aDouble): return ".double(\(aDouble))"
-        case let .string(aString): return ".string(\"\(aString)\")"
-        case let .unary(anOp, value): return "(\(anOp) \(value))"
-        case let .binary(lhs, anOp, rhs): return "(\(lhs) \(anOp) \(rhs))"
+        case let .string(aString): return ".string(\(aString))"
+        case let .op(lhs, anOp, rhs): return "(\(lhs) \(anOp) \(rhs))"
         case let .ref(col, row): return ".ref(\(col), \(row))"
-        case let .error(aString): return ".error: \(aString)"
+        case let .error(aString): return ".error(\(aString))"
         }
     }
-
-}
-typealias UnaryOperatorClosure = (Values) -> Values
-typealias BinaryOperatorClosure = (Values, Values) -> Values
-
-// EDITOR for tasks.swift delete the remainder of this file and leave
-// a version of task3() that just returns nil
-enum EvaluationErrors: Error {
-    case cellError(String)
-}
-let unaryOperators: Dictionary<Operators, UnaryOperatorClosure> = [
-    .plus : { (aValue) in
-        return aValue  // unary plus does nothing
-    },
-    .minus : { (aValue) in
-        switch aValue {
-        case .int(let anInt):
-            return .int(-anInt)
-        case .double(let aDouble):
-            return .double(-aDouble)
-        default:
-            return .error("unary minus not applicable to \(aValue)")
-        }
-    },
-    .times : { (aValue) in
-        return .error("times is not a unary operator")
-    },
-    .divide : { (aValue) in
-        return .error("divide is not a unary operator")
-    },
-    .square : { (aValue) in
-        switch aValue {
-        case .int(let anInt):
-            return .int(anInt * anInt)
-        case .double(let aDouble):
-            return .double(aDouble * aDouble)
-        default:
-            return .error("square not applicable to \(aValue)")
-        }
-    },
-    .reverse : { (aValue) in
-        switch aValue {
-        case .string(let aString):
-            return .string(String(aString.reversed()))
-        default:
-            return .error("reverse not applicable to \(aValue)")
+    // this is used to print the user view of the spreadsheet
+    var userDescription: String {
+        switch self {
+        case let .int(anInt): return "\(anInt)"
+        case let .double(aDouble): return "\(aDouble)"
+        case let .string(aString): return "\"\(aString)\""
+        case let .op(lhs, anOp, rhs): return lhs.userDescription + anOp.userDescription + rhs.userDescription
+        case let .ref(col, row): return "@(\(col), \(row))"
+        case let .error(aString): return "Error: \"\(aString)\""
         }
     }
-]
-let binaryOperators: Dictionary<Operators, BinaryOperatorClosure> = [
+    static func == (lhs: ValueOrFormula, rhs: ValueOrFormula) -> Bool {
+        return lhs.description == rhs.description
+    }
+}
+// This defines the type we use for our spreadsheet
+typealias Spreadsheet = [[ValueOrFormula]]
+// This defines a closure Type you might use as the value in a Dictionary
+typealias OperatorClosure = (ValueOrFormula, ValueOrFormula) -> ValueOrFormula
+
+//  The following two functions are defined in main.swift, but can be used here
+//  func printSheet(_ aSheet: Spreadsheet, userView: Bool = false)
+//  func removeCircularReferences(_ aSheet: Spreadsheet) -> Spreadsheet
+
+//  This is where you will build your return value after we remove
+//  circular references from it
+var resultSheet: Spreadsheet = []
+
+// EDITOR for tasks.swift delete invalid(), "operators" and "evaluate()"
+func invalid(_ operand: ValueOrFormula, for anOperator: String) -> ValueOrFormula {
+    return .error("\(operand) invalid operand for \(anOperator)")
+}
+let operators: Dictionary<Operators, OperatorClosure> = [
     //  I could write this more effeciently than covering each combination of cases,
     //  but it was easy to copy and paste once I set up .plus and I don't want to
     //  assume every stucent will figure out to convert the operands first and
@@ -363,7 +416,7 @@ let binaryOperators: Dictionary<Operators, BinaryOperatorClosure> = [
             case .string(let rhsString):
                 return .string(String(lhsInt) + rhsString)
             default:
-                 return .error("binary minus not applicable to rhs of \(rhs)")
+                return invalid(rhs, for: "plus")
             }
         case .double(let lhsDouble):
             switch rhs {
@@ -374,12 +427,21 @@ let binaryOperators: Dictionary<Operators, BinaryOperatorClosure> = [
             case .string(let rhsString):
                 return .string(String(lhsDouble) + rhsString)
             default:
-                 return .error("binary minus not applicable to rhs of \(rhs)")
+                return invalid(rhs, for: "plus")
             }
         case .string(let lhsString):
-            return .string(lhsString)
-       default:
-            return .error("binary minus not applicable to lhs of \(lhs)")
+            switch rhs {
+            case .int(let rhsInt):
+                return .string(lhsString + String(rhsInt))
+            case .double(let rhsDouble):
+                return .string(lhsString + String(rhsDouble))
+            case .string(let rhsString):
+                return .string(lhsString + rhsString)
+            default:
+                return invalid(rhs, for: "plus")
+            }
+        default:
+            return invalid(lhs, for: "plus")
         }
     },
     .minus : { (lhs, rhs) in
@@ -391,7 +453,7 @@ let binaryOperators: Dictionary<Operators, BinaryOperatorClosure> = [
             case .double(let rhsDouble):
                 return .double(Double(lhsInt) - rhsDouble)
             default:
-                 return .error("binary minus not applicable to rhs of \(rhs)")
+                 return invalid(rhs, for: "minus")
             }
         case .double(let lhsDouble):
             switch rhs {
@@ -400,12 +462,10 @@ let binaryOperators: Dictionary<Operators, BinaryOperatorClosure> = [
             case .double(let rhsDouble):
                 return .double(Double(lhsDouble - rhsDouble))
             default:
-                 return .error("binary minus not applicable to rhs of \(rhs)")
+                 return invalid(rhs, for: "minus")
             }
-        case .string(let lhsString):
-            return .string(lhsString)
        default:
-            return .error("binary minus not applicable to lhs of \(lhs)")
+            return invalid(lhs, for: "minus")
         }
     },
     .times : { (lhs, rhs) in
@@ -417,7 +477,7 @@ let binaryOperators: Dictionary<Operators, BinaryOperatorClosure> = [
             case .double(let rhsDouble):
                 return .double(Double(lhsInt) * rhsDouble)
             default:
-                 return .error("binary minus not applicable to rhs of \(rhs)")
+                 return invalid(rhs, for: "times")
             }
         case .double(let lhsDouble):
             switch rhs {
@@ -426,12 +486,10 @@ let binaryOperators: Dictionary<Operators, BinaryOperatorClosure> = [
             case .double(let rhsDouble):
                 return .double(Double(lhsDouble * rhsDouble))
             default:
-                 return .error("binary minus not applicable to rhs of \(rhs)")
+                 return invalid(rhs, for: "times")
             }
-        case .string(let lhsString):
-            return .string(lhsString)
        default:
-            return .error("binary minus not applicable to lhs of \(lhs)")
+            return invalid(lhs, for: "times")
         }
     },
     .divide : { (lhs, rhs) in
@@ -439,65 +497,59 @@ let binaryOperators: Dictionary<Operators, BinaryOperatorClosure> = [
         case .int(let lhsInt):
             switch rhs {
             case .int(let rhsInt):
+                guard rhsInt != 0 else { return .error("cannot divide by zero") }
                 if lhsInt % rhsInt == 0 {
                     return .int(lhsInt / rhsInt)
                 } else {
                     return .double(Double(lhsInt) / Double(rhsInt))
                 }
             case .double(let rhsDouble):
+                guard rhsDouble != 0 else { return .error("cannot divide by zero") }
                 return .double(Double(lhsInt) / rhsDouble)
             default:
-                 return .error("binary minus not applicable to rhs of \(rhs)")
+                 return invalid(rhs, for: "divide")
             }
         case .double(let lhsDouble):
             switch rhs {
             case .int(let rhsInt):
+                guard rhsInt != 0 else { return .error("cannot divide by zero") }
                 return .double(lhsDouble / Double(rhsInt))
             case .double(let rhsDouble):
+                guard rhsDouble != 0 else { return .error("cannot divide by zero") }
                 return .double(Double(lhsDouble / rhsDouble))
             default:
-                 return .error("binary minus not applicable to rhs of \(rhs)")
+                 return invalid(rhs, for: "divide")
             }
-        case .string(let lhsString):
-            return .string(lhsString)
        default:
-            return .error("binary minus not applicable to lhs of \(lhs)")
+            return invalid(lhs, for: "divide")
         }
     },
-    .square : { (lhs, rhs) in
-        return .error("square is not a binary operator")
-    },
-    .reverse : { (lhs, rhs) in
-        return .error("reverse is not a binary operator")
-    }
 ]
-var aSheet: [[Values]] = []
-func evaluate(_ value: Values) -> Values {
+func evaluate(_ value: ValueOrFormula) -> ValueOrFormula {
     switch value {
         case .int, .double, .string, .error: return value
-    case let .unary(op, opValue):
-        guard let closure = unaryOperators[op] else { return .error("Operator not in unaryOperators[]") }
-        return closure(evaluate(opValue)) // pre-evaluate the operator so each closure does not need to
-    case let .binary(lhs, op, rhs):
-        guard let closure = binaryOperators[op] else { return .error("Operator not in binaryOperators[]") }
+    case let .op(lhs, op, rhs):
+        guard let closure = operators[op] else { return .error("Operator not in operators[]") }
         return closure(evaluate(lhs), evaluate(rhs))  // pre-evaluate the operators so each closure does not need to
     case let .ref(col, row):
-        guard row > 0, row <= aSheet.count else { return .error("row \(row) in reference not in range") }
-        guard col > 0, col <= aSheet[row-1].count else { return .error("row \(row) in reference not in range") }
-        aSheet[row][col] = evaluate(aSheet[row-1][col-1]) // make sure the cell is fully evaluated first
-        return aSheet[row-1][col-1]
+        guard row > 0, row <= resultSheet.count else { return .error("row \(row) in reference not in range") }
+        guard col > 0, col <= resultSheet[row-1].count else { return .error("row \(row) in reference not in range") }
+        resultSheet[row-1][col-1] = evaluate(resultSheet[row-1][col-1]) // make sure the cell is fully evaluated first
+        return resultSheet[row-1][col-1]
     }
 }
-func task3(_ theSheet: [[Values]]) -> ([[Values]])? {
-    aSheet = theSheet
-    // Check for circular loops first and put a value of .error in any circular cells
-    
+func task3(_ theSheet: Spreadsheet) -> (Spreadsheet)? {
+    resultSheet = removeCircularReferences(theSheet)
+
+// EDITOR for tasks.swift replace the rest of task3 with "return nil"
+
     // Now evaluate the spreadsheet
-    for rowIndex in 0..<aSheet.count {
-        for colIndex in 0..<aSheet[rowIndex].count {
-            aSheet[rowIndex][colIndex] = evaluate(aSheet[rowIndex][colIndex])
+    for rowIndex in 0..<resultSheet.count {
+        for colIndex in 0..<resultSheet[rowIndex].count {
+            resultSheet[rowIndex][colIndex] = evaluate(resultSheet[rowIndex][colIndex])
         }
     }
 
-    return aSheet
+    return resultSheet
 }
+    
