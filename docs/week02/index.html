@@ -262,7 +262,7 @@ name = 3.1456778889547637653//compilation failure, type change</code></pre>
           >Optionals.</a
         >
         An Optional is either nil or it is a wrapper around a regular variable
-        type. An Optional is indicated by putting a "?" immediately afer the
+        type. An Optional is indicated by putting a "?" immediately after the
         Type like this:
       </p>
       <pre><code>var city:String? = nil</code></pre>
@@ -303,7 +303,7 @@ name = 3.1456778889547637653//compilation failure, type change</code></pre>
         operator, we will return it and ask you to resubmit it without the use
         of “force—unwrap.”
       </p>
-      
+
       <h3>Wrap Up</h3>
       <p>
         As with all things, there are pluses and minuses of requiring keywords
@@ -742,7 +742,7 @@ else{
     </pre>
       <p>
         Note that the scope of the unwrapped variable for “if let” is the inside
-        of the if statement’s “true” clause (before the “else”). The scope of
+        of the if statement's “true” clause (before the “else”). The scope of
         the unwrapped variable for “guard let” is the remainder of the function
         (or the remainder of the loop if it is in a loop). This can help you
         avoid nesting code as deeply within if statements making it more
@@ -849,16 +849,17 @@ else{
         for simpler lambdas and reserve the others for when you may be using a
         parameter multiple times or in multiple ways.
       </p>
-          <p>
-            Swift also provides a special version of <kbd>map</kbd> to work with an Array of optionals.
-            Suppose you have an array of optionals like <kbd>[Int?]</kbd>. There is a built-in
-            function called <kbd>compactMap</kbd> that works almost like <kbd>map</kbd>.
-            But if the closure returns <kbd>nil</kbd> for some values, <kbd>compactMap</kbd>
-            removes those nil values and it returns an array of non-optionals.
-            If our <kbd>[Int?]</kbd> is called <kbd>anArray</kbd>
-            then <kbd>anArray.compactMap{$0}</kbd> simply removes all optionals and returns
-            an Array of type <kbd>[Int]</kbd>.
-          </p>
+      <p>
+        Swift also provides a special version of <kbd>map</kbd> to work with an
+        Array of optionals. Suppose you have an array of optionals like
+        <kbd>[Int?]</kbd>. There is a built-in function called
+        <kbd>compactMap</kbd> that works almost like <kbd>map</kbd>. But if the
+        closure returns <kbd>nil</kbd> for some values,
+        <kbd>compactMap</kbd> removes those nil values and it returns an array
+        of non-optionals. If our <kbd>[Int?]</kbd> is called
+        <kbd>anArray</kbd> then <kbd>anArray.compactMap{$0}</kbd> simply removes
+        all optionals and returns an Array of type <kbd>[Int]</kbd>.
+      </p>
       <h4>Filter</h4>
       <p>
         The <kbd>filter</kbd> method also has only one parameter, and that
@@ -996,37 +997,35 @@ else{
         iterate over the elements of an Array or some other collection of data.
       </p>
 
-          <h3>Optional Chaining</h3>
-          <p>
-            There is a way to use optionals without immediately unwrapping 
-            them called Optional Chaining. Suppose we want to apply 
-            <kbd>filter()</kbd> and <kbd>map()</kbd> to a variable containing
-            an array of <kbd>Int</kbd> like this:
-          </p>
-          <pre><code>let intArray = [1, 2, 3]
+      <h3>Optional Chaining</h3>
+      <p>
+        There is a way to use optionals without immediately unwrapping them
+        called Optional Chaining. Suppose we want to apply
+        <kbd>filter()</kbd> and <kbd>map()</kbd> to a variable containing an
+        array of <kbd>Int</kbd> like this:
+      </p>
+      <pre><code>let intArray = [1, 2, 3]
             let result = intArray.filter{$0 % 2 == 1}.map{$0 * $0}
           </code></pre>
-          <p>
-            The type of <kbd>result</kbd> would be <kbd>[Int]</kbd>. But suppose 
-            <kbd>intArray</kbd> were an optional of Type <kbd>[Int]?</kbd>. 
-            We could unwrap it before applying <kbd>filter()</kbd> and 
-            <kbd>map()</kbd>, but we could also use Optional Chaining by 
-            putting a <kbd>?</kbd> after the name of the variable to 
-            acknowledge that it is an optional like this:
-          </p>
-          <pre><code>let result = intArray?.filter{$0 % 2 == 1}.map{$0 * $0}</code></pre>
-          <p>
-            In this case, the type of <kbd>result</kbd> would be 
-            <kbd>[Int]?</kbd>. If the value of <kbd>intArray</kbd> is not 
-            <kbd>nil</kbd>, <kbd>filter()</kbd> and 
-            <kbd>map()</kbd> are called as usual. But 
-            if <kbd>intArray</kbd> is <kbd>nil</kbd> then no functions 
-            are called, and the result of the entire expression becomes 
-            <kbd>nil</kbd>. With Optional Chaining we still are left with 
-            an optional that needs to be unwrapped, but we can do some 
-            processing (on any non-nil values) and unwrap the result later.
-          </p>
-          
+      <p>
+        The type of <kbd>result</kbd> would be <kbd>[Int]</kbd>. But suppose
+        <kbd>intArray</kbd> were an optional of Type <kbd>[Int]?</kbd>. We could
+        unwrap it before applying <kbd>filter()</kbd> and <kbd>map()</kbd>, but
+        we could also use Optional Chaining by putting a <kbd>?</kbd> after the
+        name of the variable to acknowledge that it is an optional like this:
+      </p>
+      <pre><code>let result = intArray?.filter{$0 % 2 == 1}.map{$0 * $0}</code></pre>
+      <p>
+        In this case, the type of <kbd>result</kbd> would be <kbd>[Int]?</kbd>.
+        If the value of <kbd>intArray</kbd> is not <kbd>nil</kbd>,
+        <kbd>filter()</kbd> and <kbd>map()</kbd> are called as usual. But if
+        <kbd>intArray</kbd> is <kbd>nil</kbd> then no functions are called, and
+        the result of the entire expression becomes <kbd>nil</kbd>. With
+        Optional Chaining we still are left with an optional that needs to be
+        unwrapped, but we can do some processing (on any non-nil values) and
+        unwrap the result later.
+      </p>
+
       <h2>Wrap Up</h2>
       <p>
         While there was a lot covered in this reading, you've seen these before.

@@ -41,7 +41,7 @@
     <main>
       <h1>Your Tasks</h1>
       <h2>Task 1</h2>
-      <h2>Setup Your Environment and Explore It</h2>
+      <h3>Setup Your Environment and Explore It</h3>
       <p>
         You will be setting up your machines to write command-line applications.
         This is a language course, not a platform course. There is a mobile
@@ -53,47 +53,9 @@
       </p>
       <h3>Windows Users</h3>
       <p>
-        There are many text editors you can use to write Swift code. The one
-        being supported for Windows users in this class is
-        <a href="https://code.visualstudio.com/Download" target="_blank"
-          >VSCode</a
-        >. This text editor was selected since you have experience using it in
-        some of your previous classes. You can choose some other editor if you
-        choose but you will be on your own to figure out how to manage it. Also,
-        you can add plugins to VSCode to support your development in swift by
-        choosing one from the VSCode plugin
-        <a href="https://marketplace.visualstudio.com" target="_blank"
-          >marketplace</a
-        >
-        if you would like. Any plugins you choose are not supported in this
-        class.
+        Windows users should follow the
+        <a href="windows.html">Windows Install Instructions</a>
       </p>
-      <p>
-        To get all of the Windows libraries and tools you will need, you will
-        also have to install
-        <a
-          href="https://visualstudio.microsoft.com/vs/community/"
-          target="_blank"
-          >Visual Studio Community</a
-        >
-        edition.
-      </p>
-      <p>
-        You will need to go to swift.org's
-        <a href="https://swift.org/download/#releases">download site</a> and
-        install the latest version of the compiler for Windows. Below is a video
-        to help you with the Visual Studio Community installation and use.
-      </p>
-
-      <iframe
-        width="560"
-        height="315"
-        src="https://www.youtube.com/embed/rKN60MoqGn8"
-        title="YouTube video player"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-      ></iframe>
 
       <h4>Creating a Swift Project</h4>
       <p>
@@ -129,18 +91,19 @@ print("Installation test passed!")</code></pre>
       <h3>macOS Users</h3>
       <p>
         The industry standard for developing Swift applications on macOS is
-        Xcode. If you don't already have it installed on your machine, select
-        the app store icon in the dock at the bottom of your window. Search for
-        Xcode and go through the installation process. Xcode has everything in
-        it you will need.
+        Xcode.
+        <a href="https://apps.apple.com/us/app/xcode/id497799835?mt=12"
+          >You can install Xcode through this link.</a
+        >
       </p>
       <h4>Creating a Swift Project</h4>
       <p>
         For this class we are creating apps to help you learn the language
         before you start to learn the libraries specific to the iOS platform.
-        That's why you will be creating command line apps using Swift. This also
-        helps you understand that Swift is a platform independent language, not
-        something specific to Apple products. So let's create an app.
+        That's why you will be creating <strong>command line</strong> apps using
+        Swift. This also helps you understand that Swift is a platform
+        independent language, not something specific to Apple products. So let's
+        create an app.
       </p>
       Following these steps will guarantee your setup is ready to go.
       <ol>
@@ -167,20 +130,21 @@ print("Installation test passed!")</code></pre>
 
       <h3>Linux Users</h3>
       <p>
-        <a href="https://youtu.be/Sdg0ef2PpBw" target="_blank"
-          >For Linux users, this video</a
-        >
-        will help you install and get started. Since you will be working in
-        Swift,
-        <a href="https://swift.org/getting-started/" target="_blank"
-          >this tutorial</a
-        >
-        is helpful. Focus only on the Linux portions. It is very 'Linuxy', so be
-        ready for it.&#129299; There will be a lot of command-line stuff you
-        will need to do along with the use of the package manager for which ever
-        Linux OS you have selected. Carefully follow the instructions and you
-        should be good to go.
+        Linux install instructions are available
+        <a href="https://www.swift.org/getting-started/">at this link.</a> Most
+        common distributions are supported. You will first need to download and
+        install the dependencies. After you have downloaded the dependencies,
+        you can download the current version of Swift at
+        <a href="https://www.swift.org/download/">this link.</a>
       </p>
+      <p>
+        After you have successfully downloaded the Swift toolchain, you will
+        need to add it to your PATH. The following is a general command that
+        will work, but could vary depending on your download location and the
+        shell you are currently using.
+      </p>
+      <pre><code>echo "export PATH=/path/to/swift/directory/usr/bin:$PATH" >> ~/.bashrc
+source ~/.bashrc</code></pre>
       <h4>Creating a Swift Project</h4>
 
       <p>
