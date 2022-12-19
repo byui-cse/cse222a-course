@@ -710,6 +710,7 @@ else{
   } else {
       //some code to handle when there
       //is no name
+      return
   }
 }</code>
   </pre>
@@ -737,6 +738,7 @@ else{
     guard let name = name else {
       //some code to handle when there
       //is no name
+      return
     }
     //code to use the name
     print(name.uppercased())
@@ -1032,7 +1034,7 @@ else{
       <h2>Wrap Up</h2>
       <p>
         While there was a lot covered in this reading, you've seen these before.
-        Python has each of these types of things. The syntax is different for
+        Python has each of these types of language features. The syntax is different for
         Swift and there are some new things you can do because of the compiler,
         but over all the concepts are the same.
       </p>
