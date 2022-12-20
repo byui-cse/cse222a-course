@@ -306,8 +306,8 @@ name = 3.1456778889547637653//compilation failure, type change</code></pre>
 
       <h3>Wrap Up</h3>
       <p>
-        As with all things, there are pros and cons of requiring keywords
-        like <kbd>var</kbd> and <kbd>let</kbd> and having or not having some
+        As with all things, there are pros and cons of requiring keywords like
+        <kbd>var</kbd> and <kbd>let</kbd> and having or not having some master
         operators. One disadvantage of requiring <kbd>var</kbd> and
         <kbd>let</kbd> is the extra cluttering of the code with 'unnecessary'
         words. An advantage is explicitness. Everyone that later reads your code
@@ -569,9 +569,9 @@ name = 3.1456778889547637653//compilation failure, type change</code></pre>
       <p>
         The Swift language has a concept called 'module scope'. When you declare
         a function, your function is created and lives in this module scope. An
-        advantage of this is that you can write code using the function in
-        one file when the declaration of the function is in a second file. As
-        long as the two files are in the same module (app or library), no import
+        advantage of this is that you can write code using the function in one
+        file when the declaration of the function is in a second file. As long
+        as the two files are in the same module (app or library), no import
         declaration is needed. Here is an example.
       </p>
       <p></p>
@@ -710,6 +710,7 @@ else{
   } else {
       //some code to handle when there
       //is no name
+      return
   }
 }</code>
   </pre>
@@ -737,6 +738,7 @@ else{
     guard let name = name else {
       //some code to handle when there
       //is no name
+      return
     }
     //code to use the name
     print(name.uppercased())
@@ -1031,9 +1033,9 @@ else{
       <h2>Wrap Up</h2>
       <p>
         While there was a lot covered in this reading, you've seen these before.
-        Python has each of these types of things. The syntax is different for
-        Swift and there are some new things you can do because of the compiler,
-        but over all the concepts are the same.
+        Python has each of these types of language features. The syntax is
+        different for Swift and there are some new things you can do because of
+        the compiler, but over all the concepts are the same.
       </p>
       <p>
         Differences are good. If all computer languages were the same, they'd

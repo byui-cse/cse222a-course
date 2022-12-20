@@ -26,7 +26,7 @@ enum GuardedErrors: String {
     // used by Task 0:
     case aBoolFalse
     case int1_less_than_0
-    case int1_less_than_or_equal_int1
+    case int2_less_than_or_equal_int1
     case aString_not_4_chars
     // used by Task 1:
     case string_is_nil

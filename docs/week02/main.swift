@@ -202,8 +202,8 @@ private func test0(testNum: Int) -> TestResults {
     let testValues = [
         testValueStruct(aBool: false, int1: 6, int2: 7, aString: "four", error: .aBoolFalse),
         testValueStruct(aBool: true, int1: -6, int2: 7, aString: "four", error: .int1_less_than_0),
-        testValueStruct(aBool: true, int1: 6, int2: 5, aString: "four", error: .int1_less_than_or_equal_int1),
-        testValueStruct(aBool: true, int1: 6, int2: 6, aString: "four", error: .int1_less_than_or_equal_int1),
+        testValueStruct(aBool: true, int1: 6, int2: 5, aString: "four", error: .int2_less_than_or_equal_int1),
+        testValueStruct(aBool: true, int1: 6, int2: 6, aString: "four", error: .int2_less_than_or_equal_int1),
         testValueStruct(aBool: true, int1: 6, int2: 7, aString: "eight", error: .aString_not_4_chars),
         testValueStruct(aBool: true, int1: 6, int2: 7, aString: "four", error: .success),
     ]
