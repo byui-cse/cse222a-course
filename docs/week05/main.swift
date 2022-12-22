@@ -1,11 +1,10 @@
 // *************************
 //  Do not modify this file!
 // *************************
-//  You are welcome to read this file and to try to understand it, but it may include
-//  elements of Swift that have not yet been taught in the course at this point.
-//  Your assignment is to edit task.swift and then run this file and task.swift in a project.
+//  You are welcome to read this file and to try to understand it,
+//  Your assignment is to edit tasks.swift and then run this file and tasks.swift in a project.
 //  The code in this file will test your task functions and indicate which task functions pass.
-//  It will also provide diagnostic inforamtion if a task function fails. You should definitely
+//  It will also provide diagnostic information if a task function fails. You should definitely
 //  not try to just copy code from a test here to your task, but instead, understand how to
 //  correctly create a task that meets the needs of the test.
 //
@@ -146,30 +145,30 @@ func fail(_ testNum: Int, _ message: String) -> TestResults {
  •  processing arrays of optionals
  Task 2
  •  calling a function that can throw
- •  using Do-Try-Catch to handle thorn errors
+ •  using Do-Try-Catch to handle thrown errors
  •  using "throw error" to forward an error up the call stack
  Task 3
- •  substantial mini-project
+ •  substantial mini project
  •  enums with associated values
  •  recursive enums
  •  closures stored in a Dictionary
  •  general recursion to process recursive data structures
+        (recursion in two different ways: recursive formula
+        structures within an Array cell and recursive
+        references to other cells
  •  type conversions
  •  string concatenation
  •  complex switch and case handling
  •  dealing with invalid values
- •  adapting to user view (spreadsheet index 1 based,
-        column,row order of parameters
-
+ •  adapting to user view (cell references being 1 based,
+        and having a column row order of parameters)
  */
 
 //  ========= Tests =========
 
 private var walks: [[Steps]] = []
-private var ExpectedURLdata = ""
 private func setupGlobals() -> Bool {
     walks = []
-    ExpectedURLdata = #"{"post code": "83460", "country": "United States", "country abbreviation": "US", "places": [{"place name": "Rexburg", "longitude": "-111.691", "state": "Idaho", "state abbreviation": "ID", "latitude": "43.7761"}]}"#
     return true
 }
 
@@ -213,9 +212,9 @@ private func test0(testNum: Int) -> TestResults {
 
     walks = []
     guard let returnValue = task0() else { return .testNotImplemented }
-        if returnValue != true {
-            return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
-        }
+    if returnValue != true {
+        return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
+    }
 
     guard walks.count >= 5 else {
         return fail(testNum, "Expected at least 5 random walk tests, but only see \(walks.count) tests")
@@ -231,7 +230,7 @@ private func test0(testNum: Int) -> TestResults {
             continue
         }
         guard printed == expected else {
-            passCode = fail(testNum, "Expected walk to produce:\n\t\(expected)\nbut produced\n\t\(String(describing: printed))")
+            passCode = fail(testNum, "Expected printWalk to produce:\n\t\(expected)\nbut produced\n\t\(String(describing: printed))")
             continue
         }
     }
@@ -260,7 +259,7 @@ private func test1(testNum: Int) -> TestResults {
                 doNil = false
             }
         }
-        // If doing nil, randomly choose whee in the array it will appear
+        // If doing nil, randomly choose where in the array it will appear
         if doNil {
             didWithNil += 1
             firstNil = Int.random(in: 0..<anArray.count)
@@ -289,7 +288,7 @@ private func test1(testNum: Int) -> TestResults {
         } catch task1ErrorType.nilValueAt(let errorIndex) {
             guard
                 doNil else {
-                return fail(testNum, "Array without any nil values threw an error claiming thre was a nil at index \(errorIndex)")
+                return fail(testNum, "Array without any nil values threw an error claiming there was a nil at index \(errorIndex)")
             }
             guard firstNil == errorIndex else {
                 return fail(testNum, "Array with first nil values at index \(firstNil) threw an error claiming thre was a nil at index \(errorIndex)")
@@ -306,11 +305,14 @@ private func test1(testNum: Int) -> TestResults {
 private func test2(testNum: Int) -> TestResults {
     
     //  Set up some arrays to control the test
-    //  This is tha array passed to task2()
+    
+    //  This is the array passed to task2()
     let testArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    
     //  This is the array of values we return from the function
     //  a nil value means to throw an error instead
     let testReturnValue = [0, nil, 2, 3, nil, 5, nil, 7, nil, 9]
+ 
     //  These are the errors we will throw for the nil values (in sequence)
     let throwErrors: [Task2ErrorType] = [
         .someError,
@@ -318,6 +320,7 @@ private func test2(testNum: Int) -> TestResults {
         .errorWithString("Expected"),
         .errorWithDouble(14.3)
     ]
+
     //  This is what we expect testPrinted for each error thrown
     let expectedPrint = [
         "Error: someError",
@@ -325,10 +328,13 @@ private func test2(testNum: Int) -> TestResults {
         "Error: errorWithString Expected",
         "Error: errorWithDouble 14.3"
     ]
+
     // Used to step through the errors each time we throw one
     var throwIndex = 0;
+    
     // String for when we throw an "unexpected" error
     let unexpectedErrorString = "Unexpected error that is actually expected at this point"
+
     // Value expected to come back to us for the unexpected error
     let expectedValueUnexpectedError = "unexpectedError(\"Unexpected error that is actually expected at this point\")"
 
@@ -345,7 +351,7 @@ private func test2(testNum: Int) -> TestResults {
     func canThrow(_ anInt: Int) throws -> Int {
         // Make sure we were called with a valid value
         guard (0..<testReturnValue.count).contains(anInt) else {
-            throw unexpectedErrorType.unexpectedError("Expected canThrow to be called with values from the passsed array which are all in 0..<10, but it was called with \(anInt)")
+            throw unexpectedErrorType.unexpectedError("Expected canThrow() to be called with values from the passed array which are all in 0..<10, but it was called with \(anInt)")
         }
         // Check if we should return an Int. nil values mean throw error
         guard let returnValue = testReturnValue[anInt] else {
@@ -363,7 +369,7 @@ private func test2(testNum: Int) -> TestResults {
     }
 
     // Call task2() the first time
-    // We catch the error, but it should not be thrown the first time
+    // We catch any thrown error, but none of the errors should be passed up the chain the first time
     do {
         guard let returnValue = try task2(intArray: testArray, canThrow: canThrow) else {
             return .testNotImplemented
@@ -386,16 +392,16 @@ private func test2(testNum: Int) -> TestResults {
             }
         }
     } catch {
-        return fail(testNum, "Did not expect unexpected error to be thrown from task2 during the first \(testArray.count) integers processed")
+        return fail(testNum, "Did not expect unexpected error to be thrown from the first call to task2() during which \(testArray.count) integers should have been processed")
     }
 
     //  Now call task2() again. This time it should throw an unexpected
-    //  error so check if it is corectly thrown.
+    //  error so check if it is correctly thrown.
     do {
         // Call it one more time passing in a value that will cause it to throw an "expected" unexpected error
         guard let returnValue = try task2(intArray: [1], canThrow: canThrow) else {
             return fail(testNum, "Expected the second call to task2() to throw an error, but instead returned nil")
-       }
+        }
         return fail(testNum, "Expected second call to task2() to throw an \"unexpected\" error, but instead it returned  \(returnValue)")
     } catch {
         guard savedPrint.count == throwErrors.count else {
@@ -411,12 +417,12 @@ private func test2(testNum: Int) -> TestResults {
 func compareSheets(_ lhsSheet: Spreadsheet, _ rhsSheet: Spreadsheet) -> (Bool, String) {
     guard lhsSheet.count == rhsSheet.count else { return (false, "Number of rows do not match") }
     for rowIndex in 0..<lhsSheet.count {
-        guard lhsSheet[rowIndex].count == rhsSheet[rowIndex].count else { return (false, "Number of columnsa do not match") }
+        guard lhsSheet[rowIndex].count == rhsSheet[rowIndex].count else { return (false, "Number of columns do not match") }
         for colIndex in 0..<lhsSheet[rowIndex].count {
-            // if both are .error do not compare the associated values since we did not specify exact wording
+            // if both are .error, do not compare the associated values since we did not specify exact wording
             let lhsValue = lhsSheet[rowIndex][colIndex]
             let rhsValue = rhsSheet[rowIndex][colIndex]
-            // handle .error special because we cannot compare associated values since we don's define exact wording
+            // handle .error special because we cannot compare associated values since we did not define exact wording
             switch lhsValue {
             case .error:
                 switch rhsValue {
@@ -522,9 +528,9 @@ private func test3(testNum: Int) -> TestResults {
         
     guard let returnValue = task3(firstTest) else { return .testNotImplemented }
 
-    testPrint("User view of input spreasheet:")
+    testPrint("User view of input spreadsheet:")
     printSheet(firstTest, userView: true)
-    testPrint("\nInternal view of input spreasheet:")
+    testPrint("\nInternal view of input spreadsheet:")
     printSheet(firstTest)
     testPrint("\nInternal view of returned value:")
     printSheet(returnValue)
