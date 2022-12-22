@@ -3,9 +3,9 @@
 // *************************
 //  You are welcome to read this file and to try to understand it, but it may include
 //  elements of Swift that have not yet been taught in the course at this point.
-//  Your assignment is to edit task.swift and then run this file and task.swift in a project.
+//  Your assignment is to edit tasks.swift and then run this file and tasks.swift in a project.
 //  The code in this file will test your task functions and indicate which task functions pass.
-//  It will also provide diagnostic inforamtion if a task function fails. You should definitely
+//  It will also provide diagnostic information if a task function fails. You should definitely
 //  not try to just copy code from a test here to your task, but instead, understand how to
 //  correctly create a task that meets the needs of the test.
 //
@@ -127,19 +127,19 @@ func fail(_ testNum: Int, _ message: String) -> TestResults {
  •    Create class
  •    Create two child classes
  •    Create struct
- •    Example of returning tuples
+ •    Example of function returning tuples
  Task 1
  •    computed (read-only) property
  •    Apply protocol to class and ensure property compliance
  •    Apply protocol to struct and ensure property compliance
  •    Construct objects of class and struct types
- •    Use a tuple to return multiple values
+ •    Use a tuple to return multiple values from a function
  Task 2
  •    Add methods to a struct
  •    Add items to array only if not already added
         (helps prepare them for Dictionary next week)
  •    mutating keyword for some struct methods
- •    Apply an additional protocl to ensure method compliance
+ •    Apply an additional prorocol to ensure method compliance
  Task 3
  •    Work with ranges
  •    Use an array to simulate a decreasing range
@@ -161,28 +161,28 @@ func fail(_ testNum: Int, _ message: String) -> TestResults {
         after first extracting underlying values
  •    Use built in values of basic types (Double.infinity)
 Task 7
- •    Using extension to add a computed property to a class
+ •    Using an extension to add a computed property to a class
  •    Conforming with CustomStringConvertible using the
         computed "description" property
  •    Formatting properties into a String for printing
- •    String interpolaton
+ •    String interpolation
  •    using is and as? to determine whether an object is a
         member of the parent or child class and to access
         properties from the child class as needed
 Task 8
  •    Use an existing extension to override an operator
  •    Conform to the Equatable protocol
- •    Have a funtion return a closure (to facilitate testing)
+ •    Have a function return a closure to facilitate testing)
  Task 9
  •    Create an new extension to override an operator
  •    Conform to the Comparable protocol
- •    Have a funtion return a closure (to facilitate testing)
+ •    Have a function return a closure (to facilitate testing)
  Task 10
  •    Example of custom infix operator and setting precedence
  •    Use an extension to create a new custom operator
  •    Use filter() to identify expired and non-expired MedicationContainers
- •    Use sorted() (not sort())
- •    Have a funtion return a closure (to facilitate testing)
+ •    Use sorted() (rather than sort())
+ •    Have a function return a closure (to facilitate testing)
  */
 
 //  ========= Tests =========
@@ -195,7 +195,7 @@ private func test0(testNum: Int) -> TestResults {
     let (container1, container2): (Any, Any) = task0()
     //  The first item should contain a LiquidMedicationContainer stored in a variable of Type MedicationContainer
     //  The second item should contain a TabletMedicationContainer stored in a variable of Type MedicationContainer
-    //  Make them all Any so we don't get warning errors about some of the followiong tests
+    //  Make them all Any so we don't get warning errors about some of the following tests
     //  being always true
 
     //  Check that aStockTracker is still a PharmaceuticalStockTracker
@@ -260,12 +260,11 @@ struct testItem {
     let potencyUnits: String?
     let wantResult: Bool // different tests can interpret this differently
 
-    //  Possibly setting a bad example overriding the initializer to allow
-    //  very short or missing parameter names, but this is a fixed table
-    //  that may be very long and I don't want ot clutter it
-    //  So abbreviate the first two and last two, let the othere be unnamed
-    //  and let the second be skipped if we are not doing things with
-    //  dates
+    //  Possibly setting a bad example, override the initializer to allow
+    //  very short or missing parameter names. This is a fixed table
+    //  that may be very long and we don't want to clutter it
+    //  so abbreviate the first two and last two, let the others be unnamed
+    //  and let the second use a default if we are not doing things with dates
     init(n name: String, d expDays: Int = 180, _ volume: Double?, _ concentration: Int?, _ concentrationUnits: String?, _ pillCount: Int?, _ potency: Double?, _ potencyUnits: String?, want wantResult: Bool = true) {
         self.name = name
         self.expDays = expDays
@@ -295,12 +294,12 @@ func testContainer(_ t: testItem) -> MedicationContainer? {
 //  One challenge with these functions was to find a way to let the files compile
 //  and then have the student add functionality which can be tested.
 //  The solution taken is to have the student add a protocol to each class or struct
-//  after thaey do their work that will confirm they added the correct properties
+//  after they do their work that will confirm they added the correct properties
 //  and methods. But in Swift we can use protocols as pseudo types so once we have
-//  confirmed that they added protocol comformance, we can create an object of the
+//  confirmed that they added protocol conformance, we can create an object of the
 //  protocol type and use that to access properties or methods that did not exist
-//  when the code was initially compiling as they worked on eariler tasks. Note that
-//  this is not eneded for task 0 since we allow the files to not compile until they
+//  when the code was initially compiling as they worked on earlier tasks. Note that
+//  this is not needed for task 0 since we allow the files to not compile until they
 //  implement task 0.
 private func test1(testNum: Int) -> TestResults {
     // Call the task function and report "testNotImplemented if it returns nil
@@ -515,7 +514,7 @@ private func test4(testNum: Int) -> TestResults {
 
 
 // This lets us print an Optional array without the clutter of (optional) in front of all the
-// non-nill values
+// non-nil values
 private func optionalArrayToString(_ anyArray: [Any?]) -> String {
     var returnValue = ""
     var didFirst = false
@@ -611,7 +610,7 @@ extension Date {
         return dateFormatter.string(from: self)
     }
 }
-// Check to make sure the last printed line containes and does not contain some strings
+// Check to make sure the last printed line contains some strings and does not contain other strings
 private func matchPrint(called: String, matches: [String], notMatches: [String]) -> (String, Bool) {
     // "called" is the string to use to describe what was called that produced the last printed line
     // returns ("", true) if all is good
@@ -641,7 +640,7 @@ private func test7(testNum: Int) -> TestResults {
         return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue1)")
     }
 
-    // Set up and test a container
+    // Set up and test "a" container
     guard let aContainer = testContainer(testItem(n: "Med", d: 90, nil,nil,nil, 90,30,"MEQ")) else { // TabletMedicationContainer
         return fail(testNum, "Internal testing error. Could not create test container.")
     }
@@ -657,7 +656,7 @@ private func test7(testNum: Int) -> TestResults {
         return fail(testNum, errorString)
     }
    
-    // Set up and test b container
+    // Set up and test "b" container
     guard let bContainer = testContainer(testItem(n: "Children's TYLENOL", d: 120, 120,160,"mg/5ml", nil,nil,nil)) else { // LiquidMedicationContainer
          return fail(testNum, "Internal testing error. Could not create test container.")
      }
@@ -671,7 +670,7 @@ private func test7(testNum: Int) -> TestResults {
         return fail(testNum, errorString)
     }
 
-    // Set up and test c container
+    // Set up and test "c" container
     guard let cContainer = testContainer(testItem(n: "TYLENOL", d: 180, nil,nil,nil, 100,500,"mg")) else { // Another TabletMedicationContainer
         return fail(testNum, "Internal testing error. Could not create test container.")
     }
@@ -697,7 +696,8 @@ private func test8(testNum: Int) -> TestResults {
         return fail(testNum, "Internal testing error. Could not create test containers.")
     }
     
-    //  Set up an "Any" version to avoid warning errors about the "is" test below always returning true or false.
+    //  Set up an "Any" version to avoid warning errors about the "is" test below always returning true
+    //  or always returning false.
     let aAnyContainer: Any = aContainer
     // Make sure MedicationContainer conforms to Equatable
     guard aAnyContainer is (any Equatable) else {
@@ -729,7 +729,8 @@ private func test9(testNum: Int) -> TestResults {
         return fail(testNum, "Internal testing error. Could not create test containers.")
     }
     
-    //  Set up an "Any" version to avoid warning errors about the "is" test below always returning true or false.
+    //  Set up an "Any" version to avoid warning errors about the "is" test below always returning true
+    //  or always returning false.
     let aAnyContainer: Any = aContainer
     // Make sure MedicationContainer conforms to Equatable
     guard aAnyContainer is (any Comparable) else {
@@ -750,7 +751,6 @@ private func test9(testNum: Int) -> TestResults {
         return fail(testNum, "Expected \(bContainer) > \(aContainer)")
     }
 
-
     guard returnedFunction(dContainer, aContainer) else {
         return fail(testNum, "Expected \(dContainer) < \(aContainer)")
     }
@@ -761,6 +761,7 @@ private func test9(testNum: Int) -> TestResults {
     return .testPassed
 }
 
+//  Format printing an array of containers to make it easier to read our error messages
 private func describeArrayOfContainers(_ containers: [MedicationContainer]) -> String {
     var returnString = "[\n\t"
     var first = true
@@ -775,8 +776,8 @@ private func describeArrayOfContainers(_ containers: [MedicationContainer]) -> S
     return returnString + "]"
 }
 //  We can't use "==" for this because it is not defined for MedicationContainers
-//  until Task 8 so we would not compile before then. It also has an option to ignore
-//  the order of the items in the arrays which is extra funcationality.
+//  until Task 8 so we would not compile before then. This function also has an option
+//  to ignore the order of the items in the arrays which is required funcationality.
 private func compareContainerArrays(_ lhs: [MedicationContainer], _ rhs: [MedicationContainer], ordered: Bool) -> Bool {
     guard lhs.count == rhs.count else { return false }
     if ordered {

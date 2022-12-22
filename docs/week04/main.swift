@@ -3,9 +3,9 @@
 // *************************
 //  You are welcome to read this file and to try to understand it, but it may include
 //  elements of Swift that have not yet been taught in the course at this point.
-//  Your assignment is to edit task.swift and then run this file and task.swift in a project.
+//  Your assignment is to edit tasks.swift and then run this file and tasks.swift in a project.
 //  The code in this file will test your task functions and indicate which task functions pass.
-//  It will also provide diagnostic inforamtion if a task function fails. You should definitely
+//  It will also provide diagnostic information if a task function fails. You should definitely
 //  not try to just copy code from a test here to your task, but instead, understand how to
 //  correctly create a task that meets the needs of the test.
 //
@@ -137,7 +137,7 @@ func fail(_ testNum: Int, _ message: String) -> TestResults {
  •    Modifying a class: adjust properties and methods
  •    Change computed properties and methods to work with
         inStockMedications now being a Dictionary of Sets
- •    Reaserch how and conform to Hashable
+ •    Reaserch how to conform to Hashable and do itw
  Task 1
  •    Use an extension to define a new method
  •    Use filter() to identify expired and non-expired MedicationContainers
@@ -308,10 +308,10 @@ private func test0(testNum: Int) -> TestResults {
     let (container1, container2): (Any, Any) = task0()
     //  The first item should contain a LiquidMedicationContainer stored in a variable of Type MedicationContainer
     //  The second item should contain a TabletMedicationContainer stored in a variable of Type MedicationContainer
-    //  Make them Any so we don't get warning errors about some of the followiong tests
+    //  Make them Any so we don't get warning errors about some of the following tests
     //  being always true
 
-    //  make sure 1 is a LiquidMedicationContainer and container2 is a TabletMedicationContainer
+    //  make sure container1 is a LiquidMedicationContainer and container2 is a TabletMedicationContainer
     guard container1 is LiquidMedicationContainer else {
         if container1 is TabletMedicationContainer  {
             return fail(testNum, "First returned value should be a LiquidMedicationContainer, but it is a TabletMedicationContainer")
@@ -323,7 +323,7 @@ private func test0(testNum: Int) -> TestResults {
         if container2 is LiquidMedicationContainer {
             return fail(testNum, "Second returned value should be a TabletMedicationContainer, but it is a LiquidMedicationContainer")
         } else {
-            return fail(testNum, "Decond returned value should be a TabletMedicationContainer, but it is a generic MedicationContainer")
+            return fail(testNum, "Second returned value should be a TabletMedicationContainer, but it is a generic MedicationContainer")
         }
     }
 
@@ -902,7 +902,7 @@ func generateTracker(_ countainerCount: Int) -> PharmaceuticalStockTracker {
     myStockTracker.inStockMedications = aStockTracker.inStockMedications
 
     // countainerCount == 6 keeps all 6 preloaded MedicationContainers. The other values
-    // keep only the Dictionary entry that matche that count of MedicationContainers.
+    // keep only the Dictionary entry that matches that count of MedicationContainers.
     if countainerCount == 6 || (countainerCount >= 1 && countainerCount <= 3) {
         // Now remove the objects that are not part of this count
         // If count is not 1 nor 6, remove the one container set
@@ -990,9 +990,10 @@ func compareAdjustSetsAndDictionaries(_ lhs: String, _ rhs: String) -> Bool {
 
     return simplifyDictionaries(simplifySets(lhs)) == simplifyDictionaries(simplifySets(rhs))
 }
-//  This is used in sorting the sets of containers inside a PharmaceuticalStockTracker.
+//  This is used to compare the sets of containers inside a PharmaceuticalStockTracker.
 //  If we did not do this, the text we would need to compare would be very long and the results
 //  would be hard for the students to parse through to find their errors.
+//  Instead this returns the ndcPackageCode and the count of MedicationContainers with that code.
 func summarizeSetsOfMedicationContainers(_ arrayOfSets: [any Collection<MedicationContainer>]) -> String {
     if arrayOfSets.isEmpty { return "Empty Array of Sets" }
     var returnValue = "["

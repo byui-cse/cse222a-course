@@ -3,25 +3,25 @@
 //  Week 4 Tasks
 //
 //  You need to write code to complete the functions below to complete each task.
-//  You can develop and test each function individually, but some sequentially depend
-//  on the tasks before them.
+//  You can develop and test each function individually, but some sequentially
+//  depend on the prior tasks.
 //  As long as a function returns nil, it is assumed to not be implemented.
-//  Initially you may see some warnings about unused variables that you will address
-//  when you impelement those functions. After you complete the tasks, there will be
-//  a few warning errors abourt code that will not execute. Notes in the tasks
-//  indicate which of those you can ignore.
 //
 //  You would usually use the print() function to write to the console and the
 //  readline() function to read user input from the console. However, for this class,
 //  please instead use testPrint() and testReadline(). Those will behave the same way,
-//  but allow test code to see what you print and what is input from the user.
+//  but allow the test code to see what you print and what is input from the user.
+//
+//  Due to the tests we need to perform, some lines in main.swift may generate
+//  warning errors. If you get an unexplained warning error from main.swift, please
+//  check if there is a comment near that line saying to ignore warning errors.
 //
 import Foundation
 
 //  Task 0 Assignment
 //  This week the project will not compile without errors until you complete task 0.
 //  We have included the classes from last week as we left them except for a few changes,
-//  mostly to matcthe new UML diagram:
+//  mostly to match the new UML diagram:
 //
 //      1) PharmaceuticalStockTracker is now a class
 //
@@ -30,8 +30,8 @@ import Foundation
 //
 //      3) Changed "inStockMedications" from an Array of MedicationContainers to
 //      a Dictionary. The key is a String (actually an ndcPackageCode) and
-//      the value is a Set of MedicationContainers each of which have an ndcPackageCode
-//      attribute that matches the key.
+//      the value is a Set of MedicationContainers each of which have an
+//      ndcPackageCode attribute that matches the key.
 //
 //      4) Added two new computed properties "description" and "count" and
 //      made PharmaceuticalStockTracker conform to the CustomStringConvertible
@@ -50,15 +50,17 @@ import Foundation
 //
 //      3) Change addContainer() to work correctly for the new data model
 //      using the ndcPackageCode inside the MedicationContainer parameter
-//      as the key. Be sure to address both the case where one or more
-//      MedicationContainers with the same ndcPackageCode have already been
-//      added.
+//      as the key. Be sure to address both the case where we are adding
+//      this ndcPackageCode for the first time and the case where one or
+//      more MedicationContainers with the same ndcPackageCode have
+//      already been added.
 //
 //      4) As explained in the reading, Elements of a set must conform to
 //      the Hashable protocol. Mark the MedicationContainer class as
 //      conforming to Hashable. Then make it actually conform to Hashable.
 //      Note that since Equatable is a parent of Hashable, we must also
-//      conform to Equatable. Fortunately we alraedy did that last week.
+//      conform to Equatable. Fortunately, we already did that last week,
+//      so part of the work to conform is already done.
 //      Hint: The combine() approach to conforming to Hashable works even
 //      if you are only "combining" one property,
 //
@@ -74,8 +76,9 @@ class PharmaceuticalStockTracker: CustomStringConvertible {
     //  we provide a more informative description. Note that the new
     //  description is only active for printing if we also mark the
     //  PharmaceuticalStockTracker Type as conforming to CustomStringConvertible.
-    //  You should do not need to edit this method, but to work correctly ir
-    //  requires the new computed property "count" that you need to implement.
+    //  You should not need to edit this method. However, for it to work
+    //  correctly it requires the new computed property "count" that you
+    //  were asked to implement.
     var description: String {
         return "StockTracker holding \(self.count) MedicationContainers"
     }
@@ -175,7 +178,7 @@ func dateToString(_ aDate: Date) -> String {
 
 //  aStockTracker is a global variable used by several tasks and the test code.
 //  Do not edit aStockTracker, nor any code in task0(). You will edit code in all
-//  other tasks, but task0() is already set up to make sure you create the correct
+//  other tasks, but task0() is already set up to make sure you created the correct
 //  class and struct types above.
 var aStockTracker = PharmaceuticalStockTracker()
 
@@ -192,9 +195,9 @@ func task0() -> (MedicationContainer, MedicationContainer) {
 }
 
 //  Task 1
-//  For the last assignment last week you created an operator that
+//  In the last assignment last week you created an operator that
 //  cleaned any expired medication from a PharmaceuticalStockTracker.
-//  Use the extension below to re-implement that funcationality (as a
+//  Use the extension below to re-implement that functionality (as a
 //  method this time) for the new model. It should remove any expired
 //  containers from the PharmaceuticalStockTracker and return an array
 //  of any containers that were removed. The array of expired containers
@@ -207,6 +210,7 @@ func task0() -> (MedicationContainer, MedicationContainer) {
 //
 extension PharmaceuticalStockTracker {
     func removeExpired() -> [MedicationContainer] {
+        // Replace the following line with your code
         return []
     }
 }
@@ -223,7 +227,9 @@ func task1() -> Bool? {
 //  codes: [5 digits]-[3 digits]-[2 digits]. When testing your code you may use
 //  real codes from the database along with real information, or you may make them up.
 //  The only thing that matters for this exercise is matching the pattern, not
-//  whether it is an actual code from the web site.
+//  whether it is an actual code from the web site. Your code should test for a
+//  match on the entire property and not report a match if only a substring of
+//  the property matches.
 //
 //  When you have completed and tested the code for isFormattedAsNDCCode(),
 //  change task2() to return true rather than nil
@@ -242,20 +248,23 @@ func task2() -> Bool? {
 //  NDCCode format. If not, do not add the container and return false.
 //
 //  Now fill out the method addContainers() below. This accepts as parameters
-//  an expectedNdcPackageCode and a Set of containers to be added to the
-//  Stock Tracker. Since this system is supposed to be dealing with medications
-//  there are extra layers of checking. All of the containers to add in a call
+//  an expectedNdcPackageCode and a Set of MedicationContainers to be added to
+//  the Stock Tracker. Since this system is supposed to be dealing with medications
+//  there are extra layers of checking. All of the containers in the Set passed
 //  to addContainers() should have the same ndcPackageCode and that code should
-//  match the expectedNdcPackageCode parameter. The function returns a tuple
-//  with a Bool and an enum of Type AddMessage. As you complete the method, you
-//  should find yourself returning each of the values in AddMessage except
-//  possibly .otherAddFailure. The others all represent error (or success)
-//  conditions that you should detect as you implement addContainers(). One
-//  error you should detect would be tested by calling the function
-//  isFormattedAsNDCCode() to verify the format of the NDCCodes used.
+//  match the expectedNdcPackageCode parameter.
+//
+//  The function returns a tuple with a Bool and an enum of Type AddMessage.
+//  As you complete the method, parts of your code should return each of the
+//  values in AddMessage except possibly .otherAddFailure. The others all
+//  represent error (or success) conditions that you should detect as you
+//  implement addContainers(). One  error you should detect would be found
+//  by calling the function isFormattedAsNDCCode() to verify the format
+//  of the NdcPackageCode used.
 //
 //  Hint: Remember to deal with both the case where there are currently no
-//  containers marching the ndcPackageCode and the casa where there are.
+//  containers matching the ndcPackageCode and the case where there are
+//  already some containers matching the ndcPackageCode.
 //
 //  When you have completed and tested the codefor addContainers(),
 //  change task3() to return true rather than nil
@@ -317,7 +326,7 @@ func task4() -> Bool? {
 //  enough. If not, return a tuple of (false, .notEnoughInventory, nil). If there
 //  is enough of inventory of the requested ndcPackageCode, be sure to sell those
 //  with the earliest dates first. Return a sorted array of the containers sold.
-//  If the sale results in the Set being empty, remove that dictionary entry..
+//  If the sale results in the Set being emptied out, remove that dictionary entry.
 //
 //  When you have completed and tested the code for sellContainers(),
 //  change task5() to return true rather than nil
@@ -342,18 +351,16 @@ func task5() -> Bool? {
 }
 
 //  Task 6
-//  Add a mutating method called setDates to DateSequencer struct below
-//  with a parameter called daysTuple. The parameter should be of type (Int, Int).
-//  The method should use the parameter to set the values (in order) of the two
-//  predefined properties. THis is just to set us up for the following tasks.
+//  Add a mutating method called setDates to the DateSequencer struct below
+//  with a parameter called daysTuple. The parameter should be a tuple of Type
+//  (Int, Int). The method should use the parameter to set the values (in order)
+//  of the two predefined properties: currentDaysOut and lastDaysOut. The purpose
+//  of this task is to set things up for the following tasks.
 //
-//  Then apply the additional protocol DateSequencerProtocol that will let the
-//  tests run.
+//  After you make the change, apply the additional protocol DateSequencerProtocol
+//  change task6() to return true rather than nil to will let the tests run.
 //
-//  When you have completed and tested the code for setDates(),
-//  change task6() to return true rather than nil
-//
-struct DateSequencer {
+struct DateSequencer  {
     
     var currentDaysOut = 0
     var lastDaysOut = 10
@@ -366,9 +373,9 @@ func task6() -> Bool? {
 
 //  Task 7
 //  Add to the extension below to make the DateSequencer conform to the Sequence
-//  protocol. In conforming to this protocol you can either have the object create
-//  a serpate iterator or you can have the object be its own itnernator. For this
-//  task, use the option where it is its own interator so in addition to conform
+//  protocol. In conforming to this protocol, you can either have the object create
+//  a separate iterator or you can have the object be its own iterator . For this
+//  task, use the option where it is its own iterator  so in addition to conform
 //  to Sequence, it needs to explicitly conform to IteratorProtocol. You will
 //  need to add both of these protocols to the first line of the extension.
 //
@@ -383,29 +390,31 @@ func task6() -> Bool? {
 //  both of daysToMs() and futureDate() or to borrow code from them.
 //
 //  The result of your code will be objects that generate a sequence of dates.
-//  if you call setDates(x, y) then the struct will behave as a sequence of dates
+//  If you call setDates(x, y) then the struct will behave as a sequence of dates
 //  starting x days in the future and continuing up or down the calendar until
 //  just before it would output y days into the future.
 //
 //  When you have completed and tested these changes apply the additional
-//  protocol DateSequencerProtocol2 to the extension abd change task7() to
+//  protocol DateSequencerProtocol2 to the extension and change task7() to
 //  return true rather than nil.
 //
 
-extension DateSequencer {
+extension DateSequencer  {
     // add your code here
 }
 func task7() -> Bool? {
     return nil
 }
-    
-//  Lets demonstrate how having our our the DateSequencer object conform to
-//  Sequence really addes value. In task8() below, create a DateSequencer
-//  object. Call setDates() on your DateSequencer using the parameterts passed
+
+//  Task 8
+//  Lets demonstrate how having the DateSequencer object conform to
+//  Sequence really adds value. In task8() below, create a DateSequencer
+//  object. Call setDates() on your DateSequencer using the parameters passed
 //  into task8(). Create an empty array of type [Date]. Then write a for-in
-//  loop that loops on your DateSequencer that appends each item returns to your
-//  array of Dates. The result will be that for-in uses your struct to hel you
-//  create an array of dates that matches the parameters.
+//  loop that loops on your DateSequencer and appends each value produced by
+//  the for statement to your array of Dates. The result will be that for-in
+//  uses your struct to help you create an array of dates that matches the
+//  parameters.
 //
 //  When you are done with your code, change task8() to return the array produced
 //  instead of returning nil.
@@ -420,24 +429,24 @@ func task8(_ aTuple: (Int, Int)) -> [Date]? {
 //  generic method extension combined with a simple protocol can have far reaching
 //  effects on a wide range of different types of collections of objects.
 //
-//  Suppose we want to sort the object in a Collection by size (using the "count"
+//  Suppose we want to sort the objects in a Collection by size (using the "count"
 //  property already built into most objects). We could write a special sort method
 //  for one particular type of collection such as an Array of Strings. But we could
 //  also create a generic method that would work for any collections where the
-//  elements implement count.
+//  elements inside the collection implement the count property.
 //
 //  First, to identify which object Types can use this method, we have defined a
 //  Protocol that just confirms the Type has a "count" property. In most cases,
-//  including our PharmaceuticalStockTracker class, the count proerty is computed.
+//  including our PharmaceuticalStockTracker class, the count property is computed.
 //  All our Protocol cares about is that the property exists, not whether it is
-//  a stored or computed propety. Here where we define the Protocol:
+//  a stored or computed property. Here where we define the Protocol:
 
 protocol Countable {
     var count: Int { get }
 }
 
 //  Swift does not implicitly recognize compliance with a protocol. Even though
-//  many Types have a count propertry and would comply with this property, we
+//  many Types have a count property and would comply with this property, we
 //  must explicitly state that compliance, for example with an extension like
 //  we do here for many common Types. Note that we are able to apply this to
 //  generic Types. Applying it to Set means it works for any Set no matter
@@ -453,7 +462,7 @@ extension PharmaceuticalStockTracker: Countable {}
 
 //  Now we can define a generic method that applies to any
 //  Collection where the Elements are of a Countable Type.
-//  Element is a predefined placeholder that representes the type
+//  Element is a predefined placeholder that represents the type
 //  of object that is collected in a Collection. We can require in
 //  the extension below that it apply to any Collection where
 //  Element (representing the Type of objects in the Collection) is
@@ -462,7 +471,7 @@ extension PharmaceuticalStockTracker: Countable {}
 //  Your assignment is to replace "return []" in sortedBySize()
 //  below with code that sorts the top level elements of
 //  the Collection by size using the "count" property. Sort them
-//  increasing or decreasing accoring to the parameter. You
+//  increasing or decreasing according to the parameter. You
 //  are welcome to call the Built-In sort() Function to help you
 //  implement sortedBySize().
 //
@@ -472,7 +481,7 @@ extension PharmaceuticalStockTracker: Countable {}
 //  called SpecialCollection. All you need to add is one line:
 //      extension SpecialCollection: Countable {}
 //  and you can apply sortedBySize() to Collections of that Type as well.
-//  With one line like that, this extension can be applied to types that
+//  In this way, this extension can easily be applied to types that do
 //  not even exist yet.
 //
 //  When you have implemented sortedBySize() comment out the "return nil"
@@ -569,13 +578,14 @@ func task9() -> Bool? {
     testPrint(">  \(arrayOfPharmaceuticalStockTrackers.sortedBySize())")
     testPrint("<  \(arrayOfPharmaceuticalStockTrackers.sortedBySize(increasing: false))")
 
-    //  Now let's get a sorted array of all of the inventory in dictionaries inside a
-    //  PharmaceuticalStockTracker. We use sortedBySize to provide a sorted list of which
-    //  ndcPackageCodes have the most or least inventory in this tracker.
-    //  Note: to make the results more meaningful we use a funcation provided in main.swift
-    //  called summarizeSetsOfMedicationContainers(). This provides a summary of each Dictionary
-    //  or Set. Otherwise the following lines would print the detailed contents of each
-    //  MedicationContainer in inventory which would be a lot more detailed content to read
+    //  Here we use sortedBySize() to produce a sorted array of all of the inventory in
+    //  a PharmaceuticalStockTracker, sorted by which ndcPackageCodes have the most or least
+    //  inventory associated with them.
+    //
+    //  Note: to make the results more meaningful we print the results using a funcation provided
+    //  in main.swift called summarizeSetsOfMedicationContainers(). That funtion prints a summary
+    //  of each Dictionary or Set. Otherwise, the following lines would print the full detailed contents
+    //  of each MedicationContainer in inventory which would be a lot more detailed content to read
     //  through to validate that the function is working correctly..
     let aStockTracker = generateTracker(6)
     testPrint("aStockTracker.inStockMedications.sortedBySize() increasing, then decreasing:")

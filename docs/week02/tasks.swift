@@ -5,8 +5,6 @@
 //  You need to write code to complete the functions below to complete each task.
 //  You can develop and test each function individually.
 //  As long as a function returns nil, it is assumed to not be implemented.
-//  Initially you may see some warnings about unused variables that you will address
-//  when you impelement those functions.
 //
 //  You would usually use the print() function to write to the console and the
 //  readline() function to read user input from the console. However, for this class,
@@ -54,14 +52,16 @@ enum GuardedErrors: String {
 //  If <error> represents the name of a case in GuardedErrors, then you can write
 //  something like this:
 //      testPrint("Error: \(GuardedErrors.aBoolFalse.rawValue)")
-//  2) When referring to a specific enum <error> in GuardedErrors, you can always write
+//  2) When referring to a specific enum value <error> in GuardedErrors, you can write:
 //      GuardedErrors.<error>
+//  for example:
+//      return GuardedErrors.aBoolFalse
 //  but if context already defines the enum Type, you can just write .<error> for example:
 //      return .aBoolFalse
 //  since the compiler knows that the return value Type is GuardedErrors
 //  3) Some languages use len() or .size to give the size of a string. In Swift,
 //  the number of elements in a collection like an array and the number of characters in
-//  a string are both given by ".count".
+//  a string are both given by the property ".count".
 //
 func task0(aBool: Bool, int1: Int, int2: Int, aString: String) -> GuardedErrors? {
     return nil
@@ -77,20 +77,23 @@ func task0(aBool: Bool, int1: Int, int2: Int, aString: String) -> GuardedErrors?
 //  Then use String Interpolation and testPrint to ask the user to Type that string into
 //  the console. Then use "guard let" to confirm that the input is not nil and that the value
 //  matches the optionalString. If any guards fail return the appropriate error from GuardedErrors.
-//  If successful, testPrint("Success!") and return .success. Note that the test will call
+//  If successful, testPrint("Success!") and return .success. Note that the test code will call
 //  task1 with nil, then call task1 repeatedly with a string until it testPrints "Success!"
 //  and returns .success.
 //
 //  Hints:
-//  1) Note the use of "_" to indicate a parameter name is not used when calling the function.
+//  1) Note the use of "_" to indicate that a parameter name is not required when calling the function.
 //  2) readLine() and testReadLine() return a String? which is an optional, a value that can
 //  either be nil or a String. There are three typical ways to "unwrap" an optional:
 //      1) Use the ?? operator to unwrap it providing a default if the optional is nil
-//      2) Use "if let" to create an unwrapped version of the optional that can be
-//         used within the true clause of the if statement
-//      3) Use "guard let" to create an unwrapped version of the optional that
-//         can be used in the remainder of the function or loop following the else clause
-//      Use "guard let" in this task. "??" does not allow you to report if it was optional.
+//      2) Use "if let" or "if var" to create an unwrapped version of the optional that
+//          can be used only within the true clause of the if statement
+//      3) Use "guard let" of "guard var" to create an unwrapped version of the optional
+//          that can be used in the remainder of the function or loop following the else clause
+//
+//      Use "guard let" in this task. "??" does not allow you to know if a value was optional
+//      or possibly happened to already have the same value as the default.
+//
 //  Remember to never use "!" to force unwrap an optional in this class.
 //
 func task1(_ optionalString: String?) -> GuardedErrors? {
@@ -98,8 +101,8 @@ func task1(_ optionalString: String?) -> GuardedErrors? {
 }
 
 //  Task 2
-//  Add code that has a "while true" loop and inside that loop, ask the user to
-//  input their name using testPrint(). Then receive input using testReadLine().
+//  Add code that has a "while true" loop and inside that loop, use testPrint() to
+//  ask the user to  input their name . Then receive input using testReadLine().
 //  If the input is "done" break from the loop. Otherwise print a message to the user
 //  that says "Hello <name>!" where name is the string you receive from testReadLine().
 //  Use String Interpolation as described in Task 0.
@@ -111,6 +114,7 @@ func task1(_ optionalString: String?) -> GuardedErrors? {
 //  Not needed for this task, but if you want to be able to modify the value where you
 //  are storing an unwrapped variable, you can say "guard var" instead of "guard let"
 //  and "if var" instead of "if let". You may want to use "if let" in this task.
+//
 //  Remember to never use "!" to force unwrap an optional in this class.
 //
 func task2() -> Int? {
@@ -121,30 +125,30 @@ func task2() -> Int? {
 //  Built in functions like map, filter, reduce and sort take a parameter that is a closure or
 //  anonymous functions like anArray.filter({$0==1}). If the closure is the last parameter, we
 //  often move the {} outside the () and if it is the only parameter, we don't need the () at all,
-//  so we could write that anArray.filter{$0==1}.
+//  so we could write that as anArray.filter{$0==1}.
 //
 //  Inside this function is an array of closures that each take two Int parameters. Complete each
 //  closure according to the list below, then change "return nil" to "return closureArray".
 //
 //  Closure 0: return the sum of the two parameters
 //  Closure 1: return the product of the two parameters
-//  Closure 2: return -1 if the first paramater is less than the second parameter,
+//  Closure 2: return -1 if the first parameter is less than the second parameter,
 //              return 0 if they are equal
 //              return 1 if the first parameter is greater than the second parameter
-//  Closure 3: return -1 if the first paramter is < 0
-//              return -2 if the first parammater is >= test3Array.count
+//  Closure 3: return -1 if the first parameter is < 0
+//              return -2 if the first parameter is >= test3Array.count
 //              return 0 if test3Array[first_parameter] != second_parameter
 //              return 1 if test3Array[first_parameter] == second_parameter
-//  Closure 4: return -1 if both paramneters are odd
+//  Closure 4: return -1 if both parameters are odd
 //              return 1 if both parameters are even
 //              return 0 if one parameter is odd and the other is even
 //
 //  Hints
 //  1) Some closures are set up with names for the two parameters so use them. The syntax for that
-//  is to list the parameter names inside the { } followed by the keyword "in".
+//  is to list the parameter names in ( ) inside the { } followed by the keyword "in".
 //  2) If names are not set up for the parameters, use $0 and $1 to refer to the two parameters.
 //  3) FYI, parameter names lhs and rhs stand for "left hand side" and "right hand side" and are
-//  used, for example, for the names of the default parameter names for a closure for sort
+//  used, for example, for the names of the default parameter names for a closure for sort()
 //  4) If a closure is specified as having two parameters, for example, and you do not set up
 //  names for them, then $0 and $1 must be used in the closure or the compiler will generate
 //  an error. To avoid that error until you are ready to work on Task3(), we just put a
@@ -154,51 +158,52 @@ func task2() -> Int? {
 let test3Array = [5, 4, 3, 2, 1, 0] // Do not modify this array
 typealias task3Func = (Int, Int) -> Int
 func task3() -> [task3Func]? {
-    let closureArray: [task3Func] = [
-        { // Closure 0:
-            first_parameter, second_parameter in
-            // your code goes here
-            return 0
-        },
-        { // Closure 1:
-            parm1, parm2 in
-            // your code goes here
-            return 0
-        },
-        { // Closure 2:
-            lhs, rhs in
-            // your code goes here
-            return 0
-        },
-        { // Closure 3:
-            // your code goes here
-            return $0-$1
-        },
-        { // Closure 4:
-            // your code goes here
-            return $0-$1
-        },
-    ]
-    return nil
+     let closureArray: [task3Func] = [
+         { // Closure 0:
+             first_parameter, second_parameter in
+             // your code goes here
+             return 0
+         },
+         { // Closure 1:
+             parm1, parm2 in
+             // your code goes here
+             return 0
+         },
+         { // Closure 2:
+             lhs, rhs in
+             // your code goes here
+             return 0
+         },
+         { // Closure 3:
+             // your code goes here
+             return $0-$1
+         },
+         { // Closure 4:
+             // your code goes here
+             return $0-$1
+         },
+     ]
+     return nil
 }
 
 //  Task 4
 //  Almost everything (other than class objects that we will learn about later) is passed to
-//  functions by value. That means that a an copy is sent to the function that is unmutable
+//  functions by value. That means that a an copy is sent to the function that is immutable
 //  (cannot be modified). This sounds like a straightforward concept, but it is important to
-//  understand becuse it comes up frequently. And if you modify a parameter inside a function
+//  understand because it comes up frequently. And if you modify a parameter inside a function
 //  (other than a class object) you may find yourself with an obscure bug where you can see
 //  it being set and yet after the function returns it has somehow reverted to the prior
 //  value. The concept of mutable and immutable comes up in other places such as Swift
-//  asking you to explicity indicate whether a variable or property is mutable (by using
+//  asking you to explicitly indicate whether a variable or property is mutable (by using
 //  var) or immutable (by using let).
 //
 //  Like many other areas that tend to cause obscure bugs in large programs, Swift tries to
 //  help with this issue by not letting you modify an immutable parameter. You can think
 //  of immutable parameters as being defined with "let" in front of them. And like many
 //  features in Swift, there is a way to override it by putting "inout" in front of the
-//  type of a parameter like "myInt: inout Int", but like other langage overrides such
-//  as "!" to force unpack, best practice is to not use inout except in rare cases.
+//  type of a parameter like "myInt: inout Int". As with other ways to override key
+//  language featuies such as using "!" to force unpack and optional, best practice
+//  is to not use "inout" except in rare special cases.
 //
 //  In the task4() code below, uncomment the first 3 lines and delete the line
 //  with "return nil". You will see some compiler errors that talk about inArray
@@ -206,7 +211,7 @@ func task3() -> [task3Func]? {
 //  variable to the function.
 //
 //  Note: you can name the new variable anything you choose, but when a variable
-//  is added explicitly to gain mutaiblity it is common to make that clear in the
+//  is added explicitly to gain mutablity it is common to make that clear in the
 //  naming so you might write something like "var mutableArray = inArray".
 //
 func task4(inArray: [Int]) -> [Int]? {
@@ -217,11 +222,12 @@ func task4(inArray: [Int]) -> [Int]? {
 }
 
 //  Task 5
-//  The reduce Built-in-Function takes two parameters. The first is a starting value. The second
-//  is a closure. The closure is called for each element in the array. The first time the closure
-//  receives the starting value in the first parameter and the array element in the second parameter.
-//  After that it receives the result of the previous call to closure in the first parameter and the
-//  next array element in the second parameter. Here are links to more documentation about reduce()
+//  The reduce Built-in-Function takes two parameters. The first is a starting value. The second is
+//  a closure. The closure is called for each element in the array. The first time the closure is
+//  called, it receives the starting value in the first parameter and the first array element in the
+//  second parameter. After that it receives the result of the previous call to the closure in the
+//  first parameter and the next array element in the second parameter.
+//  Here are links to more documentation about reduce()
 //  https://developer.apple.com/documentation/swift/array/reduce(_:_:)
 //  https://useyourloaf.com/blog/swift-guide-to-map-filter-reduce/
 //
@@ -284,7 +290,7 @@ func task7(inArray: [Int]) -> [Int]? {
 //  by adding a dot and a function name to the Type name like Int.function()
 //  or else by adding a dot and a function name to the name of a variable
 //  of that Type like myInt.function().
-//  Search Swift documentation on the web for ways to generate random Ints.
+//  Search the Swift documentation on the web for ways to generate random Ints.
 //
 func task8(rowCount: Int, columnCount: Int, aRange: ClosedRange<Int>) -> [[Int]]? {
     return nil
@@ -294,7 +300,7 @@ func task8(rowCount: Int, columnCount: Int, aRange: ClosedRange<Int>) -> [[Int]]
 //  Add code that accepts an Array of Array of Int values.
 //  For each row in the input Array, calculate the minimum, maximum and mean or average of that row.
 //  Then store the minimum, maximum and average as doubles in a row of a new Array.
-//  Return the new Array with a row of three Doubles for each row in the input Array.
+//  Return the new Array with a row of three Doubles corresponding to each row in the input Array.
 //  The input Array intValues will contain random integers. Your code should work with any size of array.
 //  The number of rows and columns in the array will vary between 10 and 30
 //
@@ -302,7 +308,8 @@ func task8(rowCount: Int, columnCount: Int, aRange: ClosedRange<Int>) -> [[Int]]
 //  You can use the name of Types like Int and Double as functions that construct an element of that Type.
 //  You can research the parameters available, but one option is use Double(anInt) to get a Double that
 //  matches the value of anInt. For the calculation of mean, you may need to convert the values to Double
-//  before operations like division.
+//  before operations like division. If you write Double(anInt/anotherInt) it would do Integer division
+//  and then convert the result to Double which is probably not what you want.
 //
 func task9(intValues: [[Int]]) -> [[Double]]? {
     return nil

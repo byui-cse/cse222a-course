@@ -3,7 +3,7 @@
 // *************************
 //  You are welcome to read this file and to try to understand it, but it may include
 //  elements of Swift that have not yet been taught in the course at this point.
-//  Your assignment is to edit task.swift and then run this file and task.swift in a project.
+//  Your assignment is to edit tasks.swift and then run this file and tasks.swift in a project.
 //  The code in this file will test your task functions and indicate which task functions pass.
 //  It will also provide diagnostic information if a task function fails. You should definitely
 //  not try to just copy code from a test here to your task, but instead, understand how to
@@ -24,7 +24,7 @@ enum TestResults {
 }
 
 // This must list the tests in order: test0, test1... so they can be called with their test number and
-// not need to hard code the Task name into the test except when calling the task function
+// not need to hard code the Task number into the test except when calling the task function
 var tests: [(Int) -> TestResults] = [test0, test1, test2, test3, test4, test5, test6, test7, test8, test9]
 var taskResults: [TestResults] = Array(repeating: .testNotImplemented, count: tests.count)
 var savedInput: [String?] = []
@@ -131,7 +131,7 @@ func fail(_ testNum: Int, _ message: String) -> TestResults {
  •    print() (we use testPrint to capture what is printed for validation)
  Task 1
  •    optionals
- •    guard let (Hint mentions “if let” and “??” as well)
+ •    "guard let" for optionals (Hint mentions “if let” and “??” as well)
  •    _ for unnamed parameter from caller
  •    String interpolation
  •    enum
@@ -140,7 +140,7 @@ func fail(_ testNum: Int, _ message: String) -> TestResults {
  Task 2
  •    while true { }
  •    optionals
- •    if let (Hint mentions “guard var” and “if var” as well
+ •    "if let" for optionals (Hint mentions “guard var” and “if var” as well
  •    enum
  •    testReadLine()
  •    General user interaction through the console
@@ -272,7 +272,7 @@ private func test1(testNum: Int) -> TestResults {
             return fail(testNum, "Should not return from calling test1(\"\(testString)\") if there was no call to testReadLine()")
         }
 
-        // Was the last input nil? Not sure that should happen, but if so, did they report that correctly?
+        // Was the last input nil? Not sure how that should happen, but if so, did they report that correctly?
         guard let lastInput = savedInput[savedInput.count - 1] else {
             if result2 == .testReadLine_is_nil { continue }
             else {
@@ -280,14 +280,14 @@ private func test1(testNum: Int) -> TestResults {
             }
         }
 
-        // Did they report success, and if so, did the user iput the correct string?
+        // Did they report success, and if so, did the user input the correct string?
         if result2 == .success {
             guard lastInput == testString else {
                 return fail(testNum, "Should only return .success if testReadLine input '\(lastInput)' matched optionalString: '\(testString)'")
             }
             break // we succeeded
 
-            // If the last inoput was nil, just continue
+            // If the last input was nil, just continue
         } else if result2 != .testReadLine_is_nil {
             // If they did not report input not matching, we are out of valid return codes for this task
             guard result2 == .input_does_not_match else {
@@ -314,7 +314,7 @@ private func test2(testNum: Int) -> TestResults {
         return fail(testNum, "Expected use of testPrint()")
     }
 
-    // Captuure the first thing printed which should be the instruction to enter a name ro "done"
+    // Capture the first thing printed which should be the instruction to enter a name or "done"
     let firstQuerry = savedPrint[0]
     // filter out nil values and empty strings
     var nonNilInput = savedInput.compactMap { $0 }.filter { $0 != "" }
@@ -413,11 +413,12 @@ private func test3(testNum: Int) -> TestResults {
 //  the following to create an array of random numbers:
 //      Array(repeating: Int.random(in: 1...100), count: 10)
 //  Unfortunately this actually just picks a single random number in the range
-//  and reoeats that one number across the array.
-//  You can generate a random array using a for loop, which we expect most to use for Task 8.
-//  Another correct way to do this is something like this:
+//  and repeats that one number across the array.
+//  You can generate a random array using a for loop, which we expect most students to
+//  use for Task 8. Another correct way to do this is something like this:
 //      (0..<10).map{_ in Int.random(in: 1...100)}
-//  Here is another way if you want to have all the numbers from 0 to size-1 with no repeats
+//  Here is another way if you want to have a ransom list of all the numbers from 0
+//  to size-1 with no repeats
 //      Array(0..<size).shuffled()
 
 private func test4(testNum: Int) -> TestResults {
