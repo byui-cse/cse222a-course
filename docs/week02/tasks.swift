@@ -259,9 +259,9 @@ func task6(inArray: [Int]) -> Int? {
 //  https://developer.apple.com/documentation/swift/stride(from:to:by:)
 //
 //  For this task you will append integers to returnArray and then return the Array.
-//  Use a for loop and a range to add the numbers from 2 to 7
-//  Use a for loop and a stride to add the odd numbers from 1 to 9
-//  Use a for loop and a stride to add the numbers from 5 to 0
+//  Use a for loop and a range to add the numbers from 2 through 7
+//  Use a for loop and a stride to add the odd numbers from 1 through 9
+//  Use a for loop and a stride to add the numbers from 5 through 0
 //  Use a for loop over the input array to add its contents to returnArray
 //
 //  Hint:

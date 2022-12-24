@@ -498,7 +498,7 @@ private func test7(testNum: Int) -> TestResults {
     // but it seemed cleaner to list the four steps separately
     let wantedResults: [[Int]] = [
         [2, 3, 4, 5, 6, 7],
-        [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        [1, 3, 5, 7, 9],
         [5, 4, 3, 2, 1, 0],
         // The final instruction is to return the values from the input array
         // so we include it in the wantedResults
