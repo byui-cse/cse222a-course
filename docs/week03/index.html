@@ -70,6 +70,12 @@
         to do. If that's a function, use a function. If that's a class and
         instances of the class, do that.
       </p>
+      <p>
+        A note about naming conventions: as mentioned last week, variable, constant 
+        and function names in Swift are written in camelCase like anInt and myString. 
+        Type names including Classes, Structs and Protocols have their first letter 
+        capitalized like Double, Array and MedicationContainer.
+      </p>
 
       <h1>The Situation</h1>
       <p>
@@ -89,19 +95,23 @@
           >MVC</a
         >) called <kbd>PharmaceuticalStockTracker</kbd> that stores and
         manipulates data regarding the stock available for sale.
+          </p>
         <figure>
           <img
-            src="images/pharm_uml.png"
-            alt="An image showing each of the classes, Date, Medication, Liquid Medication, Tablet Medication, Pharmaceutical Stock Tracker, their properties, and the relationships between them"
+            src="images/W3UML1.svg"
+            alt="An image showing each of the classes: Date, MedicationContainer, Liquid Medication Container, Tablet Medication Container, and Pharmaceutical Stock Tracker, their properties, and the relationships between them"
           />
           <figcaption>
-            Fig.1 - A UML Class Diagram for the Date, Medication, Liquid
-            Medication, Tablet Medication, and Pharmaceutical Stock Tracker
+            Fig.1 - A UML Class  Diagram for the Date, MedicationContainer, LiquidMedicationContainer, 
+            TabletMedicationContainer, and PharmaceuticalStockTracker
             classes.
           </figcaption>
         </figure>
+      <p>
+        In the diagram, the arrows on lines represent is-a relationships as described below. 
+        The circles on the lines represent has-a relationships.
       </p>
-
+          
       <h2>The Date Class</h2>
       <p>
         The purpose of the <kbd>Date</kbd> class is to store the day, month, and
@@ -137,8 +147,7 @@
         year = aYear
     }
 }
-</code>
-</pre>
+</code></pre>
 
       <p>
         Notice that there are the three properties, <kbd>day</kbd>,
@@ -156,7 +165,7 @@
         Don't make the mistake of thinking you can have only one init method.
         You can have as many variations of an init function as you want. You
         could have an init function for date that has no parameters, a default
-        intit function, where you set the values to be some known value like
+        init function, where you set the values to be some known value like
         January first 1970, the beginning of what is called the unix epoch. Or
         maybe you only want to pass some of the parameters and set the rest. You
         can add as many as make sense and that help keep the code that uses your
@@ -169,8 +178,7 @@
       </p>
 
       <pre><code>let birth = Date(aDay: 16, aMonth: 11, aYear: 1990)
-</code>
-</pre>
+</code></pre>
 
       <p>
         Since init functions are functions, you could use the ignore operator
@@ -181,12 +189,10 @@
         How do you access the properties? Another great question. Like this.
       </p>
       <pre><code>print(birth.day)
-</code>
-</pre>
+</code></pre>
       <p>Or if you want to print out something fancy,</p>
       <pre><code>print("They were born on \(birth.day)\\\(birth.month)\\\(birth.year)")
-</code>
-</pre>
+</code></pre>
 
       <p>
         When
@@ -214,16 +220,42 @@
       </p>
 
       <pre><code>birth.year = 2005
-</code>
-</pre>
+</code></pre>
 
-      <p>
-        Now, for those who are in the know, it may seem like the properties of
-        this class are public. They are not. Instead, the compiler will create
-        the accessors and mutators for you! You can create your own if you want
-        or need greater control, but unlike some other languages, yes I'm
-        looking at you C++ and Java, you don't have to if you don't need to.
-      </p>
+          <p>
+            Now, for those who are in the know, it may seem like the properties of
+            this class are public. They are not. Instead, the compiler will create
+            the accessors and mutators for you! You can create your own if you want
+            or need greater control, but unlike some other languages, yes I'm
+            looking at you C++ and Java, you don't have to if you don't need to.  Note 
+            that you must use var if you want to allow a property to be modified. If 
+            you use let, Swift only creates an accessor for you and not a mutator.
+          </p>
+          <p>
+            For the assignments, please remember to use the built-in Date class. You 
+            will need to look at 
+            <a href="https://developer.apple.com/documentation/foundation/date">
+              the documentation</a> 
+              to learn how to create and use Dates. 
+          </p>
+
+          <h2>Computed Properties</h2>
+          <p>
+            In addition to variable or constant values as properties. Swift allows for             <a
+              href="https://docs.swift.org/swift-book/LanguageGuide/Properties.html"
+            >computed properties</a
+              >. After the property type you put braces { } and inside those braces you put either
+              <kbd>get { closure }</kbd> or <kbd>set { closure }</kbd> or both where <kbd>closure</kbd> represents code that does the 
+              get or set action. Here is an example of a computed property for the 
+              <kbd>PharmadeuticalStockTracker</kbd> type:
+              </p>
+              <pre><code>class PharmadeuticalStockTracker {
+    var inStockMedications: [MedicationContainer] = []
+    var containerCount: Int {
+        get { inStockMedications.count }
+    }
+}</code></pre>
+              
       <h2>HAS-A Inheritance</h2>
       <p>
         Like all languages that allow Object Oriented application design, Swift
@@ -242,21 +274,18 @@
         arrays of custom types like Dates.
       </p>
 
-      <pre><code>class Medication{
-    let name:String
-    let count:Int
-    let unitsDescription:String
-    let expirationDate:Date
-    //each non-Optional property must be set using an initialization method
-    init(aName:String, aCount:Int, aUnitsDescription:String, expiresOn:Date){
-        name = aName
-        count = aCount
-        unitsDescription = aUnitsDescription
-        expirationDate = expiresOn
+      <pre><code>class MedicationContainer {
+    let id = UUID().uuidString
+    let name: String
+    let expirationDate: Date
+    // Each non-Optional property with no default value
+    // must be have a value set by an initialization method
+    init(name: String, expirationDate: Date) {
+        self.name = name
+        self.expirationDate = expirationDate
     }
 }
-</code>
-</pre>
+</code></pre>
 
       <p>
         It is also common for there to be some sort of container that holds
@@ -265,14 +294,13 @@
         seen in the earlier UML diagram and this code snippet.
       </p>
 
-      <pre><code>class PharmaceuticalStockModel{
-    var inStockMedications:[Medication] = []
+      <pre><code>class PharmaceuticalStockTracker {
+    var inStockMedications:[MedicationContainer] = []
     //other properties here
     
     //init and other methods go here
 }
-</code>
-</pre>
+</code></pre>
 
       <h2>IS-A Inheritance</h2>
       <p>
@@ -290,36 +318,55 @@
         <kbd>LiquidMedication</kbd> and <kbd>TabletMedication</kbd> source code.
       </p>
 
-      <pre><code>class LiquidMedication: Medication {
-    let volume:Bool
-    let concentration:Int
-    let concentrationUnits:String
-    init(theName:String, theCount:Int, theUnitsDescription:String, anExpiresOn:Date, isByVolume:Bool, aConcentration:Int, aConcentrationUnits:String){
-        volume = isByVolume
-        concentration = aConcentration
-        concentrationUnits = aConcentrationUnits
-        super.init(aName: theName, aCount: theCount, aUnitsDescription: theUnitsDescription, expiresOn:anExpiresOn)
-    }
-}
+          <pre><code>class LiquidMedicationContainer: MedicationContainer {
+    let volume: Double
+    let concentration: Int
+    let concentrationUnits: String
 
-class TabletMedication: Medication {
-    let potency:Double
-    let potencyUnits:String
-    init(theName:String, theCount:Int, theUnitsDescription:String, aPotency:Double, aPotencyUnits:String){
-        potency = aPotency
-        potencyUnits = aPotencyUnits
-        super.init(aName: theName, aCount: theCount, aUnitsDescription: theUnitsDescription)
+    init(volume: Double, concentration: Int, concentrationUnits: String,
+                                  name: String, expirationDate: Date) {
+        self.volume = volume
+        self.concentration = concentration
+        self.concentrationUnits = concentrationUnits
+        super .init(name: name, expirationDate: expirationDate)
     }
 }
-</code>
-</pre>
+            
+class TabletMedicationContainer: MedicationContainer {
+    let pillCount: Int
+    let potency: Double
+    let potencyUnits: String
+            
+    init(pillCount: Int, potency: Double, potencyUnits: String,
+                                  name: String, expirationDate: Date) {
+        self.pillCount = pillCount
+        self.potency = potency
+        self.potencyUnits = potencyUnits
+        super .init(name: name, expirationDate: expirationDate)
+    }
+}
+</code></pre>
 
       <p>
         The most interesting parts of the snippet are the use of the
         <kbd>:</kbd> character to indicate inheritance, and the use of the
         <kbd>super</kbd> keyword to call the init method of the
-        <kbd>Medication</kbd> class.
+        <kbd>Medication</kbd> class. If a child class has properties 
+        that need to be initialized, the initializer should set those up 
+        first and then use the <kbd>super</kbd> keyword to call the 
+        <kbd>init</kbd> method of the class.
       </p>
+          <p>
+            An important point to notice about this data model is that while
+            the parent class <kbd>MedicationContainer</kbd> defines the common properties 
+            and shared methods for both <kbd>LiquidMedicationContainer</kbd> and
+            <kbd>TabletMedicationContainer</kbd>, it does not make any sense to create
+            objects directly from the parent Type. And although 
+            <kbd>inStockMedications</kbd> claims to store only
+            MedicationContainers, in reality it will store a combination of
+            LiquidMedicationContainers and TabletMedicationContainer and
+            should never contain an object created directly from the parent Type.
+          </p>
       <h2>IS-A Inheritance By Extension</h2>
       <p>
         There is another very cool way to do what is usually done in other
@@ -354,11 +401,13 @@ class TabletMedication: Medication {
       </p>
 
       <pre><code>//an extension of the TabletMedication class
-extension TabletMedication {
+extension TabletMedicationContainer {
     func getDescription() -> String {
-        "['name':'\(name)','count':'\(count)','potency':'\(potency)','units':'\(potencyUnits)'"
+        "['name':'\(name)', 'expirationDate':'\(expirationDate)', 
+        'pillCount':'\(pillCount)', 'potency':'\(potency)', 'units':'\(potencyUnits)']"
     }
-}</code></pre>
+}
+</code></pre>
 
       <p>
         As you can see, it doesn't take much code to create an extension. It's
@@ -366,8 +415,65 @@ extension TabletMedication {
         may start to overuse it. Once again, be wise. Use it when it makes your
         code easier to read and when it lets you write less code.
       </p>
+          
+          <h2>Operator Methods</h2>
+          <p>
+            You may sometimes find it necessary to override or provide definitions 
+            for existing operators to use with objects from a Class or Struct. For 
+            example, making a Class comply with the Equitable and Hashable protocols may 
+            require defining a <kbd>==</kbd> operator for the class or struct since one 
+            is not always automatically provided. Having a Class or Struct 
+            provide its own custom <a
+              href="https://docs.swift.org/swift-book/LanguageGuide/AdvancedOperators.html#ID42"
+              target="_blank"
+            >Operator Methods</a
+            > to implement versions of existing operators is known as overloading those 
+            operators. You can add an operator method to the Class or Struct definition 
+            or use an extension like this:
+          </p>
+<pre><code class="swift">extension PharmaceuticalStockTracker {
+    static func == (lhs: MedicationContainer, rhs: MedicationContainer) -> Bool {
+        return lhs.id == rhs.id
+    }
+}</code></pre>
+          <p>
+            You can also create <a
+              href="https://docs.swift.org/swift-book/LanguageGuide/AdvancedOperators.html#ID46"
+              target="_blank"
+            >Custom Operators</a
+              > using combinations of 
+            <a
+              href="https://docs.swift.org/swift-book/ReferenceManual/LexicalStructure.html#ID418"
+              target="_blank"
+            >certain special characters</a>. If you want to use a custom 
+            operator, you must first declare it as a <kbd>prefix</kbd>, <kbd>infix</kbd> or 
+            <kbd>postfix</kbd> operator. For an infix operator you would also assign 
+            it to a precedence group like <kbd>: AdditionPrecedence</kbd>. 
+            For example, suppose we want to define a new postfix operator 
+            <kbd>&lt||&gt</kbd> that returns a count of the containers in an
+            instance of the PharmaceuticalStockTracker. We can do it like this:
+          </p>
+<pre><code class="swift">postfix operator &lt||&gt // indicates this is a new operator
+            
+extension PharmaceuticalStockTracker {
+    static postfix func &lt||&gt (tracker: PharmaceuticalStockTracker) -> Int {
+        return tracker.inStockMedications.count    }
+}</code></pre>
 
-      <h2>Protocols</h2>
+          <h2>UUID and Unique Objects</h2>
+          <p>
+            It is possible that we may have several containers of the same 
+            medication with the same expiration date. If we create separate 
+            objects for each container, but they have identical properties, 
+            how do we distinguish them and not think they may refer to the 
+            same medication container? Swift has a built-in type called <kbd>UUID</kbd>. 
+            If we put <kbd>let id = UUID().uuidString</kbd> in our class to define the
+            <kbd>id</kbd> property and it will be a unique identifier for each distinct 
+            object. When you are doing your assignments, if a task calls for a unique id 
+            in a class or struct, be sure to include that definition and default value.
+          </p>
+      
+          <h2>Protocols</h2>
       <p>
         In many languages, if you want to allow a developer to create a new
         class or other object that will be used by library functions or other
@@ -382,32 +488,77 @@ extension TabletMedication {
         that specify the requirements that a class and certain other language
         elements must have for a particular situation. When specifying a new
         class that you want to be able to be used in certain ways, you include
-        the template name in the class definition and then the complier makes
+        the protocol name in the class definition and then the complier makes
         sure that you actually implement the needed functionality.
       </p>
       <p>
         To indicate that SomeClass is child of SomeSuperclass and also confirms
         to two protocols you would write it like the following. You do not need
-        to have a super class, but if you do, it comes before the protocols in
-        the class definition.
+        to have a super class, but if you do, it is listed before the protocols in
+        the first line of the class definition.
       </p>
 
-      <pre><code>
-class SomeClass: SomeSuperclass, FirstProtocol, AnotherProtocol {
+      <pre><code>class SomeClass: SomeSuperclass, FirstProtocol, AnotherProtocol {
   // class definition goes here
 }</code></pre>
 
+          <p>
+            For example, a protocol can require that a class have specific properties 
+            like this:
+          </p>
+          
+          <pre><code>protocol SomeProtocol {
+    var mustBeSettable: Int { get set }
+    var doesNotNeedToBeSettable: Int { get }
+}</code></pre>
+
+          <p>
+            This would require the class to have property names mustBeSettable and 
+            doesNotNeedToBeSettable and the { get set } on the first property means 
+            that property must be able to be set (which usually means it should have 
+            the var keyword in front ot it). The second property could be specified 
+            with let or var. Note a the protocol always used var for properties and 
+            then uses the { get set } or { get } to indicate whether they need to be 
+            mutable. And if you specify { get } it does not require that the property 
+            be immutable, only that it may be mutable or immutable.
+          </p>
+          <p>
+            A protocol can also require that a class implement specific methods 
+            like this:
+          </p>
+          <pre><code>protocol RandomNumberGenerator { 
+    func random() -> Double 
+}</code></pre>
       <p>
-        For example, if you create a new struct or class that confirms to the
+        Conforming to a protocol can make certain language features or built-in 
+        functions available to you.For example, if you create a new struct or 
+        class that confirms to the
         <a href="https://developer.apple.com/documentation/swift/sequence"
           >Sequence protocol</a
         >, you are able to take advantage of built-in functionality that uses
         that protocol without needing to make that a child class of some parent
         to get the functionality. An object that conforms to the Sequence
-        protocol can automatically be used as the source in a for…in loop. There
-        is an example of that in the file provided for you to use in this week's
-        task.
+        protocol can automatically be used as the source in a for…in loop. There 
+        is an example of that in the tasks provided for you to use in this week's 
+        assignment. To conform to a protocol, search the documentation for that protocol.
       </p>
+          <p>
+            The official documentation for a built-in protocol always contains a section 
+            about how to conform. For example, the documentation for the Sequence 
+            protocol indicates that your class must either implement a function 
+            that generates an Iterator or else your class must also explicitly 
+            say it conforms to the IteratorProtocol (becoming its own iterator). 
+            Once you add IteratorProtocol to the definition of your class, you can 
+            look up how to confirm to that protocol. Sometimes protocols inherit 
+            from other protocols so conforming to a protocol automatically requires 
+            you to conform to another protocol. For example, since the
+            <a href="https://developer.apple.com/documentation/swift/hashable"
+            >Hashable protocol</a
+              > inherits from the 
+              <a href="https://developer.apple.com/documentation/swift/equatable"
+              >Equatable protocol</a
+              > you must also conform to anything that protocol requires.
+              </p>
 
       <h2>Class Alternatives</h2>
       <p>
@@ -441,17 +592,21 @@ class SomeClass: SomeSuperclass, FirstProtocol, AnotherProtocol {
           >features that classes and structures have in common</a
         >. In many ways they can be used interchangeably.
       </p>
+          <p>
+            One caution is that since structs are passed by value, parameters that
+            are structs are considered constant within a function unless you explicitly 
+            make them mutable with the inout keyword as taught last week. Classes are
+            automatically mutable since a reference to the object is passed to the function.
+          </p>
+    
       <p>Let's refactor the <kbd>Medication</kbd> class to be a structure.</p>
 
-      <pre><code>struct Medication{
-    let name:String
-    var count:Int
-    let unitsDescription:String
-    let expirationDate:Date
+      <pre><code>struct MedicationContainer {
+    let id = UUID().uuidString
+    let name: String
+    let expirationDate: Date
 }
-</code>
-</pre>
-
+</code></pre>
       <p>
         Notice that there is no <kbd>init</kbd> function in the snippet above.
         Just like the compiler generates getters and setters, it also generates
@@ -471,7 +626,9 @@ class SomeClass: SomeSuperclass, FirstProtocol, AnotherProtocol {
       </p>
       <p>
         Swift structs can also contain methods, unlike structs from other
-        languages.
+        languages. This allows you to use structs in many places where an object
+        needs methods, but inheritance is not required. Other languages would 
+        require the overhead of a class every time you want object methods.
       </p>
       <p>
         You can also extend structures. If structures most closely fit your use
@@ -482,28 +639,66 @@ class SomeClass: SomeSuperclass, FirstProtocol, AnotherProtocol {
       </p>
 
       <h3>Tuples</h3>
+          <p>
+            Often we would like to return more than one value from a function, 
+            such as an error code and a result. One way we can at least affect 
+            more than one value is to take advantage of the fact that classes 
+            are passed by reference and are mutable or else to use the “inout” 
+            keyword before a parameter name to force it to be passed by reference. 
+            In most languages, the typical approach is to create a structure to 
+            use for the return value of a function. That works well except that 
+            you are then cluttering up your code with extra structures for each 
+            function that are only used to get around that language limitation 
+            or else you wind up specifying a single structure returned by several 
+            functions that each only may need part of it and that must then be 
+            synchronized when any function wants to return an additional value.
+          </p>
       <p>
-        Like some other languages Swift supports the use of
+        Swift addresses this need with 
         <a href="https://www.geeksforgeeks.org/swift-tuples/" target="_blank"
-          >tuples</a
-        >. As in those other languages, tuples are a restricted type. In other
-        words IS-A inheritance and extensions are not applicable to tuples.
-        Also, tuples don't have property names. All they really do is keep
-        associated yet independent pieces of data together.
+        >tuples</a
+          >. If you want to return a Bool, an Int and a String from a function you 
+          just write <kbd> -> (Bool, Int, String)</kbd>. This list of values inside 
+          ( ) is called a tuple. Tuples are available in some other languages with 
+          similar features. As in those other languages, tuples are a restricted 
+          type. In other words IS-A inheritance and extensions are not applicable 
+          to tuples. Also, tuples don't have property names. All they really do is 
+        keep associated yet independent pieces of data together.
       </p>
-      <p>You create a tuple by the process of composition.</p>
+      <p>You create a tuple by the process of composition. For example, here is a function that returns a tuple:</p>
 
-      <pre><code>//composing a tuple and assigning it to a variable
+          <pre><code>func tupleGenerator() -> (Bool, Int, String) {
+    return (true, 7, “Here”)
+}
+</code></pre>
+            <p>
+              You can also create a tuple by assigning it to a variable or constant.
+            </p>
+
+
+          <pre><code>//composing a tuple and assigning it to a variable
 let person = ("Jenny",23, 5.5)
-</code>
-</pre>
-
-      <p>Using decomposition you can retrieve the individual values.</p>
+</code></pre>
+          <p>
+            You can refer to elements of a tuple using <kbd>.0</kbd>, <kbd>.1</kbd>, <kbd>.2</kbd> like this:
+          </p>
+          <pre><code>print(person.0)</code></pre>
+          <p>
+            As usual, if you want to later modify the values you extract from a tuple 
+            you would use var rather than let. In that case you can use the dot notation 
+            to modify the tuple as well like this:
+          </p>
+          <pre><code>var person = ("Steven",23, 5.5)
+person.0 = “John”</code></pre>
+        <p>
+        Most of the time you will 
+        use decomposition to retrieve the individual values. In this you use let or var and 
+        a list of variables in ( ) that will receive the values from the tuple like this:
+      </p>
 
       <pre><code>//decomposing a tuple to get each stored value
 let (name,age,height) = person
-</code>
-</pre>
+</code></pre>
 
       <p>
         If you don't need all the values, you don't have to create variables for
@@ -515,10 +710,65 @@ let (name,age,height) = person
       </p>
       <pre><code>//decomposing a tuple using the ignore operator
 let (_,age,_) = person
-</code>
-</pre>
+</code></pre>
 
-      <h2>Access Control</h2>
+          <h2>Any, AnyObject, is, and as?</h2>
+          <p>
+            Swift’s tight control of Types is usually great, but sometimes you may 
+            need to allow a variable, a class or structure property or an array 
+            element to have more than one Type. If you specify that something 
+            has the type <kbd>Any</kbd>, you can put anything into it including a class, 
+            a struct, an array or a basic type like an <kbd>Int</kbd>, a <kbd>Bool</kbd> or a <kbd>String</kbd>. 
+            You can also specify <kbd>AnyObject</kbd> which will limit what you can put into 
+            it to any class object. You can think of <kbd>AnyObject</kbd> as the automatic 
+            parent (or great, great… grandparent) of all all classes.
+          </p>
+          <p>    
+            Once you have something of type <kbd>Any</kbd> or <kbd>AnyObject</kbd>, you can 
+            check what is in it by using the “is” operator followed by a Type. This will 
+            return true if the item is of that Type or, for class objects, is an instance 
+            of that Type or of a child of that Type. This also allows you to store class 
+            objects in a variable or parameter of the parent type and find out what type 
+            they are later. Using the model diagram for MedicationContainers here are some 
+            examples:
+            <pre><code>let container1: MedicationContainer = MedicationContainer(name: "SomeMed", expirationDate: aDate)
+let container2: MedicationContainer = LiquidMedicationContainer(volume: 2.1, concentration: 4, 
+                    concentrationUnits: "mg", name: "AnotherMed",  expirationDate: aDate)
+let any1: AnyObject = MedicationContainer(name: "SomeOtherMed", expirationDate: aDate)
+let any2: AnyObject = TabletMedicationContainer(pillCount: 30, potency: 3.0, potencyUnits: "mg", 
+                    name: "TabletMed",  expirationDate: aDate)
+
+print(container2 is LiquidMedicationContainer) // returns true
+print(container1 is LiquidMedicationContainer) // returns false
+
+print(any1 is MedicationContainer)  // returns true
+print(any2 is MedicationContainer)  // returns true
+print(any2 is TabletMedicationContainer) // returns true
+print(any2 is LiquidMedicationContainer) // returns false
+print(any1 is TabletMedicationContainer) // returns false
+</code></pre>
+<p>
+            It’s great to know whether an object of Type <kbd>Any</kbd> really contains a 
+            LiquidMedicationContainer, but how do we access the properties and methods of 
+            that object? The <kbd>as?</kbd> operator allows us to try to pull an object 
+            out of a variable. The <kbd>?</kbd> reminds us that this returns an optional 
+            since the conversion might fail and produce <kbd>nil</kbd>. There is a <kbd>as!</kbd> 
+            operator, but like the <kbd>!</kbd> operator, you should not use it in this course. 
+</p>
+<p>    
+            Note that <kbd>as?</kbd> only “actualizes” the underlying type. It does not do type 
+            conversion. Suppose <kbd>myAnyInt</kbd> is a variable of Type <kbd>Any</kbd> that 
+            happens to contain an <kbd>Int</kbd>. If you want to store that into a <kbd>Double</kbd> 
+            called <kbd>myDouble</kbd> you may be tempted to write 
+            <kbd>let myDouble = myAnyInt as? Double</kbd>, 
+            but that will fail since the underlying type is not a <kbd>Double</kbd>. Instead, 
+            you would need to write it like this: <kbd>let myDouble = Double(myAnyInt as? Int)</kbd> 
+            and if you thing the <kbd>Any</kbd> contains an <kbd>Int</kbd> or a <kbd>Double</kbd> 
+            you need to write slightly more complicated code to extract it to a <kbd>Double</kbd>. 
+            You will have the opportunity to figure out how to do that in the assignment 
+            this week.
+
+  <h2>Access Control</h2>
       <p>
         There are times when you need more control over when and who can access
         parts of your code. To ease this situation Swift also has the concept of
@@ -538,8 +788,8 @@ let (_,age,_) = person
         functions, classes, etc. for use in other source files. For example, the
         <kbd>MedicalStockTracker</kbd> class could be replaced with a file.
       </p>
-      <pre><code>private var inStockMedications = [Medication]()
-func addLiquidMedicationToStock(medicationToAdd:LiquidMedication){
+      <pre><code>private var inStockMedications = [MedicationContainer]()
+func addLiquidMedicationToStock(medicationToAdd:LiquidMedicationContainer) {
   .
   .
   .
@@ -550,7 +800,7 @@ func addLiquidMedicationToStock(medicationToAdd:LiquidMedication){
   .
 
   
-private func validateExpirationDate(aDate:Date)->Bool{
+private func validateExpirationDate(aDate:Date)->Bool {
   .
   .
   .
@@ -601,3 +851,4 @@ private func validateExpirationDate(aDate:Date)->Bool{
     </footer>
   </body>
 </html>
+        

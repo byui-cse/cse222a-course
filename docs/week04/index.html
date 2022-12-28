@@ -73,7 +73,7 @@
       same type together in a specific order, an array is the way to go. But for
       other situations Arrays are slow. For example, searching in unsorted
       Arrays is uses a \(\mathcal{O}(n)\) algorithm in the best of situations.
-      That's way too slow. Let's look at the two other
+      That's way too slow. Let's look at two of the other
       <a
         href="https://developer.apple.com/documentation/swift/collections"
         target="_blank"
@@ -86,7 +86,7 @@
       Consider a situation where there can only be one copy of any piece of data
       in a collection. Rather than use an Array and do a search-check each time
       you do an insert, way too slow, how about using the collection that is
-      designed to handle this for you, and do it much faster.
+      designed to handle this for you, and to do it much faster.
       <a
         href="https://developer.apple.com/documentation/swift/set"
         target="_blank"
@@ -94,11 +94,11 @@
       >.
     </p>
     <p>
-      There are a couple of ways you can create a Set. You can, as in the
+      There are several ways you can create a Set. You can, as in the
       snippet below, create an empty set of some specific type and then add
       elements to it and remove elements when you need to.
     </p>
-    <pre><code class="JavaScript">var names = Set&lt;String&gt;()
+    <pre><code class="Swift">var names = Set&lt;String&gt;()
 names.insert("Sally")
 names.insert("Jose")
 names.insert("Sally") //no change. Sally is already there.
@@ -108,12 +108,12 @@ names.remove("Jane") //no change. Jane isn't in there.
       You can also create a Set while setting its values. The snippet below
       shows you how to do this with three names.
     </p>
-    <pre><code class="JavaScript">var names:Set = ["Jane","Sally","Jose"]
+    <pre><code class="Swift">var names:Set = ["Jane","Sally","Jose"]
 </code></pre>
 
     <p>
-      Notice that you have to tell the compiler that the type of collection you
-      want is a set. Otherwise it will make it be an array. Also, Sets don't
+      Notice that you must tell the compiler that the type of collection you
+      want is a set. Otherwise, it will make it be an array. Also, Sets don't
       guarantee ordering. That's why they can do searching, inserting, and
       removing much faster than an array. If you need things to stay in order,
       remember an array is what you want.
@@ -145,44 +145,65 @@ names.remove("Jane") //no change. Jane isn't in there.
         >Dictionary BIC</a
       >
       and it works as you might expect based on your use of such things
-      previously. It is a key-value store. Just like with Sets, Dictionaries do
+      previously. In some other languages these are referred to as Maps. 
+      Dictionaries are key-value stores. Just like with Sets, Dictionaries do
       not guarantee ordering. You can also create empty dictionaries and then
-      add, remove, and find elements. When you do this you have to indicate the
+      add, remove, and find elements. When you do this you must indicate the
       type of the key and the type of the value.
     </p>
-    <pre><code class="JavaScript">var agesByName = [String:Int]()
+    <pre><code class="Swift">var agesByName = [String:Int]()
 agesByName["Sally"] = 21
 agesByName["Jose"] = 23
 agesByName["Jane"] = 20
 </code></pre>
 
     <p>
-      You don't have to declare <kbd>agesByName</kbd> to be a Dictionary in the
-      snippet above, the compiler can figure it out. If you want to, you can
-      also create and fill or partially fill a dictionary all at once.
+      You don't need to declare <kbd>agesByName</kbd> to be a Dictionary in the
+      snippet above, the compiler can figure it out by the <kbd>:</kbd> between the key 
+      and the value. You can also create and fill or partially fill a dictionary 
+      all at once by listing the key : value pairs.
     </p>
     <pre><code class="Swift">var agesByName = ["Sally": 21,"Jose": 23,"Jane":20]
 </code></pre>
 
     <p>
-      When you are declaring and filling a Dictionary, you don't even have to
+      When you are declaring and filling a Dictionary, you don't even need to
       tell the compiler the key and value types. It can figure that out to.
       However, the key <kbd>Type</kbd> must conform to the
       <kbd>Hashable</kbd> protocol.
     </p>
     <p>
-      There are many more methods that these and Arrays have that you can use.
-      You should take some time and review them. The
+      There are many more methods that you can use with Sets, Dictionaries 
+      and Arrays. You should take some time and review them. The
       <a
         href="https://docs.swift.org/swift-book/LanguageGuide/CollectionTypes.html"
         >Swift documentation</a
       >
       has good descriptions of the methods and how to use them. Go check it out.
-      There are also many other types of Collections for different purposes that
-      are included in the standard library. You can learn more about some of
+      There are also other types of Collections for different purposes that
+      are included in the standard library or in an standard add-on package called
+      <kbd>Collections</kbd>. You can learn more about some of
       them <a href="https://www.swift.org/blog/swift-collections/">here.</a>
     </p>
 
+        <p>
+          Note that while you can iterate over Sets, Dictionaries and Arrays 
+          with a for-in loop, Arrays have a definite order while the elements 
+          of Dictionaries and Arrays may come back in any order. If you use a 
+          for-in loop with a Dictionary, the element value for each loop is a 
+          tuple like this:
+        </p>
+        
+<pre><code class="Swift">for (aKey, aValue) in aDictionary { loop actions }
+</code></pre>
+        <p>
+        You can also iterate over just the keys or just the values like this:
+        </p>
+        
+<pre><code class="Swift">for aKey in aDictionary.keys { loop actions }
+for aValue in aDictionary.values { loop actions }
+</code></pre>
+        
     <h2>Generics</h2>
     <p>
       Even though all the elements in a Collection such as Array, Set or
@@ -190,7 +211,7 @@ agesByName["Jane"] = 20
       Int or String, but can choose any type for the elements in your
       Collection. Set elements are constrained to meet the Hashable protocol as
       are Dictionary keys, but that still allows vast flexibility. As with many
-      languages, these built in types also have many functions that work
+      languages, these built-in types also have many functions that work
       independent of the types of elements in the collection.
     </p>
     <p>
@@ -221,16 +242,16 @@ agesByName["Jane"] = 20
 
     <h2>Applications of Collections</h2>
     <p>
-      Let's consider an application for a pharmacy to track containers of
-      medications in inventory. You could create a class
-      <kbd>PharmaceuticalStockTracker</kbd> that has Array of
-      <kbd>Medications</kbd> that it used to keep track of how many bottles,
+      Let's revisit the application for a pharmacy to track containers of
+      medications in inventory. Previously we created a class
+      <kbd>PharmaceuticalStockTracker</kbd> that had Array of
+      <kbd>Medications</kbd>, used to keep track of how many bottles,
       bags, etc. of medications were in stock. It does this by having each
       instance of <kbd>Medication</kbd> represent a bottle or bag, of medicine
       stored.
     </p>
     <p>
-      But there is a problem with that design. It's the amount of time it takes
+      But there is a problem with that design: the amount of time it takes
       to find medication in the system. It sounds like Array may have been the
       wrong choice. If we used a Dictionary of Arrays of Medications, that would
       solve the finding problem and still let us keep multiple bottles or bags
@@ -238,20 +259,77 @@ agesByName["Jane"] = 20
     </p>
 
     <p>
+      Suppose further that we want to make sure we do not accidentally add an
+      object representing a specific container of medication to the stock tracker
+      multiple times. We don't want to think we have several containers when in fact
+      we accidentally have several copies of the same object representing a single
+      actual container of medication. We could make sure to check for that every
+      time we add a medication, but we can use the Set Type to make sure there is
+      only one copy of each medication container object in our inventory.
+      
       But what would the code for that look like? Since the system would need to
-      start without any medication being stored, we'd need to create an empty
-      Dictionary. The example is in the snippet below.
+      start without any medication being stored, would create an empty
+      Dictionary that has Sets of MedicationContainers as values like this:
     </p>
-    <pre><code class="JavaScript">var inStockMedications = [String:[Medication]]()
-</code></pre>
+    <pre><code class="swift">var inStockMedications = [String:Set&lt;MedicationContainer&gt;]()</code></pre>
 
     <p>
-      There we go. That's it. The key is a String and the value is an Array of
-      Medications. But what would the code look like when medication was
-      purchased and needed to be added to the model? Great question. That's part
-      of your task this week.
+      The key is a String and the value is a Set of MedicationContainers. 
+      But what would the code look like when medication was purchased
+      and needed to be added to the model? Great question. That's part
+      of your assignment this week. But first let’s cover a few more things  
+      you will need to know about.
     </p>
-    <footer>
+        <h2>Regular Expressions</h2>
+
+        <p>
+          You may often want to use Regular Expressions to match patterns in text. 
+          If you are not familiar with Regular Expressions, there are many good 
+          resources on the internet. In Swift, when you want to write a string
+          with a Regular Expression in it, you would need to use <kbd>\</kbd>
+          to "escape" the meaning of many special characters. One way to
+          simplify this is to put a <kbd>#</kbd> outside both sides 
+          of a quoted String like this:
+        </p>
+<pre><code class="swift">#" a(.*)b"#</code></pre>
+            <p>
+            Swift will then ignore the special meaning of any special
+          characters in the string.
+            </p>
+          <p>
+            To try to match a regular expression, use the 
+            <kbd>range(of:options:)</kbd> method on a String object. 
+            Use the regular expression as the <kbd>of:</kbd> parameter 
+            and  <kbd>.regularExpression</kbd> as the <kbd>options:</kbd> 
+            parameter. This will return a matching substring if there is a 
+            match or nil if not. For example:
+
+<pre><code class="swift">aString.range(of: #"\d{3}[-]\d{3}[-]\d{4}"#, options: .regularExpression)</code></pre>
+            <p>will return a substring that matches a US Phone number
+              patten if there is one.
+            </p>
+            <p>
+              Note that the above regular expression will provide a non-nil 
+              result if there is a phone number inside aString so it will 
+              match on “x123-456-7890” or “123-456-7890-11111”. If you 
+              want an exact match you would need to either compare the 
+              result of the search to the original String to see if the
+              match is the full string or else use <kbd>^</kbd> and 
+              <kbd>$</kbd> to indicate that you want your comparison 
+              to match the full string. This example:
+<pre><code class="swift">aString.range(of: #"^\d{3}[-]\d{3}[-]\d{4}$"#, options: .regularExpression)</code></pre>
+              <p>
+                will return a substring (if there is one) that exactly matches 
+                a US Phone number patten with no extra characters in the string.
+              </p>
+              <p>
+                The assignment this week will give you some experience with
+                Sets and Dictionaries, regular expressions
+                and generics, plus continuing to use the things
+                we learned in previous weeks.
+              </p>
+
+        <footer>
       <a
         rel="license"
         href="http://creativecommons.org/licenses/by/4.0/"
@@ -270,3 +348,4 @@ agesByName["Jane"] = 20
     </footer>
   </body>
 </html>
+        

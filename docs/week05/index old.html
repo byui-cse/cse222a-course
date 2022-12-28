@@ -1,0 +1,433 @@
+<!-- uses https://highlightjs.org/
+-->
+
+<html>
+  <head>
+    <link
+      rel="shortcut icon"
+      href="https://byui-cse.github.io/Language-Courses/site/images/fav.ico"
+      type="image/x-i        con"
+    />
+    <script type="text/javascript">
+      var codeType = "JavaScript";
+    </script>
+    <script src="https://byui-cse.github.io/Language-Courses/site/highlight.pack.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://byui-cse.github.io/Language-Courses/site/highlight_styles/xcode.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://byui-cse.github.io/Language-Courses/site/weekly.css"
+    />
+    <script
+      type="text/javascript"
+      src="https://byui-cse.github.io/Language-Courses/site/weekly.js"
+    ></script>
+    <script
+      type="text/javascript"
+      async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML"
+    ></script>
+    <link rel="stylesheet" href="../main.css" />
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+          tex2jax: {
+              inlineMath: [['\\(', '\\)']]
+          }
+      });
+      MathJax.Hub.Config({
+          TeX: {
+              equationNumbers: {
+                  autoNumber: "AMS"
+              }
+          }
+      });
+      MathJax.Hub.Config({
+          "HTML-CSS": {
+              availableFonts: [],
+              preferredFont: null,
+              // force Web fonts
+              webFont: "Latin-Modern"
+          }
+      });
+      MathJax.Hub.Config({
+          TeX: {
+              extensions: ["color.js"]
+          }
+      });
+    </script>
+  </head>
+
+  <body onload="fetchSource()">
+    <header class="hero-image">
+      <section class="hero-text">
+        <h1>CSE 222a: Week 05</h1>
+        <p>\(\lambda\) Functions and Closures</p>
+      </section>
+    </header>
+    <h1>\(\lambda\) Functions and Closures</h1>
+    <p>
+      \(\lambda\) functions are a
+      <a href="https://en.wikipedia.org/wiki/Lambda_calculus" target="_blank"
+        >mathematical construct</a
+      >
+      that
+      <a
+        href="https://stackoverflow.com/questions/16501/what-is-a-lambda-function"
+        target="_blank"
+        >computer science</a
+      >
+      and computation in general has borrowed. You've used them before in your
+      Python courses or as anonymous functions in JavaScript. You've also used
+      them in Swift as closures when you did the <kbd>map</kbd>,
+      <kbd>filter</kbd>, and <kbd>reduce</kbd> tasks. Now let's learn some more
+      about them.
+    </p>
+    <h3>Storing Closures in Variables and Data Collections</h3>
+    <p>
+      Due to its functional programming ancestor Haskell, Swift's functions can
+      be stored in variables and can also be passed around as parameters to
+      other functions and methods. (From this point on, we'll use the word
+      function to mean both stand-alone functions and methods.)
+      <a
+        href="https://people.cs.vt.edu/~kafura/cs2704/generalization.html"
+        target="_blank"
+        >Generalization</a
+      >
+      is a common pattern that you've followed before whenever you created a
+      function. You had a series of computations that could be applied to
+      various data values. Using stored closures allows your functions to be
+      generalized even further. It also allows more of your code to be reused so
+      defects are found and fixed more readily.
+    </p>
+    <p>
+      But how does storing a closure make greater generalization possible? When
+      you store closures in a data structure you can retrieve the right one for
+      any given situation and use it within a function, you are replacing some
+      of the fixed computational steps with some that are dependent on the
+      situation. Consider this example.
+    </p>
+    <p>
+      Imagine you are creating a web service of some kind. Each time a request
+      comes in from a web browser there is some sort of a command (login,
+      logout, update something, download something, display something, etc.) and
+      some data that goes along with the command (username and password, the
+      name of the file to download, the data from the file to store on the
+      server, etc.). You could write a function with a huge
+      <kbd>if-else</kbd> clause where each branch of the
+      <kbd>if-else</kbd> clause checks the command and executes code inside the
+      scope of the correct branch to deal with the data sent. This naive design
+      has many problems and would look something like the code below.
+    </p>
+    <pre><code class="Swift">func handleRequest(aCommand:String, theData:DataDictionary){
+
+	if aCommand == "login"{
+		//login handling code here
+	}
+	else if aCommand == "logout"{
+		//logout handling code here
+	}
+	else if aCommand == "upload"{
+		//file upload handling code here
+	}
+	/*
+	 * and another, and another, and another, and another,....
+	 */
+	else{
+		//unrecognized command handling code here
+	}
+}</code></pre>
+    <p>
+      What kinds of problems might this cause? Well, first there is the
+      <a
+        href="https://www.springboottutorial.com/code-quality-what-is-code-duplication"
+        target="_blank"
+        >duplication of code</a
+      >
+      all over the place. You might not yet realize it, but there are some web
+      services with hundreds of different commands. Do you really want to type
+      <kbd>else if aCommand ==</kbd> that many times? How long can you read
+      through a list of those without your brain getting numb? Stepwise
+      debugging such a mess can also be a problem.
+    </p>
+    <p>
+      But there is even a bigger problem. What order are you going to do the
+      checks in? String comparison is an expensive computation to perform in any
+      language so you should put the most commonly used commands first. But
+      which command is that? The most commonly used command will change over
+      time, so you need to make sure to always check what your users are doing.
+    </p>
+    <p>
+      In web services you usually do the same thing each time a command-data
+      pairing is received. First you have to make sure the command is a valid
+      command. Hackers will send random commands to see if they can get your
+      service to send them back a failure message. You'd better be validating
+      the command.
+    </p>
+    <p>
+      You also need to validate the data. Once they figure out a valid command,
+      these same hackers will send invalid data to try to crash your service so
+      they can take over your system by performing a
+      <a
+        href="https://owasp.org/www-community/attacks/Code_Injection"
+        target="_blank"
+        >code injection</a
+      >
+      or some other type of attack.
+    </p>
+    <p>
+      Once you've validated both things, your web service will usually interact
+      with a database. This could be by getting data from the database, putting
+      data in the database, or both. Then your service will put together some
+      data to send back to the client.
+    </p>
+    <p>
+      These steps are performed over and over. At major web sites these steps
+      are performed millions of times a minute. The naive
+      <kbd>if-else</kbd> design isn't going to be good enough. You'll have to
+      duplicate this validation, access, response pattern for each command. How
+      then can this be made better? After all, each command must be dealt with
+      in a specific way. The solution to this lies in using a Dictionary and the
+      principle that functions and closures are
+      <a href="https://lispcast.com/what-are-first-class-functions/"
+        >first class citizens</a
+      >
+      in Swift.
+    </p>
+    <p>
+      Consider this. Imagine you had a Dictionary where the key was the command
+      and the value for that key was a closure. Let's call this type
+      <kbd>CommandDictionary</kbd>. Here are a couple of
+      <a
+        href="https://www.programiz.com/swift-programming/typealias"
+        target="_blank"
+        >typealiases</a
+      >
+      to make it easier to read code later. After all, you don't want to keep
+      typing stuff you don't have too, right? &#128521;
+    </p>
+    <pre><code class="Swift">//some aliases to make the code easier to read
+typealias DataDictionary = Dictionary&lt;String,Any&gt;
+typealias CommandDictionary = Dictionary&lt;String,(DataDictionary)->DataDictionary?&gt;
+</code></pre>
+    <p>
+      Note that these explicitly use the fact that Dictionary is a generic type.
+      Our new <kbd>typealiases</kbd> define specific implementations of the
+      generic Dictionary type, one of which takes a String as key and Any value
+      as the value. The second takes a String as key and a closure that takes in
+      and returns a DataDictionary. See
+      <a href="https://docs.swift.org/swift-book/LanguageGuide/TypeCasting.html"
+        >Type Casting for Any and AnyObject</a
+      >
+      for more information about the Any type which should be used only in
+      special circumstances.
+    </p>
+    <p>
+      Now each time you need a <kbd>Dictionary</kbd> that has a
+      <kbd>String</kbd> as a key and anything at all as the value, you can use
+      the custom type <kbd>DataDictionary</kbd> instead of typing
+      <kbd>Dictionary&lt;String,Any&gt;</kbd> over and over. The
+      <kbd>CommandDictionary</kbd> type alias uses
+      <kbd>DataDictionary</kbd> right away. Each <kbd>CommandDictionary</kbd>,
+      as you see above, has <kbd>Strings</kbd> for keys and functions or
+      closures as values. Each of these functions or closures has a
+      <kbd>DataDictionary</kbd> as a parameter and a
+      <kbd>DataDictionary</kbd> optional as its value. This way, each of the
+      command functions in the dictionary can receive data in the form of a
+      dictionary, do its job, and then return either the same dictionary it was
+      passed or modify it and return the modified dictionary. You'll see how
+      this fits together below.
+    </p>
+    <p>
+      So let's see what can be done with command and data dictionaries. If you
+      created three command dictionaries, one to hold
+      <a href="https://www.safe.com/what-is/data-validation/" target="_blank"
+        >validation</a
+      >
+      functions, a second to hold interaction functions, and a third to hold
+      response generation functions, you could completely get rid of the
+      <kbd>if-else</kbd> clause from the <kbd>handlRequest</kbd>
+      function above and create a variation of the
+      <a
+        href="https://www.javaguides.net/2018/08/application-controller-design-pattern-in-java.html"
+        >Application Controller Pattern</a
+      >.
+    </p>
+    <p>
+      For this example, each command is mapped to one validation function to
+      check to make sure the incoming data is formatted correctly and doesn't
+      have any hacking attempts going on inside the data itself. Each command is
+      also mapped to one interaction function. This function does any database
+      access and/or updates and data calculations needed. Finally, each command
+      is mapped to a response generation function where the data is packaged
+      correctly for whichever client made the request. That might be a a mobile
+      app, a web browser, or a desktop application.
+    </p>
+    <p>
+      That means that all <kbd>handleRequest</kbd> needs to do is get each of
+      these functions from the three <kbd>CommandDictionaries</kbd>, apply them
+      in the industry standard order, and deal with any failures when the
+      functions from the dictionaries are applied. The code below, you'll need
+      to scroll to see the whole thing, shows how to do this along with the
+      documentation for the <kbd>handleRequest</kbd> function. Notice how the
+      functions are retrieved from the dictionaries and put in a variable and
+      then the variable is used to call the function.
+    </p>
+    <pre><code class="Swift">///
+///A facade function that executes any and all functions for any given command
+///and passes each function the data associated with the command.
+///
+///If validation fails, no interaction or response generation function is called. If the interaction function 
+///fails, no response generation function is called. This enforces 'validation first' as a design principle.
+///
+///Parameters:  aCommand - a String that is the command read from the web request
+///             theData - a DataDictionary that is any data sent as part of the web request
+///             theValidationFunctions - a CommandDictionary that holds all validation functions for all commands
+///             theInteractionFunctions - a CommandDictionary that holds all the interaction functions for all commands
+///             theResponseFunctions - a CommandDictionary that holds all the response-building functions for all commands
+///Returns: the a DataDictionary indicating how far through the request handling process was achieved and true if
+///             the request succeeded. False otherwise.
+///Complexity: O(1) plus the sum of the complexities of the validation, interaction,
+///            and response functions for any given command
+func handleRequest(aCommand:String, theData:DataDictionary, theValidationFunctions:CommandDictionary, theInteractionFunctions:CommandDictionary, theResponseFunctions:CommandDictionary) ->(Bool,DataDictionary?) {
+    
+    //if all three functions exist the command is an expected command
+    guard let aValidationFunction = theValidationFunctions[aCommand],
+          let anInteractionFunction = theInteractionFunctions[aCommand],
+          let aResponseFunction = theResponseFunctions[aCommand]
+    else {
+        return (false,theData)
+    }
+    // if successfully found functions, do what ever validation is needed
+    guard let theValidationData = aValidationFunction(theData)  else {
+        return (false,theData)
+    }
+    //if successfully validated, do what ever interaction is needed
+    guard let theInteractionData = anInteractionFunction(theValidationData)  
+    else {
+        return (false,theValidationData)
+    }
+    //if successfully completed interaction, put together a response
+    guard let theResponseData = aResponseFunction(theInteractionData)  
+    else {
+        return (false,theInteractionData)
+    }
+    return (true,theResponseData)
+}</code></pre>
+    <p>
+      This function enforces security for your web service. Nothing can be
+      executed until it passes validation. Also, when your boss come to you and
+      says, "Can you get the service to do this other thing too?" Your answer
+      can be yes! All you need to do is add three functions to the dictionaries!
+      No more wasted time trying to find the appropriate place in the
+      <kbd>if-else</kbd> clause and no more duplicating code. Storing functions
+      and closures in variables and data collections is a very powerful
+      technique. As you get more and more comfortable with it you'll see more
+      and more ways to make your code more
+      <a
+        href="https://stackoverflow.com/questions/21220155/what-does-abstraction-mean-in-programming"
+        target="_blank"
+        >abstract</a
+      >, and therefore more powerful. &#128513;
+    </p>
+    <h3>Passing Functions or Closures as Parameters</h3>
+    <p>
+      You've used functions that had other functions as parameters. The
+      <kbd>map, filter,</kbd> and <kbd>reduce</kbd>
+      functions last week leveraged this concept heavily. But you are not
+      limited to being able to do this with BIF's. You can write your own
+      functions that do this too.
+    </p>
+    <p>
+      Any time you want to make your functions more abstract and therefore more
+      powerful, you can pass part of the behavior of the function as a
+      parameter. If you think about it, the <kbd>handleRequest</kbd> function
+      above does this. It just passes collections of functions or closures
+      instead of one.
+    </p>
+    <p>
+      Having a function as a parameter allows a programmer to decide later, long
+      after you've written your function, what some of the behavior of your
+      function should be. That way your function can be reused and there will be
+      less code duplication in the application.
+    </p>
+    <p>
+      Imagine how horrible it would be to have to write a loop to filter each of
+      the 10,000 different data sets that would be the result of doing 10,000
+      different database requests. Ouch! No fun at all. Thankfully someone wrote
+      the
+      <a
+        href="https://stackoverflow.com/questions/31603536/swift-filter-function"
+        target="_blank"
+        >filter</a
+      >
+      BIF for us to use instead. Be that person. Write abstract, flexible code.
+    </p>
+    <p>
+      What, then, does the method signature of a function that accepts a
+      function look like? Here is an example that illustrates the principle. In
+      a real application, you should use the
+      <kbd>reduce</kbd> BIF, but this example is an interesting look at how you
+      could use a closure as a parameter.
+    </p>
+
+    <pre><code class="Swift">func doIntegerMath(integers:[Int], initialValue:Int, mathToDo:(Int, Int)->Int) -> Int {
+    var accumulator = initialValue
+    for integer in integers {
+        accumulator = mathToDo(accumulator,integer)
+    }
+    return accumulator
+}</code></pre>
+    <p>
+      In the snippet, the <kbd>mathToDo</kbd> parameter is a function that has
+      two integer parameters and has an integer as it's value. The
+      <kbd>mathToDo</kbd> parameter's type declaration ends at the
+      <kbd>)</kbd> character that concludes the list of parameters for the
+      <kbd>doIntegerMath</kbd> function. The <kbd>-> Int</kbd> characters after
+      that indicate the value of the <kbd>doIntegerMath</kbd> function.
+    </p>
+    <p>
+      Notice how similar <kbd>mathToDo</kbd>'s type declaration is to a regular
+      function definition. If it were a function declaration, the only thing
+      that would be missing would be the names of the parameters. Please don't
+      put parameter names in closure type declarations. They will cause compiler
+      errors.
+    </p>
+    <p>
+      The actual generic reduce() function operating on an array whose elements
+      are of type Element is defined like this:
+    </p>
+    <pre><code class="Swift">func reduce&lt;Result&gt;(_ initialResult: Result, _ nextPartialResult: (Result, Self.Element)-> Result) -> Result</code></pre>
+    <p>
+      It is an instance method meaning it belongs to the specific type of array
+      from which it is called. That specific array type has a built in type
+      reference for generics to use called self.Element. &lt;Result&gt; is the
+      type of the result of the function which might be the same as the array
+      elements or something different entirely such as returning a Double from
+      calling reduce() on an array of Int. reduce() takes a first parameter that
+      is the same type as the Result and a second parameter that is a closure
+      taking two parameters. One parameter of the closure is the same type as
+      Result and the other is the same type as the Elements of the array. The
+      closure returns the Result type as does the function.
+    </p>
+    <footer>
+      <a
+        rel="license"
+        href="http://creativecommons.org/licenses/by/4.0/"
+        target="_blank"
+        ><img
+          alt="This work is licensed under a Creative Commons Attribution 4.0 International License"
+          style="border-width: 0"
+          src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a
+      ><br />This work is licensed under a
+      <a
+        rel="license"
+        href="http://creativecommons.org/licenses/by/4.0/"
+        target="_blank"
+        >Creative Commons Attribution 4.0 International License</a
+      >.
+    </footer>
+  </body>
+</html>

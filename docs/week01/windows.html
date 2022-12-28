@@ -1,0 +1,140 @@
+<!-- uses https://highlightjs.org/
+-->
+
+<html>
+  <head>
+    <link
+      rel="shortcut icon"
+      href="https://byui-cse.github.io/Language-Courses/site/images/fav.ico"
+      type="image/x-icon"
+    />
+    <script type="text/javascript">
+      var codeType = "JavaScript";
+    </script>
+    <script
+      type="text/javascript"
+      src="https://byui-cse.github.io/Language-Courses/site/highlight.pack.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://byui-cse.github.io/Language-Courses/site/highlight_styles/xcode.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://byui-cse.github.io/Language-Courses/site/weekly.css"
+    />
+    <script
+      type="text/javascript"
+      src="https://byui-cse.github.io/Language-Courses/site/weekly.js"
+    ></script>
+    <link rel="stylesheet" href="../main.css" />
+  </head>
+
+  <body onload="fetchSource()">
+    <header class="hero-image">
+      <div class="hero-text">
+        <h1>CSE 222a: Week 01</h1>
+        <p>Ponder and Prove</p>
+      </div>
+    </header>
+
+    <main>
+      <h1>Swift Installation on Windows</h1>
+
+      <p>
+        The following is a step by step guide to getting Swift running on
+        Windows 10 or 11. Most of these instructions are also on the
+        <a href="https://www.swift.org/getting-started/">Swift Website.</a>
+      </p>
+
+      <h4>1. Developer Mode</h4>
+
+      <p>
+        Enable developer mode on Windows by pressing the Windows key and typing
+        <strong>developer settings.</strong>
+      </p>
+      <div style="display: inline-block">
+        <img style="width: auto; height: 350px" src="img/dev-mode.png" />
+        <img style="width: auto; height: 350px" src="img/dev-settings.jpg" />
+      </div>
+
+      <h4>1a. Install App Installer (Optional)</h4>
+      <p>
+        You may need to install the
+        <a href="https://www.microsoft.com/en-us/p/app-installer/9nblggh4nns1"
+          >Windows App Installer</a
+        >, which is a package manager for Windows. Most likely it is already
+        installed, but if it isn't, please install it.
+      </p>
+      <h4>2. Install Required Dependencies</h4>
+      <p>
+        Open a command prompt by pressing the Windows key and typing
+        <strong>cmd.</strong> The press the enter key.
+      </p>
+      <div style="display: inline-block">
+        <img style="width: auto; height: 350px" src="img/cmd.png" />
+        <img style="width: auto; height: 350px" src="img/cmd-window.png" />
+      </div>
+      <p>
+        In the command prompt, copy and paste each of the following commands,
+        one by one. To paste into the command prompt window, simply click your
+        right mouse button, then hit the enter key.
+      </p>
+      <p>
+        <strong>NOTE:</strong> if the <strong>winget</strong> command doesn't
+        work, it means you need to install the Windows App Installer.
+      </p>
+      <pre><code>winget install Git.Git</code></pre>
+      <pre><code>winget install Python.Python.3.10</code></pre>
+      <pre><code>curl -sOL https://aka.ms/vs/16/release/vs_community.exe</code></pre>
+      <pre><code>start /w vs_community.exe --passive --wait --norestart --nocache ^
+    --installPath "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community" ^
+    --add Microsoft.VisualStudio.Component.Windows10SDK.19041 ^
+    --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64</code></pre>
+      <pre><code>del /q vs_community.exe</code></pre>
+
+      <p>
+        Here is an example of what it should look like when you copy and paste a
+        command:
+      </p>
+      <div style="display: inline-block">
+        <img style="width: auto; height: 100px" src="img/copy-paste.png" />
+        <img style="width: auto; height: 350px" src="img/huge-command.png" />
+      </div>
+      <p>
+        Close the command prompt and then open a new command prompt. Run the
+        following command in the new command prompt window:
+      </p>
+      <pre><code>pip install six</code></pre>
+      <h4>3. Install the Swift Toolchain</h4>
+      <p>
+        In the same command prompt window, run the following command to install
+        the Swift toolchain:
+      </p>
+      <pre><code>winget install Swift.Toolchain</code></pre>
+      <h4>4. Check installation</h4>
+      <p>
+        Close the command prompt and open Visual Studio Code. Open a new
+        terminal in VCSCode and run the following command:
+      </p>
+      <pre><code>swift --version</code></pre>
+    </main>
+    <footer>
+      <a
+        rel="license"
+        href="http://creativecommons.org/licenses/by/4.0/"
+        target="_blank"
+        ><img
+          alt="This work is licensed under a Creative Commons Attribution 4.0 International License"
+          style="border-width: 0"
+          src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a
+      ><br />This work is licensed under a
+      <a
+        rel="license"
+        href="http://creativecommons.org/licenses/by/4.0/"
+        target="_blank"
+        >Creative Commons Attribution 4.0 International License</a
+      >.
+    </footer>
+  </body>
+</html>
