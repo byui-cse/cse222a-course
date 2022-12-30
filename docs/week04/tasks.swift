@@ -26,7 +26,7 @@ import Foundation
 //      1) PharmaceuticalStockTracker is now a class
 //
 //      2) MedicationContainer has a new property ndcPackageCode that identifies
-//      the specific type of medication container (more about that later in task 2).
+//      the specific type of medication container (more about that later in task 2).
 //
 //      3) Changed "inStockMedications" from an Array of MedicationContainers to
 //      a Dictionary. The key is a String (actually an ndcPackageCode) and
@@ -128,7 +128,7 @@ class MedicationContainer: Equatable, Comparable, CustomStringConvertible {
     }
     // conformance to the Comparable protocol
     static func < (lhs: MedicationContainer, rhs: MedicationContainer) -> Bool {
-        // replace the following with your code for a real comparitor operator
+        // replace the following with your code for a real comparator operator
         // EDITOR replace the following line with "return false"
         return lhs.expirationDate < rhs.expirationDate
     }
@@ -186,7 +186,7 @@ func task0() -> (MedicationContainer, MedicationContainer) {
     // Print some sample dates
 
     let aCode: String = "12345-123-12"
-    // initiailize a test variable of both classes
+    // initialize a test variable of both classes
     let aLiquidContainer = LiquidMedicationContainer(ndcPackageCode: aCode, name: "med1", expirationDate: futureDate(daysFromNow: 120),
         volume: 4.5, concentration: 2, concentrationUnits: "ml")
     let aTabletContainer = TabletMedicationContainer(ndcPackageCode: aCode, name: "med2", expirationDate: futureDate(daysFromNow: 90),
@@ -266,7 +266,7 @@ func task2() -> Bool? {
 //  containers matching the ndcPackageCode and the case where there are
 //  already some containers matching the ndcPackageCode.
 //
-//  When you have completed and tested the codefor addContainers(),
+//  When you have completed and tested the code for addContainers(),
 //  change task3() to return true rather than nil
 
 enum AddMessage: String {
@@ -582,8 +582,8 @@ func task9() -> Bool? {
     //  a PharmaceuticalStockTracker, sorted by which ndcPackageCodes have the most or least
     //  inventory associated with them.
     //
-    //  Note: to make the results more meaningful we print the results using a funcation provided
-    //  in main.swift called summarizeSetsOfMedicationContainers(). That funtion prints a summary
+    //  Note: to make the results more meaningful we print the results using a function provided
+    //  in main.swift called summarizeSetsOfMedicationContainers(). That function prints a summary
     //  of each Dictionary or Set. Otherwise, the following lines would print the full detailed contents
     //  of each MedicationContainer in inventory which would be a lot more detailed content to read
     //  through to validate that the function is working correctly..

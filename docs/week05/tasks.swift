@@ -31,7 +31,7 @@ extension Range<Int> {
     }
 }
 //  To be tidy, we need to do both Range and ClosedRange since they do
-//  not roll up to a partent Type that can be extended this way
+//  not roll up to a parent Type that can be extended this way
 extension ClosedRange<Int> {
     func randomArray(_ size: Int) -> [Bound] {
         return (0..<size).map { _ in Int.random(in: self) }
@@ -62,16 +62,16 @@ func randomWalk(start: (Int, Int), numMoves: Int, maxMove: Int) -> [Steps] {
 //
 //  Now that you have tried to understand the code above on your own, here is
 //  a summary of what it does. You may want to review the code again after
-//  reading the following explaination:
+//  reading the following explanation:
 //
 //  randomWalk(start:numSteps:maxMove:) produces an Array of enumeration values
 //  wih a sequence of moves for a random walk in 2 dimensional space. The first
-//  parameter is the starting point, the second is the numumber moves desired
+//  parameter is the starting point, the second is the number moves desired
 //  and the third is the maximum distance forward or backward in a single move.
 //  In the enum Type Steps, the first three values have associated values.
 //  We use an extension to define a randomArray method for ranges that can
-//  generate an Array of random elements chosed from that range. We then use
-//  that to generate an Array of Ints corresponsing to all values of Steps
+//  generate an Array of random elements chosen from that range. We then use
+//  that to generate an Array of Ints corresponding to all values of Steps
 //  except the "start" value since we only use that one once at the beginning.
 //  We use map() and a switch statement to convert that Array of Ints to the
 //  matching enum values.
@@ -197,7 +197,7 @@ func task2(intArray: [Int], canThrow: throwingFunction) throws -> Int? {
 //  The lhs and rhs of a operation cam themselves be anything in ValueOrFormula
 //  allowing the user to write more complex (recursive) formulas.
 //
-//  For example, a user might enter cell values like this in the first rowt:
+//  For example, a user might enter cell values like this in the first row:
 //      2               One String           @(2,1)
 //  Those values would be represented internally like this:
 //      [ .int(2), .string("One String"), .ref(2,1) ]
@@ -237,7 +237,7 @@ func task2(intArray: [Int], canThrow: throwingFunction) throws -> Int? {
 //      5) If one operand of an operator is a .double and the other operand is either
 //              a .int or a .double convert both operands to Double before performing
 //              the operation and the result is .double (be sure to do the conversion
-//              befopre the operation).
+//              before the operation).
 //      6) A .ref reference has the evaluated value of the referenced cell. That means
 //              as you evaluate a cell that contains a reference, you will need to
 //              evaluate the referenced cell before continuing to evaluate the current
@@ -272,7 +272,7 @@ func task2(intArray: [Int], canThrow: throwingFunction) throws -> Int? {
 //
 //  We recommend that you set up a Dictionary to help you evaluate operators
 //  with a key of type Operators and a value that is a closure to evaluate that
-//  Oparator. We provide a typealias for the closure to help you define that
+//  Operator. We provide a typealias for the closure to help you define that
 //  Dictionary. We have also provided a function printSheet() that will print a
 //  spreadsheet in a format that is easier to read and more meaningful than
 //  the default printout you would get from just calling testPrint(). We
