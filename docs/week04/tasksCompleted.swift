@@ -5,10 +5,10 @@
 //  in each task function to delete the sample code and just leave behind a stub.
 //  Most of the time, that will just be "return nil" but in a few cases we leave
 //  stub code that has a template in it for them to use. Finally, in tasks.swift
-//  please delete this note to the editor in thie first 11 lines of this file.
+//  please delete this note to the editor in thi first 11 lines of this file.
 //  After tasks.swift is created, make a copy called "tasks after task0.swift."
 //  Edit into this one just the changes for task 0. That allows us to compile it
-//  and confirm that everyting will still compile once the student completes task 0.
+//  and confirm that everything will still compile once the student completes task 0.
 //
 //  Tasks.swift
 //  Week 4 Tasks
@@ -180,7 +180,7 @@ class MedicationContainer: Hashable, Equatable, Comparable, CustomStringConverti
     }
     // conformance to the Comparable protocol
     static func < (lhs: MedicationContainer, rhs: MedicationContainer) -> Bool {
-        // replace the following with your code for a real comparitor operator
+        // replace the following with your code for a real comparator operator
         // EDITOR replace the following line with "return false"
         return lhs.expirationDate < rhs.expirationDate
     }
@@ -243,7 +243,7 @@ func task0() -> (MedicationContainer, MedicationContainer) {
     // Print some sample dates
 
     let aCode: String = "12345-123-12"
-    // initiailize a test variable of both classes
+    // initialize a test variable of both classes
     let aLiquidContainer = LiquidMedicationContainer(ndcPackageCode: aCode, name: "med1", expirationDate: futureDate(daysFromNow: 120),
         volume: 4.5, concentration: 2, concentrationUnits: "ml")
     let aTabletContainer = TabletMedicationContainer(ndcPackageCode: aCode, name: "med2", expirationDate: futureDate(daysFromNow: 90),
@@ -347,7 +347,7 @@ func task2() -> Bool? {
 //  containers matching the ndcPackageCode and the case where there are
 //  already some containers matching the ndcPackageCode.
 //
-//  When you have completed and tested the codefor addContainers(),
+//  When you have completed and tested the code for addContainers(),
 //  change task3() to return true rather than nil
 
 enum AddMessage: String {
@@ -373,7 +373,7 @@ extension PharmaceuticalStockTracker {
                 return (false, .mixedNDCCodes)
             }
         }
-        // We hope the students write a more effecient way to do this, but for testing
+        // We hope the students write a more efficient way to do this, but for testing
         // purposes this is adequate
         for container in containersToAdd {
             guard addContainer(container) else {
@@ -686,7 +686,7 @@ extension Collection where Element: Countable {
 }
 
 func task9() -> Bool? {
-// EDITOR, uncomment the following line when creating tasks.swkft
+// EDITOR, uncomment the following line when creating tasks.swift
     // return nil // comment out this line when you are ready to test Task 9
 
     // Please ignore a possible "will never be executed" warning
@@ -755,9 +755,9 @@ func task9() -> Bool? {
     testPrint(">  \(dictionaryKeysOfStrings.keys.sortedBySize())")
     testPrint("<  \(dictionaryKeysOfStrings.keys.sortedBySize(increasing: false))")
 
-    //  generateTracker(_ countainerCount: Int) is implemented in
+    //  generateTracker(_ containerCount: Int) is implemented in
     //  main.swift. It generates a sample PharmaceuticalStockTracker
-    //  with countainerCount MedicationContainers in it. It is only
+    //  with containerCount MedicationContainers in it. It is only
     //  implemented for containerCounts in 1, 2, 3 and 6.
     
     //  This first example is sorting PharmaceuticalStockTrackers to see which location or
@@ -771,8 +771,8 @@ func task9() -> Bool? {
     //  a PharmaceuticalStockTracker, sorted by which ndcPackageCodes have the most or least
     //  inventory associated with them.
     //
-    //  Note: to make the results more meaningful we print the results using a funcation provided
-    //  in main.swift called summarizeSetsOfMedicationContainers(). That funtion prints a summary
+    //  Note: to make the results more meaningful we print the results using a function provided
+    //  in main.swift called summarizeSetsOfMedicationContainers(). That function prints a summary
     //  of each Dictionary or Set. Otherwise, the following lines would print the full detailed contents
     //  of each MedicationContainer in inventory which would be a lot more detailed content to read
     //  through to validate that the function is working correctly..

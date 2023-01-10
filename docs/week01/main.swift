@@ -47,8 +47,8 @@ func calculateAverage(ages: [Double]) -> (Bool, Double) {
 }
 
 func printResults(result: (Bool, Double)) {
-    let (succeded, averageAge) = result
-    guard succeded else {
+    let (succeeded, averageAge) = result
+    guard succeeded else {
         print("calculation failed")
         return
     }

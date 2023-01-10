@@ -139,7 +139,7 @@ func fail(_ testNum: Int, _ message: String) -> TestResults {
  •    Add items to array only if not already added
         (helps prepare them for Dictionary next week)
  •    mutating keyword for some struct methods
- •    Apply an additional prorocol to ensure method compliance
+ •    Apply an additional protocol to ensure method compliance
  Task 3
  •    Work with ranges
  •    Use an array to simulate a decreasing range
@@ -599,7 +599,7 @@ extension Date {
         dateFormatter.dateFormat = "yyyy"
         return dateFormatter.string(from: self)
     }
-    func momthString() -> String {
+    func monthString() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM"
         return dateFormatter.string(from: self)
@@ -777,7 +777,7 @@ private func describeArrayOfContainers(_ containers: [MedicationContainer]) -> S
 }
 //  We can't use "==" for this because it is not defined for MedicationContainers
 //  until Task 8 so we would not compile before then. This function also has an option
-//  to ignore the order of the items in the arrays which is required funcationality.
+//  to ignore the order of the items in the arrays which is required functionality.
 private func compareContainerArrays(_ lhs: [MedicationContainer], _ rhs: [MedicationContainer], ordered: Bool) -> Bool {
     guard lhs.count == rhs.count else { return false }
     if ordered {

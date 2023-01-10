@@ -98,7 +98,7 @@
           </p>
         <figure>
           <img
-            src="images/W3UML1.svg"
+            src="images/revisedWeek3ReadingUML.png"
             alt="An image showing each of the classes: Date, MedicationContainer, Liquid Medication Container, Tablet Medication Container, and Pharmaceutical Stock Tracker, their properties, and the relationships between them"
           />
           <figcaption>
@@ -247,9 +247,9 @@
               >. After the property type you put braces { } and inside those braces you put either
               <kbd>get { closure }</kbd> or <kbd>set { closure }</kbd> or both where <kbd>closure</kbd> represents code that does the 
               get or set action. Here is an example of a computed property for the 
-              <kbd>PharmadeuticalStockTracker</kbd> type:
+              <kbd>PharmaceuticalStockTracker</kbd> type:
               </p>
-              <pre><code>class PharmadeuticalStockTracker {
+              <pre><code>class PharmaceuticalStockTracker {
     var inStockMedications: [MedicationContainer] = []
     var containerCount: Int {
         get { inStockMedications.count }
@@ -279,7 +279,7 @@
     let name: String
     let expirationDate: Date
     // Each non-Optional property with no default value
-    // must be have a value set by an initialization method
+    // must have a value set by an initialization method
     init(name: String, expirationDate: Date) {
         self.name = name
         self.expirationDate = expirationDate
@@ -457,7 +457,8 @@ extension TabletMedicationContainer {
             
 extension PharmaceuticalStockTracker {
     static postfix func &lt||&gt (tracker: PharmaceuticalStockTracker) -> Int {
-        return tracker.inStockMedications.count    }
+        return tracker.inStockMedications.count
+    }
 }</code></pre>
 
           <h2>UUID and Unique Objects</h2>
@@ -478,7 +479,7 @@ extension PharmaceuticalStockTracker {
         In many languages, if you want to allow a developer to create a new
         class or other object that will be used by library functions or other
         existing classes, you make sure it has all needed characteristics by
-        require it to be a child of an existing class that meets those
+        requiring it to be a child of an existing class that meets those
         characteristics. Swift adds a concept called
         <a
           href="https://docs.swift.org/swift-book/LanguageGuide/Protocols.html"
@@ -517,8 +518,8 @@ extension PharmaceuticalStockTracker {
             doesNotNeedToBeSettable and the { get set } on the first property means 
             that property must be able to be set (which usually means it should have 
             the var keyword in front ot it). The second property could be specified 
-            with let or var. Note a the protocol always used var for properties and 
-            then uses the { get set } or { get } to indicate whether they need to be 
+            with let or var. Note the protocol always uses var for properties and 
+            then uses the { get set } or { get } methods to indicate whether they need to be 
             mutable. And if you specify { get } it does not require that the property 
             be immutable, only that it may be mutable or immutable.
           </p>
@@ -531,7 +532,7 @@ extension PharmaceuticalStockTracker {
 }</code></pre>
       <p>
         Conforming to a protocol can make certain language features or built-in 
-        functions available to you.For example, if you create a new struct or 
+        functions available to you. For example, if you create a new struct or 
         class that confirms to the
         <a href="https://developer.apple.com/documentation/swift/sequence"
           >Sequence protocol</a
@@ -646,8 +647,8 @@ extension PharmaceuticalStockTracker {
             are passed by reference and are mutable or else to use the “inout” 
             keyword before a parameter name to force it to be passed by reference. 
             In most languages, the typical approach is to create a structure to 
-            use for the return value of a function. That works well except that 
-            you are then cluttering up your code with extra structures for each 
+            use for the return value of a function. That works well except, then
+            you are cluttering up your code with extra structures for each 
             function that are only used to get around that language limitation 
             or else you wind up specifying a single structure returned by several 
             functions that each only may need part of it and that must then be 
@@ -693,7 +694,7 @@ person.0 = “John”</code></pre>
         <p>
         Most of the time you will 
         use decomposition to retrieve the individual values. In this you use let or var and 
-        a list of variables in ( ) that will receive the values from the tuple like this:
+        a list of variables in parentheses that will receive the values from the tuple like this:
       </p>
 
       <pre><code>//decomposing a tuple to get each stored value
@@ -762,8 +763,8 @@ print(any1 is TabletMedicationContainer) // returns false
             called <kbd>myDouble</kbd> you may be tempted to write 
             <kbd>let myDouble = myAnyInt as? Double</kbd>, 
             but that will fail since the underlying type is not a <kbd>Double</kbd>. Instead, 
-            you would need to write it like this: <kbd>let myDouble = Double(myAnyInt as? Int)</kbd> 
-            and if you thing the <kbd>Any</kbd> contains an <kbd>Int</kbd> or a <kbd>Double</kbd> 
+            you would need to write it like this: <kbd>let myDouble = Double(myAnyInt as? Int)</kbd>.
+            And if you find the <kbd>Any</kbd> contains an <kbd>Int</kbd> or a <kbd>Double</kbd> 
             you need to write slightly more complicated code to extract it to a <kbd>Double</kbd>. 
             You will have the opportunity to figure out how to do that in the assignment 
             this week.

@@ -66,7 +66,7 @@ func task0() -> (MedicationContainer, MedicationContainer) {
     print("Today: \(dateToString(Date()))")
     print("Tomorrow: \(dateToString(futureDate(daysFromNow: 1)))")
 
-    // initiailize a test variable of each class
+    // initialize a test variable of each class
     let aLiquidContainer = LiquidMedicationContainer(name: "med1", expirationDate: futureDate(daysFromNow: 120),
                                                      volume: 4.5, concentration: 2, concentrationUnits: "ml")
     let aTabletContainer = TabletMedicationContainer(name: "med2", expirationDate: futureDate(daysFromNow: 90),
@@ -79,7 +79,7 @@ func task0() -> (MedicationContainer, MedicationContainer) {
 //  returns true if and only if the container has expired.
 //
 //  Apply protocols TrackerProtocol, ContainerProtocol, LiquidContainerProtocol, TabletContainerProtocol
-//  to the corresponding struct and classes as explained in last week's reading.
+//  to the corresponding struct and classes as explained in this week's reading.
 //  You do not need to create the protocols. They already exist in main.swift. Just use them.
 //
 //  Using the code in Task() as an example, create an object of each of the two child class Types

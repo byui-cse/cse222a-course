@@ -5,7 +5,7 @@
 //  in each task function to delete the sample code and just leave behind a stub.
 //  Most of the time, that will just be "return nil" but in a few cases we leave
 //  stub code that has a template in it for them to use. Finally, in tasks.swift
-//  please delete this note to the editor in thie first 8 lines of the file.
+//  please delete this note to the editor in the first 8 lines of the file.
 //
 //  Tasks.swift
 //  Week 3 Tasks
@@ -127,7 +127,7 @@ func task0() -> (MedicationContainer, MedicationContainer) {
     print("Today: \(dateToString(Date()))")
     print("Tomorrow: \(dateToString(futureDate(daysFromNow: 1)))")
 
-    // initiailize a test variable of each class
+    // initialize a test variable of each class
     let aLiquidContainer = LiquidMedicationContainer(name: "med1", expirationDate: futureDate(daysFromNow: 120),
                                                      volume: 4.5, concentration: 2, concentrationUnits: "ml")
     let aTabletContainer = TabletMedicationContainer(name: "med2", expirationDate: futureDate(daysFromNow: 90),
@@ -147,7 +147,7 @@ func task0() -> (MedicationContainer, MedicationContainer) {
 //  and then return then from the task in the tuple instead of nil values.
 //  Note that the test code will report this function as not implemented as long as either of the two
 //  values returned in the tuple is nil. So when you have added the new property, applied the protocols
-//  and created the opbjects, change both returned values to be those containers. That will signal the
+//  and created the objects, change both returned values to be those containers. That will signal the
 //  test code to run the tests.
 func task1() -> (LiquidMedicationContainer?, TabletMedicationContainer?) {
     //    return (nil, nil)
@@ -163,7 +163,7 @@ func task1() -> (LiquidMedicationContainer?, TabletMedicationContainer?) {
 //  Task 2
 //  Add a method to PharmaceuticalStockTracker like this:
 //      mutating func addContainer(_ container: MedicationContainer) -> Bool
-//  Your method should add the container paramneter to the inStockMedications
+//  Your method should add the container parameter to the inStockMedications
 //  Array, but only if that exact container is not already in the array.
 //  Return true if we successfully added it to the array. Remember that
 //  the MedicationContainer parameter could actually be a
@@ -177,7 +177,7 @@ func task1() -> (LiquidMedicationContainer?, TabletMedicationContainer?) {
 //  Add another method to PharmaceuticalStockTracker like this:
 //      func count(of name: String) -> Int
 //  This will count the number of items in MedicationContainers that have a
-//  name that exactly mathes the parameter passed in. Note that it will be called
+//  name that exactly matches the parameter passed in. Note that it will be called
 //  like this:
 //      let aCount = aTracker.count(of: "Asprin")
 //  but inside your method ou will refer to the parameter as "name".
@@ -282,9 +282,9 @@ func task6(_ anyArray: [Any?]) -> [Double]? {
 }
 
 //  Task 7
-//  When we print a MecicationContainer, it just outputs
+//  When we print a MedicationContainer, it just outputs
 //  "Week3Tasks.MedicationContainer". Among other things, such a generic printout
-//  makes it harder to print things to hwlp us track down errors.
+//  makes it harder to print things to help us track down errors.
 //
 //  Assignment: use the empty extension below to fix this by adding compliance
 //  with the CustomStringConvertible protocol. That will allow more detailed
@@ -399,7 +399,7 @@ func task9() -> ((MedicationContainer, MedicationContainer)->Bool)? {
 //  Task 10
 //  Suppose we frequently add a MedicationContainer to a PharmaceuticalStockTracker
 //  in our code and we really want every occurrence of that to stand out. We might
-//  create a special opeator to use for that operation. That would make it stand
+//  create a special operator to use for that operation. That would make it stand
 //  out more when scanning the code for that operation than a text function call.
 //
 //  As an example have defined a new infix operator "<-||". Since it
@@ -414,7 +414,7 @@ func task9() -> ((MedicationContainer, MedicationContainer)->Bool)? {
 //      guard aStockTracker <-|| aContainer, aStockTracker <-|| bContainer else ...
 //  or
 //      if aStockTracker <-|| aContainer { ... } else { ... }
-//  When lookking through code for cases where we add MedicationContainers
+//  When looking through code for cases where we add MedicationContainers
 //  to a PharmaceuticalStockTracker, those will really stand out.
 //
 //  Your second assignment is to create a new postfix operator that will clean any
