@@ -249,7 +249,7 @@ func task2(intArray: [Int], canThrow: throwingFunction) throws -> Int? {
 //      of references refers back to an earlier cell in the chain. We have provided a
 //      function called removeCircularReferences() that turns all cells in a recursive
 //      loop of references into descriptive .errors so you do not need to check for those
-//      situations. The code in task3() below is already set up to call removeCicrular()
+//      situations. The code in task3() below is already set up to call removeCircular()
 //      as the first thing it does so the Array will be ready for your code to process.
 //
 //  Note on Presenting Data to the User:

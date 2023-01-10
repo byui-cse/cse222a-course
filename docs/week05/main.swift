@@ -291,7 +291,7 @@ private func test1(testNum: Int) -> TestResults {
                 return fail(testNum, "Array without any nil values threw an error claiming there was a nil at index \(errorIndex)")
             }
             guard firstNil == errorIndex else {
-                return fail(testNum, "Array with first nil values at index \(firstNil) threw an error claiming thre was a nil at index \(errorIndex)")
+                return fail(testNum, "Array with first nil values at index \(firstNil) threw an error claiming there was a nil at index \(errorIndex)")
             }
         } catch {
             return fail(testNum, "Expected throw with task1ErrorType.nilValueAt, but did a throw with other error: \(error)")

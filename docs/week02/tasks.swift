@@ -202,7 +202,7 @@ func task3() -> [task3Func]? {
 //  of immutable parameters as being defined with "let" in front of them. And like many
 //  features in Swift, there is a way to override it by putting "inout" in front of the
 //  type of a parameter like "myInt: inout Int". As with other ways to override key
-//  language featuies such as using "!" to force unpack and optional, best practice
+//  language features such as using "!" to force unpack and optional, best practice
 //  is to not use "inout" except in rare special cases.
 //
 //  In the task4() code below, uncomment the first 3 lines and delete the line
@@ -211,7 +211,7 @@ func task3() -> [task3Func]? {
 //  variable to the function.
 //
 //  Note: you can name the new variable anything you choose, but when a variable
-//  is added explicitly to gain mutablity it is common to make that clear in the
+//  is added explicitly to gain mutability it is common to make that clear in the
 //  naming so you might write something like "var mutableArray = inArray".
 //
 func task4(inArray: [Int]) -> [Int]? {
@@ -253,7 +253,7 @@ func task6(inArray: [Int]) -> Int? {
 //  this will assign each element of the collection to the variable for one iteration of the loop.
 //  As explained in the reading, ranges can be defined as 1...4 or 0..<4. Both of those produce
 //  four values. The first produces 1,2,3,4 and the second produces 0,1,2,3. If you want to skip
-//  values or go backwards, you use stride(fron:through:by:) or stride(fron:to:by:). "through"
+//  values or go backwards, you use stride(from:through:by:) or stride(from:to:by:). "through"
 //  includes the value specified while "to" goes up to, but not inclusive of that value.
 //  Note that by: can be negative allowing you to count down rather than up.
 //  https://developer.apple.com/documentation/swift/stride(from:to:by:)

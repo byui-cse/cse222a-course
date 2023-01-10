@@ -256,7 +256,7 @@ private func test1(testNum: Int) -> TestResults {
     // Call the task function and report "testNotImplemented if it returns nil
     guard let result = task1(nil) else { return .testNotImplemented }
 
-    // Did they detect the error of optionalString beign nil
+    // Did they detect the error of optionalString being nil
     guard result == .string_is_nil else {
         return fail(testNum, "Called task1(nil) so expected return value \(GuardedErrors.string_is_nil.rawValue)")
     }
@@ -291,7 +291,7 @@ private func test1(testNum: Int) -> TestResults {
         } else if result2 != .testReadLine_is_nil {
             // If they did not report input not matching, we are out of valid return codes for this task
             guard result2 == .input_does_not_match else {
-                return fail(testNum, "Unknown return value fron calling test1(\(testString))")
+                return fail(testNum, "Unknown return value from calling test1(\(testString))")
             }
             // If they did report input not matching, make sure the input does not match
             guard lastInput != testString else {
@@ -315,7 +315,7 @@ private func test2(testNum: Int) -> TestResults {
     }
 
     // Capture the first thing printed which should be the instruction to enter a name or "done"
-    let firstQuerry = savedPrint[0]
+    let firstQuery = savedPrint[0]
     // filter out nil values and empty strings
     var nonNilInput = savedInput.compactMap { $0 }.filter { $0 != "" }
 
@@ -332,11 +332,11 @@ private func test2(testNum: Int) -> TestResults {
     }
 
     // remove any nil values and any use of the instruction message from the cache of testPrint() calls
-    let helloMessages = savedPrint.compactMap { $0 }.filter { $0 != firstQuerry }
+    let helloMessages = savedPrint.compactMap { $0 }.filter { $0 != firstQuery }
     // check that our remaining messages all start with "Hello"
     let nonHelloMessages = helloMessages.filter { !$0.hasPrefix("Hello ") }
     guard nonHelloMessages.count == 0 else {
-        return fail(testNum, "Only testPrint() calls should be resuest to user to input a name and 'Hello ' responses, but had '\(nonHelloMessages[0])'")
+        return fail(testNum, "Only testPrint() calls should be request to user to input a name and 'Hello ' responses, but had '\(nonHelloMessages[0])'")
     }
 
     // We should have one "Hello " message per non-empty name input to testReadLine()
@@ -370,8 +370,8 @@ private func test3(testNum: Int) -> TestResults {
     // Define some hard-wired tests rather than generating random tests for this Task
     struct testStruct {
         let num: Int // which closure are we testing
-        let p1: Int // first parameter to pass into the closrue for this test
-        let p2: Int // second parameter to pass into the closrue for this test
+        let p1: Int // first parameter to pass into the closure for this test
+        let p2: Int // second parameter to pass into the closure for this test
         let want: Int // value that we want returned from the closure
     }
     let tests = [
@@ -585,7 +585,7 @@ private func test9(testNum: Int) -> TestResults {
             guard let myMin = myArray[rowNum].min() else { return fail(testNum, "Testing Error") }
             // Make sure the first value is the correct minimum for each row
             guard Double(myMin) == result[rowNum][0] else {
-                return fail(testNum, "Expected mininum of row \(rowNum) to be \(Double(myMin)), result has \(result[rowNum][0])")
+                return fail(testNum, "Expected minimum of row \(rowNum) to be \(Double(myMin)), result has \(result[rowNum][0])")
             }
 
             // Calculate the max from the array. Since it has >0 valid elements, max() should never return nil.

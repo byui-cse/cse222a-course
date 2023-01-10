@@ -566,9 +566,9 @@ func task9() -> Bool? {
     testPrint(">  \(dictionaryKeysOfStrings.keys.sortedBySize())")
     testPrint("<  \(dictionaryKeysOfStrings.keys.sortedBySize(increasing: false))")
 
-    //  generateTracker(_ countainerCount: Int) is implemented in
+    //  generateTracker(_ containerCount: Int) is implemented in
     //  main.swift. It generates a sample PharmaceuticalStockTracker
-    //  with countainerCount MedicationContainers in it. It is only
+    //  with containerCount MedicationContainers in it. It is only
     //  implemented for containerCounts in 1, 2, 3 and 6.
     
     //  This first example is sorting PharmaceuticalStockTrackers to see which location or
