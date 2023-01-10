@@ -137,7 +137,7 @@ func fail(_ testNum: Int, _ message: String) -> TestResults {
  •    Modifying a class: adjust properties and methods
  •    Change computed properties and methods to work with
         inStockMedications now being a Dictionary of Sets
- •    Reaserch how to conform to Hashable and do itw
+ •    Research how to conform to Hashable and implement
  Task 1
  •    Use an extension to define a new method
  •    Use filter() to identify expired and non-expired MedicationContainers
@@ -259,12 +259,12 @@ struct MedSpec {
 func setupGlobals() -> Bool {
     let pseudoMed = MedSpec(ndcPackageCode: "12345-678-90", name: "Med", volume: nil, concentration: nil, concentrationUnits: nil, pillCount: 90, potency: 30, potencyUnits: "MEQ")
     let tylenol = MedSpec(ndcPackageCode: "50580-692-02", name: "TYLENOL", volume: nil, concentration: nil, concentrationUnits: nil, pillCount: 100, potency: 500, potencyUnits: "mg")
-    let chidrensTylenol = MedSpec(ndcPackageCode: "50580-170-01", name: "Children's TYLENOL", volume: 120, concentration: 160, concentrationUnits: "mg/5ml", pillCount: nil, potency: nil, potencyUnits: nil)
+    let childrensTylenol = MedSpec(ndcPackageCode: "50580-170-01", name: "Children's TYLENOL", volume: 120, concentration: 160, concentrationUnits: "mg/5ml", pillCount: nil, potency: nil, potencyUnits: nil)
     
     let testContainerSpecifications: [testItem] = [
         testItem(med: pseudoMed, expDays: -90), // One MedicationContainer
-        testItem(med: chidrensTylenol, expDays: 120), // Two LiquidMedicationContainers
-        testItem(med: chidrensTylenol, expDays: 90),
+        testItem(med: childrensTylenol, expDays: 120), // Two LiquidMedicationContainers
+        testItem(med: childrensTylenol, expDays: 90),
         testItem(med: tylenol, expDays: 90), // Three LiquidMedicationContainers
         testItem(med: tylenol, expDays: -180),
         testItem(med: tylenol, expDays: -360),
@@ -397,7 +397,7 @@ private func test0(testNum: Int) -> TestResults {
     }
     let code2 = testContainers[1].ndcPackageCode
     guard aStockTracker.count(of: code2) == 2 else {
-        return fail(testNum, "Added two containerw with ndcPackageCode = \(code2) so calling .count(of: \"\(code2)\") should return 2, but it returned \(aStockTracker.count(of: code2))")
+        return fail(testNum, "Added two containers with ndcPackageCode = \(code2) so calling .count(of: \"\(code2)\") should return 2, but it returned \(aStockTracker.count(of: code2))")
     }
     let code3 = testContainers[3].ndcPackageCode
     guard aStockTracker.count(of: code3) == 3 else {
@@ -550,7 +550,7 @@ private func test3(testNum: Int) -> TestResults {
         return fail(testNum, "Expected add of a valid set of 3 containers to result in .count == 3, but instead .count == \(aStockTracker.count)")
     }
 
-    // Try with an invaid expectedNdcPackageCode
+    // Try with an invalid expectedNdcPackageCode
     let badCodeSet: Set = [badCodeContainers[0]]
     (returnBool, returnMessage) = aStockTracker.addContainers(expectedNdcPackageCode: badCodeContainers[0].ndcPackageCode, containersToAdd: badCodeSet)
     guard returnBool == false && returnMessage == .poorlyFormattedNDCCode else {
@@ -603,7 +603,7 @@ private func test4(testNum: Int) -> TestResults {
     // Preload aStockTracker with containers
     aStockTracker.inStockMedications = preloadedMedications
     
-    // Try with an invaid expectedNdcPackageCode
+    // Try with an invalid expectedNdcPackageCode
     var (returnBool2, returnMessage2, returnContainers) = aStockTracker.currentStock(of: testContainers[3].ndcPackageCode + "x")
     guard returnBool2 == false && returnMessage2 == .poorlyFormattedNDCCode && returnContainers == nil else {
         return fail(testNum, "Expected currentStock(of:) with an invalid NDCCode format to return (false, .poorlyFormattedNDCCode, nil) but it returned (\(returnBool2), \(returnMessage2), \(String(describing: returnContainers))")
@@ -654,7 +654,7 @@ private func test5(testNum: Int) -> TestResults {
         return fail(testNum, "Expected aStockTracker.count to be 6 after preloading \(aStockTracker.count)")
     }
 
-    // Try with an invaid expectedNdcPackageCode
+    // Try with an invalid expectedNdcPackageCode
     var (returnBool2, returnMessage2, returnContainers) = aStockTracker.sellContainers(count: 1, of: testContainers[3].ndcPackageCode + "x")
     guard returnBool2 == false && returnMessage2 == .poorlyFormattedNDCCode && returnContainers == nil else {
         return fail(testNum, "Expected sellContainers(count:of:) with an invalid NDCCode format to return (false, .poorlyFormattedNDCCode, nil) but it returned (\(returnBool2), \(returnMessage2), \(String(describing: returnContainers))")
@@ -751,7 +751,7 @@ private func test6(testNum: Int) -> TestResults {
         return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
     }
 
-    // Make sure DateSequencer confroms to DateSequencerProtocol
+    // Make sure DateSequencer conforms to DateSequencerProtocol
     // Use "Any" to avoid warning message
     let testProtocol: Any = DateSequencer()
     guard var testSequencer = testProtocol as? DateSequencerProtocol else {
@@ -786,13 +786,13 @@ private func test7(testNum: Int) -> TestResults {
         return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
     }
 
-    // Make sure DateSequencer confroms to DateSequencerProtocol2
+    // Make sure DateSequencer conforms to DateSequencerProtocol2
     // Use "Any" to avoid warning message
     let testProtocol: Any = DateSequencer()
     guard var testSequencer = testProtocol as? DateSequencerProtocol2 else {
         return fail(testNum, "DateSequencer extension needs to conform to DateSequencerProtocol2")
     }
-    // Also make sure DateSequencer confroms to Sequence protocol and IteratorProtocol
+    // Also make sure DateSequencer conforms to Sequence protocol and IteratorProtocol
     // Note the use of "any" (not "Any") which lets us test membership in a generic protocol
     guard testProtocol is any Sequence else {
         return fail(testNum, "DateSequencer extension needs to conform to the Sequence protocol")
@@ -895,26 +895,26 @@ private func test8(testNum: Int) -> TestResults {
 
 //  We use this to generate some sample PharmaceuticalStockTrackers
 //  to help testing Task9
-func generateTracker(_ countainerCount: Int) -> PharmaceuticalStockTracker {
+func generateTracker(_ containerCount: Int) -> PharmaceuticalStockTracker {
     // Preload it with six items
     let myStockTracker = PharmaceuticalStockTracker()
     aStockTracker.inStockMedications = preloadedMedications
     myStockTracker.inStockMedications = aStockTracker.inStockMedications
 
-    // countainerCount == 6 keeps all 6 preloaded MedicationContainers. The other values
+    // containerCount == 6 keeps all 6 preloaded MedicationContainers. The other values
     // keep only the Dictionary entry that matches that count of MedicationContainers.
-    if countainerCount == 6 || (countainerCount >= 1 && countainerCount <= 3) {
+    if containerCount == 6 || (containerCount >= 1 && containerCount <= 3) {
         // Now remove the objects that are not part of this count
         // If count is not 1 nor 6, remove the one container set
-        if countainerCount != 1 && countainerCount != 6 {
+        if containerCount != 1 && containerCount != 6 {
             myStockTracker.inStockMedications[testContainers[0].ndcPackageCode] = nil
         }
         // If count is not 2 nor 6, remove the two container set
-        if countainerCount != 2 && countainerCount != 6 {
+        if containerCount != 2 && containerCount != 6 {
             myStockTracker.inStockMedications[testContainers[1].ndcPackageCode] = nil
         }
          // If count is not 3 nor 6, remove the three container set
-        if countainerCount != 3 && countainerCount != 6 {
+        if containerCount != 3 && containerCount != 6 {
             myStockTracker.inStockMedications[testContainers[3].ndcPackageCode] = nil
         }
     }

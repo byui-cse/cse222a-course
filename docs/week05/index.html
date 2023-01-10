@@ -240,9 +240,9 @@ guard let charsToRead = data[“charsToRead”] as? Int else { handle error }</c
       
 func handleRequest(command: String, dataIn: DataDictionary) -> (CommandMessages, DataDictionary?) {
     guard let commandFunction = commands[command] else {
-        var resposeData = dataIn
-        resposeData["response"] = "\(command) is not a valid command"
-        return (.invalidCommand, resposeData)
+        var responseData = dataIn
+        responseData["response"] = "\(command) is not a valid command"
+        return (.invalidCommand, responseData)
     }
     let (message, responseData) = commandFunction(dataIn)
     guard let responseData = responseData, message == .success else {
