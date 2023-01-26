@@ -84,8 +84,7 @@
       them in Swift as Closures when you did the <kbd>map</kbd>,
       <kbd>filter</kbd>, and <kbd>reduce</kbd> and other tasks. Now let's learn some more
       about them. Then we will learn a bit more about enumerations in preparation
-      for learning how Swift support Error Handling. Finally we will demonstrate
-      basic read to data from a web site API and learn how to decode the data received.
+      for learning how Swift support Error Handling.
     </p>
     <h3>Storing Closures in Variables and Data Collections</h3>
     <p>
@@ -334,8 +333,9 @@ func loadCommand(command: String, aFunc: @escaping CommandFunction) {
     <p>
       Another place we use closures is in processes that do input and output such 
       as reading and writing files and accessing data from the internet.
-      We will discuss an example of that, but first we need to review a few 
-      other concepts to get ready for that topic.
+      We will not cover that in this course, but being comfortable with closures
+      and the other topics we will cover this week will help you be prepared to work 
+      with those operations.
     </p>
               
               <h3>Enumerations with Associated Values</h3>
@@ -395,7 +395,7 @@ One key use of enumerations with associated values to define error conditions fo
                 errors using <kbd>guard</kbd> statements at the start of functions and 
                 loops to protect the code beyond them from invalid or unexpected 
                 values. But what about errors that need to be handled beyond that 
-                  local scope? Swift support a <a
+                  local scope? Swift supports a <a
                     href="https://docs.swift.org/swift-book/LanguageGuide/ErrorHandling.html"
                     target="_blank"
                   >do-catch-throw model</a> similar to some other languages to handle those errors.  
@@ -404,7 +404,7 @@ One key use of enumerations with associated values to define error conditions fo
                     There are four steps to implement do-catch-throw:
                   </p>
                   <ol>
-                    <li>Define a type that conform to the <kbd>Error</kbd> protocol. This protocol 
+                    <li>Define a type that conforms to the <kbd>Error</kbd> protocol. This protocol 
                       does not have any requirements, but indicates the type can be used 
                       for error handling. Enumerations with associated values are a 
                       great option for this:</li>
@@ -445,17 +445,18 @@ One key use of enumerations with associated values to define error conditions fo
                     Each phrase after the <kbd>catch</kbd> is a <a
                       href="https://docs.swift.org/swift-book/ReferenceManual/Patterns.html"
                       target="_blank"
-                    >Pattern</a> that usually will be a value ]of the error handling 
-                    enumeration Type that you define. Note that if an enumeration value 
+                    >Pattern</a> that usually will be a value of the enumeration Type
+                    that you define for reporting errors. Note that if an enumeration value 
                     has associated values, you need to include a let or var placeholder 
                     for them that will be filled in with the values. Those variables or
-                    constants can then be used in the code labeled “handle error” above.
-                    Also note that you must alway include a generic catch statement at the
-                    end to catch any other errors that happen. If those are errors your code
-                    cannot deal with you can call throw error in that handler to pass the
-                    error for handling further up the call stack.
+                    constants can then be used in the code labeled with the placeholder 
+                    “handle error” above.
                   </p>
                   <p>
+                    Also note that you must alway include a generic catch statement at the
+                    end to catch any other errors that happen. If those are errors your code
+                    cannot deal with you can call "throw error" in that handler to pass the
+                    error for handling further up the call stack.
                     <kbd>catch</kbd> without a pattern will pick up any errors not 
                     listed previously. You could just use <kbd>catch</kbd> without a pattern 
                     to handle all errors. In that case the error message will be 
