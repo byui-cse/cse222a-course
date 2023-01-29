@@ -39,23 +39,6 @@ var testContainers: [MedicationContainer] = []
 var badCodeContainers: [MedicationContainer] = []
 var loadedSets: [Set<MedicationContainer>] = []
 var preloadedMedications: [String: Set<MedicationContainer>] = [:]
-guard setupGlobals() else {
-    exit(1)
-}
-
-for testNum in 0 ..< tests.count {
-    setupReadLineAndPrint(testNum: testNum)
-    taskResults[testNum] = tests[testNum](testNum)
-}
-
-print()
-print("===== Task Status =====")
-printResults(message: "Tasks Passed: ", result: .testPassed)
-printResults(message: "Tasks Failed: ", result: .testFailed)
-printResults(message: "Tasks Not Implemented: ", result: .testNotImplemented)
-print()
-
-//  ========= End of main body of code =========
 
 #if false
     print("savedInput:")
@@ -1091,3 +1074,23 @@ private func test9(testNum: Int) -> TestResults {
 
     return .testPassed
 }
+
+//  ========= Main body of code =========
+
+guard setupGlobals() else {
+    exit(1)
+}
+
+for testNum in 0 ..< tests.count {
+    setupReadLineAndPrint(testNum: testNum)
+    taskResults[testNum] = tests[testNum](testNum)
+}
+
+print()
+print("===== Task Status =====")
+printResults(message: "Tasks Passed: ", result: .testPassed)
+printResults(message: "Tasks Failed: ", result: .testFailed)
+printResults(message: "Tasks Not Implemented: ", result: .testNotImplemented)
+print()
+
+//  ========= End of main body of code =========

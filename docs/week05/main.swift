@@ -28,28 +28,6 @@ private var savedInput: [String?] = []
 private var savedPrint: [String?] = []
 private var currentTest = 0
 
-//  ========= Start of main body of code =========
-
-//  The lines between here and the call to setupGlobals are the only lines that differ
-//  from week 2 in the first part of this file up to the line with "Concepts taught
-//  or reinforced in each task".
-guard setupGlobals() else {
-    exit(1)
-}
-
-for testNum in 0 ..< tests.count {
-    setupReadLineAndPrint(testNum: testNum)
-    taskResults[testNum] = tests[testNum](testNum)
-}
-
-print()
-print("===== Task Status =====")
-printResults(message: "Tasks Passed: ", result: .testPassed)
-printResults(message: "Tasks Failed: ", result: .testFailed)
-printResults(message: "Tasks Not Implemented: ", result: .testNotImplemented)
-print()
-
-//  ========= End of main body of code =========
 
 #if false
     print("savedInput:")
@@ -542,3 +520,23 @@ private func test3(testNum: Int) -> TestResults {
     
     return .testPassed
 }
+
+//  ========= Start of main body of code =========
+
+guard setupGlobals() else {
+    exit(1)
+}
+
+for testNum in 0 ..< tests.count {
+    setupReadLineAndPrint(testNum: testNum)
+    taskResults[testNum] = tests[testNum](testNum)
+}
+
+print()
+print("===== Task Status =====")
+printResults(message: "Tasks Passed: ", result: .testPassed)
+printResults(message: "Tasks Failed: ", result: .testFailed)
+printResults(message: "Tasks Not Implemented: ", result: .testNotImplemented)
+print()
+
+//  ========= End of main body of code =========
