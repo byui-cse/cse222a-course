@@ -143,13 +143,13 @@ func printWalk(theSteps: [Steps]) {
             toPrint += "S\(h),\(v)"
            break
         case .forward(let distance):
-            location.0 += increments[direction].0
-            location.1 += increments[direction].1
+            location.0 += increments[direction].0 * distance
+            location.1 += increments[direction].1 * distance
             toPrint += " F\(distance)"
             break
         case .backward(let distance):
-            location.0 -= increments[direction].0
-            location.1 -= increments[direction].1
+            location.0 -= increments[direction].0 * distance
+            location.1 -= increments[direction].1 * distance
             toPrint += " B\(distance)"
         case .turnRight:
             direction = (direction + 3) % 4
