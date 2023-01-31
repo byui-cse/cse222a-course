@@ -165,13 +165,13 @@ private func doWalk(_ theSteps: [Steps]) -> String {
             result += "S\(h),\(v)"
            break
         case .forward(let distance):
-            location.0 += increments[direction].0
-            location.1 += increments[direction].1
+            location.0 += increments[direction].0 * distance
+            location.1 += increments[direction].1 * distance
             result += " F\(distance)"
             break
         case .backward(let distance):
-            location.0 -= increments[direction].0
-            location.1 -= increments[direction].1
+            location.0 -= increments[direction].0 * distance
+            location.1 -= increments[direction].1 * distance
             result += " B\(distance)"
         case .turnRight:
             direction = (direction + 3) % 4
@@ -489,34 +489,87 @@ func removeCircularReferences(_ aSheet: Spreadsheet) -> Spreadsheet {
     return tempSheet
 }
 private func test3(testNum: Int) -> TestResults {
-    let firstTest: Spreadsheet = [
-        [.int(2), .double(1.2), .string("One String"), .ref(3,1)],
+
+    let testSheets: [Spreadsheet] = [[
+        [.int(2), .double(1.2), .string("One String")]
+    ],[
+        [.op(.int(2), .plus, .int(0)), .op(.int(2), .plus, .double(1.2)), .op(.string("One"), .plus, .string("Two"))]
+    ],[
+        [.op(.int(2), .plus, .int(0)), .op(.int(-2), .plus, .double(-1.2)), .op(.string("One"), .plus, .string("Two"))],
+        [.op(.int(2), .minus, .int(0)), .op(.int(2), .minus, .double(1.2)), .op(.int(2), .plus, .string("=Two"))],
+        [.op(.int(2), .times, .int(0)), .op(.int(2), .times, .double(1.2)), .op(.string("OnePointTwo="), .plus, .double(1.2))],
+        [.op(.int(2), .divide, .int(0)), .op(.int(4), .divide, .int(2)), .op(.int(8), .divide, .int(5))],
+        [.op(.double(1.2), .divide, .int(0)), .op(.double(1.2), .divide, .double(0)), .op(.double(1.5), .divide, .double(0.1))]
+    ],[
+        [.op(.op(.int(2), .plus, .int(0)),.plus, .op(.int(-2), .plus, .int(4)))],
+        [.op(.op(.int(2), .plus, .int(0)),.minus, .op(.int(-2), .plus, .double(-1.2)))],
+        [.op(.op(.int(2), .minus, .int(0)),.plus, .op(.int(-2), .times, .double(-1.2)))],
+        [.op(.op(.int(2), .times, .int(0)),.plus, .op(.int(-2), .divide, .double(-1.0)))],
+        [.op(.op(.op(.int(2), .plus, .int(0)),.plus, .op(.int(-2), .plus, .double(-1.5))),.times, .double(1.5))],
+        [.op(.op(.int(2), .minus, .int(0)),.divide, .op(.int(2), .minus, .int(2)))]
+    ],[
+        [.int(2), .double(1.2), .string("One String")],
+        [.ref(2,1), .ref(3,1), .ref(1,1)],
+        [.ref(2,2), .ref(3,2), .ref(1,2)]
+    ],[
+       [.int(2), .double(1.2), .string("One String"), .ref(3,1)],
         [.op(.ref(1,1), .plus, .ref(1,1)), .op(.ref(2,1), .plus, .ref(1,1)), .op(.ref(2,1), .plus, .ref(3,1)), .op(.ref(2,1), .minus, .ref(1,1))],
         [.op(.ref(2,1), .times, .ref(1,1)), .op(.ref(2,1), .divide, .ref(1,1)), .op(.int(6), .divide, .ref(1,1)), .op(.int(6), .minus, .string("something"))],
         [.ref(4,1), .op(.ref(2,1), .divide, .int(0)), .op(.int(3), .divide, .ref(1,1)), .op(.ref(3,1), .divide, .ref(1,1))],
         [.ref(3,5), .ref(1,5), .ref(2,5), .op(.op(.op(.ref(1,1), .plus, .string(" + ")), .plus, .ref(2,1)), .plus, .op(.string(" = "), .plus, .op(.ref(1,1), .plus, .ref(2,1))))]
-    ]
-    let firstResult: Spreadsheet = [
-        [.int(2), .double(1.2), .string("One String"),  .string("One String")],
+    ]]
+    let resultSheets: [Spreadsheet] = [[
+        [.int(2), .double(1.2), .string("One String")]
+    ],[
+        [.int(2), .double(3.2), .string("OneTwo")]
+    ],[
+        [.int(2), .double(-3.2),  .string("OneTwo")],
+        [.int(2), .double(0.8), .string("2=Two")],
+        [.int(0), .double(2.4), .string("OnePointTwo=1.2")],
+        [.error("Some error message"), .int(2), .double(1.6)],
+        [.error("Some error message"), .error("Some error message"), .double(15)]
+    ],[
+        [.int(4)],
+        [.double(5.2)],
+        [.double(4.4)],
+        [.double(2.0)],
+        [.double(((2 + 0) + (-2 + -1.5)) * 1.5)],
+        [.error("Some error message")]
+    ],[
+        [.int(2), .double(1.2), .string("One String")],
+        [.double(1.2), .string("One String"), .int(2)],
+        [.string("One String"), .int(2), .double(1.2)]
+   ],[
+       [.int(2), .double(1.2), .string("One String"),  .string("One String")],
         [.int(4), .double(3.2), .string("1.2One String"), .double(-0.8)],
         [.double(2.4), .double(0.6), .int(3), .error("Some error message")],
         [.string("One String"), .error("Some error message"), .double(1.5), .error("Some error message")],
         [.error("Some error message"), .error("Some error message"), .error("Some error message"), .string("2 + 1.2 = 3.2")]
-       ]
+       ]]
         
-    guard let returnValue = task3(firstTest) else { return .testNotImplemented }
-
-    testPrint("User view of input spreadsheet:")
-    printSheet(firstTest, userView: true)
-    testPrint("\nInternal view of input spreadsheet:")
-    printSheet(firstTest)
-    testPrint("\nInternal view of returned value:")
-    printSheet(returnValue)
-    testPrint("\nUser view of returned value:")
-    printSheet(returnValue, userView: true)
-    testPrint()
-    let (resultBool, resultString) = compareSheets(returnValue, firstResult)
-    guard resultBool else { return fail(testNum, resultString) }
+    for which in 0..<testSheets.count {
+  
+        guard let returnValue = task3(testSheets[which]) else { return .testNotImplemented }
+        
+        testPrint("User view of input spreadsheet #\(which):")
+        printSheet(testSheets[which], userView: true)
+        testPrint("\nInternal view of input spreadsheet #\(which):")
+        printSheet(testSheets[which])
+        testPrint("\nInternal view of returned value #\(which):")
+        printSheet(returnValue)
+        testPrint("\nUser view of returned value #\(which):")
+        printSheet(returnValue, userView: true)
+        testPrint()
+   
+        let (resultBool, resultString) = compareSheets(returnValue, resultSheets[which])
+        guard resultBool else {
+            testPrint("\nInternal view of expected return value #\(which):")
+            printSheet(resultSheets[which])
+            testPrint("")
+            return fail(testNum, resultString)
+            
+        }
+    }
     
     return .testPassed
 }

@@ -38,8 +38,6 @@ extension Range<Int> {
         return (0..<size).map { _ in Int.random(in: self) }
     }
 }
-//  To be tidy, we need to do both Range and ClosedRange since they do
-//  not roll up to a parent Type that can be extended this way
 extension ClosedRange<Int> {
     func randomArray(_ size: Int) -> [Bound] {
         return (0..<size).map { _ in Int.random(in: self) }
@@ -55,9 +53,13 @@ enum Steps {
 
     static var count:Int { get { 5 }}
 }
-func randomWalk(start: (Int, Int), numMoves: Int, maxMove: Int) -> [Steps] {
+func randomWalk(start: (Int, Int), numMoves: Int, maxMove: Int, twoDimensional: Bool = true) -> [Steps] {
+
+    var rangeForSteps = (1..<Steps.count - 2)
+    if twoDimensional { rangeForSteps = (1..<Steps.count) }
+
     return [.start(start.0, start.1)] +
-            (1..<Steps.count).randomArray(numMoves).map {
+        rangeForSteps.randomArray(numMoves).map {
         switch $0 {
         case 1: return Steps.forward(Int.random(in: 1...maxMove))
         case 2: return Steps.backward(Int.random(in: 1...maxMove))
@@ -74,13 +76,22 @@ func randomWalk(start: (Int, Int), numMoves: Int, maxMove: Int) -> [Steps] {
 //
 //  randomWalk(start:numSteps:maxMove:) produces an Array of enumeration values
 //  wih a sequence of moves for a random walk in 2 dimensional space. The first
-//  parameter is the starting point, the second is the number moves desired
-//  and the third is the maximum distance forward or backward in a single move.
+//  parameter is the starting point, the second is the number moves desired,
+//  the third is the maximum distance forward or backward in a single move and
+//  the fourth tells whether this is a one or two dimensional walk.
 //  In the enum Type Steps, the first three values have associated values.
+//
 //  We use an extension to define a randomArray method for ranges that can
-//  generate an Array of random elements chosen from that range. We then use
+//  generate an Array of random elements chosen from that range. To be tidy,
+//  we proivided extensions for both Range and ClosedRange since they do
+//  not roll up to a parent Type that can be extended generically even
+//  though we are only using an open range in this task. We then use
 //  that to generate an Array of Ints corresponding to all values of Steps
-//  except the "start" value since we only use that one once at the beginning.
+//  except the "start" value (since we only use that one once at the beginning).
+//
+//  If it is not a two dimensional walk then we do not include turnRight and
+//  turnLeft in our range from which to select the random steps.
+//
 //  We use map() and a switch statement to convert that Array of Ints to the
 //  matching enum values.
 //
@@ -110,6 +121,13 @@ func randomWalk(start: (Int, Int), numMoves: Int, maxMove: Int) -> [Steps] {
 //
 //  After you have completed coding printWalk() and are ready to test it,
 //  change the last line in task0() from "return nil" to "return true".
+//  As you have probably figured out, you can change trom nil to true
+//  earlier if you want to start getting feedback on your work as you
+//  proceed. For example, if you choose to do so and since the first
+//  tests are one dimensional you can implement .start, .forward and
+//  .backward first and test those, then implement turnRight and turnLeft.
+//  It is usually good practice to break a problem into pieces and then
+//  develop and test your code incrementally.
 //
 func printWalk(theSteps: [Steps]) {
     // put your code here
@@ -125,13 +143,13 @@ func printWalk(theSteps: [Steps]) {
             toPrint += "S\(h),\(v)"
            break
         case .forward(let distance):
-            location.0 += increments[direction].0
-            location.1 += increments[direction].1
+            location.0 += increments[direction].0 * distance
+            location.1 += increments[direction].1 * distance
             toPrint += " F\(distance)"
             break
         case .backward(let distance):
-            location.0 -= increments[direction].0
-            location.1 -= increments[direction].1
+            location.0 -= increments[direction].0 * distance
+            location.1 -= increments[direction].1 * distance
             toPrint += " B\(distance)"
         case .turnRight:
             direction = (direction + 3) % 4
@@ -149,6 +167,19 @@ func printWalk(theSteps: [Steps]) {
 func task0() -> Bool? {
     //  Do not edit anything inside task0() except to change the last line
     //  from "return nil" to "return true" to start testing
+
+    // First we will test a few one dimensional walks starting at (0, 0)
+    for testNum in 0..<3 {
+        let someSteps = randomWalk(
+                                start: (0,0),
+                                numMoves: Int.random(in:5...10),
+                                maxMove: testNum + 1, // start with moves of 1, then 1..2, then 1..3
+                                twoDimensional: false)
+        saveWalk(someSteps) // do not remove this line, testing depends on it
+        printWalk(theSteps: someSteps)
+    }
+
+    // Noe test some two dimenensional walks
     for _ in 0..<5 {
         let someSteps = randomWalk(
             start: (Int.random(in:-10...10), Int.random(in:-10...10)),
@@ -355,6 +386,19 @@ func task2(intArray: [Int], canThrow: throwingFunction) throws -> Int? {
 //  in main.swift test your evaluation of the input spreadsheet that is
 //  stored in resultSheet.
 //
+//  As mentioned in Task0, it sometimes helps to incrementall build and test
+//  a solution. To help with that, if you change task3() to return resultSheet
+//  it will run a series of test spreadsheets through your code. Sheet 0
+//  will only include .int, .double and .string values. Sheet 1 one will also
+//  include a single .plus operations in each cell. Both Sheets 0 and 1 will
+//  only be one dimensional. Sheet 2 will have a single operation of any kind
+//  in each cell and will be two dimensional (.plus, .minus, .times, .divide).
+//  Sheet 3 one will include more complex equations in the cells that will test
+//  the recursion in processing operators. Sheet 4 will do do simple cell
+//  references. Sheet 5 one will test everything together. It will only test each
+//  sheet until one fails so, for example, if Sheet 2 fails, it will not proceed
+//  to test Sheet 3.
+//
 enum Operators: String, CustomStringConvertible {
     case plus // if either parameter is String, convert both to String and concatenate
     case minus
@@ -402,8 +446,8 @@ indirect enum ValueOrFormula: CustomStringConvertible {
         case let .int(anInt): return "\(anInt)"
         case let .double(aDouble): return "\(aDouble)"
         case let .string(aString): return "\"\(aString)\""
-        case let .op(lhs, anOp, rhs): return lhs.userDescription + anOp.userDescription + rhs.userDescription
-        case let .ref(col, row): return "@(\(col), \(row))"
+        case let .op(lhs, anOp, rhs): return "(" + lhs.userDescription + anOp.userDescription + rhs.userDescription + ")"
+        case let .ref(col, row): return "@[\(col), \(row)]"
         case let .error(aString): return "Error: \"\(aString)\""
         }
     }
