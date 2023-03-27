@@ -700,9 +700,11 @@ private func test8(testNum: Int) -> TestResults {
     //  or always returning false.
     let aAnyContainer: Any = aContainer
     // Make sure MedicationContainer conforms to Equatable
+#if swift(>=5.7)
     guard aAnyContainer is (any Equatable) else {
         return fail(testNum, "Expected MedicationContainer extension to conform to Equatable protocol")
     }
+#endif
     // Make sure different containers are not "=="
     guard !returnedFunction(aContainer, cContainer) else {
         return fail(testNum, "Expected \(aContainer) to not == \(cContainer)")
@@ -733,9 +735,11 @@ private func test9(testNum: Int) -> TestResults {
     //  or always returning false.
     let aAnyContainer: Any = aContainer
     // Make sure MedicationContainer conforms to Equatable
+#if swift(>=5.7)
     guard aAnyContainer is (any Comparable) else {
         return fail(testNum, "Expected MedicationContainer extension to conform to Comparable protocol")
     }
+#endif
     // Make sure "<" compares correctly using expiration date
     guard returnedFunction(bContainer, cContainer) else {
         return fail(testNum, "Expected \(bContainer) < \(cContainer)")

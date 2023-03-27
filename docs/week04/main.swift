@@ -777,12 +777,14 @@ private func test7(testNum: Int) -> TestResults {
     }
     // Also make sure DateSequencer conforms to Sequence protocol and IteratorProtocol
     // Note the use of "any" (not "Any") which lets us test membership in a generic protocol
-    guard testProtocol is any Sequence else {
+#if swift(>=5.7)
+   guard testProtocol is any Sequence else {
         return fail(testNum, "DateSequencer extension needs to conform to the Sequence protocol")
     }
     guard testProtocol is any IteratorProtocol else {
         return fail(testNum, "DateSequencer extension needs to conform to the Sequence protocol")
     }
+#endif
 
     // Do 5 random tests of DateSequencer()
     for _ in 0..<5 {
@@ -977,7 +979,7 @@ func compareAdjustSetsAndDictionaries(_ lhs: String, _ rhs: String) -> Bool {
 //  If we did not do this, the text we would need to compare would be very long and the results
 //  would be hard for the students to parse through to find their errors.
 //  Instead this returns the ndcPackageCode and the count of MedicationContainers with that code.
-func summarizeSetsOfMedicationContainers(_ arrayOfSets: [any Collection<MedicationContainer>]) -> String {
+func summarizeSetsOfMedicationContainers(_ arrayOfSets: [Set<MedicationContainer>]) -> String {
     if arrayOfSets.isEmpty { return "Empty Array of Sets" }
     var returnValue = "["
     for aSet in arrayOfSets {
