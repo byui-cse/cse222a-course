@@ -26,7 +26,7 @@ import Foundation
 //      1) PharmaceuticalStockTracker is now a class
 //
 //      2) MedicationContainer has a new property ndcPackageCode that identifies
-//      the specific type of medication container (more about that later in task 2).
+//      the specific type of medication container.
 //
 //      3) Changed "inStockMedications" from an Array of MedicationContainers to
 //      a Dictionary. The key is a String (actually an ndcPackageCode) and
@@ -197,11 +197,12 @@ func task0() -> (MedicationContainer, MedicationContainer) {
 //  Task 1
 //  In the last assignment last week you created an operator that
 //  cleaned any expired medication from a PharmaceuticalStockTracker.
-//  Use the extension below to re-implement that functionality (as a
-//  method this time) for the new model. It should remove any expired
-//  containers from the PharmaceuticalStockTracker and return an array
-//  of any containers that were removed. The array of expired containers
-//  should be sorted with the oldest expiration dates first. And let's
+//  Use the extension below to implement functionality as a method that
+//  cleans up any expired medication from a PharmaceuticalStockTracker.
+//  It should remove any expired containers from the
+//  PharmaceuticalStockTracker and return an array of any containers
+//  that were removed. The array of expired containers should be sorted
+//  with the oldest expiration dates first. You can use sorted(). And let's
 //  keep things tidy: if you remove all the containers in a Dictionary
 //  entry, go ahead and remove the Dictionary entry also.
 //
@@ -219,33 +220,6 @@ func task1() -> Bool? {
 }
 
 //  Task 2
-//  The ndcPackageCode that tells what medication is in a container
-//  follows the code pattern in the NDC database:
-//      https://www.accessdata.fda.gov/scripts/cder/ndc/dsp_searchresult.cfm
-//  Using regular expression pattern matching, add code to the isFormattedAsNDCCode()
-//  function to return true if and only if the code is in a valid pattern for those
-//  codes: [5 digits]-[3 digits]-[2 digits]. When testing your code you may use
-//  real codes from the database along with real information, or you may make them up.
-//  The only thing that matters for this exercise is matching the pattern, not
-//  whether it is an actual code from the web site. Your code should test for a
-//  match on the entire property and not report a match if only a substring of
-//  the property matches.
-//
-//  When you have completed and tested the code for isFormattedAsNDCCode(),
-//  change task2() to return true rather than nil
-
-func isFormattedAsNDCCode(code: String) -> Bool {
-    // Replace the following line with your code
-    return false
-}
-func task2() -> Bool? {
-    return nil
-}
-
-//  Task 3
-//  Edit addContainer() to call isFormattedAsNDCCode() to validate
-//  that the ndcPackageCode in the container to be added has a valid
-//  NDCCode format. If not, do not add the container and return false.
 //
 //  Now fill out the method addContainers() below. This accepts as parameters
 //  an expectedNdcPackageCode and a Set of MedicationContainers to be added to
@@ -258,20 +232,17 @@ func task2() -> Bool? {
 //  As you complete the method, parts of your code should return each of the
 //  values in AddMessage except possibly .otherAddFailure. The others all
 //  represent error (or success) conditions that you should detect as you
-//  implement addContainers(). One  error you should detect would be found
-//  by calling the function isFormattedAsNDCCode() to verify the format
-//  of the NdcPackageCode used.
+//  implement addContainers().
 //
 //  Hint: Remember to deal with both the case where there are currently no
 //  containers matching the ndcPackageCode and the case where there are
 //  already some containers matching the ndcPackageCode.
 //
 //  When you have completed and tested the code for addContainers(),
-//  change task3() to return true rather than nil
+//  change task2() to return true rather than nil
 
 enum AddMessage: String {
     case success
-    case poorlyFormattedNDCCode
     case emptySetOfContainers
     case mixedNDCCodes
     case otherAddFailure // You may not need this one in your code
@@ -284,25 +255,24 @@ extension PharmaceuticalStockTracker {
     }
 }
 
-func task3() -> Bool? {
+func task2() -> Bool? {
     return nil
 }
 
-//  Task 4
+//  Task 3
 //  Implement the method currentStock(of:) below. This accepts as its parameter an
 //  ndcPackageCode. It returns a tuple with a Bool, an enum of Type StockMessage
-//  and an optional array of MedicationContainers. Validate the ndcPackageCode format,
-//  check if there are any containers of that type and if there are, return them in an
+//  and an optional array of MedicationContainers.
+//  Check if there are any containers of that type and if there are, return them in an
 //  array. Since we should use up medications with the oldest expiration date first,
 //  sort the array by expiration date before returning it so the older expiration
 //  dates come first.
 //
 //  When you have completed and tested the code for currentStock(of:),
-//  change task4() to return true rather than nil
+//  change task3() to return true rather than nil
 
 enum StockMessage: String {
     case success
-    case poorlyFormattedNDCCode
     case noInventory
 }
 extension PharmaceuticalStockTracker {
@@ -313,28 +283,27 @@ extension PharmaceuticalStockTracker {
         return (true, .success, returnValue)
     }
 }
-func task4() -> Bool? {
+func task3() -> Bool? {
     return nil
 }
 
-//  Task 5
+//  Task 4
 //  Fill out the method sellContainers(count:of) below. This accepts as parameters a
 //  count of containers to sell, and an ndcPackageCode.
 //  It returns a Bool, a SellMessage and an optional array of MedicationContainers.
-//  Like usual, this should validate the format of the ndcPackageCode, then find out
-//  if there is any inventory of the ndcPackageCode. If so, confirm that there is
-//  enough. If not, return a tuple of (false, .notEnoughInventory, nil). If there
+//  This should find out if there is any inventory of the ndcPackageCode. If so,
+//  confirm that there is enough inventory to fill the request.
+//  If not, return a tuple of (false, .notEnoughInventory, nil). If there
 //  is enough of inventory of the requested ndcPackageCode, be sure to sell those
 //  with the earliest dates first. Return a sorted array of the containers sold.
 //  If the sale results in the Set being emptied out, remove that dictionary entry.
 //
 //  When you have completed and tested the code for sellContainers(),
-//  change task5() to return true rather than nil
+//  change task4() to return true rather than nil
 
 enum SellMessage: String {
     case success
     case invalidCount // count must be >0
-    case poorlyFormattedNDCCode
     case noInventory
     case notEnoughInventory
 }
@@ -346,11 +315,11 @@ extension PharmaceuticalStockTracker {
         return (true, .success, returnValue)
     }
 }
-func task5() -> Bool? {
+func task4() -> Bool? {
     return nil
 }
 
-//  Task 6
+//  Task 5
 //  Add a mutating method called setDates to the DateSequencer struct below
 //  with a parameter called daysTuple. The parameter should be a tuple of Type
 //  (Int, Int). The method should use the parameter to set the values (in order)
@@ -358,7 +327,7 @@ func task5() -> Bool? {
 //  of this task is to set things up for the following tasks.
 //
 //  After you make the change, apply the additional protocol DateSequencerProtocol
-//  change task6() to return true rather than nil to will let the tests run.
+//  change task5() to return true rather than nil to will let the tests run.
 //
 struct DateSequencer  {
     
@@ -367,11 +336,10 @@ struct DateSequencer  {
     
     // your code goes here
 }
-func task6() -> Bool? {
+func task5() -> Bool? {
     return nil
-}
 
-//  Task 7
+//  Task 6
 //  Add to the extension below to make the DateSequencer conform to the Sequence
 //  protocol. In conforming to this protocol, you can either have the object create
 //  a separate iterator or you can have the object be its own iterator . For this
@@ -395,18 +363,18 @@ func task6() -> Bool? {
 //  just before it would output y days into the future.
 //
 //  When you have completed and tested these changes apply the additional
-//  protocol DateSequencerProtocol2 to the extension and change task7() to
+//  protocol DateSequencerProtocol2 to the extension and change task6() to
 //  return true rather than nil.
 //
 
 extension DateSequencer  {
     // add your code here
 }
-func task7() -> Bool? {
+func task6() -> Bool? {
     return nil
 }
 
-//  Task 8
+//  Task 7
 //  Lets demonstrate how having the DateSequencer object conform to
 //  Sequence really adds value. In task8() below, create a DateSequencer
 //  object. Call setDates() on your DateSequencer using the parameters passed
@@ -416,181 +384,9 @@ func task7() -> Bool? {
 //  uses your struct to help you create an array of dates that matches the
 //  parameters.
 //
-//  When you are done with your code, change task8() to return the array produced
+//  When you are done with your code, change task7() to return the array produced
 //  instead of returning nil.
 //
-func task8(_ aTuple: (Int, Int)) -> [Date]? {
+func task7(_ aTuple: (Int, Int)) -> [Date]? {
     return nil
-}
-
-//  Task 9
-//  Now that we have seen how conformance to the simple Sequence protocol unlocked
-//  somewhat surprising power, let's experiment with how a simple use of a
-//  generic method extension combined with a simple protocol can have far reaching
-//  effects on a wide range of different types of collections of objects.
-//
-//  Suppose we want to sort the objects in a Collection by size (using the "count"
-//  property already built into most objects). We could write a special sort method
-//  for one particular type of collection such as an Array of Strings. But we could
-//  also create a generic method that would work for any collections where the
-//  elements inside the collection implement the count property.
-//
-//  First, to identify which object Types can use this method, we have defined a
-//  Protocol that just confirms the Type has a "count" property. In most cases,
-//  including our PharmaceuticalStockTracker class, the count property is computed.
-//  All our Protocol cares about is that the property exists, not whether it is
-//  a stored or computed property. Here where we define the Protocol:
-
-protocol Countable {
-    var count: Int { get }
-}
-
-//  Swift does not implicitly recognize compliance with a protocol. Even though
-//  many Types have a count property and would comply with this property, we
-//  must explicitly state that compliance, for example with an extension like
-//  we do here for many common Types. Note that we are able to apply this to
-//  generic Types. Applying it to Set means it works for any Set no matter
-//  what contents it has. Likewise for Array, Dictionary and String. We
-//  can also apply it to our PharmaceuticalStockTracker since it has an Int
-//  property called count.
-
-extension Array: Countable {}
-extension Set: Countable {}
-extension Dictionary: Countable {}
-extension String: Countable {}
-extension PharmaceuticalStockTracker: Countable {}
-
-//  Now we can define a generic method that applies to any
-//  Collection where the Elements are of a Countable Type.
-//  Element is a predefined placeholder that represents the type
-//  of object that is collected in a Collection. We can require in
-//  the extension below that it apply to any Collection where
-//  Element (representing the Type of objects in the Collection) is
-//  Countable.
-//
-//  Your assignment is to replace "return []" in sortedBySize()
-//  below with code that sorts the top level elements of
-//  the Collection by size using the "count" property. Sort them
-//  increasing or decreasing according to the parameter. You
-//  are welcome to call the Built-In sort() Function to help you
-//  implement sortedBySize().
-//
-//  Once you write the method it will automatically apply to any
-//  Type that is a child of Collection that has Elements that comply
-//  with Countable. Suppose you came across another type of Collection
-//  called SpecialCollection. All you need to add is one line:
-//      extension SpecialCollection: Countable {}
-//  and you can apply sortedBySize() to Collections of that Type as well.
-//  In this way, this extension can easily be applied to types that do
-//  not even exist yet.
-//
-//  When you have implemented sortedBySize() comment out the "return nil"
-//  line at the start task9. This will allow a test and demonstration of
-//  some of the many different combinations types that now can be sorted
-//  by size using this single generic method.
-
-
-extension Collection where Element: Countable {
-    func sortedBySize(increasing: Bool = true) -> Array<Element> {
-        // replace "return []" with your code to implement the sort
-        return []
-    }
-}
-
-func task9() -> Bool? {
-    return nil // comment out this line when you are ready to test Task 9
-
-    // Please ignore a possible "will never be executed" warning
-    let arrayOfStrings = ["One", "Three", "Five"]
-    testPrint("arrayOfStrings.sortedBySize() increasing, then decreasing:")
-    testPrint(">  \(arrayOfStrings.sortedBySize())")
-    testPrint("<  \(arrayOfStrings.sortedBySize(increasing: false))")
- 
-    let arrayOfArrays = [[1],[1,2],[1,2,3]]
-    testPrint("arrayOfArrays.sortedBySize() increasing, then decreasing:")
-    testPrint(">  \(arrayOfArrays.sortedBySize())")
-    testPrint("<  \(arrayOfArrays.sortedBySize(increasing: false))")
- 
-    let arrayOfSets: Array<Set> = [[1],[1,2],[1,2,3]]
-    testPrint("arrayOfSets.sortedBySize() increasing, then decreasing:")
-    testPrint(">  \(arrayOfSets.sortedBySize())")
-    testPrint("<  \(arrayOfSets.sortedBySize(increasing: false))")
-
-    let arrayOfDictionaries = [[1:1],[1:2,2:2],[1:3,2:3,3:3]]
-    testPrint("arrayOfDictionaries.sortedBySize() increasing, then decreasing:")
-    testPrint(">  \(arrayOfDictionaries.sortedBySize())")
-    testPrint("<  \(arrayOfDictionaries.sortedBySize(increasing: false))")
-
-    let setOfStrings: Set = ["One", "Three", "Five"]
-    testPrint("setOfStrings.sortedBySize() increasing, then decreasing:")
-    testPrint(">  \(setOfStrings.sortedBySize())")
-    testPrint("<  \(setOfStrings.sortedBySize(increasing: false))")
- 
-    let setOfArrays: Set = [[1],[1,2],[1,2,3]]
-    testPrint("setOfArrays.sortedBySize() increasing, then decreasing:")
-    testPrint(">  \(setOfArrays.sortedBySize())")
-    testPrint("<  \(setOfArrays.sortedBySize(increasing: false))")
-
-    let setOfSets: Set<Set> = [[1],[1,2],[1,2,3]]
-    testPrint("setOfSets.sortedBySize() increasing, then decreasing:")
-    testPrint(">  \(setOfSets.sortedBySize())")
-    testPrint("<  \(setOfSets.sortedBySize(increasing: false))")
-
-    let setOfDictionaries: Set<Dictionary> = [[1:1],[1:2,2:2],[1:3,2:3,3:3]]
-    testPrint("setOfDictionaries.sortedBySize() increasing, then decreasing:")
-    testPrint(">  \(setOfDictionaries.sortedBySize())")
-    testPrint("<  \(setOfDictionaries.sortedBySize(increasing: false))")
-
-    let setOfStringKeyDictionaries: Set<Dictionary> = [["one":1],["one":1,"two":2],["one":1,"two":2,"three":3]]
-    testPrint("setOfStringKeyDictionaries.sortedBySize() increasing, then decreasing:")
-    testPrint(">  \(setOfStringKeyDictionaries.sortedBySize())")
-    testPrint("<  \(setOfStringKeyDictionaries.sortedBySize(increasing: false))")
-
-    let dictionaryValuesOfStrings = [1: "One", 3: "Three", 5: "Five"]
-    testPrint("dictionaryValuesOfStrings.sortedBySize() increasing, then decreasing:")
-    testPrint(">  \(dictionaryValuesOfStrings.values.sortedBySize())")
-    testPrint("<  \(dictionaryValuesOfStrings.values.sortedBySize(increasing: false))")
-
-    let dictionaryValuesOfArrays = [1:[1], 2:[1,2], 3:[1,2,3]]
-    testPrint("dictionaryValuesOfArrays.sortedBySize() increasing, then decreasing:")
-    testPrint(">  \(dictionaryValuesOfArrays.values.sortedBySize())")
-    testPrint("<  \(dictionaryValuesOfArrays.values.sortedBySize(increasing: false))")
-
-    let dictionaryValuesOfSets: Dictionary<Int, Set> = [1:[1], 2:[1,2], 3:[1,2,3]]
-    testPrint("dictionaryValuesOfSets.sortedBySize() increasing, then decreasing:")
-    testPrint(">  \(dictionaryValuesOfSets.values.sortedBySize())")
-    testPrint("<  \(dictionaryValuesOfSets.values.sortedBySize(increasing: false))")
-
-    let dictionaryKeysOfStrings = ["One" : 1, "Three": 3, "Five": 5]
-    testPrint("dictionaryKeysOfStrings.sortedBySize() increasing, then decreasing:")
-    testPrint(">  \(dictionaryKeysOfStrings.keys.sortedBySize())")
-    testPrint("<  \(dictionaryKeysOfStrings.keys.sortedBySize(increasing: false))")
-
-    //  generateTracker(_ containerCount: Int) is implemented in
-    //  main.swift. It generates a sample PharmaceuticalStockTracker
-    //  with containerCount MedicationContainers in it. It is only
-    //  implemented for containerCounts in 1, 2, 3 and 6.
-    
-    //  This first example is sorting PharmaceuticalStockTrackers to see which location or
-    //  warehouse represented by a PharmaceuticalStockTrackers have the most or least inventory.
-    let arrayOfPharmaceuticalStockTrackers: [PharmaceuticalStockTracker] = [generateTracker(1), generateTracker(2), generateTracker(3)]
-    testPrint("arrayOfPharmaceuticalStockTrackers.sortedBySize() increasing, then decreasing:")
-    testPrint(">  \(arrayOfPharmaceuticalStockTrackers.sortedBySize())")
-    testPrint("<  \(arrayOfPharmaceuticalStockTrackers.sortedBySize(increasing: false))")
-
-    //  Here we use sortedBySize() to produce a sorted array of all of the inventory in
-    //  a PharmaceuticalStockTracker, sorted by which ndcPackageCodes have the most or least
-    //  inventory associated with them.
-    //
-    //  Note: to make the results more meaningful we print the results using a function provided
-    //  in main.swift called summarizeSetsOfMedicationContainers(). That function prints a summary
-    //  of each Dictionary or Set. Otherwise, the following lines would print the full detailed contents
-    //  of each MedicationContainer in inventory which would be a lot more detailed content to read
-    //  through to validate that the function is working correctly..
-    let aStockTracker = generateTracker(6)
-    testPrint("aStockTracker.inStockMedications.sortedBySize() increasing, then decreasing:")
-    testPrint(">  \(summarizeSetsOfMedicationContainers(aStockTracker.inStockMedications.values.sortedBySize()))")
-    testPrint("<  \(summarizeSetsOfMedicationContainers(aStockTracker.inStockMedications.values.sortedBySize(increasing: false)))")
-    
-    return true
 }
