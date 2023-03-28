@@ -32,7 +32,7 @@ enum GuardedErrors: String {
     // used by Task 0:
     case aBoolFalse
     case int1_less_than_0
-    case int1_less_than_or_equal_int1
+    case int2_less_than_or_equal_int1
     case aString_not_4_chars
     // used by Task 1:
     case string_is_nil
@@ -84,8 +84,8 @@ func task0(aBool: Bool, int1: Int, int2: Int, aString: String) -> GuardedErrors?
         return .int1_less_than_0
     }
     guard int2 > int1 else {
-        testPrint("Error: \(GuardedErrors.int1_less_than_or_equal_int1.rawValue)")
-        return .int1_less_than_or_equal_int1
+        testPrint("Error: \(GuardedErrors.int2_less_than_or_equal_int1.rawValue)")
+        return .int2_less_than_or_equal_int1
     }
     guard aString.count == 4 else {
         testPrint("Error: \(GuardedErrors.aString_not_4_chars.rawValue)")
@@ -178,6 +178,9 @@ func task2() -> Int? {
 //
 //  Inside this function is an array of closures that each take two Int parameters. Complete each
 //  closure according to the list below, then change "return nil" to "return closureArray".
+//  We are not asking you to use map, filter, reduce or other built in functions in this task.
+//  Instead, in this task we are just practicing writing closures and putting each closure in
+//  an array of closures. The test code will then call the closures with various parameters.//
 //
 //  Closure 0: return the sum of the two parameters
 //  Closure 1: return the product of the two parameters
@@ -375,7 +378,7 @@ func task7(inArray: [Int]) -> [Int]? {
 
     // EDITOR: Remove the remainder of this function and replace it with "return nil"
     for i in 2 ... 7 { returnArray.append(i) }
-    for i in 1 ... 9 { returnArray.append(i) }
+    for i in 1 ... 9 { if (i % 2) == 1 {returnArray.append(i)} }
     for i in stride(from: 5, through: 0, by: -1) { returnArray.append(i) }
     for i in inArray { returnArray.append(i) }
     return returnArray
@@ -409,35 +412,6 @@ func task8(rowCount: Int, columnCount: Int, aRange: ClosedRange<Int>) -> [[Int]]
             oneRow.append(Int.random(in: aRange))
         }
         returnValue.append(oneRow)
-    }
-    return returnValue
-}
-
-//  Task 9
-//  Add code that accepts an Array of Array of Int values.
-//  For each row in the input Array, calculate the minimum, maximum and mean or average of that row.
-//  Then store the minimum, maximum and average as doubles in a row of a new Array.
-//  Return the new Array with a row of three Doubles corresponding to each row in the input Array.
-//  The input Array intValues will contain random integers. Your code should work with any size of array.
-//  The number of rows and columns in the array will vary between 10 and 30
-//
-//  Hint:
-//  You can use the name of Types like Int and Double as functions that construct an element of that Type.
-//  You can research the parameters available, but one option is use Double(anInt) to get a Double that
-//  matches the value of anInt. For the calculation of mean, you may need to convert the values to Double
-//  before operations like division. If you write Double(anInt/anotherInt) it would do Integer division
-//  and then convert the result to Double which is probably not what you want.
-//
-func task9(intValues: [[Int]]) -> [[Double]]? {
-    //    return nil
-
-    // EDITOR: Remove the remainder of this function and replace it with "return nil"
-    var returnValue: [[Double]] = []
-    for oneRow in intValues {
-        guard let minValue = oneRow.min() else { return nil }
-        guard let maxValue = oneRow.max() else { return nil }
-        let total = Double(oneRow.reduce(0,+))
-        returnValue.append([Double(minValue), Double(maxValue), total / Double(oneRow.count)])
     }
     return returnValue
 }
