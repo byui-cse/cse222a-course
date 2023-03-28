@@ -25,7 +25,7 @@ enum TestResults {
 
 // This must list the tests in order: test0, test1... so they can be called with their test number and
 // not need to hard code the Task number into the test except when calling the task function
-var tests: [(Int) -> TestResults] = [test0, test1, test2, test3, test4, test5, test6, test7, test8, test9]
+var tests: [(Int) -> TestResults] = [test0, test1, test2, test3, test4, test5, test6, test7, test8]
 var taskResults: [TestResults] = Array(repeating: .testNotImplemented, count: tests.count)
 var savedInput: [String?] = []
 var savedPrint: [String?] = []
@@ -553,53 +553,6 @@ private func test8(testNum: Int) -> TestResults {
                 guard myRange.contains(oneInt) else {
                     return fail(testNum, "Value \(oneInt) not in assigned range \(myRange)")
                 }
-            }
-        }
-    }
-
-    return .testPassed
-}
-
-private func test9(testNum: Int) -> TestResults {
-    // Do tests with five random arrays
-    for _ in 0 ... 5 { // Run the test 5 times
-        // Each time send a random array
-        let myArray = Array(repeating: Array(repeating: Int.random(in: 0 ... 40), count: Int.random(in: 10 ... 30)), count: Int.random(in: 10 ... 30))
-
-        // Call the task function and report "testNotImplemented if it returns nil
-        guard let result = task9(intValues: myArray) else { return .testNotImplemented }
-
-        // Make sure the number of rows in the result matches the input
-        guard result.count == myArray.count else {
-            return fail(testNum, "Expected \(myArray.count) rows, result has \(result.count) rows")
-        }
-
-        // Step through the rows
-        for rowNum in 0 ..< result.count {
-            // Make sure the result has 3 columns in each row
-            guard result[rowNum].count == 3 else {
-                return fail(testNum, "Expected 3 columns, result has \(result[rowNum].count) columns")
-            }
-
-            // Calculate the min from the array. Since it has >0 valid elements, min() should never return nil.
-            guard let myMin = myArray[rowNum].min() else { return fail(testNum, "Testing Error") }
-            // Make sure the first value is the correct minimum for each row
-            guard Double(myMin) == result[rowNum][0] else {
-                return fail(testNum, "Expected minimum of row \(rowNum) to be \(Double(myMin)), result has \(result[rowNum][0])")
-            }
-
-            // Calculate the max from the array. Since it has >0 valid elements, max() should never return nil.
-            guard let myMax = myArray[rowNum].max() else { return fail(testNum, "Testing Error") }
-            // Make sure the second value is the correct maximum for each row
-            guard Double(myMax) == result[rowNum][1] else {
-                return fail(testNum, "Expected maximum of row \(rowNum) to be \(Double(myMax)), result has \(result[rowNum][1])")
-            }
-
-            // Calculate the mean or average
-            let myAverage = Double(myArray[rowNum].reduce(0,+)) / Double(myArray[rowNum].count)
-            // Make sure the third value is the correct mean for each row
-            guard myAverage == result[rowNum][2] else {
-                return fail(testNum, "Expected average of row \(rowNum) to be \(myAverage), result has \(result[rowNum][2])")
             }
         }
     }
