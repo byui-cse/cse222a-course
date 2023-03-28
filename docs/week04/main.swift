@@ -29,17 +29,6 @@ var savedInput: [String?] = []
 var savedPrint: [String?] = []
 var currentTest = 0
 
-//  ========= Start of main body of code =========
-
-//  The 4 lines with the testContainers, loadedSets and preloadedMedications
-//  global variable and the call to setupGlobals are the only lines that differ
-//  from week 2 in the first part of this file up to the line with "Concepts taught
-//  or reinforced in each task".
-var testContainers: [MedicationContainer] = []
-var badCodeContainers: [MedicationContainer] = []
-var loadedSets: [Set<MedicationContainer>] = []
-var preloadedMedications: [String: Set<MedicationContainer>] = [:]
-
 #if false
     print("savedInput:")
     print(savedInput)
@@ -693,7 +682,7 @@ private func test5(testNum: Int) -> TestResults {
     var want2 = loadedSets[1].sorted(by: {$0.expirationDate < $1.expirationDate})
     want2.removeLast()
     guard container1 == want2 else {
-        return fail(testNum, "Expected sellContainers(count: 1, of:\(testContainers[0].ndcPackageCode)) to return \(want1), but it returned  \(container1)")
+        return fail(testNum, "Expected sellContainers(count: 1, of:\(testContainers[1].ndcPackageCode)) to return \(want2), but it returned  \(container1)")
     }
     
     // Make sure the side effects are correct
@@ -704,11 +693,11 @@ private func test5(testNum: Int) -> TestResults {
     // Try selling all 3 of the third valid set
     (returnBool2, returnMessage2, returnContainers) = aStockTracker.sellContainers(count: 3, of: testContainers[3].ndcPackageCode)
     guard returnBool2, returnMessage2 == .success, let container1 = returnContainers else {
-        return fail(testNum, "Expected sellContainers(count 3, of:\(testContainers[1].ndcPackageCode) to return (true, .success, containerArray) with the matching MedicationPackages in containerArray, but it returned (\(returnBool2), \(returnMessage2), \(String(describing: returnContainers))")
+        return fail(testNum, "Expected sellContainers(count 3, of:\(testContainers[3].ndcPackageCode) to return (true, .success, containerArray) with the matching MedicationPackages in containerArray, but it returned (\(returnBool2), \(returnMessage2), \(String(describing: returnContainers))")
     }
     let want3 = loadedSets[2].sorted(by: {$0.expirationDate < $1.expirationDate})
     guard container1 == want3 else {
-        return fail(testNum, "Expected sellContainers(3, of:\(testContainers[0].ndcPackageCode)) to return \(want1), but it returned  \(container1)")
+        return fail(testNum, "Expected sellContainers(3, of:\(testContainers[3].ndcPackageCode)) to return \(want3), but it returned  \(container1)")
     }
     
     // Make sure the side effects are correct
@@ -777,12 +766,14 @@ private func test7(testNum: Int) -> TestResults {
     }
     // Also make sure DateSequencer conforms to Sequence protocol and IteratorProtocol
     // Note the use of "any" (not "Any") which lets us test membership in a generic protocol
-    guard testProtocol is any Sequence else {
+#if swift(>=5.7)
+   guard testProtocol is any Sequence else {
         return fail(testNum, "DateSequencer extension needs to conform to the Sequence protocol")
     }
     guard testProtocol is any IteratorProtocol else {
         return fail(testNum, "DateSequencer extension needs to conform to the Sequence protocol")
     }
+#endif
 
     // Do 5 random tests of DateSequencer()
     for _ in 0..<5 {
@@ -977,7 +968,7 @@ func compareAdjustSetsAndDictionaries(_ lhs: String, _ rhs: String) -> Bool {
 //  If we did not do this, the text we would need to compare would be very long and the results
 //  would be hard for the students to parse through to find their errors.
 //  Instead this returns the ndcPackageCode and the count of MedicationContainers with that code.
-func summarizeSetsOfMedicationContainers(_ arrayOfSets: [any Collection<MedicationContainer>]) -> String {
+func summarizeSetsOfMedicationContainers(_ arrayOfSets: [Set<MedicationContainer>]) -> String {
     if arrayOfSets.isEmpty { return "Empty Array of Sets" }
     var returnValue = "["
     for aSet in arrayOfSets {
@@ -1075,8 +1066,16 @@ private func test9(testNum: Int) -> TestResults {
     return .testPassed
 }
 
-//  ========= Main body of code =========
+//  ========= Start of main body of code =========
 
+//  The 4 lines with the testContainers, loadedSets and preloadedMedications
+//  global variable and the call to setupGlobals are the only lines that differ
+//  from week 2 in the first part of this file up to the line with "Concepts taught
+//  or reinforced in each task".
+var testContainers: [MedicationContainer] = []
+var badCodeContainers: [MedicationContainer] = []
+var loadedSets: [Set<MedicationContainer>] = []
+var preloadedMedications: [String: Set<MedicationContainer>] = [:]
 guard setupGlobals() else {
     exit(1)
 }
