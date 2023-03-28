@@ -23,7 +23,7 @@ enum TestResults {
 
 // This must list the tests in order: test0, test1... so they can be called with their test number and
 // not need to hard code the Task name into the test except when calling the task function
-var tests: [(Int) -> TestResults] = [test0, test1, test2, test3, test4, test5, test6, test7, test8, test9]
+var tests: [(Int) -> TestResults] = [test0, test1, test2, test3, test4, test5, test6, test7]
 var taskResults: [TestResults] = Array(repeating: .testNotImplemented, count: tests.count)
 var savedInput: [String?] = []
 var savedPrint: [String?] = []
@@ -115,10 +115,6 @@ func fail(_ testNum: Int, _ message: String) -> TestResults {
  •    Use filter() to identify expired and non-expired MedicationContainers
  •    Use sorted() (not sort())
  Task 2
- •    Work with regular expressions
- •    Build a function to test compliance with the NDC Code format
-        using a regular expression
- Task 3
  •    Work with Dictionaries and Sets
  •    Work with Tuple return values and error codes
  •    Work with enums
@@ -127,7 +123,7 @@ func fail(_ testNum: Int, _ message: String) -> TestResults {
         for adding a MedicationContainer
  •    Use an extension to add a new method that adds a Set of
         MedicationContainers rather just one like the existing method
- Task 4
+ Task 3
  •    Work with Dictionaries and Sets
  •    Work with Tuple return values and error codes
  •    Work with enums
@@ -136,7 +132,7 @@ func fail(_ testNum: Int, _ message: String) -> TestResults {
  •    Use an extension to add a new method that provides the
         stock of a particular type of medication using the NFC Code
  •    Work with sort() and closures
-Task 5
+Task 4
  •    Work with Dictionaries and Sets
  •    Work with Tuple return values and error codes
  •    Work with enums
@@ -147,30 +143,22 @@ Task 5
  •    Work with sort() and closures
  •    Delete an Array of elements from a set
  •    Delete a Dictionary entry
- Task 6
+ Task 5
  •    Extract tuples to set individual variables
  •    Add a struct method
  •    This is an easy task to set up the next tasks
  •    Tasks 7-9 are a set
- Task 7
+ Task 6
  •    Use extension to extend a struct Type
  •    Conform to the Sequence protocol
  •    Work with dates in the past and future
  •    Use struct method to generate a sequence of dates
  •    Handle a sequence that goes up or down in time
- Task 8
+ Task 7
  •    Work with tuple parameters
  •    Create an object of the date sequencer Type from Tasks 7 and 8
  •    Create an array of dates returned from the sequencer
- Task 9
- •    Generics, Generic Extensions, Generic Functions
- •    Work with sort() and closures
- •    Create a protocol, then use it to qualify generic types
-        for a method in an extension
- •    Opportunity to think about varieties of collections of
-        collections, Strings other Types including some of
-        our custom Types
- */
+  */
 
 //  ========= Tests =========
 
@@ -263,16 +251,6 @@ func setupGlobals() -> Bool {
         testContainers[3].ndcPackageCode : loadedSets[2]
     ]
     
-    guard let badContainer1 = testContainer(testItem(med: MedSpec(ndcPackageCode: "x2345-678-90", name: "Med", volume: nil, concentration: nil, concentrationUnits: nil, pillCount: 90, potency: 30, potencyUnits: "MEQ"), expDays: 90)) else {
-        print("Internal testing error. Test tried to instantiate an object of the parent class type")
-        return false
-    }
-    guard let badContainer2 = testContainer(testItem(med: MedSpec(ndcPackageCode: "12345-678-90x", name: "Med", volume: nil, concentration: nil, concentrationUnits: nil, pillCount: 90, potency: 30, potencyUnits: "MEQ"), expDays: 90)) else {
-        print("Internal testing error. Test tried to instantiate an object of the parent class type")
-        return false
-    }
-    badCodeContainers.append(badContainer1)
-    badCodeContainers.append(badContainer2)
     return true
 }
 private func test0(testNum: Int) -> TestResults {
@@ -467,31 +445,6 @@ private func test2(testNum: Int) -> TestResults {
     if returnValue != true {
         return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
     }
-    
-    // Test some valid ndcPackageCodes first
-    let validCodes = ["12345-678-90", "00000-000-00", "09876-563-21"]
-    for aCode in validCodes {
-        if isFormattedAsNDCCode(code: aCode) != true {
-            return fail(testNum, "Expected task\(testNum) to return true for code \(aCode), but it returned false")
-        }
-    }
-    
-    // Now test some invalid ndcPackageCodes
-    let invalidCodes = ["123-456-7890", "x12345-678-90", "00000-000-00x"]
-    for aCode in invalidCodes {
-        if isFormattedAsNDCCode(code: aCode) != false {
-            return fail(testNum, "Expected task\(testNum) to return false for code \(aCode), but it returned false")
-        }
-    }
-    
-    return .testPassed
-}
-
-private func test3(testNum: Int) -> TestResults {
-    guard let returnValue = task3() else { return .testNotImplemented }
-    if returnValue != true {
-        return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
-    }
 
     // Test the added functionality of addContainer()
 
@@ -501,12 +454,6 @@ private func test3(testNum: Int) -> TestResults {
     // Test the functionality of addContainers()
     guard aStockTracker.addContainer(testContainers[0]) else {
         return fail(testNum, "Expected addContainer() of a valid container to return (true, .success) but it returned false")
-    }
-    guard !aStockTracker.addContainer(badCodeContainers[0]) else {
-        return fail(testNum, "Expected addContainer() of a container with invalid ndcPackageCode to return false but it returned true")
-    }
-    guard !aStockTracker.addContainer(badCodeContainers[1]) else {
-        return fail(testNum, "Expected addContainer() of a container with invalid ndcPackageCode to return false but it returned true")
     }
 
     // Empty the the tracker
@@ -520,16 +467,6 @@ private func test3(testNum: Int) -> TestResults {
     }
     guard aStockTracker.count == 3 else {
         return fail(testNum, "Expected add of a valid set of 3 containers to result in .count == 3, but instead .count == \(aStockTracker.count)")
-    }
-
-    // Try with an invalid expectedNdcPackageCode
-    let badCodeSet: Set = [badCodeContainers[0]]
-    (returnBool, returnMessage) = aStockTracker.addContainers(expectedNdcPackageCode: badCodeContainers[0].ndcPackageCode, containersToAdd: badCodeSet)
-    guard returnBool == false && returnMessage == .poorlyFormattedNDCCode else {
-        return fail(testNum, "Expected add with expectedNdcPackageCode having an invalid format to return (false, .poorlyFormattedNDCCode) but it returned (\(returnBool), \(returnMessage))")
-    }
-    guard aStockTracker.count == 3 else {
-        return fail(testNum, "Expected add with expectedNdcPackageCode having an invalid format to not change .count which was 3, but instead .count == \(aStockTracker.count)")
     }
 
     // Try with an empty set of containers
@@ -564,8 +501,8 @@ private func test3(testNum: Int) -> TestResults {
     return .testPassed
 }
 
-private func test4(testNum: Int) -> TestResults {
-    guard let returnValue = task4() else { return .testNotImplemented }
+private func test3(testNum: Int) -> TestResults {
+    guard let returnValue = task3() else { return .testNotImplemented }
     if returnValue != true {
         return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
     }
@@ -574,15 +511,9 @@ private func test4(testNum: Int) -> TestResults {
     
     // Preload aStockTracker with containers
     aStockTracker.inStockMedications = preloadedMedications
-    
-    // Try with an invalid expectedNdcPackageCode
-    var (returnBool2, returnMessage2, returnContainers) = aStockTracker.currentStock(of: testContainers[3].ndcPackageCode + "x")
-    guard returnBool2 == false && returnMessage2 == .poorlyFormattedNDCCode && returnContainers == nil else {
-        return fail(testNum, "Expected currentStock(of:) with an invalid NDCCode format to return (false, .poorlyFormattedNDCCode, nil) but it returned (\(returnBool2), \(returnMessage2), \(String(describing: returnContainers))")
-    }
-    
+        
     // Try a code with no inventory
-    (returnBool2, returnMessage2, returnContainers) = aStockTracker.currentStock(of: "98765-432-10")
+    var (returnBool2, returnMessage2, returnContainers) = aStockTracker.currentStock(of: "98765-432-10")
     guard returnBool2 == false && returnMessage2 == .noInventory && returnContainers == nil else {
         return fail(testNum, "Expected currentStock(of:) with an NDCCode that has no inventory to return (false, .noInventory, nil) but it returned (\(returnBool2), \(returnMessage2), \(String(describing: returnContainers))")
     }
@@ -610,8 +541,8 @@ private func test4(testNum: Int) -> TestResults {
     return .testPassed
 }
 
-private func test5(testNum: Int) -> TestResults {
-    guard let returnValue = task5() else { return .testNotImplemented }
+private func test4(testNum: Int) -> TestResults {
+    guard let returnValue = task4() else { return .testNotImplemented }
     if returnValue != true {
         return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
     }
@@ -626,14 +557,8 @@ private func test5(testNum: Int) -> TestResults {
         return fail(testNum, "Expected aStockTracker.count to be 6 after preloading \(aStockTracker.count)")
     }
 
-    // Try with an invalid expectedNdcPackageCode
-    var (returnBool2, returnMessage2, returnContainers) = aStockTracker.sellContainers(count: 1, of: testContainers[3].ndcPackageCode + "x")
-    guard returnBool2 == false && returnMessage2 == .poorlyFormattedNDCCode && returnContainers == nil else {
-        return fail(testNum, "Expected sellContainers(count:of:) with an invalid NDCCode format to return (false, .poorlyFormattedNDCCode, nil) but it returned (\(returnBool2), \(returnMessage2), \(String(describing: returnContainers))")
-    }
-    
     // Try a count == 0
-    (returnBool2, returnMessage2, returnContainers) = aStockTracker.sellContainers(count: 0, of: testContainers[0].ndcPackageCode)
+    var (returnBool2, returnMessage2, returnContainers) = aStockTracker.sellContainers(count: 0, of: testContainers[0].ndcPackageCode)
     guard returnBool2 == false && returnMessage2 == .invalidCount && returnContainers == nil else {
         return fail(testNum, "Expected sellContainers(count:of:) with count == 0 to return (false, .invalidCount, nil) but it returned (\(returnBool2), \(returnMessage2), \(String(describing: returnContainers))")
     }
@@ -717,8 +642,8 @@ protocol DateSequencerProtocol {
     
     mutating func setDates(daysTuple: (Int, Int))
 }
-private func test6(testNum: Int) -> TestResults {
-    guard let returnValue = task6() else { return .testNotImplemented }
+private func test5(testNum: Int) -> TestResults {
+    guard let returnValue = task5() else { return .testNotImplemented }
     if returnValue != true {
         return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
     }
@@ -751,9 +676,9 @@ protocol DateSequencerProtocol2: DateSequencerProtocol {
     
     mutating func next() -> Date?
 }
-private func test7(testNum: Int) -> TestResults {
+private func test6(testNum: Int) -> TestResults {
     
-    guard let returnValue = task7() else { return .testNotImplemented }
+    guard let returnValue = task6() else { return .testNotImplemented }
     if returnValue != true {
         return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
     }
@@ -813,12 +738,12 @@ private func test7(testNum: Int) -> TestResults {
     return .testPassed
 }
 
-private func test8(testNum: Int) -> TestResults {
+private func test7(testNum: Int) -> TestResults {
  
     // Do 5 random tests of DateSequencer()
     for _ in 0..<5 {
         let aTuple = (Int.random(in: -10...10), Int.random(in: -10...10))
-        guard let returnArray = task8(aTuple) else {
+        guard let returnArray = task7(aTuple) else {
             return .testNotImplemented
         }
         // Set up an array of the expected days in the future or past
@@ -986,84 +911,6 @@ func summarizeSetsOfMedicationContainers(_ arrayOfSets: [Set<MedicationContainer
     returnValue.removeLast()
     returnValue.removeLast()
     return returnValue + "]"
-}
-private func test9(testNum: Int) -> TestResults {
-    guard let returnValue = task9() else { return .testNotImplemented }
-    if returnValue != true {
-        return fail(testNum, "Expected task\(testNum) to return nil or true, but it returned \(returnValue)")
-    }
-    
-    let expectedPrint = [
-        "arrayOfStrings.sortedBySize() increasing, then decreasing:",
-        ">  [\"One\", \"Five\", \"Three\"]",
-        "<  [\"Three\", \"Five\", \"One\"]",
-        "arrayOfArrays.sortedBySize() increasing, then decreasing:",
-        ">  [[1], [1, 2], [1, 2, 3]]",
-        "<  [[1, 2, 3], [1, 2], [1]]",
-        "arrayOfSets.sortedBySize() increasing, then decreasing:",
-        ">  [Set([1]), Set([2, 1]), Set([3, 1, 2])]",
-        "<  [Set([3, 1, 2]), Set([2, 1]), Set([1])]",
-        "arrayOfDictionaries.sortedBySize() increasing, then decreasing:",
-        ">  [[1: 1], [1: 2, 2: 2], [3: 3, 2: 3, 1: 3]]",
-        "<  [[3: 3, 2: 3, 1: 3], [1: 2, 2: 2], [1: 1]]",
-        "setOfStrings.sortedBySize() increasing, then decreasing:",
-        ">  [\"One\", \"Five\", \"Three\"]",
-        "<  [\"Three\", \"Five\", \"One\"]",
-        "setOfArrays.sortedBySize() increasing, then decreasing:",
-        ">  [[1], [1, 2], [1, 2, 3]]",
-        "<  [[1, 2, 3], [1, 2], [1]]",
-        "setOfSets.sortedBySize() increasing, then decreasing:",
-        ">  [Set([1]), Set([1, 2]), Set([3, 1, 2])]",
-        "<  [Set([3, 1, 2]), Set([1, 2]), Set([1])]",
-        "setOfDictionaries.sortedBySize() increasing, then decreasing:",
-        ">  [[1: 1], [2: 2, 1: 2], [3: 3, 2: 3, 1: 3]]",
-        "<  [[3: 3, 2: 3, 1: 3], [2: 2, 1: 2], [1: 1]]",
-        "setOfStringKeyDictionaries.sortedBySize() increasing, then decreasing:",
-        ">  [[\"one\": 1], [\"one\": 2, \"two\": 2], [\"one\": 1, \"two\": 2, \"three\": 3]]",
-        "<  [[\"two\": 2, \"three\": 3, \"one\": 1], [\"one\": 1, \"two\": 2], [\"one\": 1]]",
-        "dictionaryValuesOfStrings.sortedBySize() increasing, then decreasing:",
-        ">  [\"One\", \"Five\", \"Three\"]",
-        "<  [\"Three\", \"Five\", \"One\"]",
-        "dictionaryValuesOfArrays.sortedBySize() increasing, then decreasing:",
-        ">  [[1], [1, 2], [1, 2, 3]]",
-        "<  [[1, 2, 3], [1, 2], [1]]",
-        "dictionaryValuesOfSets.sortedBySize() increasing, then decreasing:",
-        ">  [Set([1]), Set([1, 2]), Set([1, 2, 3])]",
-        "<  [Set([1, 2, 3]), Set([1, 2]), Set([1])]",
-        "dictionaryKeysOfStrings.sortedBySize() increasing, then decreasing:",
-        ">  [\"One\", \"Five\", \"Three\"]",
-        "<  [\"Three\", \"Five\", \"One\"]",
-        "arrayOfPharmaceuticalStockTrackers.sortedBySize() increasing, then decreasing:",
-        ">  [StockTracker holding 1 MedicationContainers, StockTracker holding 2 MedicationContainers, StockTracker holding 3 MedicationContainers]",
-        "<  [StockTracker holding 3 MedicationContainers, StockTracker holding 2 MedicationContainers, StockTracker holding 1 MedicationContainers]",
-        "aStockTracker.inStockMedications.sortedBySize() increasing, then decreasing:",
-        ">  [Set of 1 MedicationContainer with ndcPackageCode: 12345-678-90, Set of 2 MedicationContainers with ndcPackageCode: 50580-170-01, Set of 3 MedicationContainers with ndcPackageCode: 50580-692-02]",
-        "<  [Set of 3 MedicationContainers with ndcPackageCode: 50580-692-02, Set of 2 MedicationContainers with ndcPackageCode: 50580-170-01, Set of 1 MedicationContainer with ndcPackageCode: 12345-678-90]"
-
-    ]
-
-    guard savedPrint.count == expectedPrint.count else {
-        return fail(testNum, "Expected task\(testNum) to testPrint \(expectedPrint.count) lines, but testPrinted \(savedPrint.count) lines")
-    }
-
-    for printIndex in stride(from: 0, through: savedPrint.count-3, by: 3) {
-        guard let line0 = savedPrint[printIndex] else {
-            return fail(testNum, "Expected task\(testNum) to print lines, but found blank lines instead")
-        }
-        guard let line1 = savedPrint[printIndex+1] else {
-            return fail(testNum, "Expected task\(testNum) to print lines, but found blank lines instead")
-        }
-        guard let line2 = savedPrint[printIndex+2] else {
-            return fail(testNum, "Expected task\(testNum) to print lines, but found blank lines instead")
-        }
-        guard line0 == expectedPrint[printIndex], compareAdjustSetsAndDictionaries(line1, expectedPrint[printIndex+1]), compareAdjustSetsAndDictionaries(line2, expectedPrint[printIndex+2]) else {
-            print()
-            return fail(testNum, "Expected task\(testNum) to testPrint:\n    \(expectedPrint[printIndex])\n    \(expectedPrint[printIndex+1])\n    \(expectedPrint[printIndex+2])\nbut instead printed:\n    \(line0)\n    \(line1)\n    \(line2)")
-
-        }
-    }
-
-    return .testPassed
 }
 
 //  ========= Start of main body of code =========
