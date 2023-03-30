@@ -436,30 +436,6 @@ extension TabletMedicationContainer {
         return lhs.id == rhs.id
     }
 }</code></pre>
-          <p>
-            You can also create <a
-              href="https://docs.swift.org/swift-book/LanguageGuide/AdvancedOperators.html#ID46"
-              target="_blank"
-            >Custom Operators</a
-              > using combinations of 
-            <a
-              href="https://docs.swift.org/swift-book/ReferenceManual/LexicalStructure.html#ID418"
-              target="_blank"
-            >certain special characters</a>. If you want to use a custom 
-            operator, you must first declare it as a <kbd>prefix</kbd>, <kbd>infix</kbd> or 
-            <kbd>postfix</kbd> operator. For an infix operator you would also assign 
-            it to a precedence group like <kbd>: AdditionPrecedence</kbd>. 
-            For example, suppose we want to define a new postfix operator 
-            <kbd>&lt||&gt</kbd> that returns a count of the containers in an
-            instance of the PharmaceuticalStockTracker. We can do it like this:
-          </p>
-<pre><code class="swift">postfix operator &lt||&gt // indicates this is a new operator
-            
-extension PharmaceuticalStockTracker {
-    static postfix func &lt||&gt (tracker: PharmaceuticalStockTracker) -> Int {
-        return tracker.inStockMedications.count
-    }
-}</code></pre>
 
           <h2>UUID and Unique Objects</h2>
           <p>
