@@ -84,6 +84,10 @@ func daysToSeconds(_ numDays: Int) -> Double {
     let msPerDay: Double = 60 * 60 * 24
     return Double(numDays) * msPerDay
 }
+//  This function takes an Int parameter that specifies a number of days in the future
+//  or the past (if you pass a negative integer) or today (if you pass 0). It returns
+//  an object of Type Date with the appropriate date value. You can use it to create
+//  Dates to put into variables or to compare to other Dates.
 func futureDate(daysFromNow: Int) -> Date {
     Date(timeIntervalSinceNow: daysToSeconds(daysFromNow))
 }
@@ -106,7 +110,7 @@ func task0() -> (MedicationContainer, MedicationContainer) {
     print("Today: \(dateToString(Date()))")
     print("Tomorrow: \(dateToString(futureDate(daysFromNow: 1)))")
 
-    // initiailize a test variable of each class
+    // initialize a test variable of both child classes
     let aLiquidContainer = LiquidMedicationContainer(name: "med1", expirationDate: futureDate(daysFromNow: 120),
                                                      volume: 4.5, concentration: 2, concentrationUnits: "ml")
     let aTabletContainer = TabletMedicationContainer(name: "med2", expirationDate: futureDate(daysFromNow: 90),
@@ -122,11 +126,12 @@ func task0() -> (MedicationContainer, MedicationContainer) {
 //  to the corresponding struct and classes as explained in last week's reading.
 //  You do not need to create the protocols. They already exist in main.swift. Just use them.
 //
-//  Using the code in Task() as an example, create an object of each of the two child class Types
-//  and then return then from the task in the tuple instead of nil values.
+//  Using the code in Task0() that creates aLiquidContainer and aTabletContainer as an example,
+//  create an object of each of the two child class Types and then return then from the task
+//  in the tuple instead of nil values.
 //  Note that the test code will report this function as not implemented as long as either of the two
 //  values returned in the tuple is nil. So when you have added the new property, applied the protocols
-//  and created the opbjects, change both returned values to be those containers. That will signal the
+//  and created the objects, change both returned values to be those containers. That will signal the
 //  test code to run the tests.
 func task1() -> (LiquidMedicationContainer?, TabletMedicationContainer?) {
     return (nil, nil)
@@ -135,7 +140,7 @@ func task1() -> (LiquidMedicationContainer?, TabletMedicationContainer?) {
 //  Task 2
 //  Add a method to PharmaceuticalStockTracker like this:
 //      mutating func addContainer(_ container: MedicationContainer) -> Bool
-//  Your method should add the container paramneter to the inStockMedications
+//  Your method should add the container parameter to the inStockMedications
 //  Array, but only if that exact container is not already in the array.
 //  Return true if we successfully added it to the array. Remember that
 //  the MedicationContainer parameter could actually be a
@@ -149,7 +154,7 @@ func task1() -> (LiquidMedicationContainer?, TabletMedicationContainer?) {
 //  Add another method to PharmaceuticalStockTracker like this:
 //      func count(of name: String) -> Int
 //  This will count the number of items in MedicationContainers that have a
-//  name that exactly mathes the parameter passed in. Note that it will be called
+//  name that exactly matches the parameter passed in. Note that it will be called
 //  like this:
 //      let aCount = aTracker.count(of: "Asprin")
 //  but inside your method ou will refer to the parameter as "name".
@@ -192,15 +197,31 @@ func task4(_ int1: Int, _ int2: Int) -> Int? {
 
 //  Task 5
 //  This function receives an array that might have Any values in it
-//      including nil.
-//  Use compactMap to process it as follows:
+//      including nil. Each element of a [Any?] Array can contain
+//      any value. You can think of Any as a wrapper that allows objects
+//      of different types to be in the same Array. But each element
+//      still remembers its native value.
+//  THe "is" operator returns true if the left operand has the underlying
+//      native type specified as the right operand. If the Array were [Any]
+//      it could have Any value except nil. But since the Type is [Any?] it
+//      can also contain nil values. Conveniently, the Swift compiler
+//      implementers made "is" able to reach through the Optional wrapper
+//      to tell us if the native type of the element inside both the
+//      Optional wrapper and the Any Wrapper has that native Type.
+//  compactMap() works like map except it operates on an Array of Optional
+//      values, expects its closure to return Optional values and then
+//      results in a non-optional Array where all the non-nil values returned
+//      by the closure are unpacked and the nil values are skipped and not
+//      included in the result. For example, if you you had an Array of
+//      Type [Double?] then using compactMap{$0} would return an Array
+//      type [Double] with all non-nil values unpacked and nil values removed.
+//
+//  Use compactMap() to process the passed Array as follows:
 //      if the value received is an Int, put 1 in the Array
 //      if the value received is a Double, put 2 in the Array
 //      if the value received is a String, put 3 in the Array
 //      otherwise put nil in the array and let compactMap remove it
 //  Then return that new array.
-//  Note that "is" correctly matches the underlying Type an optional
-//  would have if it were unwrapped.
 func task5(_ anyArray: [Any?]) -> [Int]? {
     return nil
 }
@@ -214,8 +235,8 @@ func task5(_ anyArray: [Any?]) -> [Int]? {
 //          if it can be converted to a Double, put it in the array
 //          if not, put nil in the array so compactMap removes this item.
 //          Note that if Double() fails to convert a String it conveniently returns nil.
-//      if the value received is nill, return nil so compactMap removes it
-//      if it was none of those, return Double.infinity.
+//      if the value received is nil, put nil in the Array so compactMap removes it
+//      if it was none of those, put Double.infinity in the Array
 //  Then return the output from compactMap().
 func task6(_ anyArray: [Any?]) -> [Double]? {
     return nil
@@ -230,16 +251,23 @@ func task6(_ anyArray: [Any?]) -> [Double]? {
 //  with the CustomStringConvertible protocol. That will allow more detailed
 //  information when printing. In the extension, add a String computed property
 //  called "description" that returns a string with details about all the
-//  non-computed properties in the MedicationContainer. Remember that since
-//  MedicationContainer is a class with children, the MedicationContainer
-//  may actually be a LiquidMedicationContainer or a TabletMedicationContainer.
-//  Use "is" to figure out what it is and include all the properties of the
-//  appropriate child Type in your description string.
+//  non-computed properties in the MedicationContainer. When you put the
+//  expirationDate field into the description string, please use the
+//  dateToString() function provided earlier in this file.
 //
-//  Then mark use the extension to also indicate that MedicationContainer
+//  Remember that since  MedicationContainer is a class with children, the
+//  MedicationContainer may actually be a LiquidMedicationContainer or a
+//  TabletMedicationContainer. You can use "is" to figure out if the underlying
+//  type of self is really the parent or one of the children. If it is a
+//  child you can use "as?" to get a temporary variable or constant of the
+//  child type so you can include the properties of the child type in the
+//  description string.
+//
+//  Then use the extension to also indicate that MedicationContainer
 //  is compliant with CustomStringConvertible which tells the system to
 //  start using the computed description property when printing an object
-//  of Type MedicationContainer.
+//  of Type MedicationContainer. You can do that by adding
+//  ":CustomStringConvertible" to the first line of the extension.
 //
 //  When you have completed and tested the code, change task7() to return
 //  true instead of nil, causing some test objects to be printed.
@@ -268,7 +296,7 @@ func task7() -> Bool? {
 //  object of type MedicationContainer?
 //
 //  After you are done, change "return nil" in task8() to "return {$0==$1}" to
-//  allow Task 7 to be tested.
+//  allow Task 8 to be tested.
 //
 extension MedicationContainer {
     
@@ -302,53 +330,5 @@ func task8() -> ((MedicationContainer, MedicationContainer)->Bool)? {
 //  allow Task 9 to be tested.
 //
 func task9() -> ((MedicationContainer, MedicationContainer)->Bool)? {
-    return nil
-}
-
-//  Task 10
-//  Suppose we frequently add a MedicationContainer to a PharmaceuticalStockTracker
-//  in our code and we really want every occurrence of that to stand out. We might
-//  create a special opeator to use for that operation. That would make it stand
-//  out more when scanning the code for that operation than a text function call.
-//
-//  As an example have defined a new infix operator "<-||". Since it
-//  is an infix operator we needed to indicate it's precedence in expressions.
-//  We labeled it ": AdditionPrecedence", giving it the same precedence in
-//  expressions with multiple operators as addition and subtraction, but lower than
-//  multiplication and division.
-//
-//  Your first assignment is to implement "<-||" by replacing the line that says
-//  return false inside the definition below with a call to the existing
-//  addContainer() method. Now we could can use the <-|| operator like this:
-//      guard aStockTracker <-|| aContainer, aStockTracker <-|| bContainer else ...
-//  or
-//      if aStockTracker <-|| aContainer { ... } else { ... }
-//  When lookking through code for cases where we add MedicationContainers
-//  to a PharmaceuticalStockTracker, those will really stand out.
-//
-//  Your second assignment is to create a new postfix operator that will clean any
-//  expired medication from a PharmaceuticalStockTracker. It should remove any
-//  expired containers from the tracker and return an array of any containers that
-//  were removed. The array of expired containers should be sorted with the oldest
-//  expiration dates first. Define the characters that make up your operator using
-//  any allowed combination of characters as defined here:
-//      https://docs.swift.org/swift-book/ReferenceManual/LexicalStructure.html#ID418
-//
-//  Suppose your operator were defined as |||. Then it could be used like this:
-//      let removedContainers: [MedicationContainer] = aStockTracker|||
-//
-//  Hint: you may find "filter()" and "sorted()" useful here.
-//
-//  After you are done, change "return nil" in task10() to "return {$0|||}"
-//  using the operator you define instead of "|||" in the closure.
-//
-infix operator <-||: AdditionPrecedence
-extension PharmaceuticalStockTracker {
-    static func <-|| (tracker: inout PharmaceuticalStockTracker, container: MedicationContainer) -> Bool {
-        // replace this line with a call to addContainer()
-        return false
-    }
-}
-func task10() -> ((inout PharmaceuticalStockTracker)->[MedicationContainer])? {
     return nil
 }
