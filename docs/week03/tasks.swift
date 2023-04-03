@@ -87,7 +87,7 @@ func task0() -> (MedicationContainer, MedicationContainer) {
 //  You do not need to create the protocols. They already exist in main.swift. Just use them.
 //
 //  Using the code in Task0() that creates aLiquidContainer and aTabletContainer as an example,
-//  create an object of each of the two child class Types and then return then from the task
+//  create an object of each of the two child class Types and then return them from the task
 //  in the tuple instead of nil values.
 //  Note that the test code will report this function as not implemented as long as either of the two
 //  values returned in the tuple is nil. So when you have added the new property, applied the protocols
@@ -161,7 +161,7 @@ func task4(_ int1: Int, _ int2: Int) -> Int? {
 //      any value. You can think of Any as a wrapper that allows objects
 //      of different types to be in the same Array. But each element
 //      still remembers its native value.
-//  THe "is" operator returns true if the left operand has the underlying
+//  The "is" operator returns true if the left operand has the underlying
 //      native type specified as the right operand. If the Array were [Any]
 //      it could have Any value except nil. But since the Type is [Any?] it
 //      can also contain nil values. Conveniently, the Swift compiler
