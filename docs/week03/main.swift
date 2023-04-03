@@ -25,7 +25,7 @@ enum TestResults {
 
 // This must list the tests in order: test0, test1... so they can be called with their test number and
 // not need to hard code the Task name into the test except when calling the task function
-var tests: [(Int) -> TestResults] = [test0, test1, test2, test3, test4, test5, test6, test7, test8, test9, test10]
+var tests: [(Int) -> TestResults] = [test0, test1, test2, test3, test4, test5, test6, test7, test8, test9]
 var taskResults: [TestResults] = Array(repeating: .testNotImplemented, count: tests.count)
 var savedInput: [String?] = []
 var savedPrint: [String?] = []
@@ -760,74 +760,6 @@ private func test9(testNum: Int) -> TestResults {
     }
     guard !returnedFunction(aContainer, dContainer) else {
         return fail(testNum, "Expected \(bContainer) > \(dContainer)")
-    }
-
-    return .testPassed
-}
-
-//  Format printing an array of containers to make it easier to read our error messages
-private func describeArrayOfContainers(_ containers: [MedicationContainer]) -> String {
-    var returnString = "[\n\t"
-    var first = true
-    for container in containers {
-        if first {
-            first = false
-        } else {
-            returnString += ", \n\t"
-        }
-        returnString += "\(container)"
-    }
-    return returnString + "]"
-}
-//  We can't use "==" for this because it is not defined for MedicationContainers
-//  until Task 8 so we would not compile before then. This function also has an option
-//  to ignore the order of the items in the arrays which is required functionality.
-private func compareContainerArrays(_ lhs: [MedicationContainer], _ rhs: [MedicationContainer], ordered: Bool) -> Bool {
-    guard lhs.count == rhs.count else { return false }
-    if ordered {
-        for index in 0..<lhs.count {
-            guard lhs[index].id == rhs[index].id else { return false }
-        }
-    } else {
-        for lhsContainer in lhs {
-            var found = false
-            for rhsContainer in rhs {
-                if lhsContainer.id == rhsContainer.id {
-                    found = true
-                    break
-                }
-            }
-            guard found else { return false }
-        }
-    }
-    return true
-}
-private func test10(testNum: Int) -> TestResults {
-    guard let returnFunction: ((inout PharmaceuticalStockTracker)->[MedicationContainer]) = task10() else { return .testNotImplemented }
-    
-    // Set up some containers
-    guard let aContainer = testContainer(testItem(n: "med1", d: 90, 0.01,2,"cc", nil,nil,nil)), // LiquidMedicationContainer
-          let bContainer = testContainer(testItem(n: "med1", d: -120, 0.01,2,"cc", nil,nil,nil)), // Another LiquidMedicationContainer, identical except expiration date
-          let cContainer = testContainer(testItem(n: "med2", d: 180, nil,nil,nil, 30,4.1,"mg")), // TabletMedicationContainer
-          let dContainer = testContainer(testItem(n: "med2", d: -10, nil,nil,nil, 30,4.1,"mg")) else { // Another TabletMedicationContainer, expired
-        return fail(testNum, "Internal testing error. Could not create test containers.")
-    }
-    
-    var testTracker = PharmaceuticalStockTracker()
-    testTracker.inStockMedications = [aContainer, bContainer, cContainer, dContainer]
-    
-    let deletedContainers = returnFunction(&testTracker)
-    // Make sure they deleted the right containers
-    guard compareContainerArrays(deletedContainers, [bContainer, dContainer], ordered: true) else {
-        print("Applied new operator to PharmaceuticalStockTracker with inStockMedications = \(describeArrayOfContainers([aContainer, bContainer, cContainer, cContainer]))")
-        print("Expected returned array of deleted containers to be \(describeArrayOfContainers([bContainer, dContainer]))")
-        return fail(testNum, "Actual returned array of deleted containers was \(describeArrayOfContainers(deletedContainers))")
-    }
-    // Make sure they kept the right containers
-    guard compareContainerArrays(testTracker.inStockMedications, [aContainer, cContainer], ordered: false) else {
-        print("Applied new operator to PharmaceuticalStockTracker with inStockMedications = \(describeArrayOfContainers([aContainer, bContainer, cContainer, cContainer]))")
-        print("Expected containers retained in inStockMedications to be \(describeArrayOfContainers([aContainer, cContainer]))")
-        return fail(testNum, "Actual containers retained in inStockMedications are \(describeArrayOfContainers(testTracker.inStockMedications))")
     }
 
     return .testPassed
