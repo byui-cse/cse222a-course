@@ -298,22 +298,3 @@ func task7(inArray: [Int]) -> [Int]? {
 func task8(rowCount: Int, columnCount: Int, aRange: ClosedRange<Int>) -> [[Int]]? {
     return nil
 }
-
-//  Task 9
-//  Add code that accepts an Array of Array of Int values.
-//  For each row in the input Array, calculate the minimum, maximum and mean or average of that row.
-//  Then store the minimum, maximum and average as doubles in a row of a new Array.
-//  Return the new Array with a row of three Doubles corresponding to each row in the input Array.
-//  The input Array intValues will contain random integers. Your code should work with any size of array.
-//  The number of rows and columns in the array will vary between 10 and 30
-//
-//  Hint:
-//  You can use the name of Types like Int and Double as functions that construct an element of that Type.
-//  You can research the parameters available, but one option is use Double(anInt) to get a Double that
-//  matches the value of anInt. For the calculation of mean, you may need to convert the values to Double
-//  before operations like division. If you write Double(anInt/anotherInt) it would do Integer division
-//  and then convert the result to Double which is probably not what you want.
-//
-func task9(intValues: [[Int]]) -> [[Double]]? {
-    return nil
-}
