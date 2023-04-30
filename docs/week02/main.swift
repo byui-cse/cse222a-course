@@ -508,6 +508,13 @@ private func test7(testNum: Int) -> TestResults {
     // Call the task function and report "testNotImplemented if it returns nil
     guard let result = task7(inArray: passArray) else { return .testNotImplemented }
 
+    // Check the length of the input array. Otherwise, if the student builts an array too short we
+    // will crash rather than returning an error message.
+    let totalLength = wantedResults.reduce(0,{ $0 + $1.count })
+    guard result.count == totalLength else {
+        return fail(testNum, "Expected returned array have \(totalLength) Int values, but it contained \(result.count) values")
+    }
+    
     // We use for...in to step through wantedResults, but we also need to index through the result
     var resultIndex = 0
     // Step through the desired results
