@@ -533,9 +533,9 @@ func task6() -> Bool? {
 
 //  Task 7
 //  Lets demonstrate how having the DateSequencer object conform to
-//  Sequence really adds value. In task8() below, create a DateSequencer
+//  Sequence really adds value. In task7() below, create a DateSequencer
 //  object. Call setDates() on your DateSequencer using the parameters passed
-//  into task8(). Create an empty array of type [Date]. Then write a for-in
+//  into task7(). Create an empty array of type [Date]. Then write a for-in
 //  loop that loops on your DateSequencer and appends each value produced by
 //  the for statement to your array of Dates. The result will be that for-in
 //  uses your struct to help you create an array of dates that matches the
