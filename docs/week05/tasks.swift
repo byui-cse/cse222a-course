@@ -25,12 +25,14 @@ import Foundation
 //  understand it. We usually try to set a good example by documenting our
 //  code carefully, but for this we deliberately did not.
 //
-extension Range<Int> {
+//extension Range<Int> {
+extension Range where Bound == Int {
     func randomArray(_ size: Int) -> [Bound] {
         return (0..<size).map { _ in Int.random(in: self) }
     }
 }
-extension ClosedRange<Int> {
+// extension ClosedRange<Int> {
+extension ClosedRange where Bound == Int {
     func randomArray(_ size: Int) -> [Bound] {
         return (0..<size).map { _ in Int.random(in: self) }
     }
@@ -403,4 +405,3 @@ func task3(_ theSheet: Spreadsheet) -> (Spreadsheet)? {
 
     return nil
 }
-    
