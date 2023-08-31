@@ -33,12 +33,14 @@ import Foundation
 //  understand it. We usually try to set a good example by documenting our
 //  code carefully, but for this we deliberately did not.
 //
-extension Range<Int> {
+//extension Range<Int> {
+extension Range where Bound == Int {
     func randomArray(_ size: Int) -> [Bound] {
         return (0..<size).map { _ in Int.random(in: self) }
     }
 }
-extension ClosedRange<Int> {
+// extension ClosedRange<Int> {
+extension ClosedRange where Bound == Int {
     func randomArray(_ size: Int) -> [Bound] {
         return (0..<size).map { _ in Int.random(in: self) }
     }
@@ -151,6 +153,7 @@ func printWalk(theSteps: [Steps]) {
             location.0 -= increments[direction].0 * distance
             location.1 -= increments[direction].1 * distance
             toPrint += " B\(distance)"
+            break
         case .turnRight:
             direction = (direction + 3) % 4
             toPrint += " R\(direction)"
