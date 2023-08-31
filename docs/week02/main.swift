@@ -508,7 +508,7 @@ private func test7(testNum: Int) -> TestResults {
     // Call the task function and report "testNotImplemented if it returns nil
     guard let result = task7(inArray: passArray) else { return .testNotImplemented }
 
-    // Check the length of the input array. Otherwise, if the student builts an array too short we
+    // Check the length of the input array. Otherwise, if the student builds an array too short we
     // will crash rather than returning an error message.
     let totalLength = wantedResults.reduce(0,{ $0 + $1.count })
     guard result.count == totalLength else {
