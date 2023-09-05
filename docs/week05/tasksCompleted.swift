@@ -289,9 +289,8 @@ func task2(intArray: [Int], canThrow: throwingFunction) throws -> Int? {
 //  or text to display. Let's simulate a simple spreadsheet and have you evaluate the
 //  spreadsheet so it could be displayed to a hypothetical user.
 //
-//  Together, the enums ValueOrFormula and Operators define the contents of a cell in our
-//  spreadsheet. Each cell can contain:
-//      an .int,
+//  We define two enum Types: ValueOrFormula and Operators. Together, they define the
+//  contents of a cell in our spreadsheet. Each cell can contain:
 //      a .double,
 //      a .string,
 //      an .op (operation) with associated values indicating the lhs (left-hand-side),
@@ -302,114 +301,78 @@ func task2(intArray: [Int], canThrow: throwingFunction) throws -> Int? {
 //  allowing the user to write more complex (recursive) formulas.
 //
 //  For example, a user might enter cell values like this in the first row:
-//      2               One String           @(2,1)
+//      2.3               One String           @(2,1)
 //  Those values would be represented internally like this:
-//      [ .int(2), .string("One String"), .ref(2,1) ]
+//      [ .double(2.3), .string("One String"), .ref(2,1) ]
 //  The first two cells contain values. The third cell contains a reference to the
 //  second cell so when we evaluate this row we would wind up with:
-//      [ .int(2), .string("One String"),  .string("One String")]
+//      [ .double(2.3), .string("One String"),  .string("One String")]
 //  and the user display would show something like this:
-//      2               One String          One String
+//      2.3               One String          One String
 //
 //  In the second row, the user might type something like this:
-//      1.2 * 2         3.1 - @(1,1)        -7.4 + ( @(1,1) + @(3,1) )
+//      1.2 * 2.3         3.1 - @(1,1)        -7.4 + ( @(1,1) + @(3,1) )
 //  We would represent that internally like this:
-//     [ .op(.double(1.2), .times, .int(2)),
+//     [ .op(.double(1.2), .times, .double(2.3)),
 //              .op(.double(3.1), .minus, .ref(1,1)),
 //              .op(.double(-7.4), .plus, .op(.ref(1,1), .plus, .ref(3,1))) ]
 //  When we evaluate it, the result would be this:
-//     [ .double(2.4)   .double(1.1)    .string("-7.42One String") ]
+//     [ .double(2.76)   .double(0.34)    .string("-7.42One String") ]
 //
-//  Your assignment is to write code in task4(), probably using some other functions
-//  you create, that will evaluate a spreadsheet containing cells of type ValueOrFormula
-//  and return an Array of the same Type with fully evaluated cells. Fully evaluated
-//  cells should have no .op nor .ref values in the cells.
+//  Your assignment is to complete some functions to make task3() correctly evaluate
+//  spreadsheets, reducing each cell to the basic enums of .double, .string or .error.
+//  Fully evaluated cells should have no .op nor .ref values in the cells.
 //
-//  The evaluation rules are as follows (in priority order):
-//      1) If a cell contains an .int, .double, .string, or .error just leave it as-is
-//      2) If either operand of any operator is a .error, the value of the operation is
-//              the same .error
-//      2) If either operand of .plus is a .string, convert both operators to strings
-//              and concatenate the strings together
-//      2) If either operand of the other three operators is a .string, the result
-//              should be a descriptive .error
-//      3) If the rhs of .divide evaluates to 0, the result should be an .error
-//      4) If both operands of an operator are .int, the result should be .int except
-//              for .divide. If both operands of .divide are .int the result should
-//              be .int if the rhs divides into the lhs evenly and otherwise the
-//              result should be .double
-//      5) If one operand of an operator is a .double and the other operand is either
-//              a .int or a .double convert both operands to Double before performing
-//              the operation and the result is .double (be sure to do the conversion
-//              before the operation).
-//      6) A .ref reference has the evaluated value of the referenced cell. That means
-//              as you evaluate a cell that contains a reference, you will need to
-//              evaluate the referenced cell before continuing to evaluate the current
-//              cell containing the reference. So your evaluation function will need to
-//              be recursive. Recursion is also needed since an operand of an operator
-//              can itself contain a nested operator. If .ref refers to an call outside
-//              the bounds of the spreadsheet, replace it with a descriptive .error.
-//      Note: Usually, you would need to detect and handle recursive loops where a chain
-//      of references refers back to an earlier cell in the chain. We have provided a
-//      function called removeCircularReferences() that turns all cells in a recursive
-//      loop of references into descriptive .errors so you do not need to check for those
-//      situations. The code in task3() below is already set up to call removeCircular()
-//      as the first thing it does so the Array will be ready for your code to process.
+//  The Evaluation Rules are as follows (in priority order):
+//      1) If a cell contains a .double, .string, or .error just leave it as-is,
+//      2) If the cell contains a .op, first call the evaluate() function to (recursively)
+//              evaluate the operands, then try to process the operator,
+//      3) If either operand of any operator is a .error, the value of the operation is
+//              the same .error (just return the value of that operand),
+//      4) If either operand of .plus is a .string and the other is a .string or .double,
+//              convert both operators to strings and concatenate the strings together,
+//      5) .plus works on .strings and .doubles while .minus, .times and .divide work only
+//              on .doubles so any other operands should return a .error,
+//      6) If the second operand of .divide is .double(0.0), return an .error,
+//      7) A .ref reference has the value of the referenced cell. But it may reference
+//              a cell that has not yet been evaluated (simplified) so you need to
+//              find the referenced cell in the array, call evaluate() to simplify it
+//              and save the new value, then return the evaluated value as the value of
+//              the .reference. See the "Note on Presenting Data to the User for .ref"
+//              below to make sure you are referencing the correct cell in the array.
+//      ** As you write your code, please refer back to this list of evaluation rules. **
 //
-//  Note on Presenting Data to the User:
-//  When we code user facing software, we must remember to represent things
-//  the way the user expects to see them, not the way we would normally handle
-//  and represent them internal to our code. For that reason .ref is 1 based, not
-//  0 based so (1,1) refers to the top left cell. Your bounds checking needs to
-//  take that into account. Also, while we internally refer to Arrays with row
-//  first like "anArray[row][column]", Spreadsheet users expect to refer to
-//  a cell in Column Row order so that is how .ref(col,row) is set up. We could
-//  have set it up to store the references as 0 based and with the row in the
-//  first associated value and translated when we present the interface to the
-//  the user, but in this case we chose to represent the data as close to the
-//  user view of the data as possible to help ensure we present it correctly.
-//  That does require extra caution in the code evaluating .ref values. Be
-//  careful to adjust for 1 based references and for to remember that the ordering
-//  inside a .ref is column,row or your code may generate interesting crashes.
-//  Also note that unlike Task 0, we have increasing y (row number) go down
-//  on the screen rather than up since that is what spreadsheet users expect.
+//  Note on Presenting Data to the User for .ref:
+//      When we write code that interacts directly with the user, we must remember to
+//      represent things the way the user expects to see them. For example, we index arrays
+//      starting at 0, but users expect to see spreadsheets start numberint cells with 1. So
+//      the .ref associated values will start at (1,1) for the top left cell.
+//      Also, if we are accessing elements of a two-dimensional array, we usually would access
+//      them like  "anArray[row][column]", but spreadsheet users expect to list the column first
+//      so our .ref associated values will be ".ref(column, row)". Be careful to do your .ref
+//      lookup in to the array correctly, adjusting for the fact that the .ref assocaited values
+//      start at (1,1) and list the numbers (column,row).
 //
-//  We recommend that you set up a Dictionary to help you evaluate operators
-//  with a key of type Operators and a value that is a closure to evaluate that
-//  Operator. We provide a typealias for the closure to help you define that
-//  Dictionary. We have also provided a function printSheet() that will print a
-//  spreadsheet in a format that is easier to read and more meaningful than
-//  the default printout you would get from just calling testPrint(). We
-//  also defined "description"" and "userDescription properties" for the two
-//  enum Types and made them comply with CustomStringConvertible to help us
-//  print more descriptive information about them.
+//  Note on recursion:
+//      We need to have a separate evaluate() function and cannot do the switch on the contents
+//      of an Array cell because we need to be able to recursively  evaluate the operands of a
+//      .op and also to recursively evaluate a cell referenced by .ref. The .op recursion can
+//      only go as deep as the formula being evaluated, but a .ref could possibly refer to itself
+//      or to a cell that refers bacck to the same cell. This could cause what spreadsheets call
+//      a circular reference. That could cause your recursive calls to loop infinitely. You do
+//      not need to worry about that because we have a funcation at the top of task3() that
+//      looks for circular references and evaluates them into a .error.
 //
-//  Changing the last line of task3() from "return nil" to instead say
-//  "return resultSheet" will indicate that you are ready to have the code
-//  in main.swift test your evaluation of the input spreadsheet that is
-//  stored in resultSheet.
-//
-//  As mentioned in Task0, it sometimes helps to incrementall build and test
-//  a solution. To help with that, if you change task3() to return resultSheet
-//  it will run a series of test spreadsheets through your code. Sheet 0
-//  will only include .int, .double and .string values. Sheet 1 one will also
-//  include a single .plus operations in each cell. Both Sheets 0 and 1 will
-//  only be one dimensional. Sheet 2 will have a single operation of any kind
-//  in each cell and will be two dimensional (.plus, .minus, .times, .divide).
-//  Sheet 3 one will include more complex equations in the cells that will test
-//  the recursion in processing operators. Sheet 4 will do do simple cell
-//  references. Sheet 5 one will test everything together. It will only test each
-//  sheet until one fails so, for example, if Sheet 2 fails, it will not proceed
-//  to test Sheet 3.
-//
+//  Here are the enum types that make up our spreadsheet contents:
 enum Operators: String, CustomStringConvertible {
     case plus // if either parameter is String, convert both to String and concatenate
     case minus
     case times
     case divide
 
+    // This will print an internal view of the spreadsheet
     var description: String { return self.rawValue }
-    // this is used to print the user view of the spreadsheet
+    // This is used to print the user view of the spreadsheet
     var userDescription: String {
         switch self {
             case .plus: return " + "
@@ -419,13 +382,12 @@ enum Operators: String, CustomStringConvertible {
         }
     }
 }
-//  Because ValueOrFormula has associated values of type ValueOrFormula
+//  Because ValueOrFormula has some associated values of type ValueOrFormula
 //  it is a recursive Type. That means that the compiler cannot determine
 //  at runtime the size of a particular value of ValueOrFormula. To address
 //  this, we must mark the type "indirect" which causes it to be used
-//  by reference like a class rather than by value like other enums.
+//  "by reference" like a class rather than "by value" like other enums.
 indirect enum ValueOrFormula: CustomStringConvertible {
-    case int(Int)
     case double(Double)
     case string(String)
     case op(ValueOrFormula, Operators, ValueOrFormula)
@@ -433,9 +395,9 @@ indirect enum ValueOrFormula: CustomStringConvertible {
         // User oriented so 1 based meaning ref(1,1) is contents of top left cell
     case error(String)
 
+    // This will print an internal view of the spreadsheet
     var description: String {
         switch self {
-        case let .int(anInt): return ".int(\(anInt))"
         case let .double(aDouble): return ".double(\(aDouble))"
         case let .string(aString): return ".string(\(aString))"
         case let .op(lhs, anOp, rhs): return "(\(lhs) \(anOp) \(rhs))"
@@ -443,10 +405,9 @@ indirect enum ValueOrFormula: CustomStringConvertible {
         case let .error(aString): return ".error(\(aString))"
         }
     }
-    // this is used to print the user view of the spreadsheet
+    // This is used to print the user view of the spreadsheet
     var userDescription: String {
         switch self {
-        case let .int(anInt): return "\(anInt)"
         case let .double(aDouble): return "\(aDouble)"
         case let .string(aString): return "\"\(aString)\""
         case let .op(lhs, anOp, rhs): return "(" + lhs.userDescription + anOp.userDescription + rhs.userDescription + ")"
@@ -460,173 +421,227 @@ indirect enum ValueOrFormula: CustomStringConvertible {
 }
 // This defines the type we use for our spreadsheet
 typealias Spreadsheet = [[ValueOrFormula]]
-// This defines a closure Type you might use as the value in a Dictionary
-typealias OperatorClosure = (ValueOrFormula, ValueOrFormula) -> ValueOrFormula
-
-//  The following two functions are defined in main.swift, but can be used here
-//      func printSheet(_ aSheet: Spreadsheet, userView: Bool = false)
-//      func removeCircularReferences(_ aSheet: Spreadsheet) -> Spreadsheet
-
 //  This variable is where you will build your return value after we remove
 //  circular references from it
 var resultSheet: Spreadsheet = []
 
-// EDITOR for tasks.swift delete invalid(), "operators" and "evaluate()"
+// Step by step instructions:
+//      We encourage you to implement this task incrementally step by step. This is
+//      good practice to develop more complex solutions.
+//
+//  1)  Change "return nil" at the end of task3() to "return resultSheet". This tells
+//      the test code to start testing. The first test just checks that simple values
+//      are returned as-is. The code currently returns all values as-is so it should
+//      pass the first test. As each test is passed, the test code passes more complex
+//      spreadsheets into task3(). If there are errors in the evaluation it will show
+//      what was passed in, what it expected to have returned and what was returned.
+//      You can compare what was expected to what was returned to see what you need
+//      to fix next.
+//  2)  The code in evaluate() for .op looks up a closure for each operator and calls it.
+//      Implement the closure for .plus. It is already partially set up. It does a
+//      switch on the lhs operator. You need fill in the cases for .double, .string and
+//      .error and change the default to return a .error. You can call invalid() to
+//      construct that .error. The .error case should just return the value for the lhs
+//      operator. The other two cases have a switch on the rhs inside them. The default
+//      and .error cases should do the same as for the lhs. For the .double and .string
+//      cases you need to follow the "Evaluation Rules" above. Once you do that correctly,
+//      your code should pass the second test that only uses simple .plus operators.
+//  3)  You will notice that your code fails the third test that has more complicated .plus
+//      operators. That is because the operands of a .plus can themselves contain operators
+//      so we need to first evaluate the operands and then the operator. Change the line
+//      in evaluate() that has "return operatorClosure(lhs, rhs)" to evaluate the operators
+//      first by changing it to be "return operatorClosure(evaluate(lhs), evaluate(rhs))".
+//      Your code should now pass the third test.
+//  4)  The fourth test uses the other operators: .minus, .times and .divide. Add entries
+//      to the operators dictionary for each of those operators. Notice the differences for
+//      those operators in the "Evaluation Rules" above. They do not accept strings and the
+//      .divide operator needs to check for divide by 0. Once you correctly impelement the
+//      other three operators, your code should pass the fourth test.
+//  5)  Now you need to impelment the .ref option inside the evaluate() function. Review
+//      the "Evaluation Rules" above closely. Once you have the .ref implemented, your
+//      code should pass all tests. If it crashes or seems to go into an infinite loop
+//      you are probably referencing the wrong call of the array. Make sure you allow
+//      for the references to be based at (1,1) and to be (column, row) and not
+//      (row, column). Also, you should check that the .ref values are valid and return
+//      a .error if the value for row or column is less than 1 or if the value for row
+//      is greater than resultSheet.count or the value for column is greater than
+//      resultSheet[0].count (the size of the first row). We only have square spreadsheets
+//      so the size of all rows is the same and you can just use the size of the first row.
+
+//  The following two functions are defined in main.swift, but can be used here
+//      func printSheet(_ aSheet: Spreadsheet, userView: Bool = false)
+//          This will print the sheet showing either the internal or user view.
+//      func removeCircularReferences(_ aSheet: Spreadsheet) -> Spreadsheet
+//          This is called in task3() to remove circular references.
+
+// This defines a closure Type we use as the value in a Dictionary of operators
+typealias OperatorClosure = (ValueOrFormula, ValueOrFormula) -> ValueOrFormula
+
+// This function is provided to help you construct a .error with an invalid operand
+// If you detect invalid operands you can return the value of this to construct the .error
 func invalid(_ operand: ValueOrFormula, for anOperator: String) -> ValueOrFormula {
     return .error("\(operand) invalid operand for \(anOperator)")
 }
+
+// This is a dictionary of closures to implement the operators
+// We have partially constructed the closure for .plus
+#if true // this is the verson for tasksCompleted
 let operators: Dictionary<Operators, OperatorClosure> = [
-    //  I could write this more efficiently than covering each combination of cases,
-    //  but it was easy to copy and paste once I set up .plus and I don't want to
-    //  assume every student will figure out to convert the operands first and
-    //  then process the operator to simplify the code. The rule for integer divide
-    //  would still need special handling.
-    .plus : { (lhs, rhs) in
+        .plus : { (lhs, rhs) in
         switch lhs {
-        case .int(let lhsInt):
-            switch rhs {
-            case .int(let rhsInt):
-                return .int(lhsInt + rhsInt)
-            case .double(let rhsDouble):
-                return .double(Double(lhsInt) + rhsDouble)
-            case .string(let rhsString):
-                return .string(String(lhsInt) + rhsString)
-            default:
-                return invalid(rhs, for: "plus")
-            }
         case .double(let lhsDouble):
             switch rhs {
-            case .int(let rhsInt):
-                return .double(lhsDouble + Double(rhsInt))
             case .double(let rhsDouble):
-                return .double(Double(lhsDouble + rhsDouble))
+                return .double(lhsDouble + rhsDouble)
             case .string(let rhsString):
                 return .string(String(lhsDouble) + rhsString)
+            case .error:
+                return rhs
             default:
                 return invalid(rhs, for: "plus")
             }
         case .string(let lhsString):
             switch rhs {
-            case .int(let rhsInt):
-                return .string(lhsString + String(rhsInt))
             case .double(let rhsDouble):
                 return .string(lhsString + String(rhsDouble))
             case .string(let rhsString):
                 return .string(lhsString + rhsString)
+            case .error:
+                return rhs
             default:
                 return invalid(rhs, for: "plus")
             }
-        default:
+        case .error:
+            return lhs
+       default:
             return invalid(lhs, for: "plus")
         }
     },
     .minus : { (lhs, rhs) in
         switch lhs {
-        case .int(let lhsInt):
-            switch rhs {
-            case .int(let rhsInt):
-                return .int(lhsInt - rhsInt)
-            case .double(let rhsDouble):
-                return .double(Double(lhsInt) - rhsDouble)
-            default:
-                 return invalid(rhs, for: "minus")
-            }
         case .double(let lhsDouble):
             switch rhs {
-            case .int(let rhsInt):
-                return .double(lhsDouble - Double(rhsInt))
             case .double(let rhsDouble):
                 return .double(Double(lhsDouble - rhsDouble))
+            case .error:
+                return rhs
             default:
                  return invalid(rhs, for: "minus")
             }
-       default:
+        case .error:
+            return lhs
+        default:
             return invalid(lhs, for: "minus")
         }
     },
     .times : { (lhs, rhs) in
         switch lhs {
-        case .int(let lhsInt):
-            switch rhs {
-            case .int(let rhsInt):
-                return .int(lhsInt * rhsInt)
-            case .double(let rhsDouble):
-                return .double(Double(lhsInt) * rhsDouble)
-            default:
-                 return invalid(rhs, for: "times")
-            }
         case .double(let lhsDouble):
             switch rhs {
-            case .int(let rhsInt):
-                return .double(lhsDouble * Double(rhsInt))
             case .double(let rhsDouble):
-                return .double(Double(lhsDouble * rhsDouble))
+                return .double(lhsDouble * rhsDouble)
+            case .error:
+                return rhs
             default:
                  return invalid(rhs, for: "times")
             }
-       default:
+        case .error:
+            return lhs
+        default:
             return invalid(lhs, for: "times")
         }
     },
     .divide : { (lhs, rhs) in
         switch lhs {
-        case .int(let lhsInt):
-            switch rhs {
-            case .int(let rhsInt):
-                guard rhsInt != 0 else { return .error("cannot divide by zero") }
-                if lhsInt % rhsInt == 0 {
-                    return .int(lhsInt / rhsInt)
-                } else {
-                    return .double(Double(lhsInt) / Double(rhsInt))
-                }
-            case .double(let rhsDouble):
-                guard rhsDouble != 0 else { return .error("cannot divide by zero") }
-                return .double(Double(lhsInt) / rhsDouble)
-            default:
-                 return invalid(rhs, for: "divide")
-            }
         case .double(let lhsDouble):
             switch rhs {
-            case .int(let rhsInt):
-                guard rhsInt != 0 else { return .error("cannot divide by zero") }
-                return .double(lhsDouble / Double(rhsInt))
             case .double(let rhsDouble):
                 guard rhsDouble != 0 else { return .error("cannot divide by zero") }
                 return .double(Double(lhsDouble / rhsDouble))
+            case .error:
+                return rhs
             default:
                  return invalid(rhs, for: "divide")
             }
-       default:
+        case .error:
+            return lhs
+        default:
             return invalid(lhs, for: "divide")
         }
-    },
+    }
 ]
+#else // this is the version for tasks
+let operators: Dictionary<Operators, OperatorClosure> = [
+    .plus : { (lhs, rhs) in
+        switch lhs {
+        case .double(let lhsDouble):
+            switch rhs {
+            case .double(let rhsDouble):
+                return .error("not yet implemented")
+            case .string(let rhsString):
+                return .error("not yet implemented")
+            case .error:
+                return .error("not yet implemented")
+            default:
+                return .error("not yet implemented")
+            }
+        case .string(let lhsString):
+            switch rhs {
+            case .double(let rhsDouble):
+                return .error("not yet implemented")
+            case .string(let rhsString):
+                return .error("not yet implemented")
+            case .error:
+                return .error("not yet implemented")
+            default:
+                return .error("not yet implemented")
+            }
+        case .error:
+            return .error("not yet implemented")
+       default:
+            return .error("not yet implemented")
+        }
+    }
+]
+#endif
+
 func evaluate(_ value: ValueOrFormula) -> ValueOrFormula {
     switch value {
-        case .int, .double, .string, .error: return value
+        // simple values are returned as-is
+    case .double, .string, .error: return value
     case let .op(lhs, op, rhs):
-        guard let closure = operators[op] else { return .error("Operator not in operators[]") }
-        return closure(evaluate(lhs), evaluate(rhs))  // pre-evaluate the operators so each closure does not need to
+        // Look up the operator in the array of operator closures
+        guard let operatorClosure = operators[op] else { return .error("Operator not in operators[]") }
+#if true // this is the verson for tasksCompleted
+        // recursively pre-evaluate the operators so they are simplified before we use them
+        return operatorClosure(evaluate(lhs), evaluate(rhs))  // pre-evaluate the operators so each closure does not need to
+#else // this version is for tasks
+        return operatorClosure(lhs, rhs)
+#endif
     case let .ref(col, row):
+#if true // this is the verson for tasksCompleted
         guard row > 0, row <= resultSheet.count else { return .error("row \(row) in reference not in range") }
         guard col > 0, col <= resultSheet[row-1].count else { return .error("row \(row) in reference not in range") }
         resultSheet[row-1][col-1] = evaluate(resultSheet[row-1][col-1]) // make sure the cell is fully evaluated first
         return resultSheet[row-1][col-1]
+#else // this version is for tasks
+        return value // for now, return the value unevaluated
+#endif
     }
 }
+
 func task3(_ theSheet: Spreadsheet) -> (Spreadsheet)? {
+    // This will replace circular references with .error values to avoide infinite recursion
     resultSheet = removeCircularReferences(theSheet)
 
-//  EDITOR for tasks.swift replace the rest of task3 with "return nil"
-//  Be sure to leave the first line of task3() that calls removeCircularReferences()
-
-    // Now evaluate the spreadsheet
+    // Step through the spreadsheet evaluating (simplifying) each cell
     for rowIndex in 0..<resultSheet.count {
         for colIndex in 0..<resultSheet[rowIndex].count {
             resultSheet[rowIndex][colIndex] = evaluate(resultSheet[rowIndex][colIndex])
         }
     }
 
+    //  EDITOR for tasks.swift replace the rest of task3 with "return nil"
     return resultSheet
 }
     
