@@ -283,7 +283,7 @@ extension PharmaceuticalStockTracker {
                 }
             }
         }
-        return expiredContainers.sorted(by: <)
+        return expiredContainers.sorted()
     }
 }
 func task1() -> Bool? {

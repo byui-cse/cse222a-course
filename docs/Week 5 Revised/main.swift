@@ -26,6 +26,7 @@ private var tests: [(Int) -> TestResults] = [test0, test1, test2, test3]
 private var taskResults: [TestResults] = Array(repeating: .testNotImplemented, count: tests.count)
 private var savedInput: [String?] = []
 private var savedPrint: [String?] = []
+private var lastPrintContinued = false
 private var currentTest = 0
 
 
@@ -67,6 +68,7 @@ private func setupReadLineAndPrint(testNum: Int) {
         savedPrint = []
         print() // print a blank line between output for tasks
     }
+    lastPrintContinued = false
     currentTest = testNum
 }
 
@@ -93,9 +95,11 @@ func testPrint(_ parameters: Any..., terminator: String = "\n") {
         // Being asked to print a blank line
         savedPrint.append(nil)
         print()
+        lastPrintContinued = false
     } else {
+        var lineToPrint = ""
         for parameter in parameters {
-            savedPrint.append(String(describing: parameter))
+            lineToPrint += String(describing: parameter)
             countDown -= 1
             if countDown > 0 {
                 print(parameter, terminator: "")
@@ -103,6 +107,12 @@ func testPrint(_ parameters: Any..., terminator: String = "\n") {
                 print(parameter, terminator: terminator)
             }
         }
+        if lastPrintContinued {
+            savedPrint[savedPrint.count - 1]? += lineToPrint
+        } else {
+            savedPrint.append(lineToPrint)
+        }
+        lastPrintContinued = terminator == ""
     }
 }
 
@@ -573,10 +583,10 @@ private func test3(testNum: Int) -> TestResults {
    
         let (resultBool, resultString) = compareSheets(returnValue, resultSheets[which])
         guard resultBool else {
-            testPrint("\nInternal view of expected return value #\(which):")
+            testPrint("\nInternal view of expected return value for Test #\(which):")
             printSheet(resultSheets[which])
             testPrint("")
-            return fail(testNum, resultString)
+            return fail(testNum, "Test #\(which+1) " + resultString)
             
         }
     }

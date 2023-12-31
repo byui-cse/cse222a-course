@@ -171,7 +171,7 @@ func task2() -> Bool? {
 
 //  Task 3
 //  A Range counts up from the first value to or almost to the last value.
-//  However, a rang cannot step backwards, Sometimes we want to count down.
+//  However, a range cannot step backwards, Sometimes we want to count down.
 //  An Array can act like a sequence and be used many places that a Range
 //  can be used. Let's create a function that can generate a either a Range
 //  or an array that we can use as a pseudo range. In generateRange() below,
