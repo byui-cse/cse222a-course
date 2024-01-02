@@ -461,20 +461,27 @@ private func test3(testNum: Int) -> TestResults {
     // Do 5 random tests of to generate a Range or an Array
     for _ in 0..<5 {
         let aTuple = (Int.random(in: -10...10), Int.random(in: -10...10))
-        guard let returnValue = generateRange(aTuple.0, aTuple.1) else { return .testNotImplemented }
+        guard var returnValue = generateRange(aTuple.0, aTuple.1) else { return .testNotImplemented }
         if aTuple.0 <= aTuple.1 { // should return a ClosedRange
             guard let returnRange = returnValue as? ClosedRange<Int> else {
-                return fail(testNum, "Called task\(testNum)(\(aTuple.0), \(aTuple.1)), but it did not return a ClosedRange as expected")
+                return fail(testNum, "Called generateRange(\(aTuple.0), \(aTuple.1)), but it did not return a ClosedRange as expected")
             }
             guard returnRange == aTuple.0...aTuple.1 else {
-                return fail(testNum, "Called task\(testNum)(\(aTuple.0), \(aTuple.1)) so expected \(aTuple.0...aTuple.1) but returned \(returnRange)")
+                return fail(testNum, "Called generateRange(\(aTuple.0), \(aTuple.1)) so expected \(aTuple.0...aTuple.1) but returned \(returnRange)")
             }
         } else { // should return an Array
+            if let aValue = returnValue as? ReversedCollection<Array<Int>> {
+                print("***Warning: generateRange returned a special type of ReversedCollection<Array<Int>> rather than [Int]")
+                print("***Warning: This will cause task4 to fail")
+                print("***Warning: If your code returns S where S is some formula, please convert it to Array()) like: return Array(S)")
+                returnValue = Array(aValue)
+
+            }
             guard let returnArray = returnValue as? Array<Int> else {
-                return fail(testNum, "Called task\(testNum)(\(aTuple.0), \(aTuple.1)), but it did not return an Array as expected")
+                return fail(testNum, "Called generateRange(\(aTuple.0), \(aTuple.1)), but it did not return an Array as expected")
             }
             guard returnArray.count == aTuple.0 - aTuple.1 + 1 else {
-                return fail(testNum, "Called task\(testNum)(\(aTuple.0), \(aTuple.1)) and expected an Array of size \(aTuple.0 - aTuple.1 + 1) but it returned an Array of size \(returnArray.count)")
+                return fail(testNum, "Called generateRange(\(aTuple.0), \(aTuple.1)) and expected an Array of size \(aTuple.0 - aTuple.1 + 1) but it returned an Array of size \(returnArray.count)")
             }
             var wantedInt = aTuple.0
             for anIndex in 0..<returnArray.count {

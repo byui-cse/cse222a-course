@@ -25,13 +25,11 @@ import Foundation
 //  understand it. We usually try to set a good example by documenting our
 //  code carefully, but for this we deliberately did not.
 //
-//extension Range<Int> {
 extension Range where Bound == Int {
     func randomArray(_ size: Int) -> [Bound] {
         return (0..<size).map { _ in Int.random(in: self) }
     }
 }
-// extension ClosedRange<Int> {
 extension ClosedRange where Bound == Int {
     func randomArray(_ size: Int) -> [Bound] {
         return (0..<size).map { _ in Int.random(in: self) }
@@ -94,10 +92,10 @@ func randomWalk(start: (Int, Int), numMoves: Int, maxMove: Int, twoDimensional: 
 //  receives and uses testPrint to print in a single line the result of
 //  actually doing that random walk, printing the moves as follows:
 //      (Put a single space between each of the following items)
-//      start: testPrint "S#,#" replacing # with the starting position numbers
-//      forward or backward: testPrint "F#" or "B#" replacing # with the
+//      on start: testPrint "S#,#" replacing # with the starting position numbers
+//      on forward or backward: testPrint "F#" or "B#" replacing # with the
 //          distance
-//      turnRight or turnLeft: testPrint "R#" and "L#" replacing # with the
+//      on turnRight or turnLeft: testPrint "R#" and "L#" replacing # with the
 //          direction faced after the turn using the direction numerals below
 //      After the end of the Array: testPrint "E#,#" with the ending position
 //  The direction numerals are as follows:
@@ -105,6 +103,9 @@ func randomWalk(start: (Int, Int), numMoves: Int, maxMove: Int, twoDimensional: 
 //      1 moving up, y incrementing
 //      2 moving left, x decrementing
 //      3 moving down, y decrementing
+//
+//  Here is an example of format of the desired output:
+//      "S9,6 B2 B1 R3 L0 F2 B2 R3 E6,6"
 //
 //  Note: we are using Cartesian coordinates where increasing y goes up.
 //  Most of the time in programming screen graphics you will use screen
@@ -117,7 +118,7 @@ func randomWalk(start: (Int, Int), numMoves: Int, maxMove: Int, twoDimensional: 
 //  change the last line in task0() from "return nil" to "return true".
 //  As you have probably figured out, you can change trom nil to true
 //  earlier if you want to start getting feedback on your work as you
-//  proceed. For example, if you choose to do so and since the first
+//  proceed. If you choose to do so and since the first
 //  tests are one dimensional you can implement .start, .forward and
 //  .backward first and test those, then implement turnRight and turnLeft.
 //  It is usually good practice to break a problem into pieces and then
@@ -186,7 +187,7 @@ func task1(_ someInts: [Int?]) throws -> Int? {
 //  can catch errors and recover from a thrown error and continue processing the
 //  Array. When an error is caught, testPrint "Error: " followed by the name of
 //  of the error and the associated value (if there is one). For example:
-//      Error: errorWithInt 7
+//      "Error: errorWithInt 7"
 //  Once you catch and testPrint an error of type Task2ErrorType, continue the
 //  loop to process the next Int in the Array. However, if you catch a "generic"
 //  error that is not in Type Task2ErrorType, you should "throw error" which
