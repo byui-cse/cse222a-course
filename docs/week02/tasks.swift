@@ -15,6 +15,19 @@
 //  warning errors. If you get an unexplained warning error from main.swift, please
 //  check if there is a comment near that line saying to ignore warning errors.
 //
+//  Two general hints:
+//  The first three tasks in this assignment ask you to collect input from the user
+//  so afte you complete those tasks, you will need to type in input every time you
+//  test later tasks. After you successfully complete each of those first three task
+//  functions, you can temporarily insert the line "return nil" before the final return
+//  in that function. That will skip over testing that function while you are conmpleting
+//  other functions. Be sure you remove those extra lines with "return nil" from the
+//  first three functions when you take your screen shot showing that all tasks pass.
+//
+//  Also, look very closely at the error messages. Sometimes the test code is looking
+//  for some exact wording. If your answer looks like it is the same, but has extra
+//  words or extra spaces, that could case the test code to reject it.
+//
 
 import Foundation
 
@@ -61,7 +74,7 @@ enum GuardedErrors: String {
 //  since the compiler knows that the return value Type is GuardedErrors
 //  3) Some languages use len() or .size to give the size of a string. In Swift,
 //  the number of elements in a collection like an array and the number of characters in
-//  a string are both given by the property ".count".
+//  a string are both given by the property ".count" as in "anArray.count".
 //
 func task0(aBool: Bool, int1: Int, int2: Int, aString: String) -> GuardedErrors? {
     return nil

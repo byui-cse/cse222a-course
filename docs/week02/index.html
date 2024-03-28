@@ -254,20 +254,22 @@ name = 3.1456778889547637653//compilation failure, type change</code></pre>
         retrieved some sort of data from a database, a file, the user, or a a
         web service. It's possible that the data doesn't exist. Therefore it
         could be nil. That means you have to check to see if the variable
-        holding the data is nil. In Swift, variables and function return values
-        that can sometimes be nil are called
+        holding the data is nil. In Swift, <b>variables, constants, function
+        parameters and function return values that can sometimes be nil are called
         <a
           href="https://www.programiz.com/swift-programming/optionals"
           target="_blank"
-          >Optionals.</a
-        >
+          >Optionals</a></b>.
+        Optionals are one of the most important new concepts you will learn this week.
+        And we will use them again and again throughout the course. So be sure you
+        take the time to try to really understand them.
         An Optional is either nil or it is a wrapper around a regular variable
         type. An Optional is indicated by putting a "?" immediately after the
         Type like this:
       </p>
       <pre><code>var city:String? = nil</code></pre>
       <p>
-        In English things reads: "Create a variable called city of type String
+        In English this reads: "Create a variable called city of type String
         Optional and set it to nil." If you later figure out what the city
         variable should be set to, you can have the city variable wrap a value
         by doing something similar to this.
@@ -288,12 +290,14 @@ name = 3.1456778889547637653//compilation failure, type change</code></pre>
       </p>
       <pre><code>print(city ?? "Unknown")</code></pre>
       <p>
-        This code prints "Unknown" if the String Optional city is nil, or the
-        value wrapped by the String Optional if city is not nil. this is due to
+        This code prints "Unknown" if the String Optional city is nil. If the
+        city is not nil, it will print the value wrapped in the Optional. this is due to
         the nil-coalescing operator, ??. That's its job. In this case, Kinshasa
         is printed out since city is not nil.
       </p>
       <p>
+        There is another way to unwrap an optional using "if" or "guard" statements.
+        We will discuss those a bit later in this document.
         You can also “force—unwrap” a variable by putting a “!” right after it.
         But this completely defeats the features of Swift that help avoid many
         of the common errors responsible for zero-day attacks on the internet.
@@ -317,8 +321,12 @@ name = 3.1456778889547637653//compilation failure, type change</code></pre>
         in large Python code sets. One way Swift helps reduce the extra words in
         code making it generally easier to read is by not requiring you to
         specify things that the compiler can figure out. An example is not
-        needing to specify a variable or constant Type if it can be inferred by
-        the compiler.
+        needing to specify the Type of a variable or constant if it can be
+        inferred by the compiler. Swift is strictly typed meaning each variable or
+        constant has a specific type and can only be used as that type unless there
+        is a specific conversion. But with Types and many other aspect of the
+        language if the compiler can figure something out on its own, you do not
+        need to write it out.
       </p>
       <p>
         Which set of operators to include in a language often depends on the
@@ -452,10 +460,20 @@ name = 3.1456778889547637653//compilation failure, type change</code></pre>
       </p>
       <pre><code class="Swift">var directionToHead = CompassPoint.west</code></pre>
       <p>
-        Once the type of the variable is defined, you can change it using a
-        shorter syntax (since the enum type can be inferred):
+        As another example of Swift not making you write out things that the
+        compiler can figure out on its own, if you know a variable, constant, return
+        value or parameter has a specific enum type, you and leave off the enum type.
+        So if later we want to assign CompasPoint.east to the variable directionToHead,
+        since we know its type is CompasPoint we do not need to write that out:
       </p>
       <pre><code class="Swift">directionToHead = .east</code></pre>
+          <p>
+            Note that in some languages you may refer to members of an enum just by
+            name like "east" but in Swift, we keep the dot to remind us that the
+            enum type is still there like ".east", but it is optionally not written
+            since we already know what Type it is.
+          </p>
+
       <h1>Organization and Access</h1>
       <p>
         All computer languages are ways to organize your communication and
@@ -521,7 +539,7 @@ name = 3.1456778889547637653//compilation failure, type change</code></pre>
         operators. These are used instead of the white-space scope operator used
         in Python. In Swift, white space means nothing but when writing your
         code, it is important to use white space to help make your code easier
-        to read. Never remove all indentations in your code.
+        to read.
       </p>
       <p>
         Additionally, the name and type of the parameters must be declared with
@@ -530,9 +548,9 @@ name = 3.1456778889547637653//compilation failure, type change</code></pre>
       </p>
       <p>
         Also notice that there is no return keyword used in the
-        averageTwoNumbers function. If your function consists of just one line
+        averageTwoNumbers() function. If your function consists of just one line
         of code, the compiler will interpret the result of that line as what is
-        to be returned. This reduces the amount of useless code you have to
+        to be returned. This reduces the amount of unnecessary code that you neeed to
         write.
       </p>
 
@@ -557,7 +575,7 @@ name = 3.1456778889547637653//compilation failure, type change</code></pre>
 }</code></pre>
       <p>
         Notice that there is no return type operator at the end of the
-        declaration. This, again, reduces useless code.
+        declaration. This, again, reduces the need to write unnecessary code.
       </p>
       <p>
         What if there are no parameters and no return value? Here is an example.
@@ -585,19 +603,39 @@ print(averageTwoNumbers(firstNum:5.0,secondNum:3.0))</code></pre>
       <p>
         Notice that when the average function is used, the names of each
         parameter is required. You can turn this requirement off, but such a
-        choice can effect code readability. To do this, add what is called an
-        argument label to the function declaration. Any label you type will be
-        required instead of the parameter name when the function is used. If you
-        choose
-        <a
-          href="https://stackoverflow.com/questions/41642605/swift-function-without-argument-labels"
-          target="_blank"
-          >Swift's ignore operator</a
-        >, _, as the argument label for any or all of the parameters, the
-        programmer using your function will not be required to label the
-        parameters passed to your function. In the example below, both
+        choice can effect code readability. To understand how to do this, we
+        first discuss argument labels. In declaring a swift function parameter,
+        you can give it two names. The first name or argument label is used
+        when someone calls the function. The second name is used to refer to
+        the parameter inside the function. If you just put one name like in
+        the earlier examples, it is used for both the caller and inside the
+        function. For the following code, we define both a caller name and
+        an internal name:
+      </p>
+          <pre><code class="Swift">//use of an argument label
+    func sum(of a: Int, and b: Int)->Int {
+    return a + b // inside the function we refer to the parameers as a and b.
+}</code></pre>
+          <pre><code class="Swift">//calling the function we refer to the parameters as "of" and "and"
+let result = sum(of: 39, and: 3)</code></pre>
+          <p>
+            You will see examples of this in the documentation for many built-in
+            functions. This sometimes lets us write clearer code for the caller.
+            But it would be confusing if the code inside the function referred
+            to the parameters as "of" and "and."
+      </p>
+          <p>
+            Swift has an <a
+              href="https://stackoverflow.com/questions/41642605/swift-function-without-argument-labels"
+              target="_blank"
+            >ignore operator</a
+              > that is used to indicate that something
+        is not needed. If you put the ignore operator "_" as the argument label
+        for a parameter, then the caller does not need to name the parameter.
+        In the example below, both
         parameters have the ignore operator as their label so calling the
-        function requires no labels.
+        function requires no labels. But we still have names for the parameters
+        to use inside the function.
       </p>
 
       <pre><code class="Swift">//in file named stuff.swift
@@ -620,16 +658,14 @@ print(averageTwoNumbers(5.0,3.0))</code></pre>
         code less readable.
       </p>
       <p>
-        In addition to using "_" in front of the internal variable name to
-        indicate that parameter name does not need to be named in the parameter
-        list when calling a function, you could instead list a second name in
-        front of the internal name. The first name will be used when calling the
-        function and the second name will be used inside the function. Sometimes
-        the code reads more cleanly if a different name is used to call a
-        function than the name used inside the function. You will see examples
-        of this in the documentation for built-in functions.
+        Two situations where dropping caller parameter names may make sense are:
+        <ol>
+          <li>when there is only one parameter and it is "obvious" what it would be</li>
+          <li>when all of the operators are interchangeable. For example, in the
+            averageTwoNumbers function, which parameter you pass first and
+            which you pass second does not matter.</li>
+        </ol>
       </p>
-      <!-- Maybe include code example here -->
 
       <h3>Conditional Branching - ifs and other amazing things</h3>
       <p>
@@ -643,10 +679,10 @@ print(averageTwoNumbers(5.0,3.0))</code></pre>
       </p>
       <p>
         Consider a situation where you need a function to check the viability of
-        a password. It can be done with if-else statements, but why not use
-        something that explicitly states the purpose of the code? Here is a
-        silly example where the only requirement is that the password has to be
-        12 characters long.
+        a password. It can be done with if-else statements, we can use
+        something that explicitly states the purpose of the code. Here is a
+        simple example where the only requirement is that the password must
+        be more than 12 characters long.
       </p>
       <pre><code class="Swift">func evaluatePassword(aPotentialPassword:String)->Bool {
     guard aPotentialPassword.count > 12 else {
@@ -662,21 +698,24 @@ print(averageTwoNumbers(5.0,3.0))</code></pre>
           >guard</a
         >
         keyword indicates to whoever is reading your code that this conditional
-        statement is there so the function won't fail. Can you have multiple
-        guards in a function? You bet. Do they all have to go at the beginning
-        of the function? Nope. You can put them anywhere that makes the best
+        statement is there so the function won't fail. You can have multiple
+        guards in a function. Do they all have to go at the beginning
+        of the function? No. You can put them anywhere that makes the best
         sense.
       </p>
       <p>
         You can think of a guard statement as guarding the rest of the function
-        from some error or condition. So the else clause must include a return
-        statement. If a guard is used inside a loop, then it is guarding the
+        from some error or condition. We immediately list an else clause that
+        tells what to do if the test fails. The else clause must include a return
+        statement. Any statements after the guard statement and its else are executed
+        if the test succeeds. If a guard is used inside a loop, then it is guarding the
         rest of the code in the loop and the else clause must include a break,
-        continue or return statement.
+        continue or return statement. Those will cause it to skip over the rest of
+        the code in the loop.
       </p>
       <p>
         If statements are to be used when choosing between different
-        computational flows, not guarding. Here is a silly example.
+        computational flows, not guarding. Here is a simple example.
       </p>
 
       <pre>
@@ -690,7 +729,52 @@ else{
     print(aNumber, " is zero")
 }</code>
   </pre>
-      <h3>Using if and guard with optionals</h3>
+      <p>
+        Like many languages, Swift also has a way to switch between several options
+        to decide which code to use. This may be used with Enums such as the
+        CompassPoint Type mentioned previously.
+        <pre>
+          <code class="Swift">var aDirection = .north
+switch aDirection {
+    case .north:
+        print("Facing North")
+    case .east:
+        print("Facing East")
+    case .south:
+        print("Facing South")
+    case .west:
+        print("Facing west")
+}</code>
+        </pre>
+        You will notice that unlike some languages, you do not need to end the code of
+        each case with a break statement. That is because code in a case does not
+        automatically fall through to the code of the next case.
+      </p>
+          <p>
+        Each case must contain at least one statement. You could just put a break
+        if you do not want a particular case do do anything. And you can include
+        several cases together separated by commas. In the spirit of Swift's careful
+        approach to correct code, a switch statements must cover all possible values.
+        If you want to leave out an Enum value or if your switch statement is over
+        a Type that is not an Enum, you must add a "default" case like this:
+            <pre>
+              <code class="Swift">var anInt = 1
+switch anInt {
+    case 1, 2, 3, 5, 7:
+        print("Prime under 10")
+    case 0:
+        break // does nothing
+    default:
+        print("Some other non-zero integer")
+}</code>
+            </pre>
+            You can read more about the switch statement
+            <a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/controlflow/#Switch" target="_blank"
+            >here</a
+              >.
+      </p>
+    
+      <h3>Using if and guard with Optionals</h3>
       <p>
         Sometimes you want to unwrap an Optional, and take a different action if
         the value is nil. This is such a common pattern in programming that
@@ -702,20 +786,19 @@ else{
       </p>
 
       <pre>
-  <code class="Swift">func silly() {
+  <code class="Swift">func simple() {
   let name:String? = nil
   if let name = name {
       //code to use the name
       print(name.uppercased())
   } else {
-      //some code to handle when there
-      //is no name
+      //some code to handle when name is nil
       return
   }
 }</code>
   </pre>
       <p>
-        Notice that the name variable is declared with the
+        Notice that the name variable is redeclared with the
         <kbd>let</kbd> keyword. It may seem that this code snippet breaks the
         'let variables can not be changed' rule. But this is not so. There are
         two different variables called <kbd>name</kbd> in the snippet each with
@@ -733,11 +816,10 @@ else{
         nil case.
       </p>
       <pre>
-    <code class="Swift">func sillyGuard() {
+    <code class="Swift">func simpleGuard() {
     let name:String? = nil
     guard let name = name else {
-      //some code to handle when there
-      //is no name
+      //some code to handle when name is nil
       return
     }
     //code to use the name
@@ -748,13 +830,15 @@ else{
         Note that the scope of the unwrapped variable for “if let” is the inside
         of the if statement's “true” clause (before the “else”). The scope of
         the unwrapped variable for “guard let” is the remainder of the function
-        (or the remainder of the loop if it is in a loop). This can help you
-        avoid nesting code as deeply within if statements making it more
+        (or the remainder of the loop if “guard let” is in a loop). Using the
+        very important "guard let" pattern can help you avoid nesting code
+        deeply within if statements making it more
         readable.
       </p>
       <p>
-        Also, you can use “if var” and “guard var” if you need to be able to
-        later modify the unwrapped value.
+        Also, since "let" creates immutable constants, you can use “if var” or
+        “guard var” instead “if let” or “guard let” if you need to be able to
+        later modify an unwrapped value.
       </p>
       <h3>Map, Filter, and Reduce</h3>
       <p>
@@ -1029,7 +1113,41 @@ else{
         unwrapped, but we can do some processing (on any non-nil values) and
         unwrap the result later.
       </p>
-
+      <p>
+        In some cases, you might use optional chaining at several steps in a chain
+        of function calls. Each time you insert a ? into the formula you are basically
+        saying "I know the formula to the left of this ? may have a nil value and I
+        agree that if that happens then you can skip everything to the right of the
+        ? and just return nil. But if the formula to the left of this ? is not nil,
+        pass the unwrapped value to whatever is to the right of the ?.
+        <h3>Capitals and Blanks</h3>
+        <p>
+          The compiler does not enforce them capitalization, but Swift does have
+          conventions including these:
+          <ul>
+            <li>Names of functions, parameters, and variables use 'camelCase'.</li>
+            <li>Types including Struct and Class types start with a Capital letter.</li>
+            <li>Constants (created with let) are often UPPERCASE.</li>
+          </ul>
+        </p>
+        <p>
+            Spaces can be very important in Swift. Sometimes you need spaces around
+            operators. If you get a weird error when compiling, try putting spaces
+            around your operators if needed. For example, if you have the following,
+            the compiler will think the first "?" is a postfix operator and that
+            you are doing optional chaining twice.
+          <pre><code>aValue = inStockMedications[aKey]??[]</code></pre>
+             It will compile correctly if you change it to:
+          <pre><code>aValue = inStockMedications[aKey] ?? []</code></pre>  
+            On the other hand, some things like using the ? to mark an Optional type
+            or for optional chaining will not work if you put a space before the "?".
+        </p>
+        <p>
+          While there was a lot covered in this reading, you've seen these before.
+          Python has each of these types of language features. The syntax is
+          different for Swift and there are some new things you can do because of
+          the compiler, but over all the concepts are the same.
+        </p>
       <h2>Wrap Up</h2>
       <p>
         While there was a lot covered in this reading, you've seen these before.
@@ -1042,6 +1160,13 @@ else{
         all be the same language. Then we'd be stuck. We wouldn't be able to
         select languages to use based on what the languages are good at.
       </p>
+      <p>
+        Be sure to bookmark this reading. You will want to review it in
+        future weeks. And make an extra effort to understand Optionals.
+        Understanding optionals will really help you to to complete the
+        assignments each week.
+      </p>
+
     </main>
     <footer>
       <a
