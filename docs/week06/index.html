@@ -47,21 +47,76 @@
     </p>
     <p>
       Since the purpose of this project is to demonstrate some of what you have
-      learned in this course, your project is expected to include use of at least
-      5 of the following 12 things you learned about in the course:
-      <ul>
+      learned in this course, your project is expected to correctly use some
+      Optionals and at least one guard statement. It must also include use of
+      at least 5 of the following 10 things you learned about in the course:
+        <ul>
         <li>Arrays</li>
         <li>Dictionaries</li>
         <li>Sets</li>
-        <li>Optionals</li>
         <li>Enumerations</li>
-        <li>Guard statements</li>
         <li>Closures</li>
-        <li>Structs, Classes and Child Classes</li>
+        <li>Structs</li>
+        <li>Classes and Child Classes</li>
         <li>Tuples</li>
         <li>Protocols</li>
         <li>Do-Catch-Throw error handling</li>
       </ul>
+    </p>
+    <p>
+      If your project has a user interface with interaction of any kind with the user,
+      then when it starts it needs to print instructions to the user that are clear
+      and complete enough that the instructor or another user can operate your project
+      fully without needing to decipher your code. For example, it should tell the user
+      what commands they can type, how they can parameterize them, how they exit, etc.
+      Make sure you guard against any unexpected user input cases. A major aspect of Swift
+      is protecting against errors due to unexpected data. If a user can crash the program
+      or get majorly unexpected behavior by putting in invalid user data entry, you will
+      be asked to correct your project. Also, while this is not a GUI
+      class, but you all are experienced enough to be able to think through how a
+      person would use your project coming to it without any guidance or training.
+    </p>
+    <p>
+      Do try to take a swift-like approach using somne things should have been picked up as
+      you did your weekly assignments about Swift standard practices. We do expect you to do
+      things in object oriented ways where possible. For example, if you have an struct or
+      class defined and it would be useful in your code to have that object provide some kind
+      of count of things inside the object, then please implement a "count" computed value
+      and use that in your code. We are not talking about providing a count object in an
+      Array or Dictionary since those have a built in count computed property. But if for
+      example, your struct or class type contains an array of objects
+      as one of its properties, an object of that struct type will not automatically
+      have a count property, but you may want to define one.
+    </p>
+    <p>
+      If you create a struct or class of which you will want to print the contents, please
+      look at the task 7 in week 3 and see if you could comply with CustomStringConvertible.
+      Suppose you have an array of objects of that struct or class called anArray. If you
+      define a computed String "description" property for that struct or class that describes
+      an object of that type and if you mark that you comply with
+      CustomStringConvertible, then you can print the contents of that array like this:
+      <pre><code>for anObject in anArray { print(anObject) }</code></pre>
+      That will print the contents of each Array element in whatever format the object specifies.
+      It is much cleaner to have the object define for itself how it is to be printed or described
+      in a String.
+    </p>
+    <p>
+      Finally, it is best practice to have any strings you present the user to be in
+      constants so you can edit them in a standard place or localize all the strings to a
+      different language, I am not requiring localization, etc. in these projects. However,
+      if you present a list of menu options like this for example:
+      <pre><code>print("1: Menu option")
+print("2: Menu option")
+print("3: Menu option")
+print("4: Menu option")
+print("5: Exit")</code></pre>
+      I would ask that instead you put the Strings into an Array and loop through that array
+      to print and work with the menu options instead of hard wiring the strings into print
+      statements. You could be even more fancy and use something like enums that have
+      String values where, supposing the Array of menu options was called menuStrings,
+      you could use something like "menuStrings[i].first" to pull out the first character
+      of a menu to compare to the user input. At minimum, if you print a list of strings
+      like a menu, do it from an Array or Dictionary of strings.
     </p>
     <footer>
       <a
@@ -82,3 +137,4 @@
     </footer>
   </body>
 </html>
+        
