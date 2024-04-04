@@ -235,7 +235,9 @@ private func test0(testNum: Int) -> TestResults {
 
         // Are we at the last test? If so, make sure they printed the correct final value
         if test.error == .success {
-            guard message == "\(test.int1 * test.int2)" else {
+// change this test to "contains"  in case they print some text in addition to the correct answer
+//            guard message == "\(test.int1 * test.int2)" else {
+            guard message.contains("\(test.int1 * test.int2)") else {
                 printTestValue(test: test)
                 return fail(testNum, "Expected past testPrint to be the product int1 * int2 = '\(test.int1 * test.int2)', but printed '\(message)'")
             }

@@ -128,7 +128,8 @@ class MedicationContainer: Equatable, Comparable, CustomStringConvertible {
     }
     // conformance to the Comparable protocol
     static func < (lhs: MedicationContainer, rhs: MedicationContainer) -> Bool {
-        return lhs.expirationDate < rhs.expirationDate
+        // replace the following with your code for a real comparison operator
+        return false
     }
     
 }
@@ -337,6 +338,7 @@ struct DateSequencer  {
 func task5() -> Bool? {
     return nil
 }
+
 //  Task 6
 //  Add to the extension below to make the DateSequencer conform to the Sequence
 //  protocol. In conforming to this protocol, you can either have the object create

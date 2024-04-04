@@ -44,6 +44,12 @@ import Foundation
 //  for MedicationContainer which will at least prevent any code from another file in the
 //  project accidentally trying to directly create a MedicationContainer.
 //
+//  Make sure you reread the section in the reading titled "UUID and Unique Objects".
+//  That give you the exact syntax to use to define the id property for the Medication Container
+//  along with an explaination why you dhould use that codee exactly. When you later write moblie code
+//  using Swift you will often need to have unique identifiers for your objects and this is one way to
+//  make that happen. Also, since id has a default value, you do not include it in the init() functions.
+//
 //  Add the classes and structs here:
 
 /* NOTE TO EDITOR: Delete this struct and these classes when creating tasks.swift. */

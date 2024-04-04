@@ -51,45 +51,57 @@
         understanding of Swift you get in this course. The tasks in this course
         are designed to prepare you for the mobile course.
       </p>
-      <h3>Windows Users</h3>
+      <h3>Windows and Linux Users</h3>
       <p>
-        Windows users should follow the
-        <a href="windows.html">Windows Install Instructions</a>
+        Windows users should first follow the
+        <a href="windows.html" target="_blank">Windows Install Instructions</a>
       </p>
-
-      <h4>Creating a Swift Project</h4>
+        <p>
+          Linux install instructions are available
+          <a href="https://www.swift.org/install/" target="_blank">at this link.</a> Most
+          common distributions are supported. After you have successfully
+          downloaded the Swift toolchain, you will
+          need to add it to your PATH. The following is a general command that
+          will work for Linux, but could vary depending on your download location and the
+          shell you are currently using.
+        <pre><code>echo "export PATH=/path/to/swift/directory/usr/bin:$PATH" >> ~/.bashrc
+          source ~/.bashrc</code></pre>
+        </p>
+      
+      <h4>Creating a Swift Project in Windows or Linux</h4>
       <p>
-        Create a directory on your computer that will eventually hold individual
-        directories for each of the tasks. If a week has more than one task you
-        will need a separate directory that represents a Swift project for each
-        task. Therefore create directories in you course directory for
-        week01_task_1 and week01_task_2. In the week01_task_1 directory, follow
-        the instructions for 'Building an Executable' section in
-        <a href="https://swift.org/getting-started/" target="_blank"
-          >this tutorial</a
-        >. You will need to use your terminal app to do this.
-        You do not need to do everything in this link, just the section called
-        "Building an Executable."
+        After you have followed Windows or Linux the installation instructions, Create a
+        directory on your computer that will eventually hold individual
+        directories for each of the weekly assignments. As you progress you will
+        create directories in you course directory for
+        week02, week03, etc. This week we will create two separate projects so use the
+        command line to create a week01_task_1 directory, move into it and create a
+        week01_task_1 project as follows:
+        <pre>
+          <code class="swift">$ mkdir week01_task_1
+            
+$ cd week01_task_1
+
+$ swift package init --name week01_task_1 --type executable</code></pre>
       </p>
       <p>
         Run VSCode and select <kbd>File->Open Workspace</kbd> and navigate to
         the task directory. Open the file called <kbd>main.swift</kbd> in the
-        <kbd>Sources</kbd> directory. Add the following code to the file then
-        save the file.
+        <kbd>Sources</kbd> directory. Replace the contexts of that file with
+        the following code then save the file.
       </p>
-      <p></p>
       <pre>
 <code class="swift">import Foundation
 
 print("Installation test passed!")</code></pre>
       <p>
-        Run the new code set as described in the 'Building an Executable'
-        section of
-        <a href="https://swift.org/getting-started/" target="_blank"
-          >the tutorial</a
-        >.
+        Run the new code set by executing the following command:
+        <pre>
+          <code class="swift">swift run week01_task_1</code></pre>
+        You should see the output "Installation test passed!". Take a screen shot
+        showing that output to submit as part of your assignment for this week.
       </p>
-
+      <br>
       <h3>macOS Users</h3>
       <p>
         The industry standard for developing Swift applications on macOS is
@@ -109,7 +121,7 @@ print("Installation test passed!")</code></pre>
       </p>
       Following these steps will guarantee your setup is ready to go.
       <ol>
-        <li>Press command-Shift-N</li>
+        <li>Press command-Shift-N or choose <kbd>New Project</kbd> from the <kbd>File</kbd> menu.</li>
         <li>Select "macOS" in the window's top menu bar.</li>
         <li>Select "Command Line Tool."</li>
         <li>Enter <kbd>week01_task_1</kbd> into the product name field.</li>
@@ -119,8 +131,9 @@ print("Installation test passed!")</code></pre>
         </li>
         <li>
           Save the project anywhere you want. If I were you, I'd create a
-          directory to hold each of the projects for the tasks for each of the
-          weeks.
+          folder to hold each of the projects for the tasks for each of the
+          weeks. For example, you could store this in a folder called
+          week01_task_1,
         </li>
         <li>In the left hand pane, select the "main.swift" file.</li>
         <li>Change "Hello, World!" to "Installation test passed!"</li>
@@ -130,56 +143,6 @@ print("Installation test passed!")</code></pre>
         </li>
       </ol>
 
-      <h3>Linux Users</h3>
-      <p>
-        Linux install instructions are available
-        <a href="https://www.swift.org/getting-started/">at this link.</a> Most
-        common distributions are supported. You will first need to download and
-        install the dependencies. After you have downloaded the dependencies,
-        you can download the current version of Swift at
-        <a href="https://www.swift.org/download/">this link.</a>
-      </p>
-      <p>
-        After you have successfully downloaded the Swift toolchain, you will
-        need to add it to your PATH. The following is a general command that
-        will work, but could vary depending on your download location and the
-        shell you are currently using.
-      </p>
-      <pre><code>echo "export PATH=/path/to/swift/directory/usr/bin:$PATH" >> ~/.bashrc
-source ~/.bashrc</code></pre>
-      <h4>Creating a Swift Project</h4>
-
-      <p>
-        Create a directory on your computer that will eventually hold individual
-        directories for each of the tasks. If a week has more than one task you
-        will need a separate directory that represents a Swift project for each
-        task. Therefore create directories in you course directory for
-        week01_task_1 and week01_task_2. In the week01_task_1 directory, follow
-        the instructions for 'Building an Executable' section in
-        <a href="https://swift.org/getting-started/" target="_blank"
-          >this tutorial</a
-        >. You will need to use your terminal app to do this.
-          You do not need to do everything in this link, just the section called
-          "Building an Executable."
-      </p>
-      <p>
-        Run VSCode and select <kbd>File->Open Workspace</kbd> and navigate to
-        the task directory. Open the file called <kbd>main.swift</kbd> in the
-        <kbd>Sources</kbd> directory. Add the following code to the file then
-        save the file.
-      </p>
-      <p></p>
-      <pre>
-<code class="swift">import Foundation
-
-print("Installation test passed!")</code></pre>
-      <p>
-        Run the new code set as described in the 'Building an Executable'
-        section of<a href="https://swift.org/getting-started/" target="_blank"
-          >the tutorial</a
-        >.
-      </p>
-
       <h2>Task 2</h2>
       <h3>Explore Some Code</h3>
       <p>
@@ -188,36 +151,29 @@ print("Installation test passed!")</code></pre>
         provided. Follow the instructions in the 'Creating a Swift Project'
         section above for your platform to create a Swift project called 
         <kbd>week01_task_2</kbd>. Paste the
-        code from <a href="main.swift" target="_blank">this file</a> into the
-        <kbd>main.swift</kbd> file in the your project (in the
+        code from <a href="main.swift" target="_blank">this file</a> to replace
+        the contents of the <kbd>main.swift</kbd> file in the your project (in the
         <kbd>Sources</kbd> directory for Windows and Linux users). Then compile
         and run it. The code you pasted into <kbd>main.swift</kbd> will help you
         begin to explore the Swift language's syntax. Don't be too worried if
         you don't completely understand all the code right now. The things you
         see there will be covered in more detail later in the class. It would be
         good for you if you expressed your curiosity and started using web
-        searches to figure out some of the syntax you see.
+        searches to figure out some of the syntax you see. Be sure to take a screen
+        shot of this code working and submit it as part of this week's assignment.
       </p>
-      <h2>Stretch Challenge</h2>
+      <h2>Stretch Challenge for MacOS Users</h2>
       <p>
+        This last challenge is optional. You do not need to submit anything for
+        this challenge since it does not affect your grade.
+      </p>
+          <p>
         Debugging your code for this and later classes will be much easier if
         you know how to use the stepwise debugger. This challenge will make your
         creation of code for this class much easier. If you learn how to use it
         now, it will save you hours of debugging later.
       </p>
-      <h3>For Windows and Linux Users</h3>
-      <p>
-        Use the instructions in
-        <a href="https://swift.org/getting-started/" target="_blank"
-          >the tutorial</a
-        >
-        for using the debugger as a template to stepwise debug the source code
-        in Task 2. Set a breakpoint on line 13 of the source code and explore
-        how the variables change and how functions are called. Make sure you
-        'step into' the functions, not just see what they return.
-      </p>
-      <h3>macOS Users</h3>
-      <p>
+        <p>
         Using the information in the
         <a href="https://developer.apple.com/videos/play/wwdc2021/10209/"
           >Discovering breakpoint improvements</a
@@ -246,3 +202,4 @@ print("Installation test passed!")</code></pre>
     </footer>
   </body>
 </html>
+        

@@ -3,6 +3,7 @@
 //  Installation Test
 //
 //  Created by Lee Barney on 6/21/21.
+//  Edited by Chad Mitchell on 3/27/24.
 //
 
 import Foundation
@@ -20,15 +21,17 @@ printResults(result: calculateAverage(ages: someAges))
 someAges = []
 
 while true {
-    print("Enter an age:")
-    let numberAsString = readLine()
+    print("Enter an age or 'done' to finish entering ages:")
+    guard let numberAsString = readLine() else {
+        continue
+    }
     // check if the user is done entering ages
     guard numberAsString != "done" else {
         break
     }
     // make sure they entered a number
-    guard let number = Double(numberAsString!) else {
-        print("\(numberAsString!) is not a number")
+    guard let number = Double(numberAsString) else {
+        print("\(numberAsString) is not a number")
         continue
     }
     someAges.append(number)
