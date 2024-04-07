@@ -1125,35 +1125,29 @@ switch anInt {
           The compiler does not enforce them capitalization, but Swift does have
           conventions including these:
           <ul>
-            <li>Names of functions, parameters, and variables use 'camelCase'.</li>
-            <li>Types including Struct and Class types start with a Capital letter.</li>
-            <li>Constants (created with let) are often UPPERCASE.</li>
+            <li>Names of functions, parameters, constants and variables use 'camelCase'.</li>
+            <li>Types names including Struct and Class type names start with a Capital letter.</li>
           </ul>
         </p>
         <p>
             Spaces can be very important in Swift. Sometimes you need spaces around
             operators. If you get a weird error when compiling, try putting spaces
-            around your operators if needed. For example, if you have the following,
+            around your operators if needed, or perhaps remove the space if there
+            is a space before the operator already. For example, if you write the following,
             the compiler will think the first "?" is a postfix operator and that
             you are doing optional chaining twice.
           <pre><code>aValue = inStockMedications[aKey]??[]</code></pre>
              It will compile correctly if you change it to:
           <pre><code>aValue = inStockMedications[aKey] ?? []</code></pre>  
-            On the other hand, some things like using the ? to mark an Optional type
+            On the other hand, some things including using the ? to indicate an Optional type
             or for optional chaining will not work if you put a space before the "?".
-        </p>
-        <p>
-          While there was a lot covered in this reading, you've seen these before.
-          Python has each of these types of language features. The syntax is
-          different for Swift and there are some new things you can do because of
-          the compiler, but over all the concepts are the same.
         </p>
       <h2>Wrap Up</h2>
       <p>
-        While there was a lot covered in this reading, you've seen these before.
+        While there was a lot covered in this reading, you've seen most of this before.
         Python has each of these types of language features. The syntax is
         different for Swift and there are some new things you can do because of
-        the compiler, but over all the concepts are the same.
+        the compiler, but overall the concepts are the same or similar.
       </p>
       <p>
         Differences are good. If all computer languages were the same, they'd
