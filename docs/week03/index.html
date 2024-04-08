@@ -41,8 +41,8 @@
         thinking. In this, they are very similar to spoken languages. Each
         spoken language, or family of spoken languages, does this organization
         differently. English sentences often have a structure of Subject-Helper
-        Verb-Verb-Predicate structure, such as "The boy will bite the dog," for
-        example. German, a language closely related to English, organizes things
+        Verb-Verb-Predicate structure, such as "I will read the book soon."
+        German, a language closely related to English, organizes things
         differently. Sometimes German sentences have a Subject-Helper
         Verb-Predicate-Verb structure... "Ich werde das Buch bald lesen," which
         if translated word-by-word is "I will the book soon read." Spanish has
@@ -50,22 +50,24 @@
       </p>
       <p>
         While each language has its own organizational rules, they all do the
-        same thing. They allow us to organize and express our thinking.
+        same general thing. They allow us to organize and express our thinking.
       </p>
       <h3>Instances of Classes - another organizational concept of Swift</h3>
       <p>
         Since Swift has the language Haskell as an ancestor, Swift, like
         Haskell, has the concept of functions. But Haskell isn't Swift's only
-        ancestor. Ruby and C# are both OO languages and ancestors of Swift.
+        ancestor. Ruby and C# are both Object Oriented languages and ancestors
+        of Swift.
         That's why classes and their instances are a way to organize your data
         and code in Swift.
       </p>
       <p>
-        Don't get carried away. Some languages don't have stand-alone functions
+        Some languages don't have stand-alone functions
         (Java) or strongly discourage their use (C++). This is not so in Swift.
         When you begin thinking in Swift you will mix and mingle functions,
         classes and instances of classes, and a few other ways of organizing
-        your data we'll cover below. The rule for Swift is simple. Write your
+        your data we'll cover below. Those include Struct types that are similar
+        to classes in many ways. The rule for Swift is simple. Write your
         code in the way that best and most clearly describes what you are trying
         to do. If that's a function, use a function. If that's a class and
         instances of the class, do that.
@@ -73,7 +75,8 @@
       <p>
         A note about naming conventions: as mentioned last week, variable, constant 
         and function names in Swift are written in camelCase like anInt and myString. 
-        Type names including Classes, Structs and Protocols have their first letter 
+        Type names including classes, structs and protocols (that we will explain below)
+        have their first letter 
         capitalized like Double, Array and MedicationContainer.
       </p>
 
@@ -84,14 +87,14 @@
           href="https://www.tutlane.com/tutorial/swift/swift-classes"
           target="_blank"
           >Swift syntax for classes and instances</a
-        >, a set of class descriptions is needed. The set selected for your
-        perusal describes a very simplified stock-tracker for an imagined
+        >, some class descriptions are needed. The descriptions for your
+        perusal describe a very simplified stock-tracker for an imagined
         pharmaceutical company. Several classes are included in this set. These
         include a <kbd>Date</kbd> class storing individual numbers for a day,
         month, and year; a <kbd>medication</kbd> class that is the parent class
         for two medication types-- <kbd>TabletMedications</kbd> and
         <kbd>LiquidMedications</kbd>. And last, but not least, a model class (<a
-          href="https://www.youtube.com/watch?v=FCkDEHWDATI"
+          href="https://www.youtube.com/watch?v=FCkDEHWDATI" target="_blank"
           >MVC</a
         >) called <kbd>PharmaceuticalStockTracker</kbd> that stores and
         manipulates data regarding the stock available for sale.
@@ -109,7 +112,12 @@
         </figure>
       <p>
         In the diagram, the arrows on lines represent is-a relationships as described below. 
-        The circles on the lines represent has-a relationships.
+        The diamonds or circles on the lines represent has-a relationships. For a refresher
+        on UML diagrams, see this <a
+          href="https://www.visual-paradigm.com/guide/uml-unified-modeling-language/uml-class-diagram-tutorial/"
+          target="_blank"
+        >UML Class Diagram Tutorial</a
+          >.
       </p>
           
       <h2>The Date Class</h2>
@@ -117,19 +125,16 @@
         The purpose of the <kbd>Date</kbd> class is to store the day, month, and
         year for any specific date. In a real app, you'd never create this
         class. Instead you'd use the
-        <a href="https://developer.apple.com/documentation/foundation/date">
-          standard Swift date structure</a
-        >. Be flexible. The purpose of this custom <kbd>Date</kbd> class is to
-        help you learn how to write a simplistic Swift class.
+        <a href="https://developer.apple.com/documentation/foundation/date" target="_blank">
+          built-in Date Struct</a
+        >. In your assignments, we will provide some utility functions to simplify working with
+        the built-in Date Struct. But for this example we will use a custom <kbd>Date</kbd>
+        class to help you learn how to write a simple Swift class.
       </p>
       <p>
         The design of the <kbd>Date</kbd> class allows other code to compare
-        dates by comparing any or all of these three values. If you look at the
-        <a
-          href="https://www.visual-paradigm.com/guide/uml-unified-modeling-language/uml-class-diagram-tutorial/"
-          target="_blank"
-          >UML class diagram</a
-        >, it shows the <kbd>Date</kbd> class is composed of three integers--one
+        dates by comparing any or all of these three values. If you look at the UML class
+        diagram, it shows the <kbd>Date</kbd> class is composed of three integers--one
         for the day, one for the month, and one for the year. In the code
         snippet below the class declaration for <kbd>Date</kbd> starts with the
         keyword <kbd>class</kbd>.
@@ -155,10 +160,10 @@
         function. When you create an instance of the <kbd>Date</kbd> class, the
         initialization function is called. Since
         <a
-          href="https://docs.swift.org/swift-book/LanguageGuide/Initialization.html"
+          href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/initialization/"
           target="_blank"
           >init is a special type of function</a
-        >, you don't have to put <kbd>func</kbd> in front of it. The compiler
+        >, you don't put <kbd>func</kbd> in front of it. The compiler
         will figure it out for you.
       </p>
       <p>
@@ -169,7 +174,9 @@
         January first 1970, the beginning of what is called the unix epoch. Or
         maybe you only want to pass some of the parameters and set the rest. You
         can add as many as make sense and that help keep the code that uses your
-        class clean.
+        class clean. But each init function for a class must have a unique list
+        of parameters. You cannot have two init functions with exactly the same
+        parameters since the compiler would not be able to figure out which to call.
       </p>
       <p>
         How do you instantiate a class? Excellent question. Here is a code
@@ -195,13 +202,14 @@
 </code></pre>
 
       <p>
-        When
+        When embedding a value in a string, such as for printing, you use
         <a
-          href="https://stackoverflow.com/questions/30671000/how-can-i-add-variables-into-a-stringswift"
+          href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/stringsandcharacters/#String-Interpolation"
           target="_blank"
-          >embedding a value in a string</a
-        >
-        the <kbd>\()</kbd> operator is used. Notice that the second and third
+          >String Interpolation</a
+        >.
+        For String Interpolation, the "<kbd>\()</kbd>" operator is used. Notice
+        that the second and third
         embedded values are proceeded by <kbd>\\</kbd>. That's there for one
         reason only. I wanted a <kbd>\</kbd> character between the parts of the
         date. Therefore, since the <kbd>\</kbd> character has a specific meaning
@@ -233,16 +241,18 @@
           </p>
           <p>
             For the assignments, please remember to use the built-in Date class. You 
-            will need to look at 
-            <a href="https://developer.apple.com/documentation/foundation/date">
-              the documentation</a> 
-              to learn how to create and use Dates. 
+            can look at 
+            <a href="https://developer.apple.com/documentation/foundation/date" target="_blank">
+              the Date documentation</a> 
+              to learn how to create and use Dates, but you will probably just want
+              to just use the Date utility functions near the top of each assignment file. 
           </p>
 
           <h2>Computed Properties</h2>
           <p>
             In addition to variable or constant values as properties. Swift allows for             <a
-              href="https://docs.swift.org/swift-book/LanguageGuide/Properties.html"
+              href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/properties/#Computed-Properties"
+              target="_blank"
             >computed properties</a
               >. After the property type you put braces { } and inside those braces you put either
               <kbd>get { closure }</kbd> or <kbd>set { closure }</kbd> or both where <kbd>closure</kbd> represents code that does the 
@@ -261,7 +271,8 @@
         Like all languages that allow Object Oriented application design, Swift
         supports
         <a
-          href="https://stackoverflow.com/questions/2218937/has-a-is-a-terminology-in-object-oriented-language"
+          href="https://www.w3resource.com/java-tutorial/inheritance-composition-relationship.php"
+          target="_blank"
           >HAS-A type inheritance</a
         >. As an example, look at the Medication class below (see the UML class
         diagram above for an overview). The medication class represents a bottle
@@ -305,7 +316,7 @@
       <h2>IS-A Inheritance</h2>
       <p>
         <a
-          href="https://learnappmaking.com/swift-inheritance-subclassing-how-to/"
+          href="https://www.w3resource.com/java-tutorial/inheritance-composition-relationship.php" target="_blank"
           >IS-A inheritance is done differently</a
         >. The snippet below contains the code for both the
         <kbd>LiquidMedication</kbd> and the <kbd>TabletMedication</kbd> classes.
@@ -373,16 +384,14 @@ class TabletMedicationContainer: MedicationContainer {
         languages by inheritance. In Swift you can add to an existing class
         without inheriting from it. This is very handy when you are using a
         library someone else has written and need to augment that class.
-        Inheritance doesn't really fit this situation because it's not feasible
-        for you to go into the library source code, inherit from the base class,
-        and then replace all of the base class's uses. Nor is it feasible to
-        update the source code for the base class itself. While it may be you
-        are prohibited from doing this because the library is closed source,
-        there is a more important reason not to make changes to the library. You
-        will insert new bugs.
+        In many cases, library or built-in classes may be designed to have you
+        use inheritance and create child classes. But in other situations
+        inheritance doesn't fit because the classes are not designed to let
+        other people create children or because the Type you want to extend
+        is a Struct which does not allow inheritance.
       </p>
       <p>
-        To support the pattern of augmentation, Swift has the concept of
+        To support this pattern of augmentation, Swift has the concept of
         <a
           href="https://blog.logrocket.com/swift-extensions-an-overview-with-examples/"
           target="_blank"
@@ -416,127 +425,6 @@ extension TabletMedicationContainer {
         code easier to read and when it lets you write less code.
       </p>
           
-          <h2>Operator Methods</h2>
-          <p>
-            You may sometimes find it necessary to override or provide definitions 
-            for existing operators to use with objects from a Class or Struct. For 
-            example, making a Class comply with the Equitable and Hashable protocols may 
-            require defining a <kbd>==</kbd> operator for the class or struct since one 
-            is not always automatically provided. Having a Class or Struct 
-            provide its own custom <a
-              href="https://docs.swift.org/swift-book/LanguageGuide/AdvancedOperators.html#ID42"
-              target="_blank"
-            >Operator Methods</a
-            > to implement versions of existing operators is known as overloading those 
-            operators. You can add an operator method to the Class or Struct definition 
-            or use an extension like this:
-          </p>
-<pre><code class="swift">extension PharmaceuticalStockTracker {
-    static func == (lhs: MedicationContainer, rhs: MedicationContainer) -> Bool {
-        return lhs.id == rhs.id
-    }
-}</code></pre>
-
-          <h2>UUID and Unique Objects</h2>
-          <p>
-            It is possible that we may have several containers of the same 
-            medication with the same expiration date. If we create separate 
-            objects for each container, but they have identical properties, 
-            how do we distinguish them and not think they may refer to the 
-            same medication container? Swift has a built-in type called <kbd>UUID</kbd>. 
-            If we put <kbd>let id = UUID().uuidString</kbd> in our class to define the
-            <kbd>id</kbd> property and it will be a unique identifier for each distinct 
-            object. When you are doing your assignments, if a task calls for a unique id 
-            in a class or struct, be sure to include that definition and default value.
-          </p>
-      
-          <h2>Protocols</h2>
-      <p>
-        In many languages, if you want to allow a developer to create a new
-        class or other object that will be used by library functions or other
-        existing classes, you make sure it has all needed characteristics by
-        requiring it to be a child of an existing class that meets those
-        characteristics. Swift adds a concept called
-        <a
-          href="https://docs.swift.org/swift-book/LanguageGuide/Protocols.html"
-        >
-          protocols</a
-        >
-        that specify the requirements that a class and certain other language
-        elements must have for a particular situation. When specifying a new
-        class that you want to be able to be used in certain ways, you include
-        the protocol name in the class definition and then the complier makes
-        sure that you actually implement the needed functionality.
-      </p>
-      <p>
-        To indicate that SomeClass is child of SomeSuperclass and also confirms
-        to two protocols you would write it like the following. You do not need
-        to have a super class, but if you do, it is listed before the protocols in
-        the first line of the class definition.
-      </p>
-
-      <pre><code>class SomeClass: SomeSuperclass, FirstProtocol, AnotherProtocol {
-  // class definition goes here
-}</code></pre>
-
-          <p>
-            For example, a protocol can require that a class have specific properties 
-            like this:
-          </p>
-          
-          <pre><code>protocol SomeProtocol {
-    var mustBeSettable: Int { get set }
-    var doesNotNeedToBeSettable: Int { get }
-}</code></pre>
-
-          <p>
-            This would require the class to have property names mustBeSettable and 
-            doesNotNeedToBeSettable and the { get set } on the first property means 
-            that property must be able to be set (which usually means it should have 
-            the var keyword in front ot it). The second property could be specified 
-            with let or var. Note the protocol always uses var for properties and 
-            then uses the { get set } or { get } methods to indicate whether they need to be 
-            mutable. And if you specify { get } it does not require that the property 
-            be immutable, only that it may be mutable or immutable.
-          </p>
-          <p>
-            A protocol can also require that a class implement specific methods 
-            like this:
-          </p>
-          <pre><code>protocol RandomNumberGenerator { 
-    func random() -> Double 
-}</code></pre>
-      <p>
-        Conforming to a protocol can make certain language features or built-in 
-        functions available to you. For example, if you create a new struct or 
-        class that confirms to the
-        <a href="https://developer.apple.com/documentation/swift/sequence"
-          >Sequence protocol</a
-        >, you are able to take advantage of built-in functionality that uses
-        that protocol without needing to make that a child class of some parent
-        to get the functionality. An object that conforms to the Sequence
-        protocol can automatically be used as the source in a for…in loop. There 
-        is an example of that in the tasks provided for you to use in this week's 
-        assignment. To conform to a protocol, search the documentation for that protocol.
-      </p>
-          <p>
-            The official documentation for a built-in protocol always contains a section 
-            about how to conform. For example, the documentation for the Sequence 
-            protocol indicates that your class must either implement a function 
-            that generates an Iterator or else your class must also explicitly 
-            say it conforms to the IteratorProtocol (becoming its own iterator). 
-            Once you add IteratorProtocol to the definition of your class, you can 
-            look up how to confirm to that protocol. Sometimes protocols inherit 
-            from other protocols so conforming to a protocol automatically requires 
-            you to conform to another protocol. For example, since the
-            <a href="https://developer.apple.com/documentation/swift/hashable"
-            >Hashable protocol</a
-              > inherits from the 
-              <a href="https://developer.apple.com/documentation/swift/equatable"
-              >Equatable protocol</a
-              > you must also conform to anything that protocol requires.
-              </p>
-
       <h2>Class Alternatives</h2>
       <p>
         While classes can sometimes be exactly what you need to solve a problem,
@@ -544,12 +432,11 @@ extension TabletMedicationContainer {
         you can pick when you don't need all of the abilities, overhead, and
         baggage that go with classes in any computer language.
       </p>
-      <h3>Structures</h3>
+      <h3>Structs</h3>
       <p>
         <a
-          href="https://www.tutorialspoint.com/swift/swift_structures.htm"
-          target=""
-          >Structures</a
+          href="https://www.tutorialspoint.com/swift/swift_structures.htm" target="_blank"
+          >Structures or structs</a
         >
         are a
         <a
@@ -560,23 +447,23 @@ extension TabletMedicationContainer {
         passed in. This differs from instances of classes where a reference to
         the instance is passed. It can be very nice to have a copy made for you
         when you need one. For example when you are passing data to be used in
-        <a href="https://en.wikipedia.org/wiki/Concurrent_computing"
+        <a href="https://en.wikipedia.org/wiki/Concurrent_computing" target="_blank"
           >concurrent computing</a
-        >. Also, structures use less RAM than instances of classes do. There are
+        >. Also, structs use less RAM than instances of classes do. There are
         many
         <a
-          href="https://docs.swift.org/swift-book/LanguageGuide/ClassesAndStructures.html"
-          >features that classes and structures have in common</a
+          href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/classesandstructures/" target="_blank"
+          >features that classes and structs have in common</a
         >. In many ways they can be used interchangeably.
       </p>
           <p>
             One caution is that since structs are passed by value, parameters that
             are structs are considered constant within a function unless you explicitly 
-            make them mutable with the inout keyword as taught last week. Classes are
+            make them mutable with the inout keyword. Classes are
             automatically mutable since a reference to the object is passed to the function.
           </p>
     
-      <p>Let's refactor the <kbd>Medication</kbd> class to be a structure.</p>
+      <p>Let's refactor the <kbd>Medication</kbd> class to be a struct.</p>
 
       <pre><code>struct MedicationContainer {
     let id = UUID().uuidString
@@ -589,16 +476,16 @@ extension TabletMedicationContainer {
         Just like the compiler generates getters and setters, it also generates
         an init function for you with a parameter for each property. You can
         write one if you need to do some extra data validation, but you don't
-        have to. This is another difference between classes and structures.
+        have to. This is another difference between classes and structs.
       </p>
       <p>
-        In other ways, structures and classes are very similar. HAS-A types of
-        inheritance are supported for structures but you can not use IS-A
+        In other ways, structs and classes are very similar. HAS-A types of
+        inheritance are supported for structs but you can not use IS-A
         inheritance. You can, however, conform to
-        <a href="https://docs.swift.org/swift-book/LanguageGuide/Protocols.html"
+        <a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/protocols/" target="_blank"
           >protocols</a
         >
-        as described above which lets structs and the functions they contain be
+        as described below which lets structs and the functions they contain be
         used in places that would usually require classes and inheritance.
       </p>
       <p>
@@ -608,27 +495,32 @@ extension TabletMedicationContainer {
         require the overhead of a class every time you want object methods.
       </p>
       <p>
-        You can also extend structures. If structures most closely fit your use
+        You can also extend structs. If structs most closely fit your use
         case, you should use them. Generally you should always start with a
         struct until it no longer works for your use case. You should also feel
-        free to mix and match classes and structures. You don't have to use just
+        free to mix and match classes and structs. You don't have to use just
         one of these types in an application.
       </p>
 
       <h3>Tuples</h3>
           <p>
             Often we would like to return more than one value from a function, 
-            such as an error code and a result. One way we can at least affect 
-            more than one value is to take advantage of the fact that classes 
-            are passed by reference and are mutable or else to use the “inout” 
-            keyword before a parameter name to force it to be passed by reference. 
-            In most languages, the typical approach is to create a structure to 
-            use for the return value of a function. That works well except, then
-            you are cluttering up your code with extra structures for each 
-            function that are only used to get around that language limitation 
-            or else you wind up specifying a single structure returned by several 
-            functions that each only may need part of it and that must then be 
-            synchronized when any function wants to return an additional value.
+            such as an error code and a result. One way a function could affect
+            more than one value outside the function is to put several values into
+            a class object as a parameter that
+            could be modified. You could also use a struct object to as a parameter
+            and modify it but you would need to use the “inout” keyword before the
+            parameter name to force it to be passed by reference.
+          </p>
+          <p>
+            In most languages, the typical approach is to create a struct to 
+            use for the return value of a function. That works OK except that
+            you are cluttering up your code with extra structs for each 
+            function that are only used for that function to get around this
+            language limitation. Or if you specify a single struct returned by several 
+            functions that may only each need part of it, then you would need to 
+            synchronize changes to that struct across the function when any
+            function wants to return an additional value.
           </p>
       <p>
         Swift addresses this need with 
@@ -642,7 +534,8 @@ extension TabletMedicationContainer {
           to tuples. Also, tuples don't have property names. All they really do is 
         keep associated yet independent pieces of data together.
       </p>
-      <p>You create a tuple by the process of composition. For example, here is a function that returns a tuple:</p>
+      <p>You create a tuple by the process of composition. For example,
+        here is a function that returns a tuple:</p>
 
           <pre><code>func tupleGenerator() -> (Bool, Int, String) {
     return (true, 7, “Here”)
@@ -653,46 +546,188 @@ extension TabletMedicationContainer {
             </p>
 
 
-          <pre><code>//composing a tuple and assigning it to a variable
+          <pre><code>// Composing a tuple and assigning it to a constant
 let person = ("Jenny",23, 5.5)
 </code></pre>
           <p>
             You can refer to elements of a tuple using <kbd>.0</kbd>, <kbd>.1</kbd>, <kbd>.2</kbd> like this:
           </p>
-          <pre><code>print(person.0)</code></pre>
+          <pre><code>print(person.0) // print the first element of the tuple person</code></pre>
           <p>
             As usual, if you want to later modify the values you extract from a tuple 
             you would use var rather than let. In that case you can use the dot notation 
             to modify the tuple as well like this:
           </p>
           <pre><code>var person = ("Steven",23, 5.5)
-person.0 = “John”</code></pre>
+person.0 = “John” // change only the first element of person</code></pre>
         <p>
         Most of the time you will 
         use decomposition to retrieve the individual values. In this you use let or var and 
-        a list of variables in parentheses that will receive the values from the tuple like this:
+        a list of variable or constant names in parentheses that will receive the values
+        from the tuple like this:
       </p>
 
-      <pre><code>//decomposing a tuple to get each stored value
+      <pre><code>// Decomposing a tuple to get each stored value
+// Creates three constants with individual values from the tuple
 let (name,age,height) = person
 </code></pre>
 
       <p>
-        If you don't need all the values, you don't have to create variables for
+        If you don't need all the values, you don't need to create variables for
         them via decomposition.
       </p>
       <p>
         For example, if all you needed was the age of a person tuple, you could
-        decompose the person tuple like this.
+        decompose the person tuple like this using the "ignore" operator:
       </p>
-      <pre><code>//decomposing a tuple using the ignore operator
+      <pre><code>// Decomposing a tuple using the ignore operator
+// Defines one constant with the value from the second element of the tuple
 let (_,age,_) = person
 </code></pre>
+
+          <h2>Protocols</h2>
+          <p>
+            In many languages, if you want to allow a developer to create a new
+            class or struct or other object that will be used by library functions or other
+            existing classes, you make sure it has all needed characteristics by
+            requiring it to be a child of an existing class that meets those
+            characteristics. Swift adds a concept called
+            <a
+              href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/protocols/" target="_blank"
+            >
+              protocols</a
+              >
+              that specify the requirements that a class, a struct and certain other language
+              elements must have for a particular situation. When specifying a new
+              class or struct that you want to be able to be used in certain ways, you include
+              the protocol name in the class or struct definition and then the complier makes
+              sure that you actually implement the needed functionality.
+              </p>
+              <p>
+                To indicate that SomeClass is child of SomeSuperclass and also confirms
+                to two protocols you would write it like the following. You do not need
+                to have a super class, but if you do, it is listed before the protocols in
+                the first line of the class definition.
+              </p>
+              
+              <pre><code>class SomeClass: SomeSuperclass, FirstProtocol, AnotherProtocol {
+                // class definition goes here
+              }</code></pre>
+              
+              <pre><code>struct SomeStruct: FirstProtocol, AnotherProtocol {
+                // struct definition goes here
+              }</code></pre>
+
+              <p>
+                For example, a protocol can require that a class or struct have specific properties 
+                like this:
+              </p>
+              
+              <pre><code>protocol SomeProtocol {
+                var mustBeSettable: Int { get set }
+                var doesNotNeedToBeSettable: Int { get }
+              }</code></pre>
+              
+              <p>
+                This would require the class or struct to have properties named mustBeSettable and 
+                doesNotNeedToBeSettable and the { get set } on the first property means 
+                that property must be able to be set (which usually means it should have 
+                the var keyword in front of it). The second property could be specified 
+                with let or var. Note the protocol definition always uses var for properties and 
+                then uses the { get set } or { get } methods to indicate whether they need to be 
+                mutable. And if you specify { get } it does not require that the property 
+                be immutable, only that it may be mutable or immutable.
+              </p>
+              <p>
+                A protocol can also require that a class or struct implement specific methods 
+                like this:
+              </p>
+              <pre><code>protocol RandomNumberGenerator { 
+                func random() -> Double 
+              }</code></pre>
+              <p>
+                Conforming to a protocol can make certain language features or built-in 
+                functions available to you. For example, if you create a new struct or 
+                class that confirms to the
+                <a href="https://developer.apple.com/documentation/swift/sequence" target="_blank"
+                >Sequence protocol</a
+                  >, you are able to take advantage of built-in functionality that uses
+                  that protocol without needing to make that a child class of some parent
+                  to get the functionality. An object that conforms to the Sequence
+                  protocol can automatically be used as the source in a for…in loop. There 
+                  is an example of that in the tasks provided for you to use in this week's 
+                  assignment.
+                  </p>
+                  <p>
+                    To conform to a built-in protocol, search the documentation for that protocol.
+                    The official documentation for a built-in protocol always contains a section 
+                    about how to conform. For example, the documentation for the Sequence 
+                    protocol indicates that your class or struct must either implement a function 
+                    that generates an Iterator or else your class or struct must also explicitly 
+                    say it conforms to the IteratorProtocol (becoming its own iterator). 
+                    Once you add IteratorProtocol to the definition of your class or struct, you can 
+                    look up how to confirm to that protocol. Sometimes protocols inherit 
+                    from other protocols so conforming to a protocol automatically requires 
+                    you to conform to another protocol. For example, since the
+                    <a href="https://developer.apple.com/documentation/swift/hashable" target="_blank"
+                    >Hashable protocol</a
+                      > inherits from the 
+                      <a href="https://developer.apple.com/documentation/swift/equatable" target="_blank"
+                      >Equatable protocol</a
+                        > you must also conform to anything that protocol requires.
+                        </p>
+
+          <h2>Operator Methods</h2>
+          <p>
+            You may sometimes find it necessary to override or provide definitions 
+            for existing operators to use with objects from a class or struct. For 
+            example, making a class or struct comply with the Equitable and Hashable
+            protocols may 
+            require defining a <kbd>==</kbd> operator for the class or struct since one 
+            is not always automatically provided. Having a class or struct 
+            provide its own custom <a
+              href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/advancedoperators/#Operator-Methods"
+              target="_blank"
+            >Operator Methods</a
+              > to implement versions of existing operators is known as overloading those 
+              operators. You can add an operator method to the class or struct definition 
+              or use an extension like this:
+              </p>
+              <pre><code class="swift">extension PharmaceuticalStockTracker {
+                static func == (lhs: MedicationContainer, rhs: MedicationContainer) -> Bool {
+                return lhs.id == rhs.id
+                }
+              }</code></pre>
+              
+              <h2>UUID and Unique Objects</h2>
+              <p>
+                It is possible that we may have several containers of the same 
+                medication with the same name and the same expiration date.
+                If we create separate objects for each container, but they have
+                identical properties, how do we distinguish them and not think they refer to the 
+                same medication container? Swift has a built-in type called <kbd>UUID</kbd>. 
+                If we put <kbd>let id = UUID().uuidString</kbd> in our class or struct to define an
+                <kbd>id</kbd> property and give it a default value generated by the UUID Type
+                then the <kbd>id</kbd> property will  be a unique identifier for each distinct 
+                object. When you are doing your assignments, if a task calls for a unique id 
+                in a class or struct, be sure to include that definition and default value.
+              </p>
+              <p>
+                Swift does also have an <a
+                  href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/classesandstructures#Identity-Operators" target="_blank"
+                >
+                  identity operator</a
+                  >  <kbd>===</kbd> that has a value
+                  of true if and only if the objects on both sides of the operator are
+                  exactly the same object. But for many reasons including use of the
+                  SwiftUI library for user interface work, you will still want to have
+                  unique identifiers in some objects.
+                  </p>
 
           <h2>Any, AnyObject, is, and as?</h2>
           <p>
             Swift’s tight control of Types is usually great, but sometimes you may 
-            need to allow a variable, a class or structure property or an array 
+            need to allow a variable, a class or struct property or an array 
             element to have more than one Type. If you specify that something 
             has the type <kbd>Any</kbd>, you can put anything into it including a class, 
             a struct, an array or a basic type like an <kbd>Int</kbd>, a <kbd>Bool</kbd> or a <kbd>String</kbd>. 
@@ -729,28 +764,34 @@ print(any1 is TabletMedicationContainer) // returns false
             LiquidMedicationContainer, but how do we access the properties and methods of 
             that object? The <kbd>as?</kbd> operator allows us to try to pull an object 
             out of a variable. The <kbd>?</kbd> reminds us that this returns an optional 
-            since the conversion might fail and produce <kbd>nil</kbd>. There is a <kbd>as!</kbd> 
+            since the conversion might fail and produce <kbd>nil</kbd>. There is an <kbd>as!</kbd> 
             operator, but like the <kbd>!</kbd> operator, you should not use it in this course. 
 </p>
 <p>    
             Note that <kbd>as?</kbd> only “actualizes” the underlying type. It does not do type 
             conversion. Suppose <kbd>myAnyInt</kbd> is a variable of Type <kbd>Any</kbd> that 
             happens to contain an <kbd>Int</kbd>. If you want to store that into a <kbd>Double</kbd> 
-            called <kbd>myDouble</kbd> you may be tempted to write 
-            <kbd>let myDouble = myAnyInt as? Double</kbd>, 
+            called <kbd>myDouble</kbd> you may be tempted to write :
+            <pre><code>let myDouble = myAnyInt as? Double</code></pre>
             but that will fail since the underlying type is not a <kbd>Double</kbd>. Instead, 
-            you would need to write it like this: <kbd>let myDouble = Double(myAnyInt as? Int)</kbd>.
+            you would need to write it like this:
+            <pre><code>let myDouble = Double(myAnyInt as? Int)</code></pre>
+            That gets myDouble in two steps, first extracting the Int from the Any
+            and then using Double() to convert the extracted Int to a Double?.
+            Note that it is still an Optional Double and would need a third step to turn it
+            into an unwrapped Double.
             And if you find the <kbd>Any</kbd> contains an <kbd>Int</kbd> or a <kbd>Double</kbd> 
             you need to write slightly more complicated code to extract it to a <kbd>Double</kbd>. 
             You will have the opportunity to figure out how to do that in the assignment 
             this week.
+</p>
 
   <h2>Access Control</h2>
       <p>
         There are times when you need more control over when and who can access
         parts of your code. To ease this situation Swift also has the concept of
         <a
-          href="https://docs.swift.org/swift-book/LanguageGuide/AccessControl.html"
+          href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/accesscontrol/"
           target="_blank"
           >Access Control</a
         >. This is similar to what is found in most other modern programming
@@ -800,9 +841,9 @@ private func validateExpirationDate(aDate:Date)->Bool {
         application works on and with. Make your choices wisely. Each of the
         types described in this reading were created for a purpose. Use the one
         that fits. You should also use the 'least' one that fits. For example,
-        if you could use a tuple, a structure, or a class to represent some data
-        you should use a tuple. If only structure or class would fit the need,
-        use a structure. If only a class fits, use a class.
+        if you could use a tuple, a struct, or a class to represent some data
+        you should use a tuple. If only struct or class would fit the need,
+        use a struct. If only a class fits, use a class.
       </p>
       <p>
         If you follow this 'least required' decision pattern, your code will be
