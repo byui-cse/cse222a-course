@@ -84,19 +84,20 @@
     <h2>Sets</h2>
     <p>
       Consider a situation where there can only be one copy of any piece of data
-      in a collection. Rather than use an Array and do a search-check each time
-      you do an insert, way too slow, how about using the collection that is
-      designed to handle this for you, and to do it much faster.
+      in a collection. You could use an Array and do a search-check each time
+      you do an insert, but that is way too slow. You can instead use the collection
+      that is designed to handle this for you and to do it much faster:
       <a
         href="https://developer.apple.com/documentation/swift/set"
         target="_blank"
-        >The Set</a
+        >the Set</a
       >.
     </p>
     <p>
       There are several ways you can create a Set. You can, as in the
-      snippet below, create an empty set of some specific type and then add
-      elements to it and remove elements when you need to.
+      code below, create an empty set of some specific type and then add
+      and remove elements as needed. In specifying the type, the part
+      inside the &lt; &gt; indicates the type of objects stored in the Set.
     </p>
     <pre><code class="Swift">var names = Set&lt;String&gt;()
 names.insert("Sally")
@@ -113,10 +114,10 @@ names.remove("Jane") //no change. Jane isn't in there.
 
     <p>
       Notice that you must tell the compiler that the type of collection you
-      want is a set. Otherwise, it will make it be an array. Also, Sets don't
+      want is a set. Otherwise, it will create an array. Also, Sets don't
       guarantee ordering. That's why they can do searching, inserting, and
       removing much faster than an array. If you need things to stay in order,
-      remember an array is what you want.
+      an array is what you want.
     </p>
     <p>
       As an extra benefit for selecting Set as your collection type you get to
@@ -127,29 +128,33 @@ names.remove("Jane") //no change. Jane isn't in there.
       One very important thing you must understand is that anything that you put
       into a <kbd>Set</kbd> must be
       <a href="https://developer.apple.com/documentation/swift/hashable"
+        target="_blank"
         ><kbd>Hashable</kbd></a
       >. This is due to the Set using the hashed value of the elements as a key
       when the value is stored. Ints, Doubles, Strings, and many other built-in
-      Swift types are already <kbd>Hashable</kbd>. If you are putting a custom
-      element type in a set such as a class, you must
-      <a
-        href="https://developer.apple.com/documentation/swift/hashable"
-        target="_blank"
-        >make the class <kbd>Hashable</kbd></a
-      >.
+      Swift types are already <kbd>Hashable</kbd>. If you are putting objects
+      of a custom type such as a class or struct into a Set, you must
+      make the class <kbd>Hashable</kbd>. In this week's assignment, you
+      will need to make objects of a custom type Hashable
+      so you can put objects of that type into a Set. You do that by marking
+      the type definition as complying with the <kbd>Hashable</kbd> protocol
+      and then implementing whatever is needed to comply with the protocol.
+      As we mentioned last week, the official documentation for any built-in
+      protocol includes an explanation of the way or ways to comply with that
+      protocol. So when you do the assignment, follow the link to that protocol.
     </p>
     <h2>Dictionaries</h2>
     <p>
       Swift also has a
-      <a href="https://www.educba.com/swift-dictionary/" target="_blank"
-        >Dictionary BIC</a
+      <a href="https://developer.apple.com/documentation/swift/dictionary" target="_blank"
+        >Dictionary built-in type</a
       >
       and it works as you might expect based on your use of such things
       previously. In some other languages these are referred to as Maps. 
-      Dictionaries are key-value stores. Just like with Sets, Dictionaries do
+      Dictionaries are key-value stores. Just as with Sets, Dictionaries do
       not guarantee ordering. You can also create empty dictionaries and then
-      add, remove, and find elements. When you do this you must indicate the
-      type of the key and the type of the value.
+      add, remove, and find elements. When you create a Dictionary this you
+      must indicate the type of the key and the type of the value.
     </p>
     <pre><code class="Swift">var agesByName = [String:Int]()
 agesByName["Sally"] = 21
@@ -158,10 +163,12 @@ agesByName["Jane"] = 20
 </code></pre>
 
     <p>
-      You don't need to declare <kbd>agesByName</kbd> to be a Dictionary in the
-      snippet above, the compiler can figure it out by the <kbd>:</kbd> between the key 
-      and the value. You can also create and fill or partially fill a dictionary 
-      all at once by listing the key : value pairs.
+      You could specify a dictionary type like <kbd>Dictionary&lt;String, Int&gt;</kbd>
+      which tells the compiler that you want a Dictionary with a String key and an Int value.
+      But you don't need to declare <kbd>agesByName</kbd> to be a Dictionary in the
+      code above, the compiler can figure it out by the <kbd>:</kbd> between the key 
+      and the value type. You can also create and fill or partially fill a dictionary 
+      all at once by listing the <kbd>key:value</kbd> pairs.
     </p>
     <pre><code class="Swift">var agesByName = ["Sally": 21,"Jose": 23,"Jane":20]
 </code></pre>
@@ -169,21 +176,46 @@ agesByName["Jane"] = 20
     <p>
       When you are declaring and filling a Dictionary, you don't even need to
       tell the compiler the key and value types. It can figure that out to.
-      However, the key <kbd>Type</kbd> must conform to the
-      <kbd>Hashable</kbd> protocol.
+      However, the key type must conform to the <kbd>Hashable</kbd> protocol.
     </p>
+        <p>
+          To access an element of a Dictionary, you write code similar to accessing
+          an element of an Array.
+        </p>
+        <pre><code class="Swift">var anAge = agesByName["Sally"]</code></pre>
+        <p>
+          One difference from an Array is that what you put inside the
+          [ ] is of the type you specified for the key. For an Array the index
+          is always an integer from 0 to one below the size of the array (that you can
+          find out by using the <kbd>.count</kbd> computed property). Another difference
+          is that the value returned by looking something up in a Dictionary is an
+          Optional. That is because the way the language lets you know that the
+          requested dictionary entry does not exist is to return a value of nil.
+          So you will need to use the standard methods you learned in week 2 to
+          unwrap the Optional such as these two examples:
+        </p>
+        <pre><code class="Swift">guard var anAge = agesByName["Sally"] else {
+    <i>// handle case where "Sally" is not in the Dictionary"</i>
+}
+<i>// handle case where "Sally" is in the Dictionary</i></code></pre>
+        <pre><code class="Swift">if let ageConstant = agesByName["Jose"] {
+    <i>// handle case where "Jose" is in the Dictionary</i>
+} else {
+    <i>// handle case where "Jose" is not in the Dictionary"</i>
+}</code></pre>
     <p>
       There are many more methods that you can use with Sets, Dictionaries 
       and Arrays. You should take some time and review them. The
       <a
-        href="https://docs.swift.org/swift-book/LanguageGuide/CollectionTypes.html"
+        href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/collectiontypes/"
+        target="_blank"
         >Swift documentation</a
       >
       has good descriptions of the methods and how to use them. Go check it out.
       There are also other types of Collections for different purposes that
       are included in the standard library or in an standard add-on package called
       <kbd>Collections</kbd>. You can learn more about some of
-      them <a href="https://www.swift.org/blog/swift-collections/">here.</a>
+      them <a href="https://www.swift.org/blog/swift-collections/" target="_blank">here.</a>
     </p>
 
         <p>
@@ -201,9 +233,20 @@ agesByName["Jane"] = 20
         </p>
         
 <pre><code class="Swift">for aKey in aDictionary.keys { loop actions }
-for aValue in aDictionary.values { loop actions }
-</code></pre>
+for aValue in aDictionary.values { loop actions }</code></pre>
 
+        <p>
+          When you write code using a Dictionary, you can loop over all of the
+          elements or keys or both if you need to. However, if you need to access
+          or modify a specific element, it would waste the efficiency of a
+          Dictionary to loop through the Dictionary to find that element. Instead
+          you should just access the element directly like the following. Note that
+          if a value exists with the key "Jane" this code will update the value. If
+          there is no existing key "Jane" this code will create a new key-value pair.
+          And remember that <kbd>ageForJane</kbd> will be an Optional.
+        </p>
+        <pre><code class="Swift">agesByName["Jane"] = 42
+let ageForJane = agesByName["Jane"]</code></pre>
     <h2>Applications of Collections</h2>
     <p>
       Let's revisit the application for a pharmacy to track containers of

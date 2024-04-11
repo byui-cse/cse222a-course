@@ -39,14 +39,15 @@ var currentTest = 0
 //  ========= Utility functions =========
 
 //  This prints the a list of the tasks that match a particular status
-private func printResults(message: String, result: TestResults) {
-    var toPrint = message
+private func printResults(message: String, message2: String, result: TestResults) {
     // count the tasks in that status
     let resultCount = taskResults.filter { $0 == result }.count
-    toPrint += String(describing: resultCount)
+    var toPrint = String(describing: resultCount)
+    toPrint += " " + message
+    print(toPrint)
     // List the numbers of the tasks that match that status
     if resultCount > 0 {
-        toPrint += " Task numbers:"
+        toPrint = "    Task numbers \(message2):"
         var first = true // the first one does not need a comma in front of it
         for testNum in 0 ..< tests.count {
             if taskResults[testNum] == result {
@@ -55,8 +56,8 @@ private func printResults(message: String, result: TestResults) {
                 toPrint += " " + String(describing: testNum)
             }
         }
+        print(toPrint)
     }
-    print(toPrint)
 }
 
 // Called before starting each test. It sets up testReadLine() and testPrint()
@@ -746,7 +747,16 @@ private func test7(testNum: Int) -> TestResults {
         guard let returnArray = task7(aTuple) else {
             return .testNotImplemented
         }
-        // Set up an array of the expected days in the future or past
+        // Print the results to make sure the students can see the results
+        var printString = "For Task \(testNum), DateSequencer with \(aTuple) generated:\n\t["
+        var isFirst = true
+        for aDate in returnArray {
+            if isFirst { isFirst = false }
+            else { printString += ", " }
+            printString += dateToString(aDate)
+        }
+        print(printString + "]")
+       // Set up an array of the expected days in the future or past
         var daysArray = [Int]()
         if aTuple.0 < aTuple.1 {
             daysArray = Array(aTuple.0..<aTuple.1)
@@ -778,15 +788,7 @@ private func test7(testNum: Int) -> TestResults {
                 return fail(testNum, "Called task\(testNum)(\(aTuple)) and expected returnValue[\(dateIndex)] to be \(expectedDate) but it was \(returnedDate)")
             }
         }
-        // Print the correct results to make sure the students can see the results
-        var printString = "For Task \(testNum), DateSequencer with \(aTuple) correctly generated:\n\t["
-        var isFirst = true
-        for aDate in returnArray {
-            if isFirst { isFirst = false }
-            else { printString += ", " }
-            printString += dateToString(aDate)
-        }
-        print(printString + "]")
+        print(">>> That is the correct result!")
     }
     
     return .testPassed
@@ -934,9 +936,9 @@ for testNum in 0 ..< tests.count {
 
 print()
 print("===== Task Status =====")
-printResults(message: "Tasks Passed: ", result: .testPassed)
-printResults(message: "Tasks Failed: ", result: .testFailed)
-printResults(message: "Tasks Not Implemented: ", result: .testNotImplemented)
+printResults(message: "Tasks Passed.", message2: "Passing", result: .testPassed)
+printResults(message: "Tasks Failed.", message2: "Failing", result: .testFailed)
+printResults(message: "Tasks Not Implemented.", message2: "Not Implemented", result: .testNotImplemented)
 print()
 
 //  ========= End of main body of code =========
