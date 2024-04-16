@@ -41,12 +41,12 @@ import Foundation
 //
 //      3) Changed "inStockMedications" from an Array of MedicationContainers to
 //      a Dictionary. The key is a String (actually an ndcPackageCode) and
-//      the value is a Set of MedicationContainers each of which have an
+//      the value is a Set of MedicationContainers each of which has an
 //      ndcPackageCode attribute that matches the key.
 //
 //      4) Added two new computed properties "description" and "count" and
 //      made PharmaceuticalStockTracker conform to the CustomStringConvertible
-//      to activate the description property when needed.
+//      protocol to activate the description property when needed.
 //
 //      5) Changed the parameter to count(of:) from "name" to "ndcPackageCode".
 //
@@ -54,26 +54,38 @@ import Foundation
 //
 //      1) Implement the computed property "count" that should return a
 //      total count of all MedicationContainers with any ndcPackageCode
-//      stored in inStockMedications.
+//      stored in inStockMedications. This may require looping through
+//      the Dictionary.
 //
 //      2) Change count(of:) to correctly count how many containers of a
-//      specific ndcPackageCode are stored in inStockMedications.
+//      specific ndcPackageCode are stored in inStockMedications. YOu
+//      must use the properties of the Dictionary for this. It would
+//      waste the power of the dictionary to loop through all of the
+//      keys when you are given a key and can look up that specific Set.
 //
 //      3) Change addContainer() to work correctly for the new data model
 //      using the ndcPackageCode inside the MedicationContainer parameter
 //      as the key. Be sure to address both the case where we are adding
 //      this ndcPackageCode for the first time and the case where one or
 //      more MedicationContainers with the same ndcPackageCode have
-//      already been added.
+//      already been added. Again, do not loop through the entire
+//      Dictionary. Use the fact that it is a Dictionary. If a key
+//      matching the ndcPackageCode does not exist, create a new
+//      entry with a new Set. If a key matching the ndcPackage code
+//      does exist then return false if this MedicationContainer id
+//      is already in the set, otherwise add the MedicationContainer
+//      to the set.
 //
 //      4) As explained in the reading, Elements of a set must conform to
 //      the Hashable protocol. Mark the MedicationContainer class as
 //      conforming to Hashable. Then make it actually conform to Hashable.
 //      Note that since Equatable is a parent of Hashable, we must also
 //      conform to Equatable. Fortunately, we already did that last week,
-//      so part of the work to conform is already done.
+//      so part of the work to conform is already done. Follow the link
+//      in the reading about Hashable to learn how to conform.
 //      Hint: The combine() approach to conforming to Hashable works even
-//      if you are only "combining" one property,
+//      if you are only "combining" one property, And remember that the
+//      id preperty uniquely identifies each MedicationContainer object.
 //
 //  After you correctly complete this task, the project should compile and
 //  task0() should be shown as passing.
@@ -94,11 +106,7 @@ class PharmaceuticalStockTracker: CustomStringConvertible {
         return "StockTracker holding \(self.count) MedicationContainers"
     }
 //  EDITOR keep the #if false section and remove the #else section
-//  for tasks.swift. When you add back in some of these changes to
-//  create "tasks after task0.swift" be sure to not put back in the
-//  line that reads
-//      guard isFormattedAsNDCCode(code: aCode) else { return false }
-//  since that is not added until Task 3.
+//  for tasks.swift. But use the #else section for tasks_after_task0.swift
 #if false
     //  Implement this computed property
     var count: Int { get
@@ -106,12 +114,18 @@ class PharmaceuticalStockTracker: CustomStringConvertible {
         }
     }
     //  Correct this method
-    func count(of name: String) -> Int {
+    func count(of ndcPackageCode: String) -> Int {
+
+    // old code from last week to replace:
         return inStockMedications.reduce(0,
             { if $1.name == name { return $0+1 } else { return $0 }})
-    }
+}   
+
     //  Correct this method
+    // Remember if it already has a Set for that ndcPackageCode, check to
+    // make sure that the Set does not already include this object
     func addContainer(_ container: MedicationContainer) -> Bool {
+    // old code from last week to replace:
         for aContainer in inStockMedications {
             if aContainer.id == container.id { return false }
         }
@@ -133,19 +147,30 @@ class PharmaceuticalStockTracker: CustomStringConvertible {
     //  Correct this method
     func count(of ndcPackageCode: String) -> Int {
         return inStockMedications[ndcPackageCode]?.count ?? 0
+    // old code from last week to replace:
+    //    return inStockMedications.reduce(0,
+    //        { if $1.name == name { return $0+1 } else { return $0 }})
     }
-    //  Correct this method
     func addContainer(_ container: MedicationContainer) -> Bool {
+        // Remember if it already has a Set for that ndcPackageCode, check to
+        // make sure that the Set does not already include this object
         let aCode: String = container.ndcPackageCode
         if let inStockArray = inStockMedications[aCode] {
-            // if it already has an array for that ndcPackageCode, check to
-            // make sure that the array does not already include this object
+            // if it already has a Set for that ndcPackageCode, check to
+            // make sure that the Set does not already include this object
             if inStockArray.contains(container) { return false }
             inStockMedications[aCode]?.insert(container)
         } else {
             inStockMedications[aCode] = [container]
         }
         return true
+    // old code from last week to replace:
+    //    for aContainer in inStockMedications {
+    //        if aContainer.id == container.id { return false }
+    //    }
+    //    inStockMedications.append(container)
+    //        return true
+    //    }
     }
 #endif
 }
@@ -213,20 +238,32 @@ class TabletMedicationContainer: MedicationContainer {
     }
 }
 
-//  Do not edit the following date utilities that you are welcome to use.
-//  However, you can edit the "ddMMMyyyy" to try different date formats.
+//  Do not edit the following date utilities. You are welcome to use them.
+//  In particular, you will almost definitely want to use futureDate as a way
+//  to generate something of type Date rather than spend your time learning the
+//  details of how dates work in Swift at this point. And anytime you are asked
+//  to print something of type Date, please use dateToString() to convert the
+//  date to a String and print the String. Otherwise the test code may not
+//  recognize that you have correctly printed the date.
+//
+//  If you want to experiment with different date formats, you can edit the line
+//  in dateToString() with "MM/dd/yyyy" such as putting in "ddMMMyyyy" instead.
+
 func daysToSeconds(_ numDays: Int) -> Double {
     let msPerDay: Double = 60 * 60 * 24
     return Double(numDays) * msPerDay
-}
+//  This function takes an Int parameter that specifies a number of days in the future
+//  or the past (if you pass a negative integer) or today (if you pass 0). It returns
+//  an object of Type Date with the appropriate date value. You can use it to create
+//  Dates to put into variables or to compare to other Dates.
 func futureDate(daysFromNow: Int) -> Date {
     Date(timeIntervalSinceNow: daysToSeconds(daysFromNow))
 }
-
+    
 func dateToString(_ aDate: Date) -> String {
     let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "ddMMMyyyy"
-//    dateFormatter.dateFormat = "MM/dd/yyyy" // sample of alternate format
+//    dateFormatter.dateFormat = "ddMMMyyyy"
+    dateFormatter.dateFormat = "MM/dd/yyyy" // sample of alternate format
     return dateFormatter.string(from: aDate)
 }
 
@@ -258,7 +295,8 @@ func task0() -> (MedicationContainer, MedicationContainer) {
 //  that were removed. The array of expired containers should be sorted
 //  with the oldest expiration dates first. You can use sorted(). And let's
 //  keep things tidy: if you remove all the containers in a Dictionary
-//  entry, go ahead and remove the Dictionary entry also.
+//  entry, go ahead and remove the Dictionary entry also. If you want to
+//  remove a key from a Dictionary, set its value to nil.
 //
 //  When you have completed and tested the code for removeExpired(),
 //  change task1() to return true rather than nil
@@ -295,12 +333,19 @@ func task1() -> Bool? {
 
 //  Task 2
 //
-//  Now fill out the method addContainers() below. This accepts as parameters
+//  Tasks 2, 3 and 4 have an enum at the top for error messages you should
+//  use for values that you will return to indicate success or error conditions.
+//
+//  For task 2, fill out the method addContainers() below. This accepts as parameters
 //  an expectedNdcPackageCode and a Set of MedicationContainers to be added to
-//  the Stock Tracker. Since this system is supposed to be dealing with medications
+//  the Stock Tracker. Since this system is supposed to be dealing with medications,
 //  there are extra layers of checking. All of the containers in the Set passed
 //  to addContainers() should have the same ndcPackageCode and that code should
-//  match the expectedNdcPackageCode parameter.
+//  match the expectedNdcPackageCode parameter. If the ndcPackageCode codes
+//  are mixed and not all the same or if they do not match the expectedNdcPackageCode
+//  parameter you should use the error codes in the AddMessage enum. As the
+//  values in that enum suggest, you should also check if the Set passed to
+//  addContainers is empty and handle that as an error.
 //
 //  The function returns a tuple with a Bool and an enum of Type AddMessage.
 //  As you complete the method, parts of your code should return each of the
@@ -310,7 +355,13 @@ func task1() -> Bool? {
 //
 //  Hint: Remember to deal with both the case where there are currently no
 //  containers matching the ndcPackageCode and the case where there are
-//  already some containers matching the ndcPackageCode.
+//  already some containers matching the ndcPackageCode. If there is no key
+//  in the Dictionary matching the ndcPackageCode and all other tests pass
+//  then you can just add the set to the Dictionary. But if there is already
+//  a key matching the ndcPackageCode then you need to combine the Set passed
+//  in and the existing set. Look up the Swift Set documentation (there is a
+//  link in the reading) to see what operators are avaiable.  What operator
+//  would you expect to use to combine two Sets? 
 //
 //  When you have completed and tested the code for addContainers(),
 //  change task2() to return true rather than nil
@@ -357,11 +408,25 @@ func task2() -> Bool? {
 //  Task 3
 //  Implement the method currentStock(of:) below. This accepts as its parameter an
 //  ndcPackageCode. It returns a tuple with a Bool, an enum of Type StockMessage
-//  and an optional array of MedicationContainers.
+//  and an Optional array of MedicationContainers. The third parameter is Optional
+//  because you will return nil in that parameter if your funcation has an error.
+//
 //  Check if there are any containers of that type and if there are, return them in an
-//  array. Since we should use up medications with the oldest expiration date first,
+//  array. Remember to look up the Set in the Dictionary using the fact that it is a
+//  Dictionary. Do not loop through the entire Dictionary when you can directly look
+//  up the needed Set. If the Set does not exist because there is no Dictionary key
+//  with ndcPackageCode, the result of the lookup will be nil so return an error message.
+//  Otherwise, convert the Set to an Array using the Array() conversion function.
+//  Since we should use up medications with the oldest expiration date first,
 //  sort the array by expiration date before returning it so the older expiration
 //  dates come first.
+//
+//  Note that functions like sort() come in two varieties. WHich you use will depend on
+//  how you set up your code. sort() will sort the Array or other sortable collection
+//  in place. That means the parameter you pass in should be a var and that it will be
+//  modified to contain a sorted version of whatever was in it before the sort(). But
+//  sorted() does not modify the parameter at all and instead, returns a new array
+//  that is a sorted version of the unmodified original Array.
 //
 //  When you have completed and tested the code for currentStock(of:),
 //  change task3() to return true rather than nil
@@ -394,14 +459,19 @@ func task3() -> Bool? {
 
 //  Task 4
 //  Fill out the method sellContainers(count:of) below. This accepts as parameters a
-//  count of containers to sell, and an ndcPackageCode.
-//  It returns a Bool, a SellMessage and an optional array of MedicationContainers.
-//  This should find out if there is any inventory of the ndcPackageCode. If so,
+//  count of containers to sell and an ndcPackageCode. It returns a Bool, a SellMessage
+//  and an Optional array of MedicationContainers. The third element of the returned
+//  tuple is Optional because it will be nil if the function fails due to error conditions.
+//
+//  Your code should find out if there is any inventory for the ndcPackageCode. If so,
 //  confirm that there is enough inventory to fill the request.
 //  If not, return a tuple of (false, .notEnoughInventory, nil). If there
 //  is enough of inventory of the requested ndcPackageCode, be sure to sell those
-//  with the earliest dates first. Return a sorted array of the containers sold.
-//  If the sale results in the Set being emptied out, remove that dictionary entry.
+//  with the earliest dates first. Return a sorted array of the containers sold and
+//  remove the containers sold from the Set with that key.
+//
+//  If the sale results in the Set being emptied out, remove the Dictionary entry.
+//  Remember, to remove a Dictionary entry you set the entry value to nil.
 //
 //  When you have completed and tested the code for sellContainers(),
 //  change task4() to return true rather than nil
@@ -455,9 +525,12 @@ func task4() -> Bool? {
 //  with a parameter called daysTuple. The parameter should be a tuple of Type
 //  (Int, Int). The method should use the parameter to set the values (in order)
 //  of the two predefined properties: currentDaysOut and lastDaysOut. The purpose
-//  of this task is to set things up for the following tasks.
+//  of this task is to set things up for the following tasks. This simple task is
+//  just intended to give us a way to set or change the values for a DateSequencer
+//  struct.
 //
 //  After you make the change, apply the additional protocol DateSequencerProtocol
+//  to the DateSequencer struct so the compiler can test your work. Then
 //  change task5() to return true rather than nil to will let the tests run.
 //
 // EDITOR: remove DateSequencerProtocol from the following line for tasks.swift
@@ -482,26 +555,41 @@ func task5() -> Bool? {
 
 //  Task 6
 //  Add to the extension below to make the DateSequencer conform to the Sequence
-//  protocol. In conforming to this protocol, you can either have the object create
-//  a separate iterator or you can have the object be its own iterator . For this
-//  task, use the option where it is its own iterator  so in addition to conform
-//  to Sequence, it needs to explicitly conform to IteratorProtocol. You will
+//  protocol. In the official documentation it tells you that you can conform
+//  to this protocol either by having objects of the type create
+//  a separate iterator object or you can have the object be its own iterator .
+//  For this task, please use the option where it is its own iterator. To make
+//  that work, in addition to conforming to the Sequence protocol, the struct
+//  type also needs to explicitly conform to IteratorProtocol. You will
 //  need to add both of these protocols to the first line of the extension.
 //
-//  The next() function you implement to conform should return a date optional.
-//      If currentDaysOut == lastDaysOut then it should return nil.
-//      Otherwise it should return a Date currentDaysOut in the future.
-//  Returning nil is how it indicates that the sequence is complete.
-//  It should then increment currentDaysOut "towards" lastDaysOut. That is:
+//  To conform to the IteratorProtocol, you need to implement a next() function
+//  that returns an Optional value each time it is called. The value will be the
+//  next value in the desired sequence and be nil whenever the sequence has
+//  run out of values to return.
+//
+//  The next() function you implement to should return a Date Optional.
+//      If currentDaysOut == lastDaysOut then it should return nil to indicate
+//          that the sequence is complete.
+//      Otherwise it should return a Date currentDaysOut in the future that
+//          you can get using the futureDate() function.
+//  The should then increment currentDaysOut "towards" lastDaysOut. That is:
 //      if currentDaysOut < lastDaysOut add 1 to currentDaysOut
 //      if currentDaysOut > lastDaysOut subtract 1 from currentDaysOut.
 //  In implementing this, you are welcome to call either or
 //  both of daysToMs() and futureDate() or to borrow code from them.
 //
 //  The result of your code will be objects that generate a sequence of dates.
-//  If you call setDates(x, y) then the struct will behave as a sequence of dates
-//  starting x days in the future and continuing up or down the calendar until
-//  just before it would output y days into the future.
+//  If you call setDates(x, y) then when next() is called the struct will
+//  behave as a sequence of dates starting x days in the future (or past if
+//  x is negative) and continuing forward or backwards on the calendar stopping
+//  just before it would output a Date that is y days into the future (or past).
+//
+//  Note that you must output a Date generated from the current value of
+//  currentDaysOut and then update the value of currentDaysOut. But since that
+//  would call you to return a value and then do more processing, you need to
+//  figure out how to do that using an extra temporary variable or learning
+//  to use the "defer" statement that you can look up in the documentation.
 //
 //  When you have completed and tested these changes apply the additional
 //  protocol DateSequencerProtocol2 to the extension and change task6() to
@@ -542,7 +630,8 @@ func task6() -> Bool? {
 //  parameters.
 //
 //  When you are done with your code, change task7() to return the array produced
-//  instead of returning nil.
+//  instead of returning nil. Then look at the results to see how the struct you
+//  built responds to different values of the patameters to produce Arrays of Dates.
 //
 func task7(_ aTuple: (Int, Int)) -> [Date]? {
     //    return nil
@@ -554,3 +643,4 @@ func task7(_ aTuple: (Int, Int)) -> [Date]? {
     for aDate in seqObj { returnValue.append(aDate) }
     return returnValue
 }
+    
