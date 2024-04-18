@@ -121,9 +121,11 @@ class PharmaceuticalStockTracker: CustomStringConvertible {
             { if $1.name == name { return $0+1 } else { return $0 }})
 }   
 
-    //  Correct this method
+    // Correct this method
     // Remember if it already has a Set for that ndcPackageCode, check to
     // make sure that the Set does not already include this object
+    // addContainer() should return false if the StockTracker already
+    // contains the container being added.
     func addContainer(_ container: MedicationContainer) -> Bool {
     // old code from last week to replace:
         for aContainer in inStockMedications {
@@ -151,6 +153,11 @@ class PharmaceuticalStockTracker: CustomStringConvertible {
     //    return inStockMedications.reduce(0,
     //        { if $1.name == name { return $0+1 } else { return $0 }})
     }
+    // Correct this method
+    // Remember if it already has a Set for that ndcPackageCode, check to
+    // make sure that the Set does not already include this object
+    // addContainer() should return false if the StockTracker already
+    // contains the container being added.
     func addContainer(_ container: MedicationContainer) -> Bool {
         // Remember if it already has a Set for that ndcPackageCode, check to
         // make sure that the Set does not already include this object
@@ -252,6 +259,7 @@ class TabletMedicationContainer: MedicationContainer {
 func daysToSeconds(_ numDays: Int) -> Double {
     let msPerDay: Double = 60 * 60 * 24
     return Double(numDays) * msPerDay
+}
 //  This function takes an Int parameter that specifies a number of days in the future
 //  or the past (if you pass a negative integer) or today (if you pass 0). It returns
 //  an object of Type Date with the appropriate date value. You can use it to create

@@ -100,7 +100,7 @@ func testPrint(_ parameters: Any...) {
 
 // This function lets us write cleaner code in the tests for all of the error messages
 func fail(_ testNum: Int, _ message: String) -> TestResults {
-    print("Task \(testNum) Error: \(message)")
+    print("Task \(testNum) Error: \(message)\n")
     return .testFailed
 }
 
@@ -361,17 +361,25 @@ private func test0(testNum: Int) -> TestResults {
    return .testPassed
 }
 
-private func describeContainerArray(_ containers: [MedicationContainer]) -> String {
+extension MedicationContainer {
+    var abbreviatedDescription: String {
+        return "Med Container id: \(self.id), Code: \(self.id), Date: \(dateToString(self.expirationDate))"
+    }
+}
+private func describeContainerArray(extraIndent: Bool = false, _ containers: [MedicationContainer]) -> String {
     var returnString = "[\n\t"
     var first = true
     for container in containers {
         if first {
             first = false
         } else {
-            returnString += ", \n\t"
+            returnString += ",\n\t"
         }
-        returnString += "\(container)"
+        if extraIndent { returnString += "\t" }
+        returnString += "\(container.abbreviatedDescription)"
     }
+    returnString += "\n"
+    if extraIndent { returnString += "\t" }
     return returnString + "]"
 }
 private func describeContainerDictionary(_ aDict: [String: Set<MedicationContainer>]) -> String {
@@ -381,11 +389,11 @@ private func describeContainerDictionary(_ aDict: [String: Set<MedicationContain
         if first {
             first = false
         } else {
-            returnString += ", \n\t"
+            returnString += ",\n\t"
         }
-        returnString += "\(code):\(describeContainerArray(Array(containers)))"
+        returnString += "Key: \(code) \(describeContainerArray(extraIndent: true, Array(containers)))"
     }
-    return returnString + "]"
+    return returnString + "\n]"
 }
 private func compareContainerDictionaries(_ lhs: [String: Set<MedicationContainer>], _ rhs: [String: Set<MedicationContainer>]) -> Bool {
     guard lhs.count == rhs.count else { return false }
@@ -413,7 +421,8 @@ private func test1(testNum: Int) -> TestResults {
     guard deletedContainers == wantRemoved else {
         print("Applied removeExpired() to a PharmaceuticalStockTracker with inStockMedications = \(describeContainerDictionary(preloadedMedications))")
         print("Expected returned array of deleted containers to be \(describeContainerArray(wantRemoved))")
-        return fail(testNum, "Actual returned array of deleted containers was \(describeContainerArray(deletedContainers))")
+        print("Actual returned array of deleted containers was \(describeContainerArray(deletedContainers))")
+        return fail(testNum, "Compare expected to returned to identify what is different, either contents or order")
     }
     //Set up what the result should look like
     var wantedRetained = preloadedMedications
@@ -423,7 +432,8 @@ private func test1(testNum: Int) -> TestResults {
     guard compareContainerDictionaries(testTracker.inStockMedications, wantedRetained) else {
         print("Applied removeExpired() to a PharmaceuticalStockTracker with inStockMedications = \(describeContainerDictionary(preloadedMedications))")
         print("Expected containers retained in inStockMedications to be \(describeContainerDictionary(wantedRetained))")
-        return fail(testNum, "Actual containers retained in inStockMedications are \(describeContainerDictionary(testTracker.inStockMedications))")
+        print("Actual containers retained in inStockMedications are \(describeContainerDictionary(testTracker.inStockMedications))")
+        return fail(testNum, "Compare expected to returned to identify what is different")
     }
 
     // What happens if there are no expired medications
@@ -431,11 +441,13 @@ private func test1(testNum: Int) -> TestResults {
     let moreDeleted = testTracker.removeExpired()
     guard moreDeleted.count == 0 else {
         print("Applied removeExpired() to a PharmaceuticalStockTracker with no expired medications =  \(describeContainerDictionary(saveStock))")
-        return fail(testNum, "Should have returned an empty array, but instead returned \(describeContainerArray(moreDeleted))")
+        print("Should have returned an empty array, but instead returned \(describeContainerArray(moreDeleted))")
+        return fail(testNum, "Did not delete all expired containers")
     }
     guard compareContainerDictionaries(testTracker.inStockMedications, saveStock) else {
         print("Applied removeExpired() to a PharmaceuticalStockTracker with no expired medications =  \(describeContainerDictionary(saveStock))")
-       return fail(testNum, "Should not have modified the PharmaceuticalStockTracker, but it was modified to be \(describeContainerDictionary(testTracker.inStockMedications))")
+        print("Should not have modified the PharmaceuticalStockTracker, but it was modified to be \(describeContainerDictionary(testTracker.inStockMedications))")
+       return fail(testNum, "Apparently deleted containers that were not expired")
     }
 
     return .testPassed

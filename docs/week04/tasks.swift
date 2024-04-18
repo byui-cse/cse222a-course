@@ -107,9 +107,11 @@ class PharmaceuticalStockTracker: CustomStringConvertible {
             { if $1.name == name { return $0+1 } else { return $0 }})
     }   
     
-    //  Correct this method
+    // Correct this method
     // Remember if it already has a Set for that ndcPackageCode, check to
-    // make sure that the Set does not already include this object
+    // make sure that the Set does not already include this object.
+    // addContainer() should return false if the StockTracker already
+    // contains the container being added.
     func addContainer(_ container: MedicationContainer) -> Bool {
     // old code from last week to replace:
         for aContainer in inStockMedications {
