@@ -40,14 +40,15 @@ private var currentTest = 0
 //  ========= Utility functions =========
 
 //  This prints the a list of the tasks that match a particular status
-private func printResults(message: String, result: TestResults) {
-    var toPrint = message
+private func printResults(message: String, message2: String, result: TestResults) {
     // count the tasks in that status
     let resultCount = taskResults.filter { $0 == result }.count
-    toPrint += String(describing: resultCount)
+    var toPrint = String(describing: resultCount)
+    toPrint += " " + message
+    print(toPrint)
     // List the numbers of the tasks that match that status
     if resultCount > 0 {
-        toPrint += " Task numbers:"
+        toPrint = "    Task numbers \(message2):"
         var first = true // the first one does not need a comma in front of it
         for testNum in 0 ..< tests.count {
             if taskResults[testNum] == result {
@@ -56,8 +57,8 @@ private func printResults(message: String, result: TestResults) {
                 toPrint += " " + String(describing: testNum)
             }
         }
+        print(toPrint)
     }
-    print(toPrint)
 }
 
 // Called before starting each test. It sets up testReadLine() and testPrint()
@@ -118,7 +119,7 @@ func testPrint(_ parameters: Any..., terminator: String = "\n") {
 
 // This function lets us write cleaner code in the tests for all of the error messages
 func fail(_ testNum: Int, _ message: String) -> TestResults {
-    print("Task \(testNum) Error: \(message)")
+    print("\nTask \(testNum) Error: \(message)")
     return .testFailed
 }
 
@@ -218,7 +219,7 @@ private func test0(testNum: Int) -> TestResults {
             continue
         }
         guard printed == expected else {
-            passCode = fail(testNum, "Expected printWalk to produce:\n\t\(expected)\nbut produced\n\t\(String(describing: printed))\n\t\t*** Compare differences to find errors ***")
+            passCode = fail(testNum, "For random walk:\n\t\(walks[index])\nexpected printWalk to produce:\n\t\(expected)\nbut it produced\n\t\(String(describing: printed))\n\t\t*** Compare differences to find errors ***")
             continue
         }
     }
@@ -311,10 +312,10 @@ private func test2(testNum: Int) -> TestResults {
 
     //  This is what we expect testPrinted for each error thrown
     let expectedPrint = [
-        "Error: someError",
-        "Error: errorWithInt 17",
-        "Error: errorWithString Expected",
-        "Error: errorWithDouble 14.3"
+        "Error caught: someError",
+        "Error caught: errorWithInt 17",
+        "Error caught: errorWithString Expected",
+        "Error caught: errorWithDouble 14.3"
     ]
 
     // Used to step through the errors each time we throw one
@@ -559,33 +560,34 @@ private func test3(testNum: Int) -> TestResults {
         [.error("Some error message"), .error("Some error message"), .error("Some error message"), .string("2.0 + 1.2 = 3.2")]
        ]]
     let testDescriptions = [
-        "Test simple values",
-        "Test plus operators",
-        "Test nested (recursive) plus operators",
-        "Test all operators",
-        "Test simple .ref operators",
-        "Test more complex .ref operators (referring to forward cells not yet evaluated)",
-        "Full test of all features"
+        "Test #1 simple values",
+        "Test #2 plus operators",
+        "Test #3 nested (recursive) plus operators",
+        "Test #4 all operators (.plus, .minus, .times,. divide",
+        "Test #5 simple .ref operators",
+        "Test #6 more complex .ref operators (referring to forward cells not yet evaluated)",
+        "Test #7 full test of all features"
     ]
     for which in 0..<testSheets.count {
   
         guard let returnValue = task3(testSheets[which]) else { return .testNotImplemented }
         
-        testPrint("User view of input spreadsheet test #\(which+1):\n[\(testDescriptions[which])]")
+        testPrint(">>>>> \(testDescriptions[which]) <<<<<")
+        testPrint("User view of input spreadsheet for test #\(which+1):")
         printSheet(testSheets[which], userView: true)
-        testPrint("\nInternal view of input spreadsheet test #\(which+1):")
+        testPrint("\nInternal view of input spreadsheet for test #\(which+1):")
         printSheet(testSheets[which])
-        testPrint("\nUser view of returned value test #\(which+1):")
+        testPrint("\nUser view of output spreadsheet for test #\(which+1):")
         printSheet(returnValue, userView: true)
-        testPrint("\nInternal view of returned value test #\(which+1):")
+        testPrint("\nInternal view of output spreadsheet for test #\(which+1):")
         printSheet(returnValue)
         testPrint()
    
         let (resultBool, resultString) = compareSheets(returnValue, resultSheets[which])
         guard resultBool else {
-            testPrint("\nInternal view of expected return value for Test #\(which):")
+            testPrint("\nInternal view of expected output spreadsheet for test #\(which+1):")
             printSheet(resultSheets[which])
-            testPrint("")
+            testPrint(">>>>> Compare expected output to actual output and make corrections <<<<<")
             return fail(testNum, "Test #\(which+1) " + resultString)
             
         }
@@ -607,9 +609,9 @@ for testNum in 0 ..< tests.count {
 
 print()
 print("===== Task Status =====")
-printResults(message: "Tasks Passed: ", result: .testPassed)
-printResults(message: "Tasks Failed: ", result: .testFailed)
-printResults(message: "Tasks Not Implemented: ", result: .testNotImplemented)
+printResults(message: "Tasks Passed.", message2: "Passing", result: .testPassed)
+printResults(message: "Tasks Failed.", message2: "Failing", result: .testFailed)
+printResults(message: "Tasks Not Implemented.", message2: "Not Implemented", result: .testNotImplemented)
 print()
 
 //  ========= End of main body of code =========

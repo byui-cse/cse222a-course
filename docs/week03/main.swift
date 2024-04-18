@@ -40,9 +40,9 @@ for testNum in 0 ..< tests.count {
 
 print()
 print("===== Task Status =====")
-printResults(message: "Tasks Passed: ", result: .testPassed)
-printResults(message: "Tasks Failed: ", result: .testFailed)
-printResults(message: "Tasks Not Implemented: ", result: .testNotImplemented)
+printResults(message: "Tasks Passed.", message2: "Passing", result: .testPassed)
+printResults(message: "Tasks Failed.", message2: "Failing", result: .testFailed)
+printResults(message: "Tasks Not Implemented.", message2: "Not Implemented", result: .testNotImplemented)
 print()
 
 //  ========= End of main body of code =========
@@ -57,14 +57,15 @@ print()
 //  ========= Utility functions =========
 
 //  This prints the a list of the tasks that match a particular status
-private func printResults(message: String, result: TestResults) {
-    var toPrint = message
+private func printResults(message: String, message2: String, result: TestResults) {
     // count the tasks in that status
     let resultCount = taskResults.filter { $0 == result }.count
-    toPrint += String(describing: resultCount)
+    var toPrint = String(describing: resultCount)
+    toPrint += " " + message
+    print(toPrint)
     // List the numbers of the tasks that match that status
     if resultCount > 0 {
-        toPrint += " Task numbers:"
+        toPrint = "    Task numbers \(message2):"
         var first = true // the first one does not need a comma in front of it
         for testNum in 0 ..< tests.count {
             if taskResults[testNum] == result {
@@ -73,8 +74,8 @@ private func printResults(message: String, result: TestResults) {
                 toPrint += " " + String(describing: testNum)
             }
         }
+        print(toPrint)
     }
-    print(toPrint)
 }
 
 // Called before starting each test. It sets up testReadLine() and testPrint()

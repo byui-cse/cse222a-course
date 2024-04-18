@@ -193,7 +193,7 @@ func task2() -> Int? {
 //  closure according to the list below, then change "return nil" to "return closureArray".
 //  We are not asking you to use map, filter, reduce or other built in functions in this task.
 //  Instead, in this task we are just practicing writing closures and putting each closure in
-//  an array of closures. The test code will then call the closures with various parameters.//
+//  an array of closures. The test code will then call the closures with various parameters.
 //
 //  Closure 0: return the sum of the two parameters
 //  Closure 1: return the product of the two parameters

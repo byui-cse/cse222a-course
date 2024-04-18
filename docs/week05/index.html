@@ -64,14 +64,19 @@
     <header class="hero-image">
       <section class="hero-text">
         <h1>CSE 222a: Week 05</h1>
-        <p>Closures, Error Handling and Web Site Data</p>
+        <p>Enums with Associated Values, Error Handling and more on Closures</p>
       </section>
     </header>
-    <h1>Closures, Error Handling and Web Site Data</h1>
+    <h1>Enumerations with Associated Values, Error Handling and more on Closures</h1>
     <p>
-      \(\lambda\) functions are a
+      This week we will learn about an enhanced version of enumerations called Enumerations
+      with Associated Values in preparation
+      for learning how Swift supports cross functional Error Handling. But first we will
+      review and expand on our discussion of closures.
+      
+      Closures are also know as \(\lambda\) functions which are
       <a href="https://en.wikipedia.org/wiki/Lambda_calculus" target="_blank"
-        >mathematical construct</a
+        >mathematical constructs</a
       >
       that
       <a
@@ -81,17 +86,19 @@
       >
       and computation in general has borrowed. You've used them before in your
       Python courses or as anonymous functions in JavaScript. You've also used
-      them in Swift as Closures when you did the <kbd>map</kbd>,
-      <kbd>filter</kbd>, and <kbd>reduce</kbd> and other tasks. Now let's learn some more
-      about them. Then we will learn a bit more about enumerations in preparation
-      for learning how Swift support Error Handling.
+      them in Swift as Closures in previous weeks such as when you used <kbd>map</kbd>,
+      <kbd>filter</kbd>, and <kbd>reduce</kbd> and other built-in functions.
+      
     </p>
     <h3>Storing Closures in Variables and Data Collections</h3>
     <p>
       Due to its functional programming ancestor Haskell, Swift's functions can
       be stored in variables and can also be passed around as parameters to
-      other functions and methods. (From this point on, we'll use the word
-      function to mean both stand-alone functions and methods.)
+      other functions and methods. For this discussion, we will use the word
+      "function" to mean both stand-alone functions and methods that are
+      associated with classes and structs.
+    </p>
+        <p>
       <a
         href="https://people.cs.vt.edu/~kafura/cs2704/generalization.html"
         target="_blank"
@@ -99,190 +106,97 @@
       >
       is a common pattern that you've followed before whenever you created a
       function. You had a series of computations that could be applied to
-      various data values. Using stored closures allows your functions to be
+      some data values. Using stored closures allows your functions to be
       generalized even further. It also allows more of your code to be reused so
       defects are found and fixed more readily.
     </p>
     <p>
       But how does storing a closure make greater generalization possible? When
       you store closures in a data structure you can retrieve the right one for
-      any given situation and use it within a function, you are replacing some
-      of the fixed computational steps with some that are dependent on the
+      any given situation and use it within a function. When you do that, you are
+      replacing some fixed computational steps with some that are dependent on the
       situation. Consider this example.
     </p>
     <p>
-      Imagine you are creating a web service of some kind. Each time a request
-      comes in from a web browser there is some sort of a command (login,
-      logout, update something, download something, display something, etc.) and
-      some data that goes along with the command (username and password, the
-      name of the file to download, the data from the file to store on the
-      server, etc.). You could write a function with a huge
-      <kbd>if-else</kbd> clause where each branch of the
-      <kbd>if-else</kbd> clause checks the command and executes code inside the
-      scope of the correct branch to deal with the data sent. This naive design
-      has many problems and would look something like the code below.
-    </p>
-    <pre><code class="Swift">func handleRequest(aCommand:String, theData:DataDictionary){
-	if aCommand == "login"{
-		//login handling code here
-	}
-	else if aCommand == "logout"{
-		//logout handling code here
-	}
-	else if aCommand == "upload"{
-		//file upload handling code here
-	}
-	/*
-	 * and another, and another, and another, and another,....
-	 */
-	else{
-		//unrecognized command handling code here
-	}
+      Imagine you are creating a calculator app.  You might start with just addition
+      and subtraction defined like this:
+      <pre><code class="Swift">enum OperationType {
+    case plus
+    case minus
+}
+
+func handleOperation(operation: OperationType) {
+    if operation == plus {
+        // perform plus operation
+    } else if operation == minus {
+        // perform minus operation
+    } else 
+        // report invalid operation
 }</code></pre>
-    <p>
-      What kinds of problems might this cause? Well, first there is the
-      <a
-        href="https://www.springboottutorial.com/code-quality-what-is-code-duplication"
-        target="_blank"
-        >duplication of code</a
-      >
-      all over the place. Do you really want to type
-      <kbd>else if aCommand ==</kbd> dozens or maybe hundreds of times? Stepwise
-      debugging such a mess can also be a problem.
+
+      Each time an operation is performed, this function needs to go through an if/else
+      list of operations and find the right code. With two operations that is simple,
+      but if this were a scientific calculator with many operations, the if/then
+      list would get long and going through every operation sequentially would add
+      overhead.
     </p>
     <p>
-      But there is even a bigger problem. What order are you going to do the
-      checks in? String comparison is an expensive computation to perform in any
-      language so you should put the most commonly used commands first. But
-      which command is that? The most commonly used command will change over
-      time, so you need to make sure to always check what your users are doing.
-    </p>
-    <p>
-      In web services you usually similar things each time a command-data
-      pairing is received. First you need to make sure the command is a valid
-      command. You also need to validate the data. After validating both things, 
-      your web service will usually interact with a database. This could include 
-      getting data from the database, putting data in the database, or both. Then 
-      your service will put together some data to send back to the client.
-    </p>
-    <p>
-      These steps are performed over and over. At major web sites these steps
-      are performed millions of times a minute. The <kbd>if-else</kbd> design 
-      isn't going to be good enough. How then can this be made better? The 
-      solution to this lies in using a Dictionary and the principle that 
-      functions and closures are
-      <a href="https://lispcast.com/what-are-first-class-functions/"
-        >first class citizens</a
-      >
-      in Swift.
-    </p>
-    <p>
-      Suppose you have a Dictionary where the key is the command
+      Suppose instead you have a Dictionary where the key is the operation
       and the value for that key is a closure. Let's call this type
-      <kbd>CommandDictionary</kbd>. Here are a couple of
+      <kbd>OperatorDictionary</kbd>. Here is a
       <a
         href="https://www.programiz.com/swift-programming/typealias"
         target="_blank"
-        >typealiases</a
+        >typealias</a
       >
       to make it easier to read code later.
     </p>
-    <pre><code class="Swift">//some aliases to make the code easier to read
-typealias DataDictionary = Dictionary&lt;String,Any&gt;
-typealias CommandFunction = (DataDictionary) -> (CommandMessages, DataDictionary?)
-typealias CommandDictionary = 
-      Dictionary&lt;String, CommandFunction&gt;</code></pre>
+        <pre><code class="Swift">//some aliases to make the code easier to read
+// An OperatorClosure is a closure that takes two Int parameters and returns an Int
+typealias OperatorClosure = (Int, Int) -> Int
+// An OperatorDictionary has an Operatortype for each key
+//     and an OperatorClosure for each value.
+typealias OperatorDictionary = Dictionary<OperatorType, OperatorClosure></code></pre>      
     <p>
-      This supposes that we have an enum Type of possible errors (and .success) called 
-      <kbd>StatusMessages</kbd>. Each entry in our <kbd>CommandDictionary</kbd> has
-      a <kbd>String</kbd> as key and a closure as the value. What will the closure
-      use as a parameter and return value? The <kbd>DataDictionary</kbd> type has
-      a <kbd>String</kbd> as the key and can have any data as the value. 
-      That way different commands can receive different kinds of data.
+      We can create a Dictionary that stores the closures for each operator and
+      the code to handle operations will call the closures like this:
     </p>
-        <p>
-      We have already worked with data of Type <kbd>Any</kbd> and used 
-      <kbd>as?</kbd> to pull the underlying data Type back out if it is there. 
-      Each closure would use <kbd>as?</kbd> to try to pull the parameters it 
-      expects out of the <kbd>DataDictionary</kbd> parameter.
-        </p>
-        <p>
-      The keys in the <kbd>DataDictionary</kbd> would contain the parameter 
-      names and the values would be the value for those parameters. For example, 
-      suppose the closure would expect parameters like:
-        <p>
-      <pre><code class="Swift">(fileName: “myFile.txt”, charsToRead: 40)</code></pre>
-          <p>
-        then the <kbd>DataDictionary</kbd> that would be the actual parameter 
-        would look like this:
-        </p>
-        <pre><code class="Swift">(data: [“fileName” : “myFile.txt”, “charsToRead” : 40])</code></pre>
-          <p>
-      Inside the closure you would need code like this:
-      <pre><code class="Swift">guard let fileName = data[“filename”] as? String else { handle error }
-guard let charsToRead = data[“charsToRead”] as? Int else { handle error }</code></pre>
-            <p>
-      This is a bit more overhead at the start of the closure, but it allows 
-      each closure in the CommandDictionary to receive its own unique
-      list of parameters.
-            </p>
-            <p>
-      When we set up a command parser, we can define a function that is called 
-      to load each command key with a closure into a <kbd>CommandDictionary</kbd> we could 
-      call <kbd>commands</kbd>. As mentioned, we also have an enum Type of possible Error 
-      Codes (plus one for .success) called <kbd>StatusMessages</kbd>. With those assumptions
-      our execution engine look like this:
-<pre><code class="Swift">enum CommandMessages {
-    case success
-    case invalidCommand
-}
-      
-func handleRequest(command: String, dataIn: DataDictionary) -> (CommandMessages, DataDictionary?) {
-    guard let commandFunction = commands[command] else {
-        var responseData = dataIn
-        responseData["response"] = "\(command) is not a valid command"
-        return (.invalidCommand, responseData)
+    <pre><code class="Swift">let operatorFunctions: OperatorDictionary = [
+    .plus: { (lhs, rhs) in
+        // code to process plus operator
+        // then return the result
     }
-    let (message, responseData) = commandFunction(dataIn)
-    guard let responseData = responseData, message == .success else {
-        return (message, dataIn)
+    .minus: { (lhs, rhs) in
+        // code to process minus operator
+        // then return the result
     }
-    return (.success, responseData)
-}</code></pre>
-              
-  <p>
-    This allows us to write and test a closure for each command. We would
-    need to have a way to make those closures accessible to handleRequest(), 
-    something like this:
-  </p>
-              <pre><code class="Swift">var commands: CommandDictionary = [:]
+]
 
-func loadCommand(command: String, aFunc: @escaping CommandFunction) {
-    if command != "" {
-        commands[command] = aFunc
-    }
+func handleOperation(operation: OperationType, lhs: Int, rhs: Int) -> Int {
+      guard let operationClosure = operatorFunctions(operations) else {
+          // report or handle invalid operation
+      }
+      // handle any common setup for operators
+      // then perform the operation
+      let retValue = operationClosure(lhs, rhs)
+      // handle any common post operation details
+      // then return the result
+      return retValue
 }</code></pre>
-    <p>
-      As mentioned earlier, if there we want to separate the processing of
-      commands into three separate phases for each command, we could 
-       implement three separate instances of <kbd>CommandDictionary</kbd>. 
-        Our execution engine would validate that the command has been loaded 
-        in all three dictionaries. It would then pass the parameters to the 
-        closure in the first one, pass the output from that to the closure in
-        the second Dictionary and the output from the second to the third. 
-        The output of the third would go back to the user.
-      </p>
-      <p>
-        If any step failed, the other steps would not be executed. And, 
-        for example, if a password were validated in the first closure 
-        then it would not need to be passed to the other closures, thus 
-        reducing the amount of code with visibility to the password.
-      </p>
+  <p>
+    We can add code in <kbd>handleOperation()</kbd> to do any common processing
+    of operations before or after calling the closure. To add another operation,
+    we simply add a value to the OperationType enum and then add a closure to
+    operatorFunctions to handle that operation. This helps us have cleaner code
+    with the code to handle operations organized in the closure Dictionary. You could
+    even define the operatorFunctions Dictionary as a var so it can be modified
+    and then have code that replaces the closures depending on circumstances.
+  </p>
 
               <h3>Passing Functions or Closures as Parameters</h3>
     <p>
       You've used functions that had other functions as parameters. The
-      <kbd>map, filter,</kbd> and <kbd>reduce</kbd>
+      <kbd>map()</kbd>, <kbd>filter()</kbd>, and <kbd>reduce()</kbd>
       functions last week leveraged this concept heavily. But you are not
       limited to being able to do this with Built-in Functions. You can write your own
       functions that do this as well.
@@ -296,13 +210,13 @@ func loadCommand(command: String, aFunc: @escaping CommandFunction) {
     </p>
     <p>
       Having a function as a parameter allows a programmer to decide later, long
-      after you've written your function, what some of the behavior of your
-      function should be. That way your function can be reused and there will be
+      after you've written your function, some of the behavior of your
+      function should have. That way your function can be reused and there will be
       less code duplication in the application.
     </p>
     <p>
      Following is an example that illustrates the principle. In a real 
-      application, you should use the <kbd>reduce</kbd> BIF, but let's
+      application, you should use the <kbd>reduce</kbd> built-in function, but let's
       use this example to look at how you could use a closure as a parameter.
     </p>
 
@@ -341,12 +255,12 @@ func loadCommand(command: String, aFunc: @escaping CommandFunction) {
               <h3>Enumerations with Associated Values</h3>
               <p>
                 You have used Swift <a
-                  href="https://docs.swift.org/swift-book/LanguageGuide/Enumerations.html"
+                  href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/enumerations/"
                   target="_blank"
                 >enumerations</a
-                  > for several weeks now, but there is an additional option we need
+                  > for several weeks now, but there is an additional feature we need
                   to discuss that allows enumerations to have extra values of any 
-                  types be associated with any or each of the enumeration values.
+                  types that are associated with any or each of the enumeration values.
                   This provides functionality similar to 
                   <kbd>discriminated unions</kbd>, <kbd>tagged unions</kbd>, or 
                   <kbd>variants</kbd> in some other languages. Here is an 
@@ -386,8 +300,38 @@ func loadCommand(command: String, aFunc: @escaping CommandFunction) {
         print("UPC : \(numberSystem), \(manufacturer), \(product), \(check).")
 }</code></pre>
                   <p>
-One key use of enumerations with associated values to define error conditions for Swifts approach to error handling.
-              </p>
+                    An enum Type can define some enum values as having one associated value,
+                    other enum values with several associated values and some enum values
+                    with no associated values. Remember that when you do a switch statement
+                    to process objects of an enum Type, you must cover all cases. You can list several
+                    enum values separated by commas in a single case statement. If you do not
+                    list all possible values of whatever follows the keyword switch, you need
+                    to add a "default:"  option in addition to the various "case ...:" options.
+                  </p>
+                  <pre><code class="Swift">enum SomeEnum { 
+    case enum1(String)
+    case enum2(Int, Int, Double, Bool)
+    case enum3
+    case enum4
+    case enum5
+    case enum6
+    case enum7
+}
+func processSomeEnum(anEnum: SomeEnum) {
+    switch anENum {
+        case .enum1(let aString):
+            print("String: \(aString))
+        case let .enum2(anInt, anotherInt, aDouble, aBool):
+            print("Values associated with enum2: \(anInt), \(anotherInt), \(aDouble), \(aBool))
+        case .enum3, .enum4:
+            print("Enum was enum3 or enum4)
+        default:
+            print("Some other enum value")
+    }
+}</code></pre>
+                  <p>
+                    One key use of enumerations with associated values to define error conditions for Swifts approach to error handling.
+                  </p>
 
                   <h3>Error Handling in Swift</h3>
                 <p>
@@ -396,7 +340,7 @@ One key use of enumerations with associated values to define error conditions fo
                 loops to protect the code beyond them from invalid or unexpected 
                 values. But what about errors that need to be handled beyond that 
                   local scope? Swift supports a <a
-                    href="https://docs.swift.org/swift-book/LanguageGuide/ErrorHandling.html"
+                    href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/errorhandling/"
                     target="_blank"
                   >do-catch-throw model</a> similar to some other languages to handle those errors.  
                 </p>
@@ -414,16 +358,17 @@ One key use of enumerations with associated values to define error conditions fo
     case errorWithInts(Int, Int)
 }</code></pre>
                     <li>Label a function that can throw an error by adding the keyword 
-                      <kbd>throws</kbd> to the function definition, after its parameters 
-                      and before the <kbd>-&gt;</kbd> (if it has a return value).</li>
-                    <li>Use the keyword <kbd>throw</kbd> to throw an object of a 
+                      <kbd>throws</kbd> to the function definition after its parameters.
+                      If the function has a return value then <kbd>throws</kbd> should appear
+                      just before the <kbd>-&gt;</kbd>.</li>
+                    <li>Inside that function, use the keyword <kbd>throw</kbd> to throw an object of a 
                       defined error type like this:</li>
 <pre><code class="Swift">func canThrow() throws -> Int {
-    some code
-    if error-happens {
+    <i>some code</i>
+    if <i>error-happens</i> {
         throw SomeErrorType.anotherError(“some string”)
     }
-    more code
+    <i>more code</i>
     return someInt
 }</code></pre>
                     <li>When you call a function that can throw errors, call it using 
@@ -431,19 +376,20 @@ One key use of enumerations with associated values to define error conditions fo
 <pre><code class="Swift">do {
         let anInt = try canThrow()
     } catch SomeErrorType.oneError {
-        handle error
+        <i>handle error</i>
     } catch SomeErrorType.anotherError(let aString) {
-        handle error
+        <i>handle error</i>
     } catch errorWithInts(var Int1, Int2) {
-        handle error
+        <i>handle error</i>
     } catch {
-        handle other error
+        <i>handle other error or</i>
+        throw error
     }
 }</code></pre>
                     </ol>
                   <p>
-                    Each phrase after the <kbd>catch</kbd> is a <a
-                      href="https://docs.swift.org/swift-book/ReferenceManual/Patterns.html"
+                    Each phrase after the keyword <kbd>catch</kbd> is a <a
+                      href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/patterns/"
                       target="_blank"
                     >Pattern</a> that usually will be a value of the enumeration Type
                     that you define for reporting errors. Note that if an enumeration value 
@@ -453,14 +399,16 @@ One key use of enumerations with associated values to define error conditions fo
                     “handle error” above.
                   </p>
                   <p>
-                    Also note that you must alway include a generic catch statement at the
-                    end to catch any other errors that happen. If those are errors your code
-                    cannot deal with you can call "throw error" in that handler to pass the
-                    error for handling further up the call stack.
-                    <kbd>catch</kbd> without a pattern will pick up any errors not 
-                    listed previously. You could just use <kbd>catch</kbd> without a pattern 
-                    to handle all errors. In that case the error message will be 
+                    Also note that <b>you must always include a generic "catch" statement at the
+                    end</b> to catch any other errors that happen. If those are errors your code
+                    cannot deal with, you can call "throw error" in that handler to pass the
+                    error for handling further up the call stack. The generic catch statement
+                    has <kbd>catch</kbd> without a pattern and will pick up any errors not 
+                    listed previously. In that case the error message will be 
                     available to your code in a global variable called <kbd>error</kbd>.
+                    That is why "throw error" will pass the error information up the call
+                    chain. You could just use <kbd>catch</kbd> without a pattern 
+                    to handle all errors. But often you will want to catch a few errors and handle them in the funcation.
                   </p>
                   One other option you can use instead of do-try-catch is to just put 
                   <kbd>try?</kbd> in front of a function call that can throw an error. 
@@ -471,7 +419,7 @@ One key use of enumerations with associated values to define error conditions fo
                   went wrong like this:                  <p>
                   </p>
 <pre><code class="Swift">guard let anInt = try? canThrow() else {
-    report error, then return, continue or break
+    <i>report error, then</i> return, continue or break
 }</code></pre>
 
     <footer>

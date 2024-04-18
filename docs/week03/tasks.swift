@@ -180,7 +180,8 @@ func task2() -> Bool? {
 //
 //  Note: most tasks ask you to edit a function called taskN(), but we gave
 //  the function for Task 3 a more meaningful name since you will call it
-//  later. So instead of editing Task3() you are asked to edit generateRange().func generateRange(_ int1: Int, _ int2: Int) -> Any? {
+//  later. So instead of editing Task3() you are asked to edit generateRange().
+func generateRange(_ int1: Int, _ int2: Int) -> Any? {
     return nil
 }
 
@@ -264,7 +265,7 @@ func task6(_ anyArray: [Any?]) -> [Double]? {
 }
 
 //  Task 7
-//  When we print a MecicationContainer, it just outputs
+//  When we print a MedicationContainer, it just outputs
 //  "Week3Tasks.MedicationContainer". Among other things, such a generic printout
 //  makes it harder to print things to help us track down errors.
 //
@@ -283,20 +284,28 @@ func task6(_ anyArray: [Any?]) -> [Double]? {
 //
 //  Remember that since  MedicationContainer is a class with children, the
 //  MedicationContainer may actually be a LiquidMedicationContainer or a
-//  TabletMedicationContainer. You can use "is" to figure out if the underlying
-//  type of self is really the parent or one of the children. If it is a
-//  child you can use "as?" to get a temporary variable or constant of the
+//  TabletMedicationContainer. If it is actually one of those child types
+//  then the test code will expect you to print the properties from that
+//  Type. You can use "is" to figure out if the underlying
+//  type of "self" is really the parent or one of the children. If it is a
+//  child Type you can use "as?" to get a temporary variable or constant of the
 //  child type so you can include the properties of the child type in the
-//  description string.
+//  description string. Be sure to use the "if let" pattern to unpack the
+//  optional result from "as?".
 //
-//  Then use the extension to also indicate that MedicationContainer
+//  Use the extension to also indicate that MedicationContainer
 //  is compliant with CustomStringConvertible which tells the system to
 //  start using the computed description property when printing an object
-//  of Type MedicationContainer. You can do that by adding
-//  ":CustomStringConvertible" to the first line of the extension.
+//  of this Type. You can do that by adding ": CustomStringConvertible"
+//  to the first line of the extension.
 //
 //  When you have completed and tested the code, change task7() to return
-//  true instead of nil, causing some test objects to be printed.
+//  true instead of nil, causing some test objects to be printed. If you get
+//  errors, look closely at the difference between what is printed and what
+//  it wants. The test code checks to make sure the value all properties
+//  except computed properties are printed. In addition, if it is one of the
+//  child Types, the test code expects you to tell the user that it is a
+//  "liquid" or "tablet" so the test code will look for one of those words.
 
 extension MedicationContainer {
     // put your code here to add a computed description property
